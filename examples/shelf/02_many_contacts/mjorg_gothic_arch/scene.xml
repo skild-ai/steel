@@ -1,0 +1,125 @@
+<!-- Source: google-deepmind/mujoco model/arch/gothic.xml at 220abbbb6442
+     (Apache License 2.0, see LICENSE in this folder).
+
+     Modified: MuJoCo 4.0-only attributes (the discrete integrator, replaced by implicitfast)
+     removed, then compiled with MuJoCo 3.17 and re-emitted as one flat file with its replicate
+     blocks expanded.
+-->
+<mujoco model="Gothic arch">
+  <compiler angle="radian"/>
+
+  <option timestep="0.008" impratio="10" integrator="implicitfast" cone="elliptic" noslip_iterations="2"/>
+
+  <visual>
+    <global azimuth="140" elevation="-20"/>
+    <headlight ambient="0.25 0.25 0.25" specular="0.2 0.2 0.2"/>
+    <rgba haze="0.12 0.16 0.2 1"/>
+  </visual>
+
+  <default>
+    <geom type="mesh" solref="0.005" solimp="0.95 0.99 0.0001" density="2500"/>
+  </default>
+
+  <asset>
+    <texture type="cube" colorspace="auto" name="ibl" builtin="gradient" rgb1="0.25 0.3 0.45" rgb2="0.55 0.5 0.45" width="32" height="192"/>
+    <texture type="skybox" colorspace="auto" builtin="gradient" rgb1="0.12 0.16 0.28" rgb2="0.5 0.45 0.4" width="32" height="192"/>
+    <texture type="2d" colorspace="auto" name="grid" builtin="checker" rgb1="0.1 0.2 0.3" rgb2="0.2 0.3 0.4" width="100" height="100"/>
+    <material name="grid" texture="grid" texrepeat="8 8" texuniform="true" reflectance="0.06"/>
+    <mesh name="voussoir" vertex="-0.15 -0.089199 -0.127123 -0.15 0.089199 -0.127123 -0.15 -0.101092 0.122594 -0.15 0.101092 0.122594 0.15 -0.089199 -0.127123 0.15 0.089199 -0.127123 0.15 -0.101092 0.122594 0.15 0.101092 0.122594"/>
+    <mesh name="keystone" vertex="-0.15 -0.414478 0.082401 -0.15 0 0.364576 -0.15 0.414478 0.082401 -0.15 0.162361 -0.20856 -0.15 0 -0.23 -0.15 -0.162361 -0.20856 0.15 -0.414478 0.082401 0.15 0 0.364576 0.15 0.414478 0.082401 0.15 0.162361 -0.20856 0.15 0 -0.23 0.15 -0.162361 -0.20856"/>
+  </asset>
+
+  <worldbody>
+    <geom name="floor" size="0 0 0.01" type="plane" material="grid"/>
+    <camera name="front" quat="0.5 0.5 0.5 0.5" pos="3.6 0 1.1"/>
+    <light name="key" pos="-1.35 -2.7 5.4" dir="0.249136 0.498273 -0.830455" intensity="3000000" range="30" cutoff="25" softness="1" diffuse="0.9 0.85 0.75" specular="0.15 0.15 0.15"/>
+    <light castshadow="false" pos="2.4 2.2 3.5" dir="-0.502519 -0.502519 -0.703526" intensity="300000" range="30" cutoff="35" softness="1" diffuse="0.5 0.65 0.8"/>
+    <light intensity="3000" type="image" texture="ibl"/>
+    <frame pos="0 1 0">
+      <geom name="springer_left" pos="0 -1.99773 0.0951706" quat="0.723734 0.690079 0 0" rgba="0.45 0.44 0.46 1" mesh="voussoir"/>
+      <body name="left_a0" pos="0 -1.98115 0.28557" quat="0.753583 0.657353 0 0">
+        <joint type="free"/>
+        <geom quat="1 0 0 0" rgba="0.71 0.71 0.73 1" mesh="voussoir"/>
+      </body>
+      <body name="left_b0" pos="0 -1.94491 0.472327" quat="0.784004 0.620756 0 0">
+        <joint type="free"/>
+        <geom quat="1 0 0 0" rgba="0.8 0.8 0.82 1" mesh="voussoir"/>
+      </body>
+      <frame quat="0.995485 -0.0949151 0 0">
+        <body name="left_a1" pos="0 -1.98115 0.28557" quat="0.753583 0.657353 0 0">
+          <joint type="free"/>
+          <geom quat="1 0 0 0" rgba="0.71 0.71 0.73 1" mesh="voussoir"/>
+        </body>
+        <body name="left_b1" pos="0 -1.94491 0.472327" quat="0.784004 0.620756 0 0">
+          <joint type="free"/>
+          <geom quat="1 0 0 0" rgba="0.8 0.8 0.82 1" mesh="voussoir"/>
+        </body>
+      </frame>
+      <frame quat="0.981982 -0.188973 0 0">
+        <body name="left_a2" pos="0 -1.98115 0.28557" quat="0.753583 0.657353 0 0">
+          <joint type="free"/>
+          <geom quat="1 0 0 0" rgba="0.71 0.71 0.73 1" mesh="voussoir"/>
+        </body>
+        <body name="left_b2" pos="0 -1.94491 0.472327" quat="0.784004 0.620756 0 0">
+          <joint type="free"/>
+          <geom quat="1 0 0 0" rgba="0.8 0.8 0.82 1" mesh="voussoir"/>
+        </body>
+      </frame>
+      <frame quat="0.959613 -0.281325 0 0">
+        <body name="left_a3" pos="0 -1.98115 0.28557" quat="0.753583 0.657353 0 0">
+          <joint type="free"/>
+          <geom quat="1 0 0 0" rgba="0.71 0.71 0.73 1" mesh="voussoir"/>
+        </body>
+        <body name="left_b3" pos="0 -1.94491 0.472327" quat="0.784004 0.620756 0 0">
+          <joint type="free"/>
+          <geom quat="1 0 0 0" rgba="0.8 0.8 0.82 1" mesh="voussoir"/>
+        </body>
+      </frame>
+    </frame>
+    <frame pos="0 -1 0">
+      <geom name="springer_right" pos="0 1.99773 0.0951706" quat="0.723734 -0.690079 0 0" rgba="0.45 0.44 0.46 1" mesh="voussoir"/>
+      <body name="right_a0" pos="0 1.98115 0.28557" quat="0.753583 -0.657353 0 0">
+        <joint type="free"/>
+        <geom quat="1 0 0 0" rgba="0.71 0.71 0.73 1" mesh="voussoir"/>
+      </body>
+      <body name="right_b0" pos="0 1.94491 0.472327" quat="0.784004 -0.620756 0 0">
+        <joint type="free"/>
+        <geom quat="1 0 0 0" rgba="0.8 0.8 0.82 1" mesh="voussoir"/>
+      </body>
+      <frame quat="0.995485 0.0949151 0 0">
+        <body name="right_a1" pos="0 1.98115 0.28557" quat="0.753583 -0.657353 0 0">
+          <joint type="free"/>
+          <geom quat="1 0 0 0" rgba="0.71 0.71 0.73 1" mesh="voussoir"/>
+        </body>
+        <body name="right_b1" pos="0 1.94491 0.472327" quat="0.784004 -0.620756 0 0">
+          <joint type="free"/>
+          <geom quat="1 0 0 0" rgba="0.8 0.8 0.82 1" mesh="voussoir"/>
+        </body>
+      </frame>
+      <frame quat="0.981982 0.188973 0 0">
+        <body name="right_a2" pos="0 1.98115 0.28557" quat="0.753583 -0.657353 0 0">
+          <joint type="free"/>
+          <geom quat="1 0 0 0" rgba="0.71 0.71 0.73 1" mesh="voussoir"/>
+        </body>
+        <body name="right_b2" pos="0 1.94491 0.472327" quat="0.784004 -0.620756 0 0">
+          <joint type="free"/>
+          <geom quat="1 0 0 0" rgba="0.8 0.8 0.82 1" mesh="voussoir"/>
+        </body>
+      </frame>
+      <frame quat="0.959613 0.281325 0 0">
+        <body name="right_a3" pos="0 1.98115 0.28557" quat="0.753583 -0.657353 0 0">
+          <joint type="free"/>
+          <geom quat="1 0 0 0" rgba="0.71 0.71 0.73 1" mesh="voussoir"/>
+        </body>
+        <body name="right_b3" pos="0 1.94491 0.472327" quat="0.784004 -0.620756 0 0">
+          <joint type="free"/>
+          <geom quat="1 0 0 0" rgba="0.8 0.8 0.82 1" mesh="voussoir"/>
+        </body>
+      </frame>
+    </frame>
+    <body name="keystone" pos="0 0 1.54961">
+      <joint type="free"/>
+      <geom quat="1 0 0 0" rgba="0.87 0.79 0.63 1" mesh="keystone"/>
+    </body>
+  </worldbody>
+</mujoco>

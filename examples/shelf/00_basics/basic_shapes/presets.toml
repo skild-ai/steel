@@ -1,0 +1,59 @@
+example = "basic_shapes"
+source = "newton/examples/basic/example_basic_shapes.py @ newton-collab 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = []
+
+[gallery]
+short = "Every collision shape the ModelBuilder offers, dropped together."
+
+[xpbd]
+status = "works"
+sim = { fps = 100, substeps = 5 }
+solver = { iterations = 5 }
+model = { default_shape_cfg = { mu_torsional = 0.01, mu_rolling = 3e-3 } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[vbd]
+status = "works"
+sim = { fps = 100, substeps = 5 }
+solver = { iterations = 5 }
+model = { default_shape_cfg = { ke = 1.0e8, kd = 5.0e5 } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 2 substeps x 4 iterations, immediate response: fastest setting with peak and mean penetration below XPBD's
+# (0.78/0.019 mm vs 4.80/0.024 mm); 3 iterations raise the mean to 0.031 mm, 2 to 0.060 mm. Odd substep counts
+# freeze this example's graph.
+sim = { fps = 100, substeps = 2 }
+solver = { solve_mode = "matrix_free", iterations = 4, articulated_contact_response = "immediate" }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "works"
+sim = { fps = 100, substeps = 6 }
+collision = { interval = 2, speculative_contact_gap_max = 0.1 }
+solver = { dynamics_solver = "dvi", sparse_dynamics = true, sparse_jacobian = true, dynamics = { cull_speculative_contacts = false }, dvi = { max_alternating_iterations = 2 } }
+model = { default_shape_cfg = { mu_torsional = 0.01, mu_rolling = 3e-3 } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

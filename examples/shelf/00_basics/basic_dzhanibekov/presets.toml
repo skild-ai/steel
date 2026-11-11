@@ -1,0 +1,58 @@
+example = "basic_dzhanibekov"
+source = "newton/examples/basic/example_basic_dzhanibekov.py @ newton-collab 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = []
+
+[gallery]
+short = "The Dzhanibekov effect on a free T-shaped rigid body."
+
+[xpbd]
+status = "works"
+sim = { fps = 60, substeps = 4 }
+solver = { iterations = 10 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[vbd]
+status = "works"
+sim = { fps = 60, substeps = 4 }
+solver = { iterations = 4 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[mujoco]
+status = "works"
+sim = { fps = 60, substeps = 4 }
+solver = { disable_contacts = true, solver = "newton", integrator = "implicitfast", iterations = 10 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 4 substeps, immediate response: 2 substeps (0.30 ms) delays the flip past the 100 frames the test allows, and
+# odd counts freeze this example's graph; the body has no contact rows, so iterations cost nothing, and
+# propagation_colored, split mode or serial streams are all slower here.
+sim = { fps = 60, substeps = 4 }
+solver = { solve_mode = "matrix_free", iterations = 4, articulated_contact_response = "immediate" }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "works"
+sim = { fps = 60, substeps = 4 }
+solver = { dynamics_solver = "dvi", sparse_dynamics = true, sparse_jacobian = true }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

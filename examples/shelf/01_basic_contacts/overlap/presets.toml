@@ -1,0 +1,61 @@
+example = "overlap"
+source = "steel-webgpu tools/scenes.py overlap() @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode: 600 frames, 10 s, the columns at rest; the example's check() asserts the outcome.
+args = ["--num-frames", "600"]
+
+[gallery]
+short = "20 boxes start deep inside each other and separate gently."
+title = "Overlapping boxes"
+frame = 90
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# The browser's 4 x 12 overflowed the propagation rows (the 0.1 m contact gap gives the 20 boxes ~1000 rows
+# against 544) and dropped ~450 rows every step: a column fell over. contact_gap_gate 0.01 keeps only contacts
+# within 1 cm (~300 rows) and fits.
+# 3 substeps x 8 iterations: the boxes separate at 0.73 m/s in the first frame and every column stands (drift
+# 1.4 mm, 5 mm/s jitter at rest). The push-out speed grows with the substep count (16 x 50 throws the boxes,
+# 1 x 8 is gentler but the columns slide apart after 6 s); 3 x 6 stood here but drifted 27 mm with a 2 cm gate.
+# No joints: limits off.
+sim = { fps = 60, substeps = 3 }
+solver = { solve_mode = "matrix_free", iterations = 8, articulated_contact_response = "propagation_colored", velocity_iterations = 4, contact_gap_gate = 0.01 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
+
+[steel_off]
+kind = "steel"
+status = "works"
+# the browser's "Velocity cleanup pass" toggle off: velocity_iterations = 0, the rest as [steel]; the push-out
+# launches the top boxes (1.7 m/s, 7 cm up) and topples a column
+sim = { fps = 60, substeps = 3 }
+solver = { solve_mode = "matrix_free", iterations = 8, articulated_contact_response = "propagation_colored", velocity_iterations = 0, contact_gap_gate = 0.01 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"

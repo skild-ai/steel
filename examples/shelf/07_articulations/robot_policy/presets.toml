@@ -1,0 +1,52 @@
+example = "robot_policy"
+source = "newton/examples/robot/example_robot_policy.py @ newton-collab 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = []
+
+[gallery]
+short = "Robots pretrained in IsaacLab with RL, run with their policies."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "works"
+sim = { fps = 200, substeps = 1 }
+solver = { use_mujoco_cpu = false, solver = "newton", nconmax = 30, njmax = 100 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 2 iterations, immediate response, point friction, joint limits on. enable_joint_limits: without them the standing
+# G1 policy drifts 0.4-0.5 m in 2.5 s; with them it holds within 0.03 m as under MuJoCo (0.09 m).
+# joint_limit_activation_gap 0.1 rad builds a limit row only within 0.1 rad of a limit instead of all 58 every
+# step (1.63 vs 2.24 ms). friction_anchor_beta = 0 (point friction instead of patch anchors) is 17% faster; peak
+# penetration 8.8 mm vs MuJoCo's 8.2 mm, mean 0.13 vs 0.23 mm. articulation_constraint_max: the immediate
+# response keeps contact and limit rows in this family; they peak at 34 per world (the default is 32).
+sim = { fps = 200, substeps = 1 }
+solver = { solve_mode = "matrix_free", iterations = 2, articulated_contact_response = "immediate", articulation_constraint_max = 128, enable_joint_limits = true, joint_limit_activation_gap = 0.1, friction_anchor_beta = 0.0 }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

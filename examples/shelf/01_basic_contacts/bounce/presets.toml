@@ -1,0 +1,49 @@
+example = "bounce"
+source = "steel-webgpu tools/scenes.py bounce() @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode: 70 frames, the first rebounds; the example's check() asserts the outcome.
+args = ["--num-frames", "70"]
+
+[gallery]
+short = "Balls bounce on pads from dead to very bouncy."
+title = "Bounce"
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 4 substeps x 2 iterations: first rebounds of 54, 191, 418 and 598 mm from the 720 mm drop (16 x 50: 47, 182, 408,
+# 587; e^2 h: 45, 180, 405, 583), the same as the browser's 4 x 12 at two thirds of the cost. The rebound error
+# grows with the substep (2 substeps: 64, 203, 432, 613; 1 substep: 84 ... 643), and iterations do not change it:
+# each ball has one contact, so 1 iteration gives the same motion; 2 keep a ball touching pad and floor at once solved.
+# 8 x 1 comes within 2% of 16 x 50 at twice the cost. No joints: limits off.
+sim = { fps = 60, substeps = 4 }
+solver = { solve_mode = "matrix_free", iterations = 2, articulated_contact_response = "propagation_colored" }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

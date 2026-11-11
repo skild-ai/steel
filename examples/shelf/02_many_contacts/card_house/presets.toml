@@ -1,0 +1,49 @@
+example = "card_house"
+source = "steel-webgpu tools/scenes.py card_house() @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode: 300 frames, 5 s, the house settled; the example's check() asserts the outcome.
+args = ["--num-frames", "300"]
+
+[gallery]
+short = "Four levels of playing cards held up by friction alone."
+title = "Card house"
+frame = 120
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 4 substeps x 24 iterations with sleeping: settles 10.7 mm, as a 16 x 12 run without sleeping (11.3 mm), at 2.1 ms.
+# 24 iterations so the house also stands awake (26 mm with sleeping off); at 4 x 12 to 4 x 20 it stands only
+# because its islands fall asleep before a slow collapse, which a wake-up would restart. 4 x 6 falls even asleep.
+# propagation_constraint_max 2048: the default 544 rows overflowed (604 asked), dropped contacts and the house fell.
+sim = { fps = 60, substeps = 4 }
+solver = { solve_mode = "matrix_free", iterations = 24, articulated_contact_response = "propagation_colored", enable_joint_limits = true, enable_sleeping = true, propagation_constraint_max = 2048 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

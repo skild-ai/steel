@@ -1,0 +1,52 @@
+example = "jenga"
+source = "steel-webgpu assets/scenes/jenga (hero_montage export) @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = []
+
+[gallery]
+short = "Lift a loose block and add it to the top of the tower."
+title = "Jenga"
+frame = 420
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 2 substeps x 16 iterations, colored response: 3.8 ms a frame on an RTX PRO 6000 (the port's 4 x 8 with sleeping:
+# 6.3 ms). The block lands on the tower 2.8-3.8 mm from the top layer's centre, square to it, and the tower shifts
+# under 1.5 mm, as at 4 x 8 and within 1.9 mm of a 16 x 32 run; penetration 1.0 mm peak, 0.17 mm mean (4 x 8: 0.8 /
+# 0.13). 2 x 8 and 4 x 4 let the tower creep 3-19 mm, 2 x 12 doubles the mean penetration, point friction
+# (friction_anchor_beta = 0) slides it 26 mm, and the immediate response costs 2.5x here (500 rows in one world).
+# Sleeping off: the tower never sleeps under the arm, so it only cost 8%. Joint limits for the fingers, built within
+# 0.1 of a limit; no joint has a finite velocity limit, so those rows are off.
+sim = { fps = 60, substeps = 2 }
+solver = { solve_mode = "matrix_free", iterations = 16, articulated_contact_response = "propagation_colored", enable_joint_limits = true, joint_limit_activation_gap = 0.1, enable_joint_velocity_limits = false, enable_sleeping = false, free_body_constraint_max = 8192, articulation_constraint_max = 1024, propagation_constraint_max = 16384 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

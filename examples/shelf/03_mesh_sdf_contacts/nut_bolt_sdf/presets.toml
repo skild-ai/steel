@@ -1,0 +1,61 @@
+example = "nut_bolt_sdf"
+source = "newton/examples/contacts/example_nut_bolt_sdf.py @ newton-collab 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "120", "--world-count", "1"]
+
+[gallery]
+short = "A nut on a bolt with SDF mesh contacts."
+
+[xpbd]
+status = "works"
+sim = { fps = 120, substeps = 5 }
+# rigid_contact_relaxation: XPBD contact correction (0.0 = no correction, 1.0 = full correction)
+solver = { iterations = 10, rigid_contact_relaxation = 0.8 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "works"
+sim = { fps = 120, substeps = 5 }
+solver = { use_mujoco_contacts = false, solver = "newton", integrator = "implicitfast", cone = "elliptic", iterations = 15, ls_iterations = 100, impratio = 1.0 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 3 substeps x 6 iterations, immediate response: the fastest setting that threads the nuts at close to
+# MuJoCo's rate (1080 vs 910 degrees in 2.75 s, 17.0 vs 16.0 mm descent) with lower penetration. Fewer
+# substeps or iterations under-solve the thread friction and spin the nuts down 1.5-3x faster (and at
+# 2 x 4 one nut of 100 left its bolt); the colored response is 20% slower with 100 small worlds.
+sim = { fps = 120, substeps = 3 }
+# free_body_constraint_max 1024: the thread contacts need 497-511 free-body rows in one world and 516-525 at the
+# default 100 worlds (high-water over 10-30 s, reached by 6 s); the default 512 drops rows. 1024 is about 2x that.
+solver = { solve_mode = "matrix_free", iterations = 6, articulated_contact_response = "immediate", free_body_constraint_max = 1024 }
+# 100 worlds for 7.5 s: the rows pass 512 at 5.6-5.9 s there, so a too-small capacity fails the check.
+check = { args = ["--num-frames", "900", "--world-count", "100"] }
+checked = "2026-11-11, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "works"
+sim = { fps = 120, substeps = 3 }
+solver = { dynamics_solver = "dvi", sparse_dynamics = true, sparse_jacobian = true, dvi = { max_alternating_iterations = 4 } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

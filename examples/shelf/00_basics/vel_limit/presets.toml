@@ -1,0 +1,51 @@
+example = "vel_limit"
+source = "steel-webgpu tools/scenes.py vel_limit() @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = []
+
+[gallery]
+short = "Two double pendulums; the gold one has a speed limit."
+title = "Joint speed limits"
+frame = 90
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 6 substeps x 4 iterations, immediate response: the gold joints peak at 1.518 rad/s against their 1.5 limit (4 x 4:
+# 1.528, 1 x 2: 1.668) and the grey double pendulum follows a 16 x 32 run within 6 mm through its first second
+# (4 substeps: 10 mm, 1: 69 mm; past that the chaotic grey pendulum diverges at any step size). Its energy error
+# shrinks with the substep (1 substep gains 0.9 J of its 3.7 J swing in the first second, 4 gain 0.21 J, 6 gain 0.14 J).
+# Iterations only tighten the velocity limit; no joint has position limits, so they are off; no contacts, so the
+# immediate response (0.80 ms; 8 x 4 1.07 ms). The port's 4 x 12 colored: 2.00 ms.
+sim = { fps = 60, substeps = 6 }
+solver = { solve_mode = "matrix_free", iterations = 4, articulated_contact_response = "immediate", enable_joint_velocity_limits = true, enable_joint_limits = false }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

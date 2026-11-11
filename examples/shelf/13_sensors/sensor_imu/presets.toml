@@ -1,0 +1,47 @@
+example = "sensor_imu"
+source = "newton/examples/sensors/example_sensor_imu.py @ newton-collab 7565a26b1"
+default = "mujoco"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "200"]
+
+[gallery]
+short = "An IMU's acceleration readings colour the body they are mounted on."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "works"
+sim = { fps = 200, substeps = 10 }
+solver = { njmax = 100 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "unsupported"
+reason = "the IMU reads body accelerations (the body_qdd observable), which Steel does not provide"
+
+[kamino]
+status = "works"
+sim = { fps = 200, substeps = 2 }
+solver = { dynamics_solver = "dvi", sparse_dynamics = true, sparse_jacobian = true, use_collision_detector = true, integrator = "moreau", dvi = { max_alternating_iterations = 8 } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

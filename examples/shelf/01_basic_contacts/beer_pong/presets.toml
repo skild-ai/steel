@@ -1,0 +1,53 @@
+example = "beer_pong"
+source = "steel-webgpu assets/scenes/beer_pong (hero_montage export) @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = []
+
+[gallery]
+short = "Throw a ping-pong ball: one bounce, then into the cup."
+title = "Beer pong"
+frame = 300
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 10 substeps x 12 iterations, immediate response: the cheapest setting that holds the 2.7 g ball without the
+# fingers sinking into it. The fingers (0.08 kg armature) squeeze the ball 5 mm past its surface; Gauss-Seidel
+# converges slowly at that mass ratio, so at the browser's 4 x 16 the pads sit 4.9 mm inside the ball (visible)
+# and the throw leaves 28 mm off a converged 16 x 32 run. Here 1.7 mm and within 5 mm of it, and the ball bounces
+# once and lands in the front cup. 8 x 12: 2.5 mm; 16 x 4 / 16 x 6 miss the cup. Immediate response is ~2x
+# faster than propagation_colored at equal behavior. Velocity limits off: every exported limit is 1e6.
+# Rows: at most 36 used; 128 leaves headroom. Re-checked with the finger mimic (cfeff10): unchanged (the grip was
+# already centred); 8 x 16 then grips 1.8 mm but its throw leaves 17 mm off the converged run on Blackwell.
+sim = { fps = 60, substeps = 10 }
+solver = { solve_mode = "matrix_free", iterations = 12, articulated_contact_response = "immediate", enable_joint_limits = true, joint_limit_activation_gap = 0.1, enable_joint_velocity_limits = false, articulation_constraint_max = 128, free_body_constraint_max = 128 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

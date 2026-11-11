@@ -1,0 +1,52 @@
+example = "selection_cartpole"
+source = "newton/examples/selection/example_selection_cartpole.py @ newton-collab 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "100"]
+
+[gallery]
+short = "Batch control of many cartpole worlds through an ArticulationView."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "works"
+sim = { fps = 60, substeps = 10 }
+solver = { disable_contacts = true }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 2 substeps x 4 iterations, immediate response, joint limits on: no contacts, so the cost is the per-step launch
+# count and the fewest even substeps win (odd counts freeze this example's graph); the cart never reaches its rail
+# limits in this scene, so enabling them only costs 0.02 ms and keeps the rail as MuJoCo enforces it.
+sim = { fps = 60, substeps = 2 }
+solver = { solve_mode = "matrix_free", iterations = 4, articulated_contact_response = "immediate", enable_joint_limits = true }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "works"
+sim = { fps = 60, substeps = 10 }
+solver = { dynamics_solver = "dvi", sparse_dynamics = true, sparse_jacobian = true, dvi = { max_alternating_iterations = 8, bilateral_solve_interval = 8 } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

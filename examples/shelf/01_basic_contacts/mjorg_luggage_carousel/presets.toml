@@ -1,0 +1,49 @@
+example = "mjorg_luggage_carousel"
+source = "google-deepmind/mujoco model/surfacevel/carousel.xml (MuJoCo 4.0 tour on mujoco.org)"
+license = "Apache-2.0"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = ["--num-frames", "2400"]
+
+[gallery]
+short = "Three conveyor belts feed six bags onto a spinning baggage-claim carousel."
+title = "Luggage carousel (mujoco.org)"
+frame = 300
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# MuJoCo 4.0's surfacevel becomes Steel's mesh surface velocity (see example.py). At the default 10 cm gap
+# a bag jams at a belt transfer in about one run in six; at 2 cm none did.
+sim = { fps = 60, substeps = 4 }
+model = { rigid_gap = 0.02 }
+solver = { solve_mode = "colored", iterations = 12, articulated_contact_response = "propagation", free_body_constraint_max = 4096, propagation_constraint_max = 4096 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

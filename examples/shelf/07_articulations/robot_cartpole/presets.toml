@@ -1,0 +1,53 @@
+example = "robot_cartpole"
+source = "newton/examples/robot/example_robot_cartpole.py @ newton-collab 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "100"]
+
+[gallery]
+short = "A cartpole articulation from USD."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "works"
+sim = { fps = 60, substeps = 10 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 2 substeps, immediate response: the passive double pendulum stays within 0.018 rad of MuJoCo's 10-substep path
+# over the 100 test frames (1 substep drifts 0.04 rad; 10 substeps match MuJoCo exactly at 8x the cost).
+# No contacts and no limit rows are active, so iterations do not matter (1).
+sim = { fps = 60, substeps = 2 }
+solver = { solve_mode = "matrix_free", iterations = 1, articulated_contact_response = "immediate", enable_joint_limits = false }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "works"
+sim = { fps = 60, substeps = 5 }
+solver = { dynamics_solver = "dvi", sparse_dynamics = false, sparse_jacobian = false, dvi = { max_alternating_iterations = 8, bilateral_solve_interval = 8 } }
+# Newton test_examples.py tests the Kamino variant with these arguments.
+check = { args = ["--num-frames", "100", "--world-count", "2"] }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

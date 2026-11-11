@@ -1,0 +1,66 @@
+example = "franka_shirt_fold_stack"
+source = "newton/examples/multiphysics/example_franka_shirt_fold_stack.py @ newton-collab 7565a26b1"
+default = "steel_vbd"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "600"]
+
+[gallery]
+short = "A Franka folds and stacks a T-shirt with two-way cloth coupling."
+frame = 300
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "untested"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
+
+[mujoco_vbd]
+status = "works"
+sim = { fps = 60, substeps = 20 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, collide_interval = 1 }
+# njmax / nconmax are computed from the world count in example.py.
+entries.mujoco.solver = { solver = "newton", integrator = "implicitfast", cone = "elliptic", iterations = 100, ls_iterations = 50, use_mujoco_contacts = false }
+# VBD: the low friction_epsilon (slip threshold) keeps the stack from creeping on the cloth.
+entries.vbd.solver = { iterations = 5, rigid_compliant_alm = true, friction_epsilon = 1.0e-3, particle_enable_self_contact = true, particle_self_contact_margin = 0.002, particle_self_contact_gap = 0.0, particle_topological_contact_filter_threshold = 1, particle_rest_shape_contact_exclusion_radius = 0.005, particle_vertex_contact_buffer_size = 16, particle_edge_contact_buffer_size = 20 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[steel_vbd]
+status = "works"
+# 20 substeps x 2 Steel iterations: 68.2 ms/frame vs MuJoCo's 65.9 (Steel's previous 24 iterations: 78.3); each Steel
+# substep costs ~0.5 ms more than MuJoCo's, so it stays 3.5% slower at the same substeps. Fold and stack succeed
+# (5/5 checks in 2 of 2 runs, MuJoCo 3 of 3); block penetration 0.03 / 0.016 mm peak / mean vs MuJoCo's 5.6 / 0.55,
+# cloth 69.4 / 0.43 mm as MuJoCo's. 18 substeps (63.6-65.9 ms) loses the fold or the stack in 3 of 6 runs and 16
+# loses the fold, as MuJoCo does at 16; update_mass_matrix_interval = 2 saves ~1 ms and 128 rows save nothing.
+sim = { fps = 60, substeps = 20 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, collide_interval = 1 }
+# Joint limits on as MuJoCo enforces them.
+entries.steel.solver = { solve_mode = "matrix_free", iterations = 2, enable_joint_limits = true, articulation_constraint_max = 256 }
+# VBD: the low friction_epsilon (slip threshold) keeps the stack from creeping on the cloth.
+entries.vbd.solver = { iterations = 5, rigid_compliant_alm = true, friction_epsilon = 1.0e-3, particle_enable_self_contact = true, particle_self_contact_margin = 0.002, particle_self_contact_gap = 0.0, particle_topological_contact_filter_threshold = 1, particle_rest_shape_contact_exclusion_radius = 0.005, particle_vertex_contact_buffer_size = 16, particle_edge_contact_buffer_size = 20 }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"

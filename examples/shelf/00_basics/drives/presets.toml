@@ -1,0 +1,60 @@
+example = "drives"
+source = "steel-webgpu tools/scenes.py drives() @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = []
+
+[gallery]
+short = "Three arms driven to the same angle with different torque limits."
+title = "Joint motors"
+frame = 90
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 1 substep x 1 iteration, immediate response, drive_mode rows: the arms follow a 16 x 32 run within 0.018 rad
+# (7 mm at the 0.4 m arm) over 6 s; the 10 and 60 N m arms reach 1.2 rad at the 2 rad/s cap, the 3 N m arm cannot
+# lift its 1.9 kg load and swings below horizontal. More iterations change nothing (one DOF per arm); no joint has
+# position limits, so they are off; immediate costs less than propagation_colored (0.22 vs 0.32 ms; port's 4 x 12:
+# 2.65 ms).
+sim = { fps = 60, substeps = 1 }
+solver = { solve_mode = "matrix_free", iterations = 1, articulated_contact_response = "immediate", enable_joint_velocity_limits = true, enable_joint_limits = false, drive_mode = "rows" }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
+
+[steel_off]
+kind = "steel"
+status = "works"
+# the "Joint motor constraints" toggle off: drive_mode = "augmented", everything else as [steel]. At these settings the
+# augmented drives clamp their effort explicitly and the 10 N m arm reaches only 0.23 rad after 0.5 s (rows: 0.85,
+# 16 x 32 augmented: 0.79), which is the difference the toggle shows.
+sim = { fps = 60, substeps = 1 }
+solver = { solve_mode = "matrix_free", iterations = 1, articulated_contact_response = "immediate", enable_joint_velocity_limits = true, enable_joint_limits = false, drive_mode = "augmented" }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"

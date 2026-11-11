@@ -1,0 +1,71 @@
+example = "domino_spiral"
+source = "newton/examples/contacts/example_domino_spiral.py @ newton-collab 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = []
+
+[gallery]
+short = "Dominoes along a spiral, the first one tilted to start the chain."
+frame = 300
+
+[xpbd]
+status = "works"
+sim = { fps = 60, substeps = 10 }
+solver = { iterations = 20, enable_restitution = true }
+model = { ke = 1.0e4 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[vbd]
+status = "works"
+sim = { fps = 60, substeps = 10 }
+solver = { iterations = 10 }
+model = { ke = 1.0e5 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[mujoco]
+status = "works"
+sim = { fps = 60, substeps = 10 }
+solver = { njmax = 2048, nconmax = 1024, cone = "elliptic" }
+model = { ke = 1.0e4 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[featherstone]
+status = "works"
+sim = { fps = 60, substeps = 100 }
+solver = { angular_damping = 0.0 }
+model = { ke = 1.0e4 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 6 substeps x 16 iterations: the fastest setting whose mean and per-frame-max penetration match XPBD's
+# (peaks are single impacts and vary 0.5-2.5 mm run to run for both); fewer substeps or iterations sink
+# the dominoes deeper. The immediate and split responses are 4-6x slower on this contact chain.
+# No model.ke: Steel's rigid contact rows do not read the contact stiffness (a run with ke = 1e4 matched).
+# propagation_constraint_max 16384 for the 480-domino variant (`--num-dominoes 480 --scale 0.28`, ~3,300 contacts):
+# the default 544 rows dropped most of them and the spiral exploded. With it all 480 fall, as fast as a 12 x 32 run;
+# the default 30-domino scene runs the same (4.36 vs 4.35 ms).
+sim = { fps = 60, substeps = 6 }
+solver = { solve_mode = "matrix_free", iterations = 16, articulated_contact_response = "propagation_colored", propagation_constraint_max = 16384 }
+checked = "2026-11-05, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "works"
+sim = { fps = 60, substeps = 5 }
+solver = { use_collision_detector = true }
+model = { ke = 1.0e4 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

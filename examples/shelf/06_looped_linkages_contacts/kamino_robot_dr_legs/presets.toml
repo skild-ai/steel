@@ -1,0 +1,66 @@
+example = "kamino_robot_dr_legs"
+source = "newton/examples/kamino/example_kamino_robot_dr_legs.py @ newton-collab 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "120"]
+
+[gallery]
+short = "DR Legs in many worlds on Kamino."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 2 substeps (as Kamino) x 32 iterations: the fastest setting (coreweave sweep, 2026-11-04) whose loop-closure gap
+# stays within 1.5x Kamino's (0.077 vs 0.060 mm; 24 iterations: 0.10 mm, 50: 0.052 mm at 3.4 ms).
+sim = { fps = 50, substeps = 2 }
+# shape_margin: contact margin of the robot and ground shapes (as in the PADMM preset)
+model = { shape_margin = 1e-6 }
+# loop-closing joints need the "immediate" response; at articulation_constraint_max 64 rows drop and the robot
+# falls through the ground. Joint limits are enforced as in Kamino; joint_limit_activation_gap = 0.1 rad adds a
+# limit row only near its limit, which cuts 40% of the step time and leaves the motion unchanged.
+solver = { solve_mode = "matrix_free", iterations = 32, articulated_contact_response = "immediate", enable_joint_limits = true, joint_limit_activation_gap = 0.1, articulation_constraint_max = 128 }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "works"
+# PADMM, the original default (--dynamics-solver padmm). substeps = frame_dt / 0.01 s.
+sim = { fps = 50, substeps = 2 }
+# shape_margin: contact margin of the robot and ground shapes.
+model = { shape_margin = 1e-6 }
+solver = { dynamics_solver = "padmm", sparse_dynamics = false, sparse_jacobian = false, use_fk_solver = true, dynamics = { linear_solver_type = "LLTB", linear_solver_kwargs = {} }, constraints = { delta = 1e-3 }, padmm = { max_iterations = 200, primal_tolerance = 1e-4, dual_tolerance = 1e-4, compl_tolerance = 1e-4, use_graph_conditionals = true } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+# The original's DVI mode (--dynamics-solver dvi): 12 substeps, a wider contact margin, sparse DVI.
+# integrator = "moreau" matches the original with Kamino's own contacts (the default).
+[kamino_dvi]
+kind = "kamino"
+status = "works"
+sim = { fps = 50, substeps = 12 }
+model = { shape_margin = 5.0e-4 }
+solver = { dynamics_solver = "dvi", sparse_dynamics = true, sparse_jacobian = true, use_fk_solver = false, integrator = "moreau", dynamics = { preconditioning = false, linear_solver_type = "CR", linear_solver_kwargs = { maxiter = 9 } }, constraints = { delta = 1e-3, alpha = 0.1, beta = 0.011, gamma = 0.015 }, padmm = { max_iterations = 200, primal_tolerance = 1e-4, dual_tolerance = 1e-4, compl_tolerance = 1e-4, use_graph_conditionals = true }, dvi = { bilateral_solver_type = "LLTBRCM", bilateral_solver_kwargs = { parallel_factorization = true }, tolerance = 1e-4, regularization = 1e-5, max_alternating_iterations = 4, inequality_sweeps_per_iteration = 3, bilateral_solve_interval = 1, contact_warmstart_method = "key_and_position_with_tangential_net_force", unilateral_solver = "pgs" } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

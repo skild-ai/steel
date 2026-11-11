@@ -1,0 +1,56 @@
+example = "controller_joint_impedance_heterogeneous"
+source = "newton/examples/controllers/example_controller_joint_impedance_heterogeneous.py @ newton-collab 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "120"]
+
+[gallery]
+short = "Joint impedance control on a mixed fleet of robots."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "works"
+sim = { fps = 60, substeps = 4 }
+solver = { disable_contacts = true }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 2 substeps, immediate response: fastest setting; both arms track their targets as closely as with MuJoCo's 4
+# substeps (RMS error 0.290 vs 0.294 rad), and the joint path stays within 0.005 rad RMS of MuJoCo's. The scene
+# makes no contacts and the joints have no limits, so there are no constraint rows: iterations cost nothing with
+# the immediate response, and the propagation responses only add launches (0.45 ms vs 0.26 ms per frame).
+# The substep count must stay even: the controller binds state_0 into its captured graph.
+sim = { fps = 60, substeps = 2 }
+solver = { solve_mode = "matrix_free", iterations = 4, articulated_contact_response = "immediate", enable_joint_limits = false }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "works"
+sim = { fps = 60, substeps = 4 }
+solver = { dynamics_solver = "dvi", sparse_dynamics = true, sparse_jacobian = true, rotation_correction = "continuous", dvi = { max_alternating_iterations = 8, bilateral_solve_interval = 8 } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+# Newton test_examples.py tests the Kamino variant with these arguments.
+check = { args = ["--num-frames", "360"] }
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

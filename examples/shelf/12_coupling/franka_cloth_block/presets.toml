@@ -1,0 +1,63 @@
+example = "franka_cloth_block"
+source = "newton/examples/multiphysics/example_franka_cloth_block.py @ newton-collab 7565a26b1"
+default = "steel_vbd"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = []
+
+[gallery]
+short = "A rigid block rests on a VBD cloth hammock a Franka handles."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "untested"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
+
+[mujoco_vbd]
+status = "works"
+sim = { fps = 60, substeps = 10 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, collide_interval = 1 }
+# njmax / nconmax are computed from the world count in example.py.
+entries.mujoco.solver = { solver = "newton", integrator = "implicitfast", cone = "elliptic", impratio = 10.0, iterations = 100, ls_iterations = 50, use_mujoco_contacts = false }
+entries.vbd.solver = { iterations = 10, rigid_compliant_alm = true }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[steel_vbd]
+status = "works"
+# 8 substeps x 3 Steel iterations: 15.4 ms/frame vs MuJoCo's 16.0 at 10 (Steel's previous 10 x 24: 27.4). The block
+# is placed and the cloth springs back (test passes over the full 510 frames, twice); block penetration 0.06 / 0.02 mm
+# peak / mean vs MuJoCo's 0.50 / 0.25, cloth 0.39 / 0.062 vs 0.35 / 0.063. 7 substeps leaves the cloth sagging
+# (rebound 8.5 mm), 1 iteration places the block 7.6 cm off; 2 also passes, 3 keeps a step of margin.
+sim = { fps = 60, substeps = 8 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, collide_interval = 1 }
+# Joint limits on as MuJoCo enforces them (off saves 2 ms at 10 x 24). The grasp needs more than 128 dense rows:
+# at 64 or 128 rows are dropped and the block is placed 18-34 cm off; 160 and 256 cost the same.
+entries.steel.solver = { solve_mode = "matrix_free", iterations = 3, enable_joint_limits = true, articulation_constraint_max = 256 }
+entries.vbd.solver = { iterations = 10, rigid_compliant_alm = true }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"

@@ -1,0 +1,52 @@
+example = "spinning_top"
+source = "steel-webgpu assets/scenes/spinning_top (hero_montage export) @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = []
+
+[gallery]
+short = "A spinning chuck winds up a top and lets it go on its tip."
+title = "Spinning top"
+frame = 240
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 4 substeps x 12 iterations, friction anchors on (3.84 ms/frame on an RTX PRO 6000, the port's 4 x 16 5.10): the
+# chuck spins the top to ~20 rad/s, releases it within 1 deg of vertical, and it spins on its tip with its axis
+# 3.3-4.7 deg off vertical at 9 s (3 runs), as 16 x 48 runs (3.5-3.9 deg); spin decays to ~15 rad/s in every configuration.
+# 4 x 8 (3.16 ms) drifts to 4.4-5.0 deg, 3 x 12 to 4.3-7.7. With the gripper's finger mimic (cfeff10) anchors off
+# is unsafe: the opening fingers knocked the top 5-14 deg in 5 of 7 runs at 4 x 12 and 6 x 12, and it fell.
+# Joint limits on (the fingers stop at [0, 0.04] m). The joints' velocity limits are 1e6 (none), so those rows are
+# off, and the row capacities fit the scene (peaks: 18 dense, 33 propagation rows).
+sim = { fps = 60, substeps = 4 }
+solver = { solve_mode = "matrix_free", iterations = 12, articulated_contact_response = "propagation_colored", enable_joint_limits = true, enable_joint_velocity_limits = false, free_body_constraint_max = 64, articulation_constraint_max = 64, propagation_constraint_max = 128 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

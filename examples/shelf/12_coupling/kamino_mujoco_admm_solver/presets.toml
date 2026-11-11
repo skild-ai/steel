@@ -1,0 +1,60 @@
+example = "kamino_mujoco_admm_solver"
+source = "newton/examples/multiphysics/example_kamino_mujoco_admm_solver.py @ newton-collab 7565a26b1"
+default = "kamino_steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "30", "--world-count", "4"]
+
+[gallery]
+short = "A four-bar linkage split between Kamino and MuJoCo or Steel."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "untested"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
+
+[kamino_mujoco]
+status = "works"
+sim = { fps = 60, substeps = 3 }
+solver = { iterations = 2, rho = 50.0, gamma = 0.1, baumgarte = 0.02, joint_stiffness = 2.0e4, joint_angular_stiffness = 2.0e4, joint_damping = 1.0, joint_angular_damping = 1.0 }
+entries.kamino.solver = { use_collision_detector = false, use_fk_solver = false, dynamics = { preconditioning = true }, padmm = { max_iterations = 40, primal_tolerance = 1.0e-5, dual_tolerance = 1.0e-5, compl_tolerance = 1.0e-5, rho_0 = 0.1, use_acceleration = true, warmstart_mode = "containers" } }
+entries.mujoco.solver = { use_mujoco_contacts = false, njmax = 64, nconmax = 64 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[kamino_steel]
+status = "works"
+sim = { fps = 60, substeps = 3 }
+solver = { iterations = 2, rho = 50.0, gamma = 0.1, baumgarte = 0.02, joint_stiffness = 2.0e4, joint_angular_stiffness = 2.0e4, joint_damping = 1.0, joint_angular_damping = 1.0 }
+entries.kamino.solver = { use_collision_detector = false, use_fk_solver = false, dynamics = { preconditioning = true }, padmm = { max_iterations = 40, primal_tolerance = 1.0e-5, dual_tolerance = 1.0e-5, compl_tolerance = 1.0e-5, rho_0 = 0.1, use_acceleration = true, warmstart_mode = "containers" } }
+# The two Steel links carry no Steel constraint rows (the four-bar closes through ADMM attachments; no contacts or
+# joint limits), so iterations 1, 4 and 12 give identical joints; 4 measured fastest (6.60 ms/frame vs Kamino-MuJoCo 7.18).
+# 3 substeps x 2 ADMM iterations stay: the ADMM joint gap is 1.14 mm peak / 0.33 mm mean vs Kamino-MuJoCo's
+# 0.31 / 0.22; more ADMM iterations (3: 0.75 / 0.31 mm) or substeps (4: 0.88 / 0.24 mm) narrow it but cost 9.0-9.7 ms.
+entries.steel.solver = { solve_mode = "matrix_free", iterations = 4 }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"

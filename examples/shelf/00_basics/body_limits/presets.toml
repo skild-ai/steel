@@ -1,0 +1,59 @@
+example = "body_limits"
+source = "steel-webgpu tools/scenes.py body_limits() @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = []
+
+[gallery]
+short = "Gold bodies have a fall-speed cap, a spin cap and spin damping."
+title = "Speed caps"
+frame = 90
+
+[xpbd]
+status = "unsupported"
+reason = "the gold bodies use Steel's steel:rigid_body_* attributes"
+
+[vbd]
+status = "unsupported"
+reason = "the gold bodies use Steel's steel:rigid_body_* attributes"
+
+[mujoco]
+status = "unsupported"
+reason = "the gold bodies use Steel's steel:rigid_body_* attributes"
+
+[featherstone]
+status = "unsupported"
+reason = "the gold bodies use Steel's steel:rigid_body_* attributes"
+
+[semi_implicit]
+status = "unsupported"
+reason = "the gold bodies use Steel's steel:rigid_body_* attributes"
+
+[feather_pgs]
+status = "unsupported"
+reason = "the gold bodies use Steel's steel:rigid_body_* attributes"
+
+[steel]
+status = "works"
+# 1 substep x 2 iterations, immediate response: the gold caps act exactly as with 16 x 32 (fall capped at 1.000 m/s,
+# spin at 4.996 rad/s; the damped spinner decays as w *= 1 - 2 dt per step, 3.92 rad/s after 1 s vs 4.05 at 16
+# substeps) and every box lands and rests (0.3 mm peak penetration). 1 x 1 rests 0.7 mm deep. Free bodies only, so
+# the immediate response (0.30 ms) does what propagation_colored did (0.39 ms); no joint has limits, so they are off.
+# The port's 4 x 12 colored with limits: 2.43 ms.
+sim = { fps = 60, substeps = 1 }
+solver = { solve_mode = "matrix_free", iterations = 2, articulated_contact_response = "immediate", enable_joint_limits = false }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "unsupported"
+reason = "the gold bodies use Steel's steel:rigid_body_* attributes"
+
+[implicit_mpm]
+status = "unsupported"
+reason = "the gold bodies use Steel's steel:rigid_body_* attributes"
+
+[style3d]
+status = "unsupported"
+reason = "the gold bodies use Steel's steel:rigid_body_* attributes"

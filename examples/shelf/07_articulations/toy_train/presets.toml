@@ -1,0 +1,52 @@
+example = "toy_train"
+source = "steel-webgpu assets/scenes/toy_train (hero_montage export) @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = []
+
+[gallery]
+short = "Push a toy train along a track on its free-spinning wheels."
+title = "Toy train"
+frame = 420
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 8 substeps x 2 iterations, immediate response. The substep count decides this scene: the train coasts on 24-sided
+# wheel hulls, which lose more energy per facet at large steps. With 4 or fewer substeps (the browser's 4 x 16
+# included) it stops 0.50-0.58 m down the lane, right at the tool, and when the tool lifts away at ~8 s it can
+# snag the train and lift it 4-8 cm (seen in 5 of ~45 such runs, all with the train short of 0.52 m; 6 x 4 too).
+# At 8 substeps it coasts to 0.62-0.68 m (converged 16 x 32 / 32 x 48: 0.63-0.69), clear of the tool in all 9
+# runs, wheels rolling without slip (within 1%), peak penetration 0.1 mm. Iterations barely cost here (8 x 4:
+# +0.14 ms). Velocity limits off: every exported limit is 1e6. Rows: at most 50 used.
+sim = { fps = 60, substeps = 8 }
+solver = { solve_mode = "matrix_free", iterations = 2, articulated_contact_response = "immediate", enable_joint_limits = true, joint_limit_activation_gap = 0.1, enable_joint_velocity_limits = false, articulation_constraint_max = 128, free_body_constraint_max = 128 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

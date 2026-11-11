@@ -1,0 +1,58 @@
+example = "mjorg_gothic_arch"
+source = "google-deepmind/mujoco model/arch/gothic.xml (MuJoCo 4.0 tour on mujoco.org)"
+license = "Apache-2.0"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = ["--num-frames", "600"]
+
+[gallery]
+short = "A mortarless pointed arch of seventeen loose stones stands on friction alone."
+title = "Gothic arch (mujoco.org)"
+frame = 60
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 32 substeps x 20 iterations. No Steel setting holds this friction-held arch still: over 40 s runs every setting
+# creeps, the converged ones (32 x 48-96, 48 x 32, 64 x 48) included: the keystone sinks 0.6-1.2 mm and stones move
+# 2-3 mm per 20 s (median of 2-4 runs), and one 32 x 96 run slipped nine stones ~10 cm before locking again. 32 x 20
+# creeps at that rate (8 runs: keystone median 1.0 mm, range 0.3-2.1 mm, stones median 2.4 mm, range 1.3-5.0 mm per
+# 20 s; keystone 0.3-3.9 mm below its start at 40 s) and does not buzz (last-second stone motion 0.01-0.03 mm per
+# frame, median). 12 iterations creep faster (5 runs: keystone median 1.6 mm, stones 4.6 mm per 20 s) and buzz
+# (0.06 mm per frame: 2-4 stones read as jittering); 16 iterations reach the band in 5 of 6 runs. 16 substeps can fail late (one 16 x 96 run collapsed at
+# 20-30 s; 16 x 48 sinks 14 mm in 20 s); warm start, velocity iterations and serial Nesterov all creep more (5-40 mm
+# per 20 s), Nesterov below 32 substeps collapses. A 2 cm gap keeps distant stone pairs out of the rows; at most
+# 520 rows are used (1,024 reserved). Peak penetration 0.3 mm. 51.0 ms/frame on the RTX PRO 6000 (12 iterations:
+# 40.5 ms). MuJoCo 3.17 on the same file: keystone 1 mm, no stone > 2 mm in 10 s (README).
+sim = { fps = 60, substeps = 32 }
+model = { rigid_gap = 0.02 }
+solver = { solve_mode = "colored", iterations = 20, articulated_contact_response = "propagation", free_body_constraint_max = 1024, propagation_constraint_max = 1024 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

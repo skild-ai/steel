@@ -1,0 +1,51 @@
+example = "cereal"
+source = "steel-webgpu assets/scenes/cereal (hero_montage export) @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = []
+
+[gallery]
+short = "Pour 168 alphabet letters from a carton into a bowl."
+title = "Cereal"
+frame = 480
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# Patch friction (friction_anchor_beta 0.2), not the port's point friction: with point friction the carton turns in
+# the grasp (86 deg of tilt instead of ~136), no letter leaves it and it drops beside the bowl. This holds with the
+# finger mimic restored (cfeff10): point friction pours only at 6 x 16 (164/168, 49.8 ms) or 10 x 16 (152/168).
+# 6 substeps x 3 iterations: all 168 in the bowl, carton back on its spot, 6.4/0.17 mm peak/mean penetration at
+# 17.4 ms (patch 10 x 16: 2.5/0.024 mm, 80.6 ms); 3 x 8: 16.5 ms but 11.5/0.36 mm (letters are 6.7 mm thick);
+# 4 x 4: 14.3 ms, 9.1/0.36; 6 x 4: 20.8 ms, 5.4/0.15. Warm start on: faster than cold starts (15.7 vs 20.2 ms at 3 x 8).
+sim = { fps = 60, substeps = 6 }
+solver = { solve_mode = "matrix_free", iterations = 3, articulated_contact_response = "propagation_colored", enable_joint_velocity_limits = true, enable_joint_limits = true, contact_warmstart = true, friction_anchor_beta = 0.2, free_body_constraint_max = 8192, articulation_constraint_max = 1024, propagation_constraint_max = 16384 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

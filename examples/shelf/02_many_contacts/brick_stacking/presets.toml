@@ -1,0 +1,54 @@
+example = "brick_stacking"
+source = "newton/examples/contacts/example_brick_stacking.py @ newton-collab 7565a26b1"
+default = "mujoco"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "1200"]
+
+[gallery]
+short = "A Franka picks bricks from a table and stacks them, with SDF mesh collision."
+frame = 600
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "works"
+sim = { fps = 60, substeps = 16 }
+solver = { solver = "newton", integrator = "implicitfast", iterations = 15, ls_iterations = 100, cone = "elliptic", impratio = 50.0, use_mujoco_contacts = false }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "unstable"
+# The task completes, but with rigid contacts the studs cannot press-fit: red sits ~1.5 mm high on green and the
+# round-2 grasp lifts red alone. Steel's contact_compliance needs per-contact material arrays (hydroelastic or
+# body-pair contact reduction), which this scene's collision pipeline does not produce.
+# 4 substeps x 4 iterations: Steel's cost scales with both, and 16 x 12 takes ~2 s per frame here
+sim = { fps = 60, substeps = 4 }
+# the studded bricks make ~3,800 contacts: with the default capacities (512 free-body rows, propagation rows sized
+# by Steel) rows are dropped and the bricks are launched; these are the smallest powers of two without overflow
+solver = { solve_mode = "matrix_free", iterations = 4, articulated_contact_response = "propagation_colored", free_body_constraint_max = 8192, propagation_constraint_max = 16384 }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+note = "check failed:   Red-Blue height gap: 0.0109 m, expected ~0.0192 m"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

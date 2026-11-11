@@ -1,0 +1,50 @@
+example = "mjorg_falling_chain"
+source = "google-deepmind/mujoco model/speculative/chain.xml (MuJoCo 4.0 tour on mujoco.org)"
+license = "Apache-2.0"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = ["--num-frames", "500"]
+
+[gallery]
+short = "Four interlocked thin chain links drop onto a catch bar and hang from it."
+title = "Falling chain (mujoco.org)"
+frame = 60
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# MuJoCo's 6 ms step, coarsened to 6.7 ms. A zero authored gap matches MuJoCo's zero margin: without the
+# velocity-sized speculative gap, links 3 and 4 fall through link 2 here as they do in MuJoCo 3.17.
+sim = { fps = 50, substeps = 3 }
+model = { rigid_gap = 0.0 }
+collision = { speculative_contact_gap_max = 0.2 }
+solver = { solve_mode = "colored", iterations = 12, articulated_contact_response = "propagation" }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

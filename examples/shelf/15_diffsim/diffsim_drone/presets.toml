@@ -1,0 +1,42 @@
+example = "diffsim_drone"
+source = "newton/examples/diffsim/example_diffsim_drone.py @ newton-collab 7565a26b1"
+default = "semi_implicit"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "180"]
+
+[gallery]
+short = "A quadrotor reaches targets with model-predictive control through gradients."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "works"
+sim = { fps = 60, substeps = 1 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "untested"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

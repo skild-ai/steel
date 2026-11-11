@@ -1,0 +1,150 @@
+example = "rigid_soft_contact"
+source = "newton/examples/multiphysics/example_rigid_soft_contact.py @ newton-collab 7565a26b1"
+default = "steel_xpbd"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = []
+
+[gallery]
+short = "A rigid sphere collides with a soft FEM beam."
+
+[xpbd]
+status = "works"
+sim = { fps = 60, substeps = 32 }
+solver = { iterations = 10 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[vbd]
+status = "works"
+sim = { fps = 60, substeps = 32 }
+solver = { iterations = 10, particle_enable_self_contact = false, particle_enable_tile_solve = false, rigid_body_particle_contact_buffer_size = 512 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "works"
+sim = { fps = 60, substeps = 32 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "untested"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
+
+[mujoco_semi_implicit]
+status = "works"
+# Coupled presets (originally `--solver coupled --rigid-solver <rigid> --soft-solver <soft>`):
+# the sphere runs on the rigid solver, the soft beam on the soft solver, coupled by proxies.
+sim = { fps = 60, substeps = 32 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0 }
+entries.mujoco.solver = { use_mujoco_contacts = false, njmax = 64 }
+entries.semi_implicit.solver = {}
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[mujoco_xpbd]
+status = "works"
+sim = { fps = 60, substeps = 32 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0 }
+entries.mujoco.solver = { use_mujoco_contacts = false, njmax = 64 }
+entries.xpbd.solver = { iterations = 10 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[mujoco_vbd]
+status = "works"
+sim = { fps = 60, substeps = 32 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0 }
+entries.mujoco.solver = { use_mujoco_contacts = false, njmax = 64 }
+entries.vbd.solver = { iterations = 10, particle_enable_self_contact = false, particle_enable_tile_solve = false, rigid_body_particle_contact_buffer_size = 512 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[kamino_semi_implicit]
+status = "works"
+sim = { fps = 60, substeps = 32 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0 }
+entries.kamino.solver = { use_collision_detector = false, use_fk_solver = false, dynamics = { preconditioning = true }, padmm = { max_iterations = 80, primal_tolerance = 1.0e-5, dual_tolerance = 1.0e-5, compl_tolerance = 1.0e-5, rho_0 = 0.1, use_acceleration = true, warmstart_mode = "containers" } }
+entries.semi_implicit.solver = {}
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[kamino_xpbd]
+status = "works"
+sim = { fps = 60, substeps = 32 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0 }
+entries.kamino.solver = { use_collision_detector = false, use_fk_solver = false, dynamics = { preconditioning = true }, padmm = { max_iterations = 80, primal_tolerance = 1.0e-5, dual_tolerance = 1.0e-5, compl_tolerance = 1.0e-5, rho_0 = 0.1, use_acceleration = true, warmstart_mode = "containers" } }
+entries.xpbd.solver = { iterations = 10 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[kamino_vbd]
+status = "works"
+sim = { fps = 60, substeps = 32 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0 }
+entries.kamino.solver = { use_collision_detector = false, use_fk_solver = false, dynamics = { preconditioning = true }, padmm = { max_iterations = 80, primal_tolerance = 1.0e-5, dual_tolerance = 1.0e-5, compl_tolerance = 1.0e-5, rho_0 = 0.1, use_acceleration = true, warmstart_mode = "containers" } }
+entries.vbd.solver = { iterations = 10, particle_enable_self_contact = false, particle_enable_tile_solve = false, rigid_body_particle_contact_buffer_size = 512 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[vbd_semi_implicit]
+status = "works"
+sim = { fps = 60, substeps = 32 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0 }
+entries.rigid_vbd.solver = { iterations = 10 }
+entries.semi_implicit.solver = {}
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[vbd_xpbd]
+status = "works"
+sim = { fps = 60, substeps = 32 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0 }
+entries.rigid_vbd.solver = { iterations = 10 }
+entries.xpbd.solver = { iterations = 10 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[vbd_vbd]
+status = "works"
+sim = { fps = 60, substeps = 32 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0 }
+entries.rigid_vbd.solver = { iterations = 10 }
+entries.vbd.solver = { iterations = 10, particle_enable_self_contact = false, particle_enable_tile_solve = false, rigid_body_particle_contact_buffer_size = 512 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[steel_semi_implicit]
+status = "works"
+sim = { fps = 60, substeps = 32 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0 }
+entries.steel.solver = { solve_mode = "matrix_free" }
+entries.semi_implicit.solver = {}
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[steel_xpbd]
+status = "works"
+# 24 substeps: the coupled step (Steel sphere, XPBD grid, proxy collision) costs ~30% more per substep than XPBD
+# alone, so at XPBD's 32 substeps no Steel setting matches XPBD's frame time (best 20.4 vs 15.8 ms; coreweave sweep,
+# 2026-11-04). At 24 it does (15.4 ms), the grid's peak penetration stays 0.2 mm (0.12 at 32) and the sphere rolls
+# off the grid as at 32; at 16-20 it rolls 1.5-3 m shorter. 4 iterations: the single free sphere needs no more.
+sim = { fps = 60, substeps = 24 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0 }
+entries.steel.solver = { solve_mode = "matrix_free", iterations = 4 }
+entries.xpbd.solver = { iterations = 10 }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[steel_vbd]
+status = "works"
+sim = { fps = 60, substeps = 32 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0 }
+entries.steel.solver = { solve_mode = "matrix_free" }
+entries.vbd.solver = { iterations = 10, particle_enable_self_contact = false, particle_enable_tile_solve = false, rigid_body_particle_contact_buffer_size = 512 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"

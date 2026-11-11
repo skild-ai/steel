@@ -1,0 +1,44 @@
+example = "cable_y_junction"
+source = "newton/examples/cable/example_cable_y_junction.py @ newton-collab 7565a26b1"
+default = "vbd"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "20"]
+
+[gallery]
+short = "A Y-junction of rods sharing one junction node."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "works"
+sim = { fps = 60, substeps = 20 }
+solver = { iterations = 5 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "unsupported"
+reason = "Steel has no rod (cable) joints: it reuses Featherstone's joint kinematics, which has no motion for JointType.ROD (it prints 'jcalc_motion not implemented for joint type 7'), and builds drive rows, where a rod stores its stretch/bend/twist stiffness, only for prismatic, revolute and D6 joints. A pinned test rod stays rigid under Steel where VBD sags 81 mm"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

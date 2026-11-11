@@ -1,0 +1,61 @@
+example = "basic_multi_solver_overlay"
+source = "newton/examples/basic/example_basic_multi_solver_overlay.py @ newton-collab 7565a26b1"
+default = "xpbd_featherstone_mujoco_kamino"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "50"]
+
+[gallery]
+short = "Four solvers run the same quadruple pendulum, overlaid as viewer layers."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "untested"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
+
+[xpbd_featherstone_mujoco_kamino]
+# All four solvers run side by side on the same pendulum, one viewer layer each.
+status = "works"
+sim = { fps = 100, substeps = 10 }
+entries.xpbd = {}
+entries.featherstone = {}
+entries.mujoco = {}
+entries.kamino.solver = { dynamics_solver = "dvi", sparse_dynamics = true, sparse_jacobian = true, use_collision_detector = true, integrator = "moreau", dvi = { max_alternating_iterations = 8, use_schur_complement = true } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[xpbd_featherstone_mujoco_kamino_steel]
+status = "works"
+# The four layers above plus a Steel layer.
+sim = { fps = 100, substeps = 10 }
+entries.xpbd = {}
+entries.featherstone = {}
+entries.mujoco = {}
+entries.kamino.solver = { dynamics_solver = "dvi", sparse_dynamics = true, sparse_jacobian = true, use_collision_detector = true, integrator = "moreau", dvi = { max_alternating_iterations = 8, use_schur_complement = true } }
+entries.steel.solver = { solve_mode = "serial", iterations = 12 }
+checked = "2026-11-11, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"

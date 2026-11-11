@@ -1,0 +1,63 @@
+example = "dumbbells"
+source = "steel-webgpu tools/scenes.py dumbbells() @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = []
+
+[gallery]
+short = "Rolling and spinning dumbbells come to rest."
+title = "Dumbbells"
+frame = 120
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# Not the scene's intent on this Newton: SolverSteel f6fc82a8 has no rolling friction for articulated contacts.
+# Its rolling and spin rows (steel:condim 4/6, free_rigid_rolling_friction / free_rigid_torsional_friction) take
+# only the free-body contact route, i.e. single bodies on a free joint; a dumbbell is a two-link floating-base
+# articulation. Contact torsion (steel:min_torsional_patch_radius) does reach articulated contacts but only spins:
+# with r = mu_torsional / mu = 0.0167 m the motion is unchanged, as sliding friction already ends the spin.
+# Measured over 10 s (RTX PRO 6000): the roller keeps rolling at 0.79-0.70 m/s and leaves the frame (7.45 m, as at
+# 16 x 50); the spinner's spin dies in ~0.5 s, after which it rolls along its bar axis at 0.12 m/s (16 x 50:
+# 0.17 m/s), 1.16 m in 10 s (16 x 50: 1.59 m). Peak penetration 1.17 mm (16 x 50: 0.06), no dropped rows,
+# 0.924 ms/frame. contact_gap_gate 0.02 keeps contacts more than 2 cm apart out of the rows; one fixed joint, so
+# limits stay off.
+sim = { fps = 60, substeps = 4 }
+solver = { solve_mode = "matrix_free", iterations = 4, articulated_contact_response = "propagation_colored", friction_anchor_beta = 0.0, contact_gap_gate = 0.02 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
+
+[steel_off]
+kind = "steel"
+status = "works"
+# the browser's "Rolling and spinning friction" toggle off: the rest as [steel] (no rolling friction option in this Newton)
+sim = { fps = 60, substeps = 4 }
+solver = { solve_mode = "matrix_free", iterations = 4, articulated_contact_response = "propagation_colored", friction_anchor_beta = 0.0, contact_gap_gate = 0.02 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"

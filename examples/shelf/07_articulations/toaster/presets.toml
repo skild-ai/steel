@@ -1,0 +1,52 @@
+example = "toaster"
+source = "steel-webgpu assets/scenes/toaster (hero_montage export) @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode: 1200 frames, the whole 1193-frame task, latched; the example's check() asserts the outcome.
+args = ["--num-frames", "1200"]
+
+[gallery]
+short = "Insert a slice of bread and press the toaster lever."
+title = "Toaster"
+frame = 420
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 4 substeps x 16 iterations, immediate response: 5.7 ms a frame on an RTX PRO 6000 (the port's colored 4 x 16:
+# 13.4 ms, 9.6 ms once the welded shell stopped colliding with the table). The slice goes into the second slot, the
+# press takes the carriage to -0.088 and the latch holds it, as in a 16 x 32 run (slices within 5 mm); penetration
+# 1.9 mm peak (one frame of the press), 0.12 mm mean. 4 x 8 and 3 substeps keep the task but let the inserted slice
+# end 4-12 mm off and double the mean penetration. The finger pads' torsion rows (device path) and friction anchors
+# hold the pinched slice upright; sleeping on (3% faster than off). Joint limits carry the carriage's and the
+# latch's travel, built within 0.1 of a limit; no joint has a finite velocity limit.
+sim = { fps = 60, substeps = 4 }
+solver = { solve_mode = "matrix_free", iterations = 16, articulated_contact_response = "immediate", enable_joint_limits = true, joint_limit_activation_gap = 0.1, enable_joint_velocity_limits = false, contact_torsion_device = true, friction_anchor_beta = 0.2, enable_sleeping = true, free_body_constraint_max = 8192, articulation_constraint_max = 1024 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

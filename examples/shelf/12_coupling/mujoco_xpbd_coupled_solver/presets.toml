@@ -1,0 +1,81 @@
+example = "mujoco_xpbd_coupled_solver"
+source = "newton/examples/multiphysics/example_mujoco_xpbd_coupled_solver.py @ newton-collab 7565a26b1"
+default = "steel_xpbd"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "2", "--set", "solver.proxy_iterations=1"]  # original: --proxy-iterations 1
+
+[gallery]
+short = "Rigid boxes and a pendulum chain meet an XPBD cloth sheet."
+
+[xpbd]
+status = "works"
+sim = { fps = 60, substeps = 16 }
+solver = { iterations = 40 }
+check = { args = ["--num-frames", "2"] }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "untested"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
+
+[mujoco_xpbd]
+status = "works"
+sim = { fps = 60, substeps = 16 }
+solver = { proxy_iterations = 1, mass_scale = 1.0 }
+entries.mujoco.solver = { use_mujoco_contacts = false, njmax = 300, nconmax = 200 }
+entries.xpbd.solver = { iterations = 40 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[kamino_xpbd]
+status = "works"
+sim = { fps = 60, substeps = 16 }
+solver = { proxy_iterations = 1, mass_scale = 1.0 }
+entries.kamino.solver = { use_collision_detector = false, use_fk_solver = false, dynamics = { preconditioning = true }, padmm = { max_iterations = 120, primal_tolerance = 1.0e-5, dual_tolerance = 1.0e-5, compl_tolerance = 1.0e-5, rho_0 = 0.1, use_acceleration = true, warmstart_mode = "containers" } }
+entries.xpbd.solver = { iterations = 40 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[steel_xpbd]
+status = "works"
+# 12 substeps: the fewest that kept the cloth close to MuJoCo-XPBD's at 16, chosen at XPBD's default contact relaxation
+# (35.2 ms/frame vs MuJoCo's 36.0; 16 substeps cost 43.8). Steel iterations 8 or 4 cost the cloth more than they save.
+sim = { fps = 60, substeps = 12 }
+solver = { proxy_iterations = 1, mass_scale = 1.0 }
+# The chain and boxes pile up on the ground, past the default 32 dense contact rows.
+entries.steel.solver = { solve_mode = "matrix_free", articulation_constraint_max = 256 }
+# soft_contact_relaxation 0.3: at the default 0.9 the box that comes to rest in the cloth starts rolling about its long
+# axis and is thrown out (30 of 70 runs; 16 and 24 substeps did not fix it), likely through the one-substep-lagged proxy
+# feedback, with XPBD adding each cloth contact's correction to the proxy. 0.4 still spun it past 15 rad/s in 2 of 20
+# runs; 0.3 in none of 66. In exchange the landing chain's end link takes cloth 11 mm deep (median of 40 runs, max 37),
+# where the deepest at 0.9 is 0.6 mm and under xpbd 37.
+entries.xpbd.solver = { iterations = 40, soft_contact_relaxation = 0.3 }
+# The 0.2 x 0.4 m box sometimes slides along the cloth's trough and off its open edge onto the ground: in 12 of 100
+# 15 s runs (at 3.2-14.7 s) and 2 of 80 runs of the 10 s check, against none of 40 under xpbd. Substeps, iterations,
+# mass_scale and relaxation move that rate between 0 and 83% with no trend; none of those tried removed it.
+# 10 s at the preset's own settings with a speed bound (test_post_step): at 0.9 the ejection starts 3.2-6.8 s in.
+check = { args = ["--num-frames", "600"] }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"

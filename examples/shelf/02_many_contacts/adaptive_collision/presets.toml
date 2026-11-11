@@ -1,0 +1,48 @@
+example = "adaptive_collision"
+source = "newton/examples/contacts/example_adaptive_collision.py @ newton-collab 7565a26b1"
+default = "xpbd"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "45"]
+
+[gallery]
+short = "A fast capsule fired into a staggered wall of bricks."
+frame = 120
+
+[xpbd]
+status = "works"
+sim = { fps = 60, substeps = 20 }
+solver = { iterations = 10, rigid_contact_relaxation = 0.8, enable_restitution = true }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+sim = { fps = 60, substeps = 20 }
+# the brick wall needs up to 713 propagation rows, past the default of 544 (free_body + articulation capacity): 896
+solver = {solve_mode = "matrix_free", iterations = 12, articulated_contact_response = "propagation_colored", propagation_constraint_max = 896}
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

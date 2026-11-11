@@ -1,0 +1,63 @@
+<!-- Copyright 2026 DeepMind Technologies Limited
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+
+     Modified from google-deepmind/mujoco model/speculative/flipper.xml: MuJoCo 4.0-only attributes
+     (the speculative flag) removed, then compiled with MuJoCo 3.17 and re-emitted
+     as one flat file.
+-->
+<mujoco model="baseball_bat_ccd">
+  <compiler angle="radian"/>
+
+  <option timestep="0.01"/>
+
+  <statistic extent="1.06" center="0.4 -0.1 0.23"/>
+
+  <visual>
+    <global azimuth="118" elevation="-23" realtime="0.2"/>
+    <headlight ambient="0.25 0.25 0.25" specular="0.2 0.2 0.2"/>
+    <scale forcewidth="0.01" contactwidth="0.02" contactheight="0.005"/>
+    <rgba haze="0.12 0.16 0.2 1"/>
+  </visual>
+
+  <asset>
+    <texture type="cube" colorspace="auto" name="ibl" builtin="gradient" rgb1="0.25 0.3 0.45" rgb2="0.55 0.5 0.45" width="32" height="192"/>
+    <texture type="skybox" colorspace="auto" builtin="gradient" rgb1="0.12 0.16 0.28" rgb2="0.5 0.45 0.4" width="32" height="192"/>
+    <texture type="2d" colorspace="auto" name="grid" builtin="checker" rgb1="0.2 0.25 0.3" rgb2="0.3 0.35 0.4" width="512" height="512"/>
+    <material name="grid" texture="grid" texrepeat="2 2" texuniform="true" reflectance="0.1"/>
+  </asset>
+
+  <worldbody>
+    <geom name="ground" size="0 0 0.01" type="plane" material="grid"/>
+    <geom name="bat_post" size="0.02 0.2" pos="0 -0.3 0.2" quat="0 1 0 0" type="cylinder" contype="0" conaffinity="0" rgba="0.45 0.45 0.5 1"/>
+    <light pos="1 -1.6 2.6" dir="-0.303046 0.505076 -0.808122" intensity="800000" range="15" cutoff="35" softness="1" diffuse="0.9 0.85 0.75"/>
+    <light castshadow="false" pos="-1 1.3 2" dir="0.371521 -0.47767 -0.796117" intensity="300000" range="15" cutoff="50" softness="1" diffuse="0.5 0.65 0.8"/>
+    <light intensity="3000" type="image" texture="ibl"/>
+    <body name="pitcher_plunger" pos="0.83 0.05 0.42">
+      <joint name="plunger_slide" type="slide" stiffness="2200" range="0 0.18" springref="0.22" damping="30" axis="-1 0 0" limited="true"/>
+      <geom name="plunger_head" size="0.01 0.04 0.04" type="box" rgba="0.5 0.5 0.55 1" mass="2"/>
+    </body>
+    <body name="ball" pos="0.795 0.05 0.42">
+      <joint type="free"/>
+      <geom name="baseball" size="0.02" solref="0.004 0.5" rgba="0.95 0.95 0.95 1" mass="0.05"/>
+    </body>
+    <body name="bat_body" pos="0 -0.3 0.4" quat="0.843391 0 0 0.5373">
+      <joint name="bat_swing" stiffness="21" springref="1.39626" damping="0.3" axis="0 0 -1"/>
+      <geom name="bat" size="0.006 0.3 0.07" pos="0 0.3 0" type="box" solref="0.004 0.5" rgba="0.9 0.4 0.2 1" mass="0.4"/>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <general name="bat_motor" joint="bat_swing" ctrlrange="-1 1" gear="20"/>
+  </actuator>
+</mujoco>

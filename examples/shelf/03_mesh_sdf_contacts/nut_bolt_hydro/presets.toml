@@ -1,0 +1,60 @@
+example = "nut_bolt_hydro"
+source = "newton/examples/contacts/example_nut_bolt_hydro.py @ newton-collab 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "120", "--world-count", "1"]
+
+[gallery]
+short = "A nut on a bolt with hydroelastic mesh contacts."
+
+[xpbd]
+status = "works"
+sim = { fps = 120, substeps = 4, collide_every = 1 }
+# rigid_contact_relaxation: XPBD contact correction (0.0 = no correction, 1.0 = full correction)
+solver = { iterations = 10, rigid_contact_relaxation = 0.8 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "works"
+sim = { fps = 120, substeps = 4, collide_every = 2 }
+# disable_sensors: the scene defines no sensors, and MuJoCo's tactile sensor kernel
+# mixes max/add reductions, which deterministic mode rejects.
+solver = { use_mujoco_contacts = false, disable_sensors = true, solver = "newton", integrator = "implicitfast", cone = "elliptic", iterations = 15, ls_iterations = 100, impratio = 1.0 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# Hard contact rows on the hydroelastic contact points, 4 substeps (collide every 2) x 2 iterations,
+# immediate response: the fastest setting that threads every nut like MuJoCo (24 mm descent and 2160
+# degrees in 2.75 s, MuJoCo 23.5 mm and 2020) with lower penetration. Steel's experimental compliant
+# rows (contact_compliance) let 5-11 of the 20 nuts slide off their bolts in the first 0.2 s at every
+# substep and iteration count tried; the colored response is 10-20% slower with 20 small worlds.
+sim = { fps = 120, substeps = 4, collide_every = 2 }
+solver = { solve_mode = "matrix_free", friction_anchor_beta = 0.0, enable_restitution = false, iterations = 2, articulation_constraint_max = 32, articulated_contact_response = "immediate" }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "works"
+sim = { fps = 120, substeps = 4, collide_every = 2 }
+solver = { dynamics_solver = "dvi", sparse_dynamics = true, sparse_jacobian = true, dvi = { max_alternating_iterations = 4 } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

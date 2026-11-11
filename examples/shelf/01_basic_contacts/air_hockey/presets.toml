@@ -1,0 +1,51 @@
+example = "air_hockey"
+source = "steel-webgpu assets/scenes/air_hockey (hero_montage export) @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = []
+
+[gallery]
+short = "A robot arm strikes a puck into the far goal."
+title = "Air hockey"
+frame = 420
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 3 substeps x 10 iterations (1.95 ms/frame on an RTX PRO 6000, the port's 4 x 16 4.29): the mallet strikes the puck
+# at frame 139 (2.2 m/s) and it is in the far goal by frame 168 and stays there, as in a 16 x 48 run; penetration
+# peak 1.0-1.6 mm as the puck hits the goal, mean 0.05-0.08 mm. 3 x 8 gives 1.4 mm, 2 substeps 7-8 mm; 4 x 8 (2.39 ms)
+# keeps it to 0.07 mm.
+# The arm's limits (+-2 pi) are never reached and the joints' velocity limits are 1e6 (none), so both row kinds are
+# off; the row capacities fit the scene (peak 26 propagation rows, 15 contacts) instead of the port's 8192/1024/16384.
+sim = { fps = 60, substeps = 3 }
+solver = { solve_mode = "matrix_free", iterations = 10, articulated_contact_response = "propagation_colored", enable_joint_velocity_limits = false, enable_joint_limits = false, enable_sleeping = true, free_body_constraint_max = 64, articulation_constraint_max = 64, propagation_constraint_max = 128 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

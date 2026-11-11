@@ -1,0 +1,65 @@
+example = "basic_mimic_joint"
+source = "newton/examples/basic/example_basic_mimic_joint.py @ newton-collab 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = []
+
+[gallery]
+short = "A lead screw: a prismatic nut joint mimics a revolute screw joint."
+
+[xpbd]
+status = "works"
+sim = { fps = 60, substeps = 4 }
+solver = { iterations = 10 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[vbd]
+status = "works"
+# VBD projects the mimic relationship inside each solver iteration, so
+# this simple mechanism does not benefit from additional substeps.
+sim = { fps = 60, substeps = 1 }
+solver = { iterations = 2, rigid_joint_linear_ke = 1.0e6, rigid_joint_angular_ke = 1.0e6 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[mujoco]
+status = "works"
+sim = { fps = 60, substeps = 4 }
+solver = { iterations = 5, ls_iterations = 10, disable_contacts = true }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[featherstone]
+status = "works"
+sim = { fps = 60, substeps = 4 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[semi_implicit]
+status = "works"
+sim = { fps = 60, substeps = 4 }
+# SemiImplicit treats the relationship as a penalty spring. These
+# gains are tuned for this mechanism's masses and 240 Hz time step.
+solver = { joint_mimic_ke = 5.0e4, joint_mimic_kd = 5.0e2 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 1 substep, immediate response: the mimic row holds the nut on the screw to 1e-7 m (XPBD at 4 substeps: 7e-5 m)
+# at any substep count, and this example steps eagerly, so each extra substep costs ~0.85 ms of launches; iterations
+# do not change the cost or the coupling error. The nut's +-0.6 m limit is never reached (the travel is 0.45 m for
+# any pitch), so enable_joint_limits stays off (on costs 0.04 ms and changes nothing).
+sim = { fps = 60, substeps = 1 }
+solver = { solve_mode = "matrix_free", iterations = 2, articulated_contact_response = "immediate" }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

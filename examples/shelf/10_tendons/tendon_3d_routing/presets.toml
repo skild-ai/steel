@@ -1,0 +1,44 @@
+example = "tendon_3d_routing"
+source = "newton/examples/tendon/example_tendon_3d_routing.py @ newton-collab 7565a26b1"
+default = "xpbd"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "60"]
+
+[gallery]
+short = "A right-angle pulley drive routed over three cylinders."
+
+[xpbd]
+status = "works"
+sim = { fps = 60, substeps = 16 }
+solver = { iterations = 8, joint_linear_relaxation = 0.8 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "unsupported"
+reason = "Steel has no tendons; the example reads XPBD's tendon state"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

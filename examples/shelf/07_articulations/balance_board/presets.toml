@@ -1,0 +1,52 @@
+example = "balance_board"
+source = "steel-webgpu assets/scenes/balance_board (hero_montage export) @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode: 720 frames, the whole task and two still seconds (the beam levels out by frame ~600); the example's check() asserts the outcome.
+args = ["--num-frames", "720"]
+
+[gallery]
+short = "Restore balance by placing the missing counterweight."
+title = "Balance board"
+frame = 420
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 2 substeps x 8 iterations, immediate response, contact warm start (so no sleeping: this Newton's Steel does
+# not combine them): the fastest setting that matches a converged 16 x 32 run with the palm-on-weight grip under
+# 2 mm. The beam tips to -0.276 rad, the arm places the missing weight within 1-7 mm of where the converged run
+# puts it, and the beam settles at +0.024 rad (converged +0.023) by frame 568. With the gripper's finger mimic
+# (cfeff10) 2 x 4 grips 2.8-3.0 mm deep (1.8 mm without the mimic); 2 x 8: 1.6-1.9 mm, 3 x 8: 0.9 mm at 3.6 ms.
+# Without warm start 2 x 4 reaches 5.2 mm. Every setting tried does the task. Velocity limits off: every exported
+# limit is 1e6. Rows: at most 54 used.
+sim = { fps = 60, substeps = 2 }
+solver = { solve_mode = "matrix_free", iterations = 8, articulated_contact_response = "immediate", enable_joint_limits = true, joint_limit_activation_gap = 0.1, enable_joint_velocity_limits = false, contact_warmstart = true, articulation_constraint_max = 128, free_body_constraint_max = 128 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

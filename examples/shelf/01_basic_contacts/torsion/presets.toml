@@ -1,0 +1,63 @@
+example = "torsion"
+source = "steel-webgpu tools/scenes.py torsion() @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode: 300 frames, 5 s, the grey bar's first swings; the example's check() asserts the outcome.
+args = ["--num-frames", "300"]
+
+[gallery]
+short = "Fingertips pinch a bar off-centre; the gold pair holds it level."
+title = "Pinch grip"
+
+[xpbd]
+status = "unsupported"
+reason = "the fingertips use Steel's steel:min_torsional_patch_radius shape attribute"
+
+[vbd]
+status = "unsupported"
+reason = "the fingertips use Steel's steel:min_torsional_patch_radius shape attribute"
+
+[mujoco]
+status = "unsupported"
+reason = "the fingertips use Steel's steel:min_torsional_patch_radius shape attribute"
+
+[featherstone]
+status = "unsupported"
+reason = "the fingertips use Steel's steel:min_torsional_patch_radius shape attribute"
+
+[semi_implicit]
+status = "unsupported"
+reason = "the fingertips use Steel's steel:min_torsional_patch_radius shape attribute"
+
+[feather_pgs]
+status = "unsupported"
+reason = "the fingertips use Steel's steel:min_torsional_patch_radius shape attribute"
+
+[steel]
+status = "works"
+# articulation_constraint_max 64: without the gap gate below, the fingers' contact, friction and torsion rows need
+# 42 dense rows; at the default 32 Steel dropped 11 every step and the gold bar swung down like the grey one. With
+# the 5 mm gate the gold bar also holds level at 16 and 32 rows (newton f6fc82a8b); 64 stays as headroom.
+# 4 substeps x 8 iterations: the gold bar stays level, the grey one swings and loses energy as at 16 x 50
+# (its centre returns to 78, 76, 74 mm above the bottom in the first seconds; 16 x 50: 78, 77, 76). 2 substeps
+# damp the swing (74, 69, 65) and 1 x 8 or 2 x 4 let the gold bar droop 75 to 80 deg; the squeeze sinks the
+# tips 0.3 mm into the bars (4 x 12: 0.07, 2 x 8: 1.6, 16 x 50: 0).
+# contact_gap_gate 0.005: only touching contacts get rows, which cuts the torsion grouping cost (4 x 12: 6.2 -> 3.8
+# ms). Joint limits off (3.8 -> 3.2 ms): the finger drives (target 4 mm into the bar) never reach the limits.
+# contact_torsion_device: the colored response carries the fingertips' torsion rows only on the device path.
+sim = { fps = 60, substeps = 4 }
+solver = { solve_mode = "matrix_free", iterations = 8, articulated_contact_response = "propagation_colored", contact_torsion_device = true, articulation_constraint_max = 64, contact_gap_gate = 0.005 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "unsupported"
+reason = "the fingertips use Steel's steel:min_torsional_patch_radius shape attribute"
+
+[implicit_mpm]
+status = "unsupported"
+reason = "the fingertips use Steel's steel:min_torsional_patch_radius shape attribute"
+
+[style3d]
+status = "unsupported"
+reason = "the fingertips use Steel's steel:min_torsional_patch_radius shape attribute"

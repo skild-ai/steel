@@ -1,0 +1,53 @@
+example = "pyramid_drop"
+source = "pyramid_steel.py, the Steel side of a pyramid-drop comparison against MuJoCo 4.0 (newton-collab f6fc82a8)"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode: 4 s, past the release at 1.5 s and the settling.
+# The 100 kg ball comes to rest on the apex in unstable balance and rolls off between about 4.3 and 6.8 s,
+# as in the standalone script, knocking blocks down the steps; the check ends before that.
+args = ["--num-frames", "240"]
+
+[gallery]
+short = "Balls of 1, 10, 100 and 1000 kg dropped onto four 285-block pyramids; only the heaviest topples its pyramid."
+frame = 150
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# The settings of the standalone comparison. A world needs up to about 13,500 propagation rows (the standing
+# pyramid's contacts) and the four worlds together up to about 25,300 contacts; both capacities leave about 30%
+# headroom. Free-body rows hold only velocity-limit rows under the propagation response, so the default fits.
+# 64 iterations hold the 100 kg ball's sink into the apex block to about 17 mm (about 68 mm at 12).
+# The 1 cm gap is one substep of travel at the ball's impact speed.
+sim = { fps = 60, substeps = 4 }
+model = { rigid_gap = 0.01 }
+collision = { rigid_contact_max = 32768 }
+solver = { solve_mode = "colored", articulated_contact_response = "propagation", propagation_color_order = "longest_first", iterations = 64, enable_restitution = false, enable_sleeping = true, propagation_constraint_max = 17408 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

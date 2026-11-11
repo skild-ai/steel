@@ -1,0 +1,79 @@
+<!-- Copyright 2026 DeepMind Technologies Limited
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+
+     Modified from google-deepmind/mujoco model/speculative/chain.xml: MuJoCo 4.0-only attributes
+     (the speculative flag) removed, then compiled with MuJoCo 3.17 and re-emitted
+     as one flat file.
+-->
+<mujoco model="interlocking_chain_ccd">
+  <compiler angle="radian"/>
+
+  <option timestep="0.006"/>
+
+  <statistic extent="1.44" center="0 0 1.25"/>
+
+  <visual>
+    <global azimuth="135" elevation="-14" realtime="0.5"/>
+    <headlight ambient="0.25 0.25 0.25" specular="0.2 0.2 0.2"/>
+    <rgba haze="0.12 0.16 0.2 1"/>
+  </visual>
+
+  <default>
+    <geom size="0.006 0 0" type="capsule" friction="0.3"/>
+  </default>
+
+  <asset>
+    <texture type="cube" colorspace="auto" name="ibl" builtin="gradient" rgb1="0.25 0.3 0.45" rgb2="0.55 0.5 0.45" width="32" height="192"/>
+    <texture type="skybox" colorspace="auto" builtin="gradient" rgb1="0.12 0.16 0.28" rgb2="0.5 0.45 0.4" width="32" height="192"/>
+    <texture type="2d" colorspace="auto" name="floor" builtin="checker" rgb1="0.1 0.2 0.3" rgb2="0.2 0.3 0.4" width="512" height="512"/>
+    <material name="ground" texture="floor" texrepeat="2 2" texuniform="true" reflectance="0.08"/>
+  </asset>
+
+  <worldbody>
+    <geom name="ground" size="0 0 0.01" type="plane" material="ground"/>
+    <geom name="catch_bar" size="0.006 0.25" pos="0 0 1.88" quat="0.707107 0.707107 0 0" rgba="0.9 0.25 0.2 1"/>
+    <light pos="1.2 -2 3.4" dir="-0.303046 0.505076 -0.808122" intensity="1000000" range="20" cutoff="35" softness="1" diffuse="0.9 0.85 0.75"/>
+    <light castshadow="false" pos="-1 1.6 2.4" dir="0.371521 -0.47767 -0.796117" intensity="350000" range="20" cutoff="50" softness="1" diffuse="0.5 0.65 0.8"/>
+    <light intensity="3000" type="image" texture="ibl"/>
+    <body name="link1" pos="0 0 1.8">
+      <joint type="free"/>
+      <geom name="l1_top" size="0.006 0.06" pos="0 0 0.16" quat="0.707107 0 -0.707107 0" rgba="0.2 0.7 0.95 1"/>
+      <geom name="l1_bottom" size="0.006 0.06" pos="0 0 -0.16" quat="0.707107 0 -0.707107 0" rgba="0.2 0.7 0.95 1"/>
+      <geom name="l1_left" size="0.006 0.16" pos="-0.06 0 0" quat="0 1 0 0" rgba="0.2 0.7 0.95 1"/>
+      <geom name="l1_right" size="0.006 0.16" pos="0.06 0 0" quat="0 1 0 0" rgba="0.2 0.7 0.95 1"/>
+    </body>
+    <body name="link2" pos="0 0 1.62">
+      <joint type="free"/>
+      <geom name="l2_top" size="0.006 0.06" pos="0 0 0.16" quat="0.707107 0.707107 0 0" rgba="0.95 0.75 0.2 1"/>
+      <geom name="l2_bottom" size="0.006 0.06" pos="0 0 -0.16" quat="0.707107 0.707107 0 0" rgba="0.95 0.75 0.2 1"/>
+      <geom name="l2_left" size="0.006 0.16" pos="0 -0.06 0" quat="0 1 0 0" rgba="0.95 0.75 0.2 1"/>
+      <geom name="l2_right" size="0.006 0.16" pos="0 0.06 0" quat="0 1 0 0" rgba="0.95 0.75 0.2 1"/>
+    </body>
+    <body name="link3" pos="0 0 1.44">
+      <joint type="free"/>
+      <geom name="l3_top" size="0.006 0.06" pos="0 0 0.16" quat="0.707107 0 -0.707107 0" rgba="0.3 0.85 0.45 1"/>
+      <geom name="l3_bottom" size="0.006 0.06" pos="0 0 -0.16" quat="0.707107 0 -0.707107 0" rgba="0.3 0.85 0.45 1"/>
+      <geom name="l3_left" size="0.006 0.16" pos="-0.06 0 0" quat="0 1 0 0" rgba="0.3 0.85 0.45 1"/>
+      <geom name="l3_right" size="0.006 0.16" pos="0.06 0 0" quat="0 1 0 0" rgba="0.3 0.85 0.45 1"/>
+    </body>
+    <body name="link4" pos="0.015 0 1.26">
+      <joint type="free"/>
+      <geom name="l4_top" size="0.006 0.06" pos="0 0 0.16" quat="0.707107 0.707107 0 0" rgba="0.8 0.4 0.95 1"/>
+      <geom name="l4_bottom" size="0.006 0.06" pos="0 0 -0.16" quat="0.707107 0.707107 0 0" rgba="0.8 0.4 0.95 1"/>
+      <geom name="l4_left" size="0.006 0.16" pos="0 -0.06 0" quat="0 1 0 0" rgba="0.8 0.4 0.95 1"/>
+      <geom name="l4_right" size="0.006 0.16" pos="0 0.06 0" quat="0 1 0 0" rgba="0.8 0.4 0.95 1"/>
+      <geom name="bob" size="0.02" pos="0 0 -0.2" type="sphere" rgba="0.8 0.4 0.95 1"/>
+    </body>
+  </worldbody>
+</mujoco>

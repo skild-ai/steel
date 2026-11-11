@@ -1,0 +1,51 @@
+example = "basic_pendulum"
+source = "newton/examples/basic/example_basic_pendulum.py @ newton-collab 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = []
+
+[gallery]
+short = "A double pendulum built with the ModelBuilder."
+
+[xpbd]
+status = "works"
+sim = { fps = 100, substeps = 10 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 2 substeps, immediate response: fastest even substep count (odd counts freeze this example's graph), and
+# its energy drift (135 J over 330 frames) is a third of XPBD's at 10 substeps. The pendulum has no contact or
+# limit rows, so iterations cost nothing; propagation_colored adds ~30 kernel launches per step for nothing here.
+sim = { fps = 100, substeps = 2 }
+solver = { solve_mode = "matrix_free", iterations = 4, articulated_contact_response = "immediate" }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "works"
+sim = { fps = 100, substeps = 2 }
+solver = { dynamics_solver = "dvi", sparse_dynamics = true, sparse_jacobian = true, dvi = { bilateral_solver_type = "LLTBRCM", max_alternating_iterations = 8, bilateral_solve_interval = 8 } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

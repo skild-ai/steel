@@ -1,0 +1,53 @@
+example = "robot_anymal_c_walk"
+source = "newton/examples/robot/example_robot_anymal_c_walk.py @ newton-collab 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "500"]
+
+[gallery]
+short = "ANYmal C walks with a PhysX-trained policy run through ONNX."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "works"
+sim = { fps = 50, substeps = 4 }
+solver = { solver = "newton", ls_iterations = 50, njmax = 50, nconmax = 100 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 2 substeps x 8 iterations, immediate response, point friction: fastest setting with peak and mean penetration
+# below MuJoCo's that walks as far (9.71 vs 9.77 m in 10 s). 1 substep walks 0.4 m less and fails the distance
+# check at 12 iterations; 4 or fewer iterations sink the feet (mean 1.6-5.8 mm). Patch friction gives the same
+# gait for 25% more time. Every Steel setting drifts 0.7-0.9 m sideways over the walk where MuJoCo goes straight;
+# joint limits, friction combine and friction model do not change it. articulation_constraint_max: the immediate
+# response keeps contact rows per world in this family; the robot uses up to 72 (32 drops rows). Joint limits off:
+# never reached (identical gait with them on, 15% slower).
+sim = { fps = 50, substeps = 2 }
+solver = { solve_mode = "matrix_free", iterations = 8, articulated_contact_response = "immediate", articulation_constraint_max = 128, enable_joint_limits = false, friction_anchor_beta = 0.0 }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

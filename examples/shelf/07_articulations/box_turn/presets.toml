@@ -1,0 +1,55 @@
+example = "box_turn"
+source = "steel-webgpu assets/scenes/box_turn (hero_montage export) @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode: 800 frames, the whole 781-frame task; the example's check() asserts the outcome.
+args = ["--num-frames", "800"]
+
+[gallery]
+short = "Two arms pinch a box between their fingertips, flip it and turn it."
+title = "Box turn"
+frame = 420
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 4 substeps x 16 iterations, immediate response: the fastest setting where the fingertip pinch stays near 3 mm
+# deep (as at the browser's settings); the box is lifted to 0.31 m, flipped and turned to within 2 deg of the goal
+# and set down within 2 cm, as in a converged 16 x 32 run. 4 x 8: 5.5 mm, 2 x 16: 7.4 mm (9.5 mm on newton
+# f6fc82a8b), 8 x 16: 1.0 mm at 1.9x the cost. The task itself is robust: on f6fc82a8b even 1 x 4 flips and turns
+# the box within 1.3 deg but pinches it 20 mm deep, so the pinch is what these settings buy (the check bounds it at
+# 5 mm). Immediate response is ~2x faster than propagation_colored here. Contact warm start does not help the
+# pinch; on the older newton 7565a26b1 it left the box 90 deg off at 2 x 16, on f6fc82a8b that setting still
+# turns it within 3 deg. Velocity limits off: every exported limit is 1e6. Joint
+# limits on with a 0.1 activation gap; the path never reaches them. Rows: at most 64 used. With the finger
+# mimic (cfeff10) the pinch is 3.0-4.3 mm deep (8 x 8: 2.6 mm at 3.6 ms; 8 x 16: 1.1 mm at 4.3 ms), same task result.
+sim = { fps = 60, substeps = 4 }
+solver = { solve_mode = "matrix_free", iterations = 16, articulated_contact_response = "immediate", enable_joint_limits = true, joint_limit_activation_gap = 0.1, enable_joint_velocity_limits = false, articulation_constraint_max = 128, free_body_constraint_max = 128 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

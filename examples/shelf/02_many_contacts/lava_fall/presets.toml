@@ -1,0 +1,51 @@
+example = "lava_fall"
+source = "steel-webgpu assets/scenes/lava_fall (hero_montage export) @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = []
+
+[gallery]
+short = "A toy robot falls backwards into a pot of 200 flame pieces."
+title = "Lava fall"
+frame = 120
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 8 substeps x 12 iterations with contact warm start: the 0.93 kg figure lands on the 6 g flames and sinks as in a
+# 16 x 32 run (figure 0.36 m high 2 s in, converged 0.33-0.36), 13.8/0.034 mm peak/mean penetration at 29.2 ms.
+# The port's 4 x 16 cold start (19.5 ms) let the figure push flames 50-70 mm through each other for ~0.3 s on
+# landing, so it sank 8 cm too deep, and the resting pile kept 10 mm overlaps (68.8/0.36 mm). Warm start fixes
+# the resting pile (4 x 16: 0.85 mm frame max after landing) but not the landing, which needs 8 substeps
+# (6 x 12: 52 mm, 22.4 ms). The browser's momentum toggle has no counterpart in this Newton's Steel.
+sim = { fps = 60, substeps = 8 }
+solver = { solve_mode = "matrix_free", iterations = 12, articulated_contact_response = "propagation_colored", enable_joint_velocity_limits = true, enable_joint_limits = true, contact_warmstart = true, friction_anchor_beta = 0.0, free_body_constraint_max = 8192, articulation_constraint_max = 1024, propagation_constraint_max = 16384 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

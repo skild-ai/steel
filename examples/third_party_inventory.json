@@ -1,0 +1,1950 @@
+{
+  "review_date": "2026-11-11",
+  "scope": "Steel Shelf tracked source, documentation media, built wheel and sdist, and the runtime asset references at this revision. Dependencies and user-supplied optional files are not vendored.",
+  "package_license_expression": "Apache-2.0 AND BSD-3-Clause",
+  "newton_revision": "f6fc82a8b06d036e1e6d02a61d77a2d300476e8d",
+  "newton_assets_default_revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+  "bundled_scenes": [
+    {
+      "path": "shelf/01_basic_contacts/air_hockey/scene.json",
+      "sha256": "72ff38ffd98b7710c261eb7d545fba8a3d43fd10579580854645f79fb187125f",
+      "robot": "ur5",
+      "model": "UR5e",
+      "license": "Apache-2.0 AND BSD-3-Clause",
+      "notices": [
+        "licenses/UR5e-BSD-3-Clause.txt",
+        "licenses/Franka-complete-LICENSE.txt"
+      ],
+      "direct_source": "steel-webgpu assets/scenes",
+      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
+      "model_evidence": {
+        "xml_source": "https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/universal_robots_ur5e/ur5e.xml",
+        "mass_prefix": [
+          4.0,
+          3.7,
+          8.393,
+          2.275,
+          1.219,
+          1.219,
+          0.1889
+        ],
+        "comparison": "All model link masses match the exported body mass prefix within 1e-6; scene metadata independently identifies the same robot family."
+      },
+      "binary_payload": {
+        "path": "shelf/01_basic_contacts/air_hockey/scene.bin",
+        "sha256": "a6fcc49019cad030267bfd3f878f6c061b2d4451b624d7a9000103b673a0ba19",
+        "bytes": 56472,
+        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
+        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_path": "assets/scenes/air_hockey/scene.bin"
+      },
+      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_path": "assets/scenes/air_hockey/scene.json",
+      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+    },
+    {
+      "path": "shelf/01_basic_contacts/beer_pong/scene.json",
+      "sha256": "fb4aa2f8d649ca49f18545e945447823cd57302c97c3cc48631eac5d051ddb58",
+      "robot": "franka",
+      "model": "Franka",
+      "license": "Apache-2.0 AND BSD-3-Clause",
+      "notices": [
+        "licenses/Franka-complete-LICENSE.txt"
+      ],
+      "direct_source": "steel-webgpu assets/scenes",
+      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
+      "binary_payload": {
+        "path": "shelf/01_basic_contacts/beer_pong/scene.bin",
+        "sha256": "753f50c7b1d56ef498ef45e463e88c00287d9344e1536930df45f631380d06dd",
+        "bytes": 217536,
+        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
+        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_path": "assets/scenes/beer_pong/scene.bin"
+      },
+      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_path": "assets/scenes/beer_pong/scene.json",
+      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+    },
+    {
+      "path": "shelf/01_basic_contacts/spinning_top/scene.json",
+      "sha256": "dd04a40febf346ea71fe61b1c001f1b48290d41c61456fabcef2bed2545f58f6",
+      "robot": "ur10+rotary_chuck",
+      "model": "UR10e",
+      "license": "Apache-2.0 AND BSD-3-Clause",
+      "notices": [
+        "licenses/UR10e-BSD-3-Clause.txt",
+        "licenses/Franka-complete-LICENSE.txt"
+      ],
+      "direct_source": "steel-webgpu assets/scenes",
+      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
+      "model_evidence": {
+        "xml_source": "https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/universal_robots_ur10e/ur10e.xml",
+        "mass_prefix": [
+          4.0,
+          7.778,
+          12.93,
+          3.87,
+          1.96,
+          1.96,
+          0.202
+        ],
+        "comparison": "All model link masses match the exported body mass prefix within 1e-6; scene metadata independently identifies the same robot family."
+      },
+      "binary_payload": {
+        "path": "shelf/01_basic_contacts/spinning_top/scene.bin",
+        "sha256": "48ab3a525ce36f255d3e6ea99943dd6db76dda0d498b3abdd004523e3a2ee688",
+        "bytes": 86732,
+        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
+        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_path": "assets/scenes/spinning_top/scene.bin"
+      },
+      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_path": "assets/scenes/spinning_top/scene.json",
+      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+    },
+    {
+      "path": "shelf/02_many_contacts/brick_pour/scene.json",
+      "sha256": "f7a662864cc8369eb4fbf39f6a5f54a840ead417261913532bf2ee68b5201f8f",
+      "robot": "ur10",
+      "model": "UR10e",
+      "license": "Apache-2.0 AND BSD-3-Clause",
+      "notices": [
+        "licenses/UR10e-BSD-3-Clause.txt",
+        "licenses/Franka-complete-LICENSE.txt"
+      ],
+      "direct_source": "steel-webgpu assets/scenes",
+      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
+      "model_evidence": {
+        "xml_source": "https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/universal_robots_ur10e/ur10e.xml",
+        "mass_prefix": [
+          4.0,
+          7.778,
+          12.93,
+          3.87,
+          1.96,
+          1.96,
+          0.202
+        ],
+        "comparison": "All model link masses match the exported body mass prefix within 1e-6; scene metadata independently identifies the same robot family."
+      },
+      "binary_payload": {
+        "path": "shelf/02_many_contacts/brick_pour/scene.bin",
+        "sha256": "1eda60fcf2befdab4316b52dfeda81223dad749fdbb58928fd5b58c52555e529",
+        "bytes": 917992,
+        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
+        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_path": "assets/scenes/brick_pour/scene.bin"
+      },
+      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_path": "assets/scenes/brick_pour/scene.json",
+      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+    },
+    {
+      "path": "shelf/02_many_contacts/cereal/scene.json",
+      "sha256": "3955f649d96cba7f545c1f49161219f0c17e697cb413b216ae82ece853af595e",
+      "robot": "ur10",
+      "model": "UR10e",
+      "license": "Apache-2.0 AND BSD-3-Clause",
+      "notices": [
+        "licenses/UR10e-BSD-3-Clause.txt",
+        "licenses/Franka-complete-LICENSE.txt"
+      ],
+      "direct_source": "steel-webgpu assets/scenes",
+      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
+      "model_evidence": {
+        "xml_source": "https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/universal_robots_ur10e/ur10e.xml",
+        "mass_prefix": [
+          4.0,
+          7.778,
+          12.93,
+          3.87,
+          1.96,
+          1.96,
+          0.202
+        ],
+        "comparison": "All model link masses match the exported body mass prefix within 1e-6; scene metadata independently identifies the same robot family."
+      },
+      "binary_payload": {
+        "path": "shelf/02_many_contacts/cereal/scene.bin",
+        "sha256": "000143a1d50a310222cdd17ae3211ce97738ae8e840c407794428913accea38b",
+        "bytes": 259908,
+        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
+        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_path": "assets/scenes/cereal/scene.bin"
+      },
+      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_path": "assets/scenes/cereal/scene.json",
+      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+    },
+    {
+      "path": "shelf/02_many_contacts/jenga/scene.json",
+      "sha256": "b5eec37fa1ec1c65aa5bd6a808146e4843d8c0e83e042646950cf1cf820458ed",
+      "robot": "franka",
+      "model": "Franka",
+      "license": "Apache-2.0 AND BSD-3-Clause",
+      "notices": [
+        "licenses/Franka-complete-LICENSE.txt"
+      ],
+      "direct_source": "steel-webgpu assets/scenes",
+      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
+      "binary_payload": {
+        "path": "shelf/02_many_contacts/jenga/scene.bin",
+        "sha256": "9187e9fb01ccc2e3c8bb65c129b6fc30b4d568bbf94d3defd0abfcb62225e45b",
+        "bytes": 75960,
+        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
+        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_path": "assets/scenes/jenga/scene.bin"
+      },
+      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_path": "assets/scenes/jenga/scene.json",
+      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+    },
+    {
+      "path": "shelf/02_many_contacts/lava_fall/scene.json",
+      "sha256": "4e0f88b62a363aa2eb790a9b87e194ad6ce35045eb9a8047fbe24112481dac98",
+      "robot": "none",
+      "model": "procedural geometry",
+      "license": "Apache-2.0",
+      "notices": [],
+      "direct_source": "steel-webgpu assets/scenes",
+      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
+      "binary_payload": {
+        "path": "shelf/02_many_contacts/lava_fall/scene.bin",
+        "sha256": "4a942d32e74d7d57d944cb7341d422a7137b39b24eb66a0f0b57efde22315784",
+        "bytes": 228056,
+        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
+        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_path": "assets/scenes/lava_fall/scene.bin"
+      },
+      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_path": "assets/scenes/lava_fall/scene.json",
+      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+    },
+    {
+      "path": "shelf/03_mesh_sdf_contacts/viaduct_kit/scene.json",
+      "sha256": "12ed3dfcd545bcfda04491f4382f49dc2f386702b4169dd322b6de88b78a0964",
+      "robot": "kinova",
+      "model": "Kinova Gen3",
+      "license": "Apache-2.0 AND BSD-3-Clause",
+      "notices": [
+        "licenses/Kinova-Gen3-BSD-3-Clause.txt",
+        "licenses/Franka-complete-LICENSE.txt"
+      ],
+      "direct_source": "steel-webgpu assets/scenes",
+      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
+      "model_evidence": {
+        "xml_source": "https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/kinova_gen3/gen3.xml",
+        "mass_prefix": [
+          1.697,
+          1.3773,
+          1.1636,
+          1.1636,
+          0.9302,
+          0.6781,
+          0.6781,
+          0.5
+        ],
+        "comparison": "All model link masses match the exported body mass prefix within 1e-6; scene metadata independently identifies the same robot family."
+      },
+      "binary_payload": {
+        "path": "shelf/03_mesh_sdf_contacts/viaduct_kit/scene.bin",
+        "sha256": "1fe039d140d12ec3068e6a6e685e0f8825bd834ac293b1386e555b5804cbc88b",
+        "bytes": 323432,
+        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
+        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_path": "assets/scenes/viaduct_kit/scene.bin"
+      },
+      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_path": "assets/scenes/viaduct_kit/scene.json",
+      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+    },
+    {
+      "path": "shelf/07_articulations/balance_board/scene.json",
+      "sha256": "c6a15e5c8a3bbe7fd1181f15f804a9b8e255362b939db0d38604f79299fb1ec8",
+      "robot": "franka",
+      "model": "Franka",
+      "license": "Apache-2.0 AND BSD-3-Clause",
+      "notices": [
+        "licenses/Franka-complete-LICENSE.txt"
+      ],
+      "direct_source": "steel-webgpu assets/scenes",
+      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
+      "binary_payload": {
+        "path": "shelf/07_articulations/balance_board/scene.bin",
+        "sha256": "ac9b28a5c03fbd70f6251a71f8071b6b5e6c4bcead7429b0db78865db1e8b64f",
+        "bytes": 145232,
+        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
+        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_path": "assets/scenes/balance_board/scene.bin"
+      },
+      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_path": "assets/scenes/balance_board/scene.json",
+      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+    },
+    {
+      "path": "shelf/07_articulations/box_turn/scene.json",
+      "sha256": "86090dc07e0b92a26401627d6921f2a68d42027067eff82dcdc53b53b99759d4",
+      "robot": "ur10+ur10",
+      "model": "UR10e",
+      "license": "Apache-2.0 AND BSD-3-Clause",
+      "notices": [
+        "licenses/UR10e-BSD-3-Clause.txt",
+        "licenses/Franka-complete-LICENSE.txt"
+      ],
+      "direct_source": "steel-webgpu assets/scenes",
+      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
+      "model_evidence": {
+        "xml_source": "https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/universal_robots_ur10e/ur10e.xml",
+        "mass_prefix": [
+          4.0,
+          7.778,
+          12.93,
+          3.87,
+          1.96,
+          1.96,
+          0.202
+        ],
+        "comparison": "All model link masses match the exported body mass prefix within 1e-6; scene metadata independently identifies the same robot family."
+      },
+      "binary_payload": {
+        "path": "shelf/07_articulations/box_turn/scene.bin",
+        "sha256": "080e7f9bdadb69b68f224d9b15110be095c62cc279a1280c224f393025fe9e03",
+        "bytes": 96248,
+        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
+        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_path": "assets/scenes/box_turn/scene.bin"
+      },
+      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_path": "assets/scenes/box_turn/scene.json",
+      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
+      "original_export_sha256": "55d1fe8de97f295128770d2b86911e08dea43a3248fa6ab771c026d8cc35fa9d",
+      "adaptation": {
+        "commit": "0cfd22d13e2c75cddae37b335140fb6c8bf1f62f",
+        "change": "Collision filter pairs only; robot bodies, model data and scene.bin unchanged."
+      }
+    },
+    {
+      "path": "shelf/07_articulations/drawer_fork/scene.json",
+      "sha256": "44e33132b0510343d3b1cba0535ea67d1050130eb7c563e05f9dd901da5d5595",
+      "robot": "franka",
+      "model": "Franka",
+      "license": "Apache-2.0 AND BSD-3-Clause",
+      "notices": [
+        "licenses/Franka-complete-LICENSE.txt"
+      ],
+      "direct_source": "steel-webgpu assets/scenes",
+      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
+      "binary_payload": {
+        "path": "shelf/07_articulations/drawer_fork/scene.bin",
+        "sha256": "372553e3e5651ec7da8464d2a09a1d67e6bf58646a0bc93da098b50dd17c4c0a",
+        "bytes": 563120,
+        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
+        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_path": "assets/scenes/drawer_fork/scene.bin"
+      },
+      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_path": "assets/scenes/drawer_fork/scene.json",
+      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+    },
+    {
+      "path": "shelf/07_articulations/toaster/scene.json",
+      "sha256": "1b6f9a4cb9fcc4d51fbe725e7aaedc3ec5513581813119ae127e27ca4693bfc8",
+      "robot": "ur10",
+      "model": "UR10e",
+      "license": "Apache-2.0 AND BSD-3-Clause",
+      "notices": [
+        "licenses/UR10e-BSD-3-Clause.txt",
+        "licenses/Franka-complete-LICENSE.txt"
+      ],
+      "direct_source": "steel-webgpu assets/scenes",
+      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
+      "model_evidence": {
+        "xml_source": "https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/universal_robots_ur10e/ur10e.xml",
+        "mass_prefix": [
+          4.0,
+          7.778,
+          12.93,
+          3.87,
+          1.96,
+          1.96,
+          0.202
+        ],
+        "comparison": "All model link masses match the exported body mass prefix within 1e-6; scene metadata independently identifies the same robot family."
+      },
+      "binary_payload": {
+        "path": "shelf/07_articulations/toaster/scene.bin",
+        "sha256": "4b7f837650811a9153bf31cb9e0897491cb3c3a271f0dc4a804d530ed6a5f0b3",
+        "bytes": 423444,
+        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
+        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_path": "assets/scenes/toaster/scene.bin"
+      },
+      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_path": "assets/scenes/toaster/scene.json",
+      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
+      "original_export_sha256": "467191554011b7d3f6770d8680c27a1731372ac0b8431eaa06ece771b0b3234b",
+      "adaptation": {
+        "commit": "0cfd22d13e2c75cddae37b335140fb6c8bf1f62f",
+        "change": "Collision filter pairs only; robot bodies, model data and scene.bin unchanged."
+      }
+    },
+    {
+      "path": "shelf/07_articulations/toy_train/scene.json",
+      "sha256": "b196f0143aa0caa39f626a9ea6d1541dc5e8265f414c60a177005b802cbe725c",
+      "robot": "ur10",
+      "model": "UR10e",
+      "license": "Apache-2.0 AND BSD-3-Clause",
+      "notices": [
+        "licenses/UR10e-BSD-3-Clause.txt",
+        "licenses/Franka-complete-LICENSE.txt"
+      ],
+      "direct_source": "steel-webgpu assets/scenes",
+      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
+      "model_evidence": {
+        "xml_source": "https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/universal_robots_ur10e/ur10e.xml",
+        "mass_prefix": [
+          4.0,
+          7.778,
+          12.93,
+          3.87,
+          1.96,
+          1.96,
+          0.202
+        ],
+        "comparison": "All model link masses match the exported body mass prefix within 1e-6; scene metadata independently identifies the same robot family."
+      },
+      "binary_payload": {
+        "path": "shelf/07_articulations/toy_train/scene.bin",
+        "sha256": "ee1eb4f5b75906e194f52f5dcbc81b24bdf9b1bb22e1cdde1d2c09a260648fd7",
+        "bytes": 138140,
+        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
+        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_path": "assets/scenes/toy_train/scene.bin"
+      },
+      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_path": "assets/scenes/toy_train/scene.json",
+      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+    }
+  ],
+  "runtime_assets": [
+    {
+      "asset": "anybotics_anymal_c/rl_policies",
+      "license": "Apache-2.0",
+      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/anybotics_anymal_c/rl_policies/LICENSE",
+      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "notice": "licenses/runtime-assets/anybotics_anymal_c--rl_policies.txt",
+      "notice_sha256": "59899c6091b540582ed617e8eeaac4919dc985ccfc35459ee9752b699be5205b",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "anybotics_anymal_c",
+      "license": "BSD-3-Clause",
+      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/anybotics_anymal_c/LICENSE",
+      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "notice": "licenses/runtime-assets/anybotics_anymal_c.txt",
+      "notice_sha256": "cef384faae108293b03b5e16a00bc3db8212d44575f69df6296438a3f901700b",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "anybotics_anymal_d",
+      "license": "BSD-3-Clause",
+      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/anybotics_anymal_d/LICENSE",
+      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "notice": "licenses/runtime-assets/anybotics_anymal_d.txt",
+      "notice_sha256": "03ac7cbf98d56b4a3d51866d7d3607ec7d476e22e34f6993eca47b7605707ec5",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "asroballet/rl_policies",
+      "license": "Apache-2.0",
+      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/asroballet/rl_policies/LICENSE",
+      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "notice": "licenses/runtime-assets/asroballet--rl_policies.txt",
+      "notice_sha256": "2191d05c6ee7c145480916b745bd020484adb61653be943c43cff10bc22927a1",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "asroballet",
+      "license": "MIT",
+      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/asroballet/LICENSE",
+      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "notice": "licenses/runtime-assets/asroballet.txt",
+      "notice_sha256": "3377cbc7be45fafafeebeb1b60db66bbdfee433dc5fe1e8d9c715f48157ab695",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "disneyresearch/dr_legs",
+      "license": "LicenseRef-Disney-Research",
+      "source": "https://github.com/newton-physics/newton-assets/blob/261cd1f429619d8ef4f546bd788ab9dea906b5e1/disneyresearch/dr_legs/LICENSE",
+      "revision": "261cd1f429619d8ef4f546bd788ab9dea906b5e1",
+      "notice": "licenses/runtime-assets/disneyresearch--dr_legs.txt",
+      "notice_sha256": "57ffc5bf65dbfebd1a97f4fa35ea990f452c0afc96ba624e23276ce42b8d5c88",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "disneyresearch/dr_testmech",
+      "license": "LicenseRef-Disney-Research",
+      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/disneyresearch/dr_testmech/LICENSE",
+      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "notice": "licenses/runtime-assets/disneyresearch--dr_testmech.txt",
+      "notice_sha256": "57ffc5bf65dbfebd1a97f4fa35ea990f452c0afc96ba624e23276ce42b8d5c88",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "franka_emika_panda",
+      "license": "Apache-2.0 AND BSD-3-Clause",
+      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/franka_emika_panda/LICENSE",
+      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "notice": "licenses/runtime-assets/franka_emika_panda.txt",
+      "notice_sha256": "4b25434e6ec2012e28a484f1d7924a0fd1a8bf232c2be2d50d584d299d04d6d6",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "manipulation_objects/cup",
+      "license": "Apache-2.0",
+      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/manipulation_objects/cup/LICENSE",
+      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "notice": "licenses/runtime-assets/manipulation_objects--cup.txt",
+      "notice_sha256": "59899c6091b540582ed617e8eeaac4919dc985ccfc35459ee9752b699be5205b",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "manipulation_objects/pad",
+      "license": "Apache-2.0",
+      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/manipulation_objects/pad/LICENSE",
+      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "notice": "licenses/runtime-assets/manipulation_objects--pad.txt",
+      "notice_sha256": "59899c6091b540582ed617e8eeaac4919dc985ccfc35459ee9752b699be5205b",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "manipulation_objects/rubber_duck",
+      "license": "Apache-2.0",
+      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/manipulation_objects/rubber_duck/LICENSE",
+      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "notice": "licenses/runtime-assets/manipulation_objects--rubber_duck.txt",
+      "notice_sha256": "59899c6091b540582ed617e8eeaac4919dc985ccfc35459ee9752b699be5205b",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "style3d",
+      "license": "BSD-3-Clause",
+      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/style3d/LICENSE",
+      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "notice": "licenses/runtime-assets/style3d.txt",
+      "notice_sha256": "242b355d8ef9113595354d39f6ca9348f1a6d912874a0460c1387eba16b65225",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "unitree_g1/rl_policies",
+      "license": "Apache-2.0",
+      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_g1/rl_policies/LICENSE",
+      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "notice": "licenses/runtime-assets/unitree_g1--rl_policies.txt",
+      "notice_sha256": "59899c6091b540582ed617e8eeaac4919dc985ccfc35459ee9752b699be5205b",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "unitree_g1",
+      "license": "BSD-3-Clause",
+      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_g1/LICENSE",
+      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "notice": "licenses/runtime-assets/unitree_g1.txt",
+      "notice_sha256": "84aac59fd3246e3ddc49d1387644e8fcf43b0def4f0b9fe687f372e90446df2d",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "unitree_go2/rl_policies",
+      "license": "Apache-2.0",
+      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_go2/rl_policies/LICENSE",
+      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "notice": "licenses/runtime-assets/unitree_go2--rl_policies.txt",
+      "notice_sha256": "59899c6091b540582ed617e8eeaac4919dc985ccfc35459ee9752b699be5205b",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "unitree_go2",
+      "license": "BSD-3-Clause",
+      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_go2/LICENSE",
+      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "notice": "licenses/runtime-assets/unitree_go2.txt",
+      "notice_sha256": "84aac59fd3246e3ddc49d1387644e8fcf43b0def4f0b9fe687f372e90446df2d",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "unitree_h1",
+      "license": "BSD-3-Clause",
+      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_h1/LICENSE",
+      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "notice": "licenses/runtime-assets/unitree_h1.txt",
+      "notice_sha256": "84aac59fd3246e3ddc49d1387644e8fcf43b0def4f0b9fe687f372e90446df2d",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "universal_robots_ur10",
+      "license": "BSD-3-Clause",
+      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/universal_robots_ur10/LICENSE",
+      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "notice": "licenses/runtime-assets/universal_robots_ur10.txt",
+      "notice_sha256": "e12d2dd2a5029d997cf4b55384420a7ad65adcff3c0e867fcdf510c59c755451",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "wonik_allegro",
+      "license": "BSD-2-Clause",
+      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/wonik_allegro/LICENSE",
+      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "notice": "licenses/runtime-assets/wonik_allegro.txt",
+      "notice_sha256": "37766593733254c83007eac1e810cae21ecefb1f7e1e8af7e5183aef58c3774b",
+      "distribution": "runtime download; model/policy files not bundled"
+    },
+    {
+      "asset": "MuJoCo Menagerie UR10e",
+      "license": "BSD-3-Clause",
+      "source": "https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/universal_robots_ur10e/LICENSE",
+      "revision": "f054586a8e90465d49ee5be15335c4a0c7f57caf",
+      "notice": "licenses/UR10e-BSD-3-Clause.txt",
+      "notice_sha256": "65dd5d8fabe28627810347781ebbec3f4820879ca809e10659751c18110b2ebe",
+      "distribution": "runtime download; model files not bundled"
+    },
+    {
+      "asset": "IsaacGymEnvs factory nut/bolt",
+      "license": "BSD-3-Clause",
+      "source": "https://github.com/isaac-sim/IsaacGymEnvs/blob/aeed298638a1f7b5421b38f5f3cc2d1079b6d9c3/LICENSE.txt",
+      "revision": "aeed298638a1f7b5421b38f5f3cc2d1079b6d9c3",
+      "notice": "licenses/runtime-assets/IsaacGymEnvs-BSD-3-Clause.txt",
+      "notice_sha256": "68f7ce6ed43e93e5d6404a9b05f97c0864a32b373548dba93a2c262e81561931",
+      "distribution": "runtime download; model files not bundled"
+    }
+  ],
+  "builtin_newton_assets": {
+    "license": "Apache-2.0 as distributed under the pinned Newton repository license",
+    "source_license": "https://github.com/dylanturpin/newton-collab/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md",
+    "distribution": "dependency assets; not copied into Steel Shelf wheel or sdist",
+    "files": [
+      {
+        "path": "newton/examples/assets/ant.usda",
+        "git_blob": "ba87f1ec5c7ffb062d34ab4cf2d78a89790660a3"
+      },
+      {
+        "path": "newton/examples/assets/anymal_walking_policy.pt",
+        "git_blob": "14b1a9f276c202cfe4b153dda528f643283e072b"
+      },
+      {
+        "path": "newton/examples/assets/axis_cube.usda",
+        "git_blob": "e06cbd3e52a3ac726e3d2b9105dce25c4ce99279"
+      },
+      {
+        "path": "newton/examples/assets/bear.usd",
+        "git_blob": "639f82e926be73cae4aadc1276d16a1f15f9eb54"
+      },
+      {
+        "path": "newton/examples/assets/boxes_fourbar.usda",
+        "git_blob": "95d94f037bedddf9fe7e3b6ddd88d753fe820336"
+      },
+      {
+        "path": "newton/examples/assets/bunny.usd",
+        "git_blob": "146589a41df49da17e752bb3bbe08153c1dbdb92"
+      },
+      {
+        "path": "newton/examples/assets/cartpole.urdf",
+        "git_blob": "6bf35e72ee303cf84119696684ea21f96a9910a4"
+      },
+      {
+        "path": "newton/examples/assets/cartpole.usda",
+        "git_blob": "b7b6bb1c0f74379866dedd7a360ea4f7a24ee320"
+      },
+      {
+        "path": "newton/examples/assets/cartpole_single_pendulum.usda",
+        "git_blob": "40ff5b3f70f3b41e0afbe1c4765c64343a7cc104"
+      },
+      {
+        "path": "newton/examples/assets/crazyflie.usd",
+        "git_blob": "f9606d8aab50b890c84c284470fb05b58923e19a"
+      },
+      {
+        "path": "newton/examples/assets/curvedSurface.usd",
+        "git_blob": "0cdc0f28e628abfd74cb40003dc09c7b00d1e5ff"
+      },
+      {
+        "path": "newton/examples/assets/humanoid.usda",
+        "git_blob": "93c7414b4f7a6570a44028b8416f389a7fd01ccb"
+      },
+      {
+        "path": "newton/examples/assets/mpm_sand.usda",
+        "git_blob": "37be5e1eb01fea68e070de1eecc2d98947e43e5c"
+      },
+      {
+        "path": "newton/examples/assets/nv_ant.xml",
+        "git_blob": "821a02259582bb609fad03389aef1da9179a8c22"
+      },
+      {
+        "path": "newton/examples/assets/nv_humanoid.xml",
+        "git_blob": "e44f005e2390f6386dc03a313142bbce5889c892"
+      },
+      {
+        "path": "newton/examples/assets/quadruped.urdf",
+        "git_blob": "38d81266493193bcf02c1b17241f3cb64df7749a"
+      },
+      {
+        "path": "newton/examples/assets/rj45_plug.usd",
+        "git_blob": "8c296217d18b003687d7f42fe11ae33295c4e67c"
+      },
+      {
+        "path": "newton/examples/assets/sensor_contact_scene.usda",
+        "git_blob": "c879a925fb20e959a325daee590ab738b9c46b33"
+      },
+      {
+        "path": "newton/examples/assets/steel_tabletop/crane.md",
+        "git_blob": "7210ab155e2104ac3ec85e7f80c23931940af8a3"
+      },
+      {
+        "path": "newton/examples/assets/steel_tabletop/crane.usd",
+        "git_blob": "260598afb7e85144e67a8c3a0c11d63e9d55fb43"
+      },
+      {
+        "path": "newton/examples/assets/steel_tabletop/hex_bolt.usd",
+        "git_blob": "4f6c699868e98ec817449bfb093b9240c057ba0e"
+      },
+      {
+        "path": "newton/examples/assets/steel_tabletop/hex_nut.usd",
+        "git_blob": "289323c34c0c95784eaae1b6cb2487c8479b5008"
+      },
+      {
+        "path": "newton/examples/assets/steel_tabletop/mug.md",
+        "git_blob": "c36964bcd1d21157b82ef3e0779aa2ce2d051e75"
+      },
+      {
+        "path": "newton/examples/assets/steel_tabletop/mug.usd",
+        "git_blob": "f8260776ce65681dc49a4cd2a2984bb61fdfd25c"
+      },
+      {
+        "path": "newton/examples/assets/steel_tabletop/pelican_bicycle.md",
+        "git_blob": "9881ab4a3c5ade3f74aa205dcf41f3602139bd30"
+      },
+      {
+        "path": "newton/examples/assets/steel_tabletop/pelican_bicycle.usd",
+        "git_blob": "1907e14dd0b923e23b0a427fed0c1d83f2a27467"
+      },
+      {
+        "path": "newton/examples/assets/steel_tabletop/plate_rack.usd",
+        "git_blob": "68008c978ce8ee00c38a6b77b9994b3bdfab7743"
+      },
+      {
+        "path": "newton/examples/assets/steel_tabletop/rack_plate.usd",
+        "git_blob": "e339183c2e3c228928f8c978247af5893528d4d6"
+      },
+      {
+        "path": "newton/examples/assets/steel_tabletop/washer.usd",
+        "git_blob": "0bcec9f4de52d28d9f23758a632977d0149cbd1e"
+      },
+      {
+        "path": "newton/examples/assets/tabletop.xml",
+        "git_blob": "78ba118cdd634f1d5c8cee93be621d3b635ff13f"
+      },
+      {
+        "path": "newton/examples/assets/unisex_shirt.usd",
+        "git_blob": "f8817bfee07174dcb01cf0b53819a2dc02d3c471"
+      }
+    ],
+    "policy_note": "The legacy anymal_walking_policy.pt belongs to Newton; Shelf robot_policy uses the separately licensed downloaded rl_policies entries listed above."
+  },
+  "runtime_call_sites": {
+    "shelf/00_basics/basic_plotting/example.py": [
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "'nv_humanoid.xml'",
+        "arguments": [
+          "'nv_humanoid.xml'"
+        ],
+        "keywords": [],
+        "line": 49
+      }
+    ],
+    "shelf/00_basics/basic_shapes/example.py": [
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "'bunny.usd'",
+        "arguments": [
+          "'bunny.usd'"
+        ],
+        "keywords": [],
+        "line": 86
+      }
+    ],
+    "shelf/00_basics/basic_urdf/example.py": [
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "'quadruped.urdf'",
+        "arguments": [
+          "'quadruped.urdf'"
+        ],
+        "keywords": [],
+        "line": 54
+      }
+    ],
+    "shelf/00_basics/basic_viewer/example.py": [
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "'bunny.usd'",
+        "arguments": [
+          "'bunny.usd'"
+        ],
+        "keywords": [],
+        "line": 46
+      }
+    ],
+    "shelf/00_basics/recording/example.py": [
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "'nv_humanoid.xml'",
+        "arguments": [
+          "'nv_humanoid.xml'"
+        ],
+        "keywords": [],
+        "line": 45
+      }
+    ],
+    "shelf/00_basics/selection_articulations/example.py": [
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "'nv_ant.xml'",
+        "arguments": [
+          "'nv_ant.xml'"
+        ],
+        "keywords": [],
+        "line": 103
+      },
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "'nv_humanoid.xml'",
+        "arguments": [
+          "'nv_humanoid.xml'"
+        ],
+        "keywords": [],
+        "line": 109
+      }
+    ],
+    "shelf/00_basics/selection_cartpole/example.py": [
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "'cartpole.usda'",
+        "arguments": [
+          "'cartpole.usda'"
+        ],
+        "keywords": [],
+        "line": 69
+      }
+    ],
+    "shelf/00_basics/selection_materials/example.py": [
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "'nv_ant.xml'",
+        "arguments": [
+          "'nv_ant.xml'"
+        ],
+        "keywords": [],
+        "line": 76
+      }
+    ],
+    "shelf/00_basics/selection_multiple/example.py": [
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "'nv_ant.xml'",
+        "arguments": [
+          "'nv_ant.xml'"
+        ],
+        "keywords": [],
+        "line": 105
+      }
+    ],
+    "shelf/00_basics/sleeping/example.py": [
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "asset_name",
+        "arguments": [
+          "asset_name"
+        ],
+        "keywords": [],
+        "line": 134
+      }
+    ],
+    "shelf/02_many_contacts/brick_stacking/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'franka_emika_panda'",
+        "arguments": [
+          "'franka_emika_panda'"
+        ],
+        "keywords": [],
+        "line": 499
+      }
+    ],
+    "shelf/02_many_contacts/vbd_rigid_rigid_contact/example.py": [
+      {
+        "call": "get_asset_directory",
+        "function": "newton.examples.get_asset_directory",
+        "argument": "",
+        "arguments": [],
+        "keywords": [],
+        "line": 52,
+        "path_expression": "os.path.join(newton.examples.get_asset_directory(), 'bear.usd')"
+      }
+    ],
+    "shelf/03_mesh_sdf_contacts/contacts_rj45_plug/example.py": [
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "'rj45_plug.usd'",
+        "arguments": [
+          "'rj45_plug.usd'"
+        ],
+        "keywords": [],
+        "line": 248
+      }
+    ],
+    "shelf/03_mesh_sdf_contacts/nut_bolt_hydro/example.py": [
+      {
+        "call": "download_external_git_folder",
+        "function": "newton.examples.download_external_git_folder",
+        "argument": "ISAACGYM_ENVS_REPO_URL",
+        "arguments": [
+          "ISAACGYM_ENVS_REPO_URL",
+          "ISAACGYM_NUT_BOLT_FOLDER"
+        ],
+        "keywords": [
+          {
+            "name": "ref",
+            "value": "'aeed298638a1f7b5421b38f5f3cc2d1079b6d9c3'"
+          }
+        ],
+        "line": 292
+      }
+    ],
+    "shelf/03_mesh_sdf_contacts/nut_bolt_sdf/example.py": [
+      {
+        "call": "download_external_git_folder",
+        "function": "newton.examples.download_external_git_folder",
+        "argument": "ISAACGYM_ENVS_REPO_URL",
+        "arguments": [
+          "ISAACGYM_ENVS_REPO_URL",
+          "ISAACGYM_NUT_BOLT_FOLDER"
+        ],
+        "keywords": [
+          {
+            "name": "ref",
+            "value": "'aeed298638a1f7b5421b38f5f3cc2d1079b6d9c3'"
+          }
+        ],
+        "line": 196
+      }
+    ],
+    "shelf/03_mesh_sdf_contacts/robot_panda_hydro/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'manipulation_objects/pad'",
+        "arguments": [
+          "'manipulation_objects/pad'"
+        ],
+        "keywords": [],
+        "line": 171
+      },
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'manipulation_objects/cup'",
+        "arguments": [
+          "'manipulation_objects/cup'"
+        ],
+        "keywords": [],
+        "line": 263
+      },
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'franka_emika_panda'",
+        "arguments": [
+          "'franka_emika_panda'"
+        ],
+        "keywords": [],
+        "line": 104
+      }
+    ],
+    "shelf/05_looped_linkages/kamino_basic_dr_testmech/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'disneyresearch'",
+        "arguments": [
+          "'disneyresearch'"
+        ],
+        "keywords": [],
+        "line": 41
+      }
+    ],
+    "shelf/05_looped_linkages/kamino_basic_fourbar/example.py": [
+      {
+        "call": "get_kamino_basics_asset",
+        "function": "get_kamino_basics_asset",
+        "argument": "'boxes_fourbar.usda'",
+        "arguments": [
+          "'boxes_fourbar.usda'"
+        ],
+        "keywords": [],
+        "line": 69
+      }
+    ],
+    "shelf/05_looped_linkages/kamino_basic_heterogeneous/example.py": [
+      {
+        "call": "get_kamino_basics_asset",
+        "function": "get_kamino_basics_asset",
+        "argument": "f'{asset_name}.usda'",
+        "arguments": [
+          "f'{asset_name}.usda'"
+        ],
+        "keywords": [],
+        "line": 79
+      }
+    ],
+    "shelf/06_looped_linkages_contacts/kamino_robot_anymal_d/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'anybotics_anymal_d'",
+        "arguments": [
+          "'anybotics_anymal_d'"
+        ],
+        "keywords": [],
+        "line": 44
+      }
+    ],
+    "shelf/06_looped_linkages_contacts/kamino_robot_dr_legs/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'disneyresearch'",
+        "arguments": [
+          "'disneyresearch'"
+        ],
+        "keywords": [
+          {
+            "name": "ref",
+            "value": "'261cd1f429619d8ef4f546bd788ab9dea906b5e1'"
+          }
+        ],
+        "line": 94
+      }
+    ],
+    "shelf/07_articulations/controller_differential_ik/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'franka_emika_panda'",
+        "arguments": [
+          "'franka_emika_panda'"
+        ],
+        "keywords": [],
+        "line": 241
+      },
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'universal_robots_ur10'",
+        "arguments": [
+          "'universal_robots_ur10'"
+        ],
+        "keywords": [],
+        "line": 242
+      }
+    ],
+    "shelf/07_articulations/controller_operational_space_hybrid_force_motion/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'franka_emika_panda'",
+        "arguments": [
+          "'franka_emika_panda'"
+        ],
+        "keywords": [],
+        "line": 166
+      },
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'universal_robots_ur10'",
+        "arguments": [
+          "'universal_robots_ur10'"
+        ],
+        "keywords": [],
+        "line": 167
+      }
+    ],
+    "shelf/07_articulations/robot_allegro_hand/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'wonik_allegro'",
+        "arguments": [
+          "'wonik_allegro'"
+        ],
+        "keywords": [],
+        "line": 96
+      }
+    ],
+    "shelf/07_articulations/robot_anymal_c_walk/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'anybotics_anymal_c'",
+        "arguments": [
+          "'anybotics_anymal_c'"
+        ],
+        "keywords": [],
+        "line": 105
+      }
+    ],
+    "shelf/07_articulations/robot_anymal_d/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'anybotics_anymal_d'",
+        "arguments": [
+          "'anybotics_anymal_d'"
+        ],
+        "keywords": [],
+        "line": 54
+      }
+    ],
+    "shelf/07_articulations/robot_asroballet/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'asroballet'",
+        "arguments": [
+          "'asroballet'"
+        ],
+        "keywords": [],
+        "line": 57
+      }
+    ],
+    "shelf/07_articulations/robot_cartpole/example.py": [
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "'cartpole.usda'",
+        "arguments": [
+          "'cartpole.usda'"
+        ],
+        "keywords": [],
+        "line": 46
+      }
+    ],
+    "shelf/07_articulations/robot_g1/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'unitree_g1'",
+        "arguments": [
+          "'unitree_g1'"
+        ],
+        "keywords": [],
+        "line": 49
+      }
+    ],
+    "shelf/07_articulations/robot_h1/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'unitree_h1'",
+        "arguments": [
+          "'unitree_h1'"
+        ],
+        "keywords": [],
+        "line": 54
+      }
+    ],
+    "shelf/07_articulations/robot_policy/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "robot_config.asset_dir",
+        "arguments": [
+          "robot_config.asset_dir"
+        ],
+        "keywords": [],
+        "line": 197
+      },
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "asset_directory + '/' + robot_config.asset_path",
+        "arguments": [
+          "asset_directory + '/' + robot_config.asset_path"
+        ],
+        "keywords": [],
+        "line": 262
+      }
+    ],
+    "shelf/07_articulations/robot_ur10/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'universal_robots_ur10'",
+        "arguments": [
+          "'universal_robots_ur10'"
+        ],
+        "keywords": [],
+        "line": 79
+      }
+    ],
+    "shelf/08_volumetric_soft_bodies/softbody_franka/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'manipulation_objects/rubber_duck'",
+        "arguments": [
+          "'manipulation_objects/rubber_duck'"
+        ],
+        "keywords": [],
+        "line": 92
+      },
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'franka_emika_panda'",
+        "arguments": [
+          "'franka_emika_panda'"
+        ],
+        "keywords": [],
+        "line": 250
+      }
+    ],
+    "shelf/08_volumetric_soft_bodies/vbd_soft_rigid_contact/example.py": [
+      {
+        "call": "get_asset_directory",
+        "function": "newton.examples.get_asset_directory",
+        "argument": "",
+        "arguments": [],
+        "keywords": [],
+        "line": 141,
+        "path_expression": "os.path.join(newton.examples.get_asset_directory(), 'bear.usd')"
+      }
+    ],
+    "shelf/08_volumetric_soft_bodies/vbd_soft_rigid_mix_contact/example.py": [
+      {
+        "call": "get_asset_directory",
+        "function": "newton.examples.get_asset_directory",
+        "argument": "",
+        "arguments": [],
+        "keywords": [],
+        "line": 155,
+        "path_expression": "os.path.join(newton.examples.get_asset_directory(), 'bear.usd')"
+      }
+    ],
+    "shelf/09_thin_shells_and_rods/cloth_franka/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'franka_emika_panda'",
+        "arguments": [
+          "'franka_emika_panda'"
+        ],
+        "keywords": [],
+        "line": 379
+      },
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "'unisex_shirt.usd'",
+        "arguments": [
+          "'unisex_shirt.usd'"
+        ],
+        "keywords": [],
+        "line": 141
+      }
+    ],
+    "shelf/09_thin_shells_and_rods/franka_cable_ik_pick_place/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'franka_emika_panda'",
+        "arguments": [
+          "'franka_emika_panda'"
+        ],
+        "keywords": [],
+        "line": 155
+      }
+    ],
+    "shelf/11_particles/mpm_anymal/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'anybotics_anymal_c'",
+        "arguments": [
+          "'anybotics_anymal_c'"
+        ],
+        "keywords": [],
+        "line": 62
+      }
+    ],
+    "shelf/12_coupling/franka_cloth_block/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'franka_emika_panda'",
+        "arguments": [
+          "'franka_emika_panda'"
+        ],
+        "keywords": [],
+        "line": 127
+      }
+    ],
+    "shelf/12_coupling/franka_shirt_fold_stack/example.py": [
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "'unisex_shirt.usd'",
+        "arguments": [
+          "'unisex_shirt.usd'"
+        ],
+        "keywords": [],
+        "line": 248
+      },
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'franka_emika_panda'",
+        "arguments": [
+          "'franka_emika_panda'"
+        ],
+        "keywords": [],
+        "line": 180
+      }
+    ],
+    "shelf/12_coupling/mujoco_franka_vbd_cable_admm_solver/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'franka_emika_panda'",
+        "arguments": [
+          "'franka_emika_panda'"
+        ],
+        "keywords": [],
+        "line": 280
+      }
+    ],
+    "shelf/13_sensors/sensor_camera/example.py": [
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "'bunny.usd'",
+        "arguments": [
+          "'bunny.usd'"
+        ],
+        "keywords": [],
+        "line": 132
+      },
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'franka_emika_panda'",
+        "arguments": [
+          "'franka_emika_panda'"
+        ],
+        "keywords": [],
+        "line": 135
+      }
+    ],
+    "shelf/13_sensors/sensor_contact/example.py": [
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "'sensor_contact_scene.usda'",
+        "arguments": [
+          "'sensor_contact_scene.usda'"
+        ],
+        "keywords": [],
+        "line": 48
+      }
+    ],
+    "shelf/13_sensors/sensor_imu/example.py": [
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "'axis_cube.usda'",
+        "arguments": [
+          "'axis_cube.usda'"
+        ],
+        "keywords": [],
+        "line": 60
+      }
+    ],
+    "shelf/14_ik/ik_cube_stacking/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'franka_emika_panda'",
+        "arguments": [
+          "'franka_emika_panda'"
+        ],
+        "keywords": [],
+        "line": 329
+      }
+    ],
+    "shelf/14_ik/ik_custom/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'franka_emika_panda'",
+        "arguments": [
+          "'franka_emika_panda'"
+        ],
+        "keywords": [],
+        "line": 152
+      }
+    ],
+    "shelf/14_ik/ik_franka/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'franka_emika_panda'",
+        "arguments": [
+          "'franka_emika_panda'"
+        ],
+        "keywords": [],
+        "line": 41
+      }
+    ],
+    "shelf/14_ik/ik_h1/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'unitree_h1'",
+        "arguments": [
+          "'unitree_h1'"
+        ],
+        "keywords": [],
+        "line": 43
+      }
+    ],
+    "shelf/15_diffsim/diffsim_drone/example.py": [
+      {
+        "call": "get_asset",
+        "function": "newton.examples.get_asset",
+        "argument": "'crazyflie.usd'",
+        "arguments": [
+          "'crazyflie.usd'"
+        ],
+        "keywords": [],
+        "line": 29
+      },
+      {
+        "call": "get_asset_directory",
+        "function": "newton.examples.get_asset_directory",
+        "argument": "",
+        "arguments": [],
+        "keywords": [],
+        "line": 787,
+        "path_expression": "os.path.join(newton.examples.get_asset_directory(), 'crazyflie.usd')"
+      }
+    ]
+  },
+  "documentation_media": [
+    {
+      "path": "docs/steel_tuning/frame_time_dark.png",
+      "sha256": "6200ab1690fffc5f41fe8cf89c6f053164e2531530cdeeb9408ada23e39acf0d",
+      "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
+      "source_commit": "bb8e985e2792c61fd9749fecbd4bf3f5731b894e",
+      "source": "https://github.com/skild-ai/steel-shelf/commit/bb8e985e2792c61fd9749fecbd4bf3f5731b894e",
+      "generation": "docs/steel_tuning/charts.py with evidence.json",
+      "distribution": "tracked repository documentation; excluded from wheel and sdist"
+    },
+    {
+      "path": "docs/steel_tuning/frame_time_light.png",
+      "sha256": "9d36d2e54e80626556d86cc83bcd05b5ff38c6c57f284cca68596862ea082ee1",
+      "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
+      "source_commit": "bb8e985e2792c61fd9749fecbd4bf3f5731b894e",
+      "source": "https://github.com/skild-ai/steel-shelf/commit/bb8e985e2792c61fd9749fecbd4bf3f5731b894e",
+      "generation": "docs/steel_tuning/charts.py with evidence.json",
+      "distribution": "tracked repository documentation; excluded from wheel and sdist"
+    },
+    {
+      "path": "docs/steel_tuning/summary_dark.png",
+      "sha256": "e6571cd3333191e2a0e774e4b2615de9ac96d7ac9d5e3839ca64ab4630a9ce30",
+      "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
+      "source_commit": "bb8e985e2792c61fd9749fecbd4bf3f5731b894e",
+      "source": "https://github.com/skild-ai/steel-shelf/commit/bb8e985e2792c61fd9749fecbd4bf3f5731b894e",
+      "generation": "docs/steel_tuning/charts.py with evidence.json",
+      "distribution": "tracked repository documentation; excluded from wheel and sdist"
+    },
+    {
+      "path": "docs/steel_tuning/summary_light.png",
+      "sha256": "88443a9350647bfde0643ec5a0b26f5f7c44dbb417873beadeb802152ff99770",
+      "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
+      "source_commit": "bb8e985e2792c61fd9749fecbd4bf3f5731b894e",
+      "source": "https://github.com/skild-ai/steel-shelf/commit/bb8e985e2792c61fd9749fecbd4bf3f5731b894e",
+      "generation": "docs/steel_tuning/charts.py with evidence.json",
+      "distribution": "tracked repository documentation; excluded from wheel and sdist"
+    },
+    {
+      "path": "docs/teaser.webp",
+      "sha256": "f2142c53387eaed5fa516da08c0941efa40284ee3e0fc9b357af069749cbde8e",
+      "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
+      "source_commit": "a16a5ce0a0643ca89707d77f368158d959640efa",
+      "source": "https://github.com/skild-ai/steel-shelf/commit/a16a5ce0a0643ca89707d77f368158d959640efa",
+      "generation": "Project-created example visualization, as recorded in the source commit",
+      "distribution": "tracked repository documentation; excluded from wheel and sdist"
+    },
+    {
+      "path": "docs/tuner.gif",
+      "sha256": "d62fc606cda872206836aaa2b32a308b7fd5a41b0f3cb6f88fc249dab8938002",
+      "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
+      "source_commit": "d0cc3d8a0355b28bb411fed1d1d5f36ec5e20945",
+      "source": "https://github.com/skild-ai/steel-shelf/commit/d0cc3d8a0355b28bb411fed1d1d5f36ec5e20945",
+      "generation": "Project-created example visualization, as recorded in the source commit",
+      "distribution": "tracked repository documentation; excluded from wheel and sdist"
+    }
+  ],
+  "historical_source_reference": {
+    "recorded_in_presets": "ad03e49",
+    "commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+    "repository": "https://github.com/skild-ai/steel-webgpu",
+    "status": "verified export source",
+    "verification_basis": "jaredmejia reports all 26 original export files match byte for byte in the linked PR review; current local SHA-256 hashes and distribution bytes are checked by this audit.",
+    "verification_source": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
+    "json_import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
+    "binary_import_pr": "https://github.com/skild-ai/steel-shelf/pull/11"
+  },
+  "reviewed_base_commit": "ba8ae1975f35e3ac13c31f068a4fbb72fee3074a",
+  "newton_test_assets": {
+    "license": "Apache-2.0 under the pinned Newton repository license",
+    "source_license": "https://github.com/dylanturpin/newton-collab/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md",
+    "source_helper": "newton/tests/__init__.py:get_kamino_basics_asset",
+    "distribution": "separately installed dependency; not copied into Steel Shelf wheel or sdist",
+    "files": [
+      {
+        "path": "newton/tests/assets/kamino/basics/box_on_plane.usda",
+        "git_blob": "b511482a246b0ed5c3447176dec2173260cdc09d"
+      },
+      {
+        "path": "newton/tests/assets/kamino/basics/box_pendulum.usda",
+        "git_blob": "d576b6198ad9d45bf32209bc5f84c678d245c6e5"
+      },
+      {
+        "path": "newton/tests/assets/kamino/basics/boxes_fourbar.usda",
+        "git_blob": "0c9d684a0320c7ebf8bf43fe76dc346ab46aa945"
+      },
+      {
+        "path": "newton/tests/assets/kamino/basics/boxes_hinged.usda",
+        "git_blob": "9552608a5738d3cc082fdc318de8e9fa132947cf"
+      },
+      {
+        "path": "newton/tests/assets/kamino/basics/boxes_nunchaku.usda",
+        "git_blob": "4497c9e495d51027fc61eda1db485450f86ee03b"
+      },
+      {
+        "path": "newton/tests/assets/kamino/basics/cartpole.usda",
+        "git_blob": "322e210f04436c652e92c3e13d3cc16a3968dddf"
+      }
+    ],
+    "source_notes": "The USD files identify manually authored test scenes; cartpole identifies Disney Research as generator. These are Newton test assets, separate from the custom-licensed dr_legs/dr_testmech downloads."
+  },
+  "warp_example_assets": {
+    "dependency": "warp-lang",
+    "locked_version": "1.18.0",
+    "revision": "f2eaed82d8d03b37bf1014cc975954067fefcf16",
+    "license": "Apache-2.0 under the Warp repository license; no separate square_cloth asset license listed",
+    "source_license": "https://github.com/NVIDIA/warp/blob/f2eaed82d8d03b37bf1014cc975954067fefcf16/LICENSE.md",
+    "source_license_sha256": "47107323a174bfffeaffdc5b778152c3f9bdf66b2ecec4229542480d5937bcf9",
+    "files": [
+      {
+        "path": "warp/examples/assets/square_cloth.usd",
+        "git_blob": "96acfde4b528f476a39507fdde2384ea1f3a6f9e"
+      }
+    ],
+    "distribution": "separately installed dependency; not copied into Steel Shelf wheel or sdist",
+    "version_scope": "This records the uv.lock version; other separately installed Warp versions retain their supplied notices."
+  },
+  "migration": {
+    "source_repository": "https://github.com/skild-ai/steel-shelf",
+    "source_commit": "6d00abad2b77ce6b8cd4ed6952ccd046534cc4cb",
+    "license_review_source_commit": "29c571a31403154341efa1c9f1e62e5a777e3634",
+    "source_subdirectory": "examples/",
+    "newton_license_check": "LICENSE.md blob unchanged between c42985a6 and f6fc82a8; newton-assets default remains f8fb7ab."
+  },
+  "additional_bundled_assets": [
+    {
+      "path": "shelf/01_basic_contacts/mjorg_baseball_bat/scene.xml",
+      "sha256": "0ef8b2b9d956818c063dbe90bb6b5c8ca26ca992c0f093256b1af7068f8fcd3d",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/01_basic_contacts/mjorg_baseball_bat/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/01_basic_contacts/mjorg_falling_chain/scene.xml",
+      "sha256": "03afbf892966c0201c91a0320894fc6858a2c361186d3b78d4ae7b9436a2bc1a",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/01_basic_contacts/mjorg_falling_chain/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/01_basic_contacts/mjorg_luggage_carousel/scene.xml",
+      "sha256": "a71bc8fec470eec0144b57b5673e70ea7f63be46bd123057b7628e3518f9ec09",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/01_basic_contacts/mjorg_luggage_carousel/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/01_basic_contacts/mjorg_magnetic_door/scene.xml",
+      "sha256": "b33ded4d4774d4bb717e9b8ccc2700763ca690b1c75e8407bec19d7b6501882e",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/01_basic_contacts/mjorg_magnetic_door/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_gothic_arch/scene.xml",
+      "sha256": "95414c80501fd45b5a5fc3a0a8a17490925d7db4c2f2665a67d402050ca6c624",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_gothic_arch/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/10_of_diamonds.png",
+      "sha256": "b0af33687a6a535861315888fe5b93cb5e23d035c27d54ac891907f2897580ac",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/10_of_hearts.png",
+      "sha256": "79496a61b90fe122e37ad90569d3a814029ead2e806d3e9b2e970fc0450bcd38",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/10_of_spades.png",
+      "sha256": "07638e762e19535d8279876aea6d7b89edd7bfab295f939dbda56c2bd077da9c",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/7_of_spades.png",
+      "sha256": "8ca94e9f458ad7de306a8d5c55566d972778b49d4b5f3fc3d186e2c826f9b16e",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/8_of_hearts.png",
+      "sha256": "6035c2a8875bcde487b2e6f3c8057098513ec453482de1312621845dd37919e7",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/8_of_spades.png",
+      "sha256": "3641fbdaf0b817a34e875fc651bd4348325280c1a58d15cdee7e710472cd9c09",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/9_of_hearts.png",
+      "sha256": "1025e81a6d6da8800e4b5a382e63f4673efb142b4f4665fddb67aed9d9de678d",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/9_of_spades.png",
+      "sha256": "00f5094caa3af8be9a96e34e51742181e51b516fe33534d11dd86d1161b92faa",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/ace_of_clubs.png",
+      "sha256": "cd35662e0c46bde296569890260e725213c0ec47c0a80b304037653bfc8ebba5",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/ace_of_diamonds.png",
+      "sha256": "6eeda3f9b7a24637ba40f4c7e0b788de6c42ba3f6416c7de17bd4ef2c8677556",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/ace_of_hearts.png",
+      "sha256": "018eca598030ca75149b7683d000ade8703494662537b073a620af8b5f7c28ff",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/ace_of_spades.png",
+      "sha256": "4c8a3ea1b335cf7d75beb287fafca09ad0cf0904261f9f583f12d6bff2698cc9",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/black_joker.png",
+      "sha256": "8915d9bd732aa60ee564dea92a81ceb1637e5ecebb3fc66c52ff8ef3ffc70291",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/card.obj",
+      "sha256": "3be72c1c6b6caf2f5b4888be01caae89161ce2c290b718cfe192f3487866668b",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/jack_of_clubs.png",
+      "sha256": "9a529d0f1a51d0c3ef09c03f686b73b36a52b9c4085ef114e5a35b4ee2a66e5c",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/jack_of_diamonds.png",
+      "sha256": "8813e27dae3f388b15ee0cc104f20fda6664f341dc3f085da43f25afc634c2e9",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/jack_of_hearts.png",
+      "sha256": "1ef88fcafd013f99acc6047dbf065c7e75218c06f1388e3e0fbd74e6b478d566",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/jack_of_spades.png",
+      "sha256": "2550c1579fb2bfe17a8c54c0127cebb929cf51d02f581d16118070504798ac62",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/king_of_clubs.png",
+      "sha256": "2c98a3176a817462670021a3bdfe19361b73714dc34555d3c9e97a4dd4bf0e16",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/king_of_diamonds.png",
+      "sha256": "f23f726ae0cdcaf60d6cce6e10b3b749c8823c0e5620393a3df656e0cdb6820b",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/king_of_hearts.png",
+      "sha256": "10ba11f882d178adc7a7d84086793405bedf575cf5d96706e1467b7441a69f26",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/king_of_spades.png",
+      "sha256": "22b081b304527460f311106115473c2494b5160967f3fc3f60750be79d428ca4",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/queen_of_clubs.png",
+      "sha256": "5bb6474a8da95aaf0b995f300656a8a21b1cca9ed4075e8ccb00daf71001a7eb",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/queen_of_diamonds.png",
+      "sha256": "12d888c5247b6749d60d4e5826fbb1d7d51503c0adb33b2be63be59dc91c037e",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/queen_of_hearts.png",
+      "sha256": "62f31ff267d2ac539d88cbbeb6317c765861e0fe051f28569e727db4b5637e2e",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/queen_of_spades.png",
+      "sha256": "94cd668fab346b3a7bbf9eceaf95456c6d766767155e1181a2100d7c1f001d52",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/assets/red_joker.png",
+      "sha256": "f74e04367434e0b6176c8bd20207e88ff4e001a1415c50e89e000ec7b9b53376",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_house_of_cards/scene.xml",
+      "sha256": "d32431025055c647b019b06d6177966a593137ba83d68b419a827bdf97444039",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_house_of_cards/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/02_many_contacts/mjorg_sleeping_dominos/scene.xml",
+      "sha256": "e8a4378980207c466632f8357945dc14630394c39ba729e39ea086e9765693c3",
+      "license": "Apache-2.0",
+      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
+      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
+      "evidence": "shelf/02_many_contacts/mjorg_sleeping_dominos/README.md",
+      "adaptation": "Scene modifications and asset transformations described in the per-example README."
+    },
+    {
+      "path": "shelf/05_looped_linkages/loop_delta_robot/reference.json",
+      "sha256": "4281dd3a53b8ba11e4e58f92c81b449510892f814a4ce629f0d84f4034dd2d34",
+      "license": "Apache-2.0",
+      "source": "https://github.com/skild-ai/steel-shelf/tree/6d00abad2b77ce6b8cd4ed6952ccd046534cc4cb",
+      "notice": "LICENSE",
+      "evidence": "Project-generated reference trajectories, with generators retained next to the example."
+    },
+    {
+      "path": "shelf/05_looped_linkages/loop_hoberman_sphere/reference_drive_all.npz",
+      "sha256": "c58ea62fe393939a8f67023fe0fe2241b05dde4f092fa9a0507bba9938c02066",
+      "license": "Apache-2.0",
+      "source": "https://github.com/skild-ai/steel-shelf/tree/6d00abad2b77ce6b8cd4ed6952ccd046534cc4cb",
+      "notice": "LICENSE",
+      "evidence": "Project-generated reference trajectories, with generators retained next to the example."
+    },
+    {
+      "path": "shelf/05_looped_linkages/loop_hoberman_sphere/reference_drive_one.npz",
+      "sha256": "98f1cc782f7cb553a6fa325e0f8e0278996defd4a069ab6b027592bf9396b61a",
+      "license": "Apache-2.0",
+      "source": "https://github.com/skild-ai/steel-shelf/tree/6d00abad2b77ce6b8cd4ed6952ccd046534cc4cb",
+      "notice": "LICENSE",
+      "evidence": "Project-generated reference trajectories, with generators retained next to the example."
+    },
+    {
+      "path": "shelf/05_looped_linkages/loop_parallel_gripper/reference.json",
+      "sha256": "b3cc053f3b857443d071301b3a8d362182b04a2732afc000e87f08754dad07b1",
+      "license": "Apache-2.0",
+      "source": "https://github.com/skild-ai/steel-shelf/tree/6d00abad2b77ce6b8cd4ed6952ccd046534cc4cb",
+      "notice": "LICENSE",
+      "evidence": "Project-generated reference trajectories, with generators retained next to the example."
+    },
+    {
+      "path": "shelf/05_looped_linkages/loop_stewart_platform/reference.json",
+      "sha256": "44c8ba1ebd7774ac3bec202c68ee6afab243eaa4309ebd561d9d456780582c28",
+      "license": "Apache-2.0",
+      "source": "https://github.com/skild-ai/steel-shelf/tree/6d00abad2b77ce6b8cd4ed6952ccd046534cc4cb",
+      "notice": "LICENSE",
+      "evidence": "Project-generated reference trajectories, with generators retained next to the example."
+    }
+  ],
+  "bundled_component_notices": []
+}

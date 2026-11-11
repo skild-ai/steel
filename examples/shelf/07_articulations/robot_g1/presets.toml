@@ -1,0 +1,55 @@
+example = "robot_g1"
+source = "newton/examples/robot/example_robot_g1.py @ newton-collab 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "500"]
+
+[gallery]
+short = "A Unitree G1 humanoid from USD."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "works"
+sim = { fps = 60, substeps = 6 }
+solver = { use_mujoco_cpu = false, solver = "newton", integrator = "implicitfast", njmax = 300, nconmax = 150, cone = "elliptic", impratio = 100, iterations = 100, ls_iterations = 50 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 1 substep x 2 iterations, immediate response: fastest setting that stands with lower peak and mean penetration
+# than MuJoCo; propagation_colored falls over at 1x4 and 2x2 and needs 1x8 (36% slower, mean penetration 1.1 mm).
+# articulation_constraint_max: the immediate response keeps contact rows per world in this family; the robot uses
+# up to 56 (32 drops rows). Joint limits off: the standing robot does not reach them, and their rows overflow 128.
+sim = { fps = 60, substeps = 1 }
+solver = { solve_mode = "matrix_free", iterations = 2, articulated_contact_response = "immediate", articulation_constraint_max = 128, enable_joint_limits = false }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "works"
+sim = { fps = 60, substeps = 4 }
+solver = { dynamics_solver = "dvi", sparse_dynamics = true, sparse_jacobian = true, dvi = { max_alternating_iterations = 8, bilateral_solve_interval = 8, bilateral_solver_type = "LLTBRCM", omega = 1.2, contact_warmstart_method = "key_and_position_with_net_force_backup_and_tangential_net_force", use_schur_complement = true } }
+# Newton test_examples.py tests the Kamino variant with these arguments.
+check = { args = ["--num-frames", "500", "--world-count", "4"] }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

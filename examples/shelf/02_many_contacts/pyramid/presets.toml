@@ -1,0 +1,60 @@
+example = "pyramid"
+source = "newton/examples/contacts/example_pyramid.py @ newton-collab 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "120", "--num-pyramids", "3", "--pyramid-size", "5"]
+
+[gallery]
+short = "Pyramids of cubes and a wrecking ball on a ramp."
+frame = 400
+
+[xpbd]
+status = "works"
+sim = { fps = 100, substeps = 10 }
+solver = { iterations = 2, rigid_contact_relaxation = 0.8 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# Steel solves each world in one GPU block, with its rows in shared memory: the example builds one
+# pyramid for it (210 boxes, about 4,700 contact rows; the 20-pyramid scene needs about 94,000 and
+# no cap fits in 48 KB). free_body_constraint_max must cover those rows or contacts are dropped.
+# The wrecking ball (100x density, about 6,500x a cube's mass) presses the cubes it rolls over into the ground, and
+# Gauss-Seidel converges slowly at that mass ratio: 2 substeps x 12 iterations put cube bottoms 0.8 m into it.
+# 4 substeps x 24 iterations with baumgarte 0.5 (colored, longest units first) keep every cube center within 20 cm of
+# its rest height, p95 penetration 3.5-10 cm (XPBD 1-6 cm), for 2.8x the frame time. Warm start (with contact
+# matching), Nesterov momentum and velocity iterations did not help. Struck cubes fly faster than under XPBD (fastest
+# body up to 41 m/s vs 24), and baumgarte 0.8 launches them.
+# The immediate response is 8x slower here. With 2 pyramids (cap 9,500) longest_first overflows the rows; keep 1.
+sim = { fps = 100, substeps = 4 }
+solver = { solve_mode = "matrix_free", iterations = 24, baumgarte = 0.5, free_body_constraint_max = 8192, enable_restitution = false, articulated_contact_response = "propagation_colored", propagation_color_order = "longest_first" }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "works"
+sim = { fps = 100, substeps = 20 }
+solver = { dynamics_solver = "dvi", sparse_dynamics = true, sparse_jacobian = true, use_collision_detector = true, integrator = "moreau", dvi = { max_alternating_iterations = 2 }, constraints = { gamma = 0.5 } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

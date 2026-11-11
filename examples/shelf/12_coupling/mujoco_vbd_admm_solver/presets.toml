@@ -1,0 +1,70 @@
+example = "mujoco_vbd_admm_solver"
+source = "newton/examples/multiphysics/example_mujoco_vbd_admm_solver.py @ newton-collab 7565a26b1"
+default = "steel_vbd"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "30"]
+
+[gallery]
+short = "A rigid ball tied to the centre of a pinned VBD cloth sheet."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "untested"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
+
+[mujoco_vbd]
+status = "works"
+sim = { fps = 60, substeps = 8 }
+solver = { iterations = 2, rho = 50, gamma = 0.1, baumgarte = 0.01, joint_proximal_bodies = true }
+entries.mujoco.solver = { use_mujoco_contacts = false, njmax = 32 }
+entries.vbd.solver = { iterations = 8 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[kamino_vbd]
+status = "works"
+sim = { fps = 60, substeps = 8 }
+solver = { iterations = 2, rho = 50, gamma = 0.1, baumgarte = 0.01, joint_proximal_bodies = true }
+entries.kamino.solver = { use_collision_detector = false, use_fk_solver = false, dynamics = { preconditioning = true }, padmm = { max_iterations = 120, primal_tolerance = 1.0e-5, dual_tolerance = 1.0e-5, compl_tolerance = 1.0e-5, rho_0 = 0.1, use_acceleration = true, warmstart_mode = "containers" } }
+entries.vbd.solver = { iterations = 8 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[steel_vbd]
+status = "works"
+# 6 substeps: fastest setting measured (9.5 ms/frame vs 12.8 at 8 substeps, MuJoCo 13.4) with the test passing;
+# cloth-ball gap 87.9 mm vs 85.4 (MuJoCo at 8), soft penetration mean unchanged (6.39 vs 6.37 mm), peak 16.2 vs 14.9 mm,
+# the same as MuJoCo's own result at 6 substeps. 4 substeps (6.4 ms) lets the gap grow to 90 mm and the peak to 17.9 mm.
+sim = { fps = 60, substeps = 6 }
+# Steel does not carry ADMM joint proxies; with them on, its result is unchanged.
+solver = { iterations = 2, rho = 50, gamma = 0.1, baumgarte = 0.01, joint_proximal_bodies = false }
+# The ball and the pendulum link have no Steel constraint rows (no contacts, no joint limits), so Steel's own
+# iterations do not change the result (1, 4 and 12 measured identical) and cost under 1%.
+entries.steel.solver = { solve_mode = "matrix_free" }
+entries.vbd.solver = { iterations = 8 }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"

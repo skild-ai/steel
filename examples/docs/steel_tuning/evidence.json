@@ -1,0 +1,474 @@
+[
+ [
+  "example",
+  "baseline \u2192 Steel",
+  "frame ms",
+  "penetration mm",
+  "Steel settings",
+  "finding"
+ ],
+ [
+  "basic_pendulum",
+  "XPBD",
+  "0.592 \u2192 0.225 (2.59)",
+  "no contacts",
+  "2 \u00d7 4, immediate",
+  "Energy drift 135 J vs XPBD's 413 J. No rows, so iterations are free; colored adds ~30 launches."
+ ],
+ [
+  "basic_dzhanibekov",
+  "XPBD",
+  "0.365 \u2192 0.546 (0.956)",
+  "no contacts",
+  "4 \u00d7 4, immediate",
+  "Bar not met: at 2 substeps (0.30 ms) the flip misses the test's 100 frames; ~0.12 ms launch cost per substep."
+ ],
+ [
+  "basic_heightfield",
+  "XPBD",
+  "1.565 \u2192 0.765 (5.62)",
+  "1.40/0.064 \u2192 0.77/0.044",
+  "2 \u00d7 3, immediate",
+  "1 substep or 2 iterations raise the mean above XPBD's."
+ ],
+ [
+  "basic_shapes",
+  "XPBD",
+  "0.941 \u2192 0.876 (3.36)",
+  "4.80/0.024 \u2192 0.78/0.019",
+  "2 \u00d7 4, immediate",
+  "3 iterations: mean 0.031 mm; 2: 0.060 mm."
+ ],
+ [
+  "basic_joints",
+  "XPBD",
+  "0.740 \u2192 0.313 (5.91)",
+  "none",
+  "2 \u00d7 4, immediate, limits on",
+  "Without limits the slider drops 0.2 m onto the ground and the step slows to 0.44 ms."
+ ],
+ [
+  "basic_urdf",
+  "XPBD",
+  "0.909 \u2192 0.444 (7.24)",
+  "3.19/0.18 \u2192 0.77/0.13",
+  "1 \u00d7 4, immediate, rows 128",
+  "32 rows overflow in every world. No finite limits. XPBD itself fails its check."
+ ],
+ [
+  "recording",
+  "MuJoCo",
+  "4.378 \u2192 1.840 (65.5)",
+  "76.5/0.555 \u2192 54/0.28",
+  "4 \u00d7 3, immediate, limits + gap 0.1, rows 128",
+  "Colored 7\u00d7 slower on humanoids. Limits off: limbs 2.9 rad past them. 32 rows: humanoids fall through."
+ ],
+ [
+  "selection_articulations",
+  "MuJoCo",
+  "4.946 \u2192 2.195 (38.3)",
+  "194/5.0 \u2192 167/4.75",
+  "4 \u00d7 6, immediate, limits + gap, rows 128",
+  "32 rows: a body peaked at 78 m. Colored 3\u20135\u00d7 slower."
+ ],
+ [
+  "selection_cartpole",
+  "MuJoCo",
+  "1.717 \u2192 0.182 (2.36)",
+  "no contacts",
+  "2 \u00d7 4, immediate, limits on",
+  "Cost is launch count; limits cost 0.02 ms."
+ ],
+ [
+  "selection_materials",
+  "MuJoCo",
+  "2.960 \u2192 0.705 (11.58)",
+  "16.0/0.97 \u2192 6.6/0.72",
+  "2 \u00d7 3, immediate, limits + gap, rows 128",
+  "2 iterations: mean 1.22 mm. Limits off: legs 1.1 rad past them."
+ ],
+ [
+  "selection_multiple",
+  "MuJoCo",
+  "4.255 \u2192 0.913 (10.29)",
+  "81/4.7 \u2192 70/1.9",
+  "2 \u00d7 8, immediate, limits + gap, rows 128",
+  "6 iterations overshoot limits 0.081 vs MuJoCo's 0.069 rad."
+ ],
+ [
+  "sleeping",
+  "MuJoCo",
+  "17.69 \u2192 6.25 (5.09)",
+  "171/2.2 \u2192 60/0.86",
+  "5 \u00d7 10, colored, limits + gap, rows 1024",
+  "Only setting that sleeps when MuJoCo does (frame 330 in 4 of 4 runs). Immediate 5 \u00d7 4 (4.0 ms) fell asleep anywhere from frame 330 to past 630."
+ ],
+ [
+  "basic_mimic_joint",
+  "XPBD",
+  "3.996 \u2192 0.935 (16.2)",
+  "none",
+  "1 \u00d7 2, immediate",
+  "Mimic error 1e-7 m vs XPBD 7e-5 m. Eager stepping: each substep costs ~0.85 ms."
+ ],
+ [
+  "balance_bird",
+  "XPBD",
+  "2.18 \u2192 0.55 (4.73)",
+  "none \u2192 none",
+  "2 \u00d7 4, immediate",
+  "1 substep freezes it on the tip; colored +45% on one free body (~20 rows)."
+ ],
+ [
+  "basic_conveyor",
+  "XPBD",
+  "1.87 \u2192 1.57 (29.3)",
+  "at or below XPBD",
+  "2 \u00d7 3, colored, baumgarte = 1.0, propagation rows 4096",
+  "Belt as a kinematic free root, not a kinematic revolute joint: 29 \u2192 12 ms from that alone. Baumgarte 0.2: landings sink 2.6 mm. Immediate (~800 rows) overflows and is 3\u00d7 slower."
+ ],
+ [
+  "basic_conveyor_forces",
+  "XPBD",
+  "2.87 \u2192 1.44 (11.55)",
+  "at or below XPBD",
+  "2 \u00d7 2, colored, baumgarte = 0.5, limits on, friction_combine = \"min\"",
+  "Added CUDA graph capture; captured XPBD is 0.53 ms, so Steel beats the old eager baseline only. Limits off: the parcel hinge spins 360\u00b0 past its \u00b145\u00b0."
+ ],
+ [
+  "newton_cradle",
+  "XPBD",
+  "2.45 \u2192 1.26 (4.54)",
+  "0.002 peak \u2192 0.002 peak",
+  "8 \u00d7 16, immediate, mu = 0, contact_friction_gap_max = -inf",
+  "Fewer substeps or iterations: balls sink mm at impact. Colored 3\u00d7 (12 rows). Swing kept better than XPBD (44.7\u00b0 vs 8.6\u00b0 after 5 s)."
+ ],
+ [
+  "domino_spiral",
+  "XPBD",
+  "4.71 \u2192 4.30 (6.45)",
+  "mean matches XPBD",
+  "6 \u00d7 16, colored",
+  "~360 rows: immediate 25 vs colored 6.3 ms. Steel ignores model.ke. The chain falls slower than XPBD at every setting (last domino frame 178 vs 139). XPBD's own peak varied 0.48\u20132.49 mm across runs."
+ ],
+ [
+  "pyramid (1 pyramid)",
+  "XPBD",
+  "1.41 \u2192 5.58 (12.2)",
+  "4.1/0.54 \u2192 3.7/0.41",
+  "2 \u00d7 12, colored, propagation_color_order = \"longest_first\", free-body rows 8192",
+  "Bar not met (~4\u00d7): the colored sweep over ~4,800 rows cannot close it; immediate 8\u00d7 slower. 512 free-body rows: the pyramid explodes."
+ ],
+ [
+  "vbd_rigid_rigid_contact",
+  "VBD",
+  "4.31 \u2192 1.32 (4.26)",
+  "10.1/0.052 \u2192 1.6/0.028",
+  "2 \u00d7 6, immediate",
+  "6 free bodies, few rows. VBD's own 5-substep baseline loses a substep per frame to the odd-count bug."
+ ],
+ [
+  "nut_bolt_hydro (20 worlds)",
+  "MuJoCo",
+  "4.47 \u2192 1.97 (9.3)",
+  "lower than MuJoCo",
+  "4 substeps, collide every 2, \u00d7 2, immediate, hard rows, point friction",
+  "Threads every nut like MuJoCo (24 mm, 2160\u00b0 vs 23.5 mm, 2020\u00b0). Steel-before slid 5 of 20 nuts off in 0.2 s, which the 1-world test misses. contact_compliance dropped 5\u201311 nuts at every setting."
+ ],
+ [
+  "nut_bolt_sdf (100 worlds)",
+  "MuJoCo",
+  "4.78 \u2192 6.6 (19.9)",
+  "1.41/0.029 \u2192 lower",
+  "3 \u00d7 6, immediate",
+  "Bar not met (1.37\u00d7). Faster settings under-solve thread friction and spin nuts down 1.5\u20133\u00d7 faster (1 \u00d7 4: 2.77 ms, 2803\u00b0 vs 910\u00b0). Colored 20% slower with 100 small worlds."
+ ],
+ [
+  "robot_panda_hydro",
+  "MuJoCo",
+  "9.9 \u2192 48\u201350 (46.3)",
+  "0.20/0.018 \u2192 0.09/0.022",
+  "10 \u00d7 16, colored, compliant contacts, limits on, point friction",
+  "Bar not met (~5\u00d7). 12 or fewer iterations or 6 or fewer substeps drop the object; 8 substeps passed on Blackwell, dropped on an RTX 3090. Limits cut peak penetration 0.49 \u2192 0.09 mm at no cost."
+ ],
+ [
+  "controller_joint_impedance_heterogeneous",
+  "MuJoCo",
+  "0.727 \u2192 0.241 (1.266)",
+  "no contacts",
+  "2 \u00d7 4, immediate",
+  "Tracking 0.290 vs 0.294 rad; propagation responses 0.45 ms."
+ ],
+ [
+  "controller_operational_space_hybrid_force_motion",
+  "MuJoCo",
+  "3.057 \u2192 0.726 (3.073)",
+  "22 mm peak, static",
+  "2 \u00d7 2, immediate, rows 128, point friction",
+  ""
+ ],
+ [
+  "robot_allegro_hand",
+  "MuJoCo",
+  "3.757 \u2192 1.301 (11.48)",
+  "6.46/0.48 \u2192 2.55/0.44",
+  "2 \u00d7 2, immediate, limits on, rows 128",
+  "Clamped finger targets reach the limits; tracking 0.0149 vs 0.0147 only with them on. Hand + cube use 102 rows."
+ ],
+ [
+  "robot_anymal_c_walk",
+  "MuJoCo",
+  "1.178 \u2192 0.736 (2.787)",
+  "",
+  "2 \u00d7 8, immediate, rows 128, point friction",
+  "Unresolved: drifts 0.35\u20130.94 m sideways under every Steel setting."
+ ],
+ [
+  "robot_anymal_d",
+  "MuJoCo",
+  "1.134 \u2192 0.336 (2.724)",
+  "5.3/5.2 \u2192 2.4/1.9",
+  "1 \u00d7 4, immediate, rows 128",
+  "Colored at 1 substep sank 30 mm at 4 iterations (immediate 2.4 mm). Point friction makes it creep. Limits never reached."
+ ],
+ [
+  "robot_asroballet",
+  "MuJoCo (CPU)",
+  "8.671 \u2192 17.9 (41.0, broken)",
+  "",
+  "10 \u00d7 4, immediate, rows 384, joint friction",
+  "Bar not met (~2\u00d7); single 55-DOF articulation. Steel-before ran with no contacts and free-fell 490 m in 10 s while its test passed; fixed in example.py."
+ ],
+ [
+  "robot_cartpole",
+  "MuJoCo",
+  "1.784 \u2192 0.148 (2.306)",
+  "no contacts",
+  "2 \u00d7 1, immediate",
+  "Within 0.018 rad of MuJoCo; 1 substep drifts 0.04 rad."
+ ],
+ [
+  "robot_g1",
+  "MuJoCo",
+  "2.622 \u2192 0.437 (5.565)",
+  "14.4/0.69 \u2192 0.7/0.35",
+  "1 \u00d7 2, immediate, rows 128",
+  "Colored falls over at 1 \u00d7 4 and 2 \u00d7 2. Limits at gap inf overflow 128 and it falls. Point friction makes it creep."
+ ],
+ [
+  "robot_h1",
+  "MuJoCo",
+  "1.207 \u2192 0.639 (3.627)",
+  "",
+  "1 \u00d7 8, immediate, rows 256, point friction, limits + gap 0.1",
+  "Lying on the ground uses 159 rows. Patch friction never settled."
+ ],
+ [
+  "robot_omniwheel",
+  "MuJoCo",
+  "4.435 \u2192 2.015 (19.0, overflow)",
+  "",
+  "3 \u00d7 4, immediate, contact_gap_gate = 0, rows 128",
+  "Not-yet-touching roller contacts made ~300 rows per world per step."
+ ],
+ [
+  "robot_policy",
+  "MuJoCo",
+  "2.031 \u2192 1.319 (3.532)",
+  "8.2/0.23 \u2192 8.8/0.13",
+  "2 iterations, immediate, limits + gap 0.1, point friction, rows 128",
+  "Limits off: the standing G1 drifts 0.45 m; on: 0.02 m (MuJoCo 0.09 m)."
+ ],
+ [
+  "robot_ur10",
+  "MuJoCo",
+  "2.507 \u2192 0.182 (2.705)",
+  "no contacts",
+  "2 \u00d7 1, immediate",
+  "Tracking 0.102 vs 0.101 rad RMS; limits never engage (on +22%)."
+ ],
+ [
+  "sensor_contact",
+  "MuJoCo",
+  "0.425 \u2192 0.367 (0.751)",
+  "29.8/0.59 \u2192 9.6/0.37",
+  "2 iterations, immediate, point friction",
+  "Patch friction costs 19% more. 11 rows per world."
+ ],
+ [
+  "ik_cube_stacking",
+  "MuJoCo",
+  "6.001 \u2192 5.322 (21.7, overflow)",
+  "",
+  "3 \u00d7 5, colored, propagation rows 768",
+  "16/16 stacked. ~290 contacts per world: immediate 4 \u00d7 4 9.8 ms. Needs 673 propagation rows (default 544). contact_gap_gate = 0 drops success to 0\u201381%."
+ ],
+ [
+  "kamino_basic_dr_testmech",
+  "Kamino",
+  "35.0 \u2192 3.32 (7.09)",
+  "none",
+  "20 \u00d7 4, immediate, limits + gap 0.1",
+  "Loop gap 0.357 vs Kamino 0.467 mm. 10 substeps stay at 1.6\u20132.0 mm for any iterations: substeps set the gap here."
+ ],
+ [
+  "kamino_basic_fourbar",
+  "Kamino",
+  "3.78 \u2192 3.68 (8.98, overflow)",
+  "2.85/0.17 \u2192 0.02/0.00",
+  "4 \u00d7 32, rows 64, gap 0.1",
+  "Loop gap 0.20 vs 0.19 mm. Template overflowed 32 rows and dropped contact rows (6.3 mm). Fewer iterations or other substep counts make it fall over."
+ ],
+ [
+  "kamino_basic_heterogeneous",
+  "Kamino",
+  "39.4 \u2192 2.41 (4.98)",
+  "111/34 \u2192 0.38/0.05",
+  "4 \u00d7 12, gap 0.1",
+  "Loop gap 0.029 vs 0.020 mm. Kamino's boxes fall through the floor (z = \u2212176 m). 2 or 3 substeps overflow rows."
+ ],
+ [
+  "kamino_robot_dr_legs",
+  "Kamino",
+  "39.0 \u2192 2.45 (11.18)",
+  "none",
+  "2 \u00d7 32, immediate, gap 0.1",
+  "Loop gap 0.077 vs 0.060 mm (1.3\u00d7). At 64 rows it falls through the ground."
+ ],
+ [
+  "kamino_robot_anymal_d",
+  "Kamino",
+  "134 \u2192 3.29 (9.16)",
+  "5.44/0.45 \u2192 lower",
+  "5 \u00d7 12, immediate, rows 256, gap 0.1",
+  "Ragdoll: resting pose differs in every configuration. At 32 rows it explodes (~850 mm)."
+ ],
+ [
+  "rigid_soft_contact",
+  "XPBD",
+  "15.78 \u2192 15.45 (21.15)",
+  "soft 0.12/0.01 both",
+  "24 shared substeps (was 32), Steel 4 iterations",
+  "At XPBD's 32 substeps no Steel setting goes below 20.4 ms; only fewer shared substeps close it, which also changes XPBD's soft step."
+ ],
+ [
+  "softbody_franka",
+  "Featherstone+VBD",
+  "9.98 \u2192 9.27 (9.19)",
+  "soft 0.04/0.01 both",
+  "Steel 1 iteration, update_mass_matrix_interval = 10",
+  "Arm path identical; VBD sets the cost and the penetration."
+ ],
+ [
+  "cloth_franka",
+  "Featherstone+VBD",
+  "22.77 \u2192 22.35 (22.60)",
+  "276/141 both",
+  "same as softbody_franka",
+  "Identical penetration: VBD is in control. Cloth is chaotic: 110\u2013190 mm particle deviation even between Steel variants."
+ ],
+ [
+  "franka_cable_ik_pick_place",
+  "MuJoCo+VBD",
+  "18.09 \u2192 8.11 (19.49)",
+  "rigid 2.29/0.20 \u2192 similar",
+  "4 \u00d7 12, gap 0.1",
+  "Placement 0.116\u20130.119 cm at 4\u201310 substeps. MuJoCo itself at 5 substeps runs 9.70 ms: the baseline's 10 substeps were not needed."
+ ],
+ [
+  "mpm_anymal",
+  "MuJoCo+MPM",
+  "13.42 \u2192 14.12 (16.10)",
+  "10.4/0.65 \u2192 lower",
+  "immediate, rows 128, 8 iterations, limits + gap",
+  "Bar not met (~5%): MPM dominates the cost. The 0.36 m sideways veer is unchanged by every Steel knob; the sand coupling is one-way, so it is in the robot's own dynamics (also robot_anymal_c_walk)."
+ ],
+ [
+  "franka_cloth_block",
+  "MuJoCo+VBD",
+  "15.75 \u2192 15.37 (27.43)",
+  "block below MuJoCo's",
+  "8 substeps (was 10), Steel 3 iterations, rows 256",
+  "Fewer substeps leave the cloth sagging; 1 iteration misplaces the block; below 160 rows grasp rows drop and the task fails."
+ ],
+ [
+  "franka_shirt_fold_stack",
+  "MuJoCo+VBD",
+  "65.86 \u2192 69.01 (78.31)",
+  "rigid 0.03/0.019",
+  "20 substeps, Steel 2 iterations",
+  "Bar not met (+5%): each Steel substep costs ~0.5 ms more than MuJoCo's, and fewer than 20 substeps lose the fold."
+ ],
+ [
+  "kamino_mujoco_admm_solver",
+  "Kamino+MuJoCo",
+  "7.03 \u2192 6.65 (6.65)",
+  "no contacts",
+  "Steel 4 iterations",
+  "No Steel rows, so iterations change nothing. ADMM joint gap 1.14 vs 0.31 mm peak; more substeps or ADMM iterations narrow it but cost more than the baseline."
+ ],
+ [
+  "mpm_twoway_coupling",
+  "MuJoCo+MPM",
+  "10.23 \u2192 11.18 (11.02)",
+  "",
+  "sand velocity cap 6.5 m/s (example option)",
+  "Bar not met (+9%): the sand dominates. Non-finite grains in 6 of 36 Steel runs (MuJoCo 0 of 12) from box-tower impacts at 10\u201311 m/s; 0 of 36 with the cap."
+ ],
+ [
+  "mujoco_franka_vbd_cable_admm_solver",
+  "MuJoCo+XPBD",
+  "57.82 \u2192 31.71 (79.59)",
+  "same as MuJoCo",
+  "12 substeps (was 16) \u00d7 3 ADMM (was 5), Steel 4 iterations",
+  "Steel steps once per substep and ADMM iteration. Placement 2.4\u20132.65 cm vs MuJoCo's 3.2\u20133.45 (8 worlds). MuJoCo degrades at 3 ADMM iterations."
+ ],
+ [
+  "mujoco_mpm_coupled_solver",
+  "MuJoCo+MPM",
+  "22.12 \u2192 21.25 (22.71)",
+  "box and sand below MuJoCo's",
+  "rigid 2 substeps (was 4) \u00d7 4",
+  "1 substep lets a box sink."
+ ],
+ [
+  "mujoco_vbd_admm_solver",
+  "MuJoCo+VBD",
+  "13.24 \u2192 9.67 (12.76)",
+  "soft within a few % of MuJoCo's",
+  "6 substeps (was 8)",
+  "MuJoCo at 6 substeps shows the same cloth-ball gap change."
+ ],
+ [
+  "mujoco_vbd_coupled_solver",
+  "MuJoCo+VBD",
+  "19.94 \u2192 16.70 (20.65)",
+  "rigid below MuJoCo's, soft matches",
+  "6 substeps (was 8) \u00d7 4",
+  "The 12 mm rigid mean before was misleading: per contact pair, both solvers have deep box-on-box impacts between once-per-frame collision passes; MuJoCo's many shallow box-ground contacts lower its mean."
+ ],
+ [
+  "mujoco_xpbd_coupled_solver",
+  "MuJoCo+XPBD",
+  "35.80 \u2192 34.51 (43.79)",
+  "rigid far below; cloth peak 1.3 vs 0.3\u20130.8, mean lower",
+  "12 substeps (was 16)",
+  "Fewer substeps or Steel iterations cost the cloth more. 64 rows overflow: rigid 122 mm."
+ ],
+ [
+  "proxy_joint_gripper",
+  "MuJoCo+VBD",
+  "36.59 \u2192 11.88 (36.38)",
+  "same as MuJoCo",
+  "2 substeps (was 6) \u00d7 8",
+  "Same finger closure and soft-grid extent. 3 substeps impossible: the graph capture needs an even count."
+ ],
+ [
+  "admm_contact_solver",
+  "SemiImplicit+XPBD",
+  "9.39 \u2192 15.54 (11.98)",
+  "soft 0.77/0.123 \u2192 1.39/0.094 (before 18.4/0.84)",
+  "4 substeps (was 2) \u00d7 8 ADMM (was 12), ADMM baumgarte 1.0 (was 0.1)",
+  "Bar not met; best fidelity chosen. The 18 mm peak came from the ADMM coupling with a reduced-coordinate tray (same under MuJoCo-XPBD). Cheaper: 2 \u00d7 12 ADMM \u00d7 1.0, 11.2 ms, 1.37/0.31 mm."
+ ]
+]

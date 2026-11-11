@@ -1,0 +1,96 @@
+example = "mujoco_franka_vbd_cable_admm_solver"
+source = "newton/examples/multiphysics/example_mujoco_franka_vbd_cable_admm_solver.py @ newton-collab 7565a26b1"
+default = "steel_xpbd"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+# original: --substeps 1 --admm-iterations 1 --xpbd-iterations 2 (now presets, set below)
+args = ["--num-frames", "2", "--world-count", "1", "--payload-segments", "3", "--no-graph-capture", "--set", "sim.substeps=1", "--set", "solver.iterations=1", "--set", "entries.xpbd.solver.iterations=2"]
+
+[gallery]
+short = "A Franka picks and places a short rigid chain tied to a VBD cable."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "untested"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
+
+[mujoco_xpbd]
+status = "works"
+# mujoco owns the Franka arm; XPBD rigid-chain payload.
+sim = { fps = 60, substeps = 16 }
+# contact_matching_pos_threshold / contact_matching_normal_dot_threshold unset: CollisionPipeline defaults.
+solver = { iterations = 5, rho = 200.0, gamma = 0.001, baumgarte = 0.5, rigid_contact_matching = "latest", contact_matching_force_scale = 0.9 }
+# njmax / nconmax are computed from the world count in example.py.
+entries.mujoco.solver = { solver = "newton", integrator = "implicitfast", iterations = 12, ls_iterations = 25, use_mujoco_contacts = false }
+entries.xpbd.solver = { iterations = 16, joint_linear_relaxation = 0.9, joint_angular_relaxation = 0.5, angular_damping = 0.02 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[steel_xpbd]
+status = "works"
+# steel owns the Franka arm; XPBD rigid-chain payload.
+# 12 substeps x 3 ADMM iterations x 4 Steel iterations: fastest setting whose payload lands as well as MuJoCo's
+# (8 worlds, 420 frames: placement error 2.4-2.7 cm mean vs MuJoCo's 3.2-3.5 cm; penetration 1.03 / 0.86 mm vs
+# 1.03 / 0.84, set by the XPBD payload on the ground). Steel runs once per substep and ADMM iteration, so the frame
+# costs 32.4 ms vs MuJoCo's 57.5 (16 x 5 x 24 was 79.6). 10 substeps raises the penetration peak to 1.7 mm,
+# 8 substeps drops the payload 27 cm off target, 2 ADMM iterations misplaces it by 11 cm.
+sim = { fps = 60, substeps = 12 }
+# contact_matching_pos_threshold / contact_matching_normal_dot_threshold unset: CollisionPipeline defaults.
+solver = { iterations = 3, rho = 200.0, gamma = 0.001, baumgarte = 0.5, rigid_contact_matching = "latest", contact_matching_force_scale = 0.9 }
+# Joint limits on as MuJoCo enforces them (off saves 3 ms/frame with the same placement).
+entries.steel.solver = { solve_mode = "matrix_free", iterations = 4, enable_joint_limits = true, articulation_constraint_max = 64 }
+entries.xpbd.solver = { iterations = 16, joint_linear_relaxation = 0.9, joint_angular_relaxation = 0.5, angular_damping = 0.02 }
+# 7 s, past the end of the 6.75 s pick-and-place, at the preset's own settings: the shared check's 1 substep x 1 ADMM
+# iteration goes non-finite at the grasp (t = 2.37 s), so a short run of it says nothing about this preset.
+check = { args = ["--num-frames", "420", "--world-count", "1", "--payload-segments", "3"] }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[mujoco_vbd]
+status = "works"
+# mujoco owns the Franka arm; VBD cable payload.
+sim = { fps = 60, substeps = 16 }
+# contact_matching_pos_threshold / contact_matching_normal_dot_threshold unset: CollisionPipeline defaults.
+solver = { iterations = 5, rho = 200.0, gamma = 0.001, baumgarte = 0.5, rigid_contact_matching = "latest", contact_matching_force_scale = 0.9 }
+# njmax / nconmax are computed from the world count in example.py.
+entries.mujoco.solver = { solver = "newton", integrator = "implicitfast", iterations = 12, ls_iterations = 25, use_mujoco_contacts = false }
+entries.vbd.solver = { iterations = 8, rigid_contact_history = false }
+# The original test's --xpbd-iterations 2 does not apply to the VBD payload.
+check = { args = ["--num-frames", "2", "--world-count", "1", "--payload-segments", "3", "--no-graph-capture", "--set", "sim.substeps=1", "--set", "solver.iterations=1"] }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[steel_vbd]
+status = "works"
+# steel owns the Franka arm; VBD cable payload.
+sim = { fps = 60, substeps = 16 }
+# contact_matching_pos_threshold / contact_matching_normal_dot_threshold unset: CollisionPipeline defaults.
+solver = { iterations = 5, rho = 200.0, gamma = 0.001, baumgarte = 0.5, rigid_contact_matching = "latest", contact_matching_force_scale = 0.9 }
+entries.steel.solver = { solve_mode = "matrix_free", iterations = 24, enable_joint_limits = true, articulation_constraint_max = 64 }
+entries.vbd.solver = { iterations = 8, rigid_contact_history = false }
+# The original test's --xpbd-iterations 2 does not apply to the VBD payload.
+check = { args = ["--num-frames", "2", "--world-count", "1", "--payload-segments", "3", "--no-graph-capture", "--set", "sim.substeps=1", "--set", "solver.iterations=1"] }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"

@@ -1,0 +1,53 @@
+example = "robot_omniwheel"
+source = "newton/examples/robot/example_robot_omniwheel.py @ newton-collab 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "500"]
+
+[gallery]
+short = "A four-wheel warehouse robot on passive barrel rollers."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "works"
+sim = { fps = 60, substeps = 6 }
+solver = { use_mujoco_contacts = false, disable_sensors = true, solver = "newton", integrator = "implicitfast", cone = "elliptic", iterations = 10, ls_iterations = 20, njmax = 2048, nconmax = 1024 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 3 substeps x 4 iterations, immediate response: fastest setting that completes all three drive phases and keeps
+# the ballbot balanced as under MuJoCo (max ball offset 0.194 vs 0.190 m, filtered velocity error 0.25 vs 0.24 m/s),
+# with lower peak and mean penetration (2.2 / 0.39 vs 7.1 / 0.76 mm). contact_gap_gate = 0: the 1 cm shape gap makes
+# the collision pipeline report ~300 rows per world of not-yet-touching roller/hub contacts inside each wheel; they
+# never engage (identical result with or without them), and this example collides every substep, so dropping
+# speculative rows costs no accuracy and halves the frame time. articulation_constraint_max: the remaining
+# contact rows peak at 41 per world. Joint limits off: the wheels and rollers are continuous.
+sim = { fps = 60, substeps = 3 }
+solver = { solve_mode = "matrix_free", iterations = 4, articulated_contact_response = "immediate", articulation_constraint_max = 128, contact_gap_gate = 0.0, enable_joint_limits = false }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

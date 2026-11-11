@@ -1,0 +1,46 @@
+example = "ratio_stack"
+source = "steel-webgpu tools/scenes.py ratio_stack() @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode: 10 s, long enough for an unstable tower to topple.
+args = ["--num-frames", "600"]
+
+[gallery]
+short = "Six cubes, each three times heavier than the one below."
+title = "Mass-ratio stack"
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# the browser's settings: its export defaults (joint limits on) plus the scene's own, momentum among them;
+# nesterov_momentum requires the serial solve with immediate articulated contact response
+sim = { fps = 60, substeps = 8 }
+solver = { solve_mode = "serial", iterations = 16, articulated_contact_response = "immediate", enable_joint_limits = true, nesterov_momentum = true }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

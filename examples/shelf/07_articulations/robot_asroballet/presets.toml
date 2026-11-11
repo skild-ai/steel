@@ -1,0 +1,57 @@
+example = "robot_asroballet"
+source = "newton/examples/robot/example_robot_asroballet.py @ newton-collab 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "500"]
+
+[gallery]
+short = "LQR and learned-policy control of the asRoBallet robot."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "works"
+sim = { fps = 50, substeps = 10 }
+solver = { iterations = 100, ls_iterations = 50, njmax = 512, nconmax = 1024, use_mujoco_cpu = true, use_mujoco_contacts = true, enable_multiccd = true }
+# Applied to the solver's mj_model.opt after construction.
+model = { noslip_iterations = 1 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+sim = { fps = 50, substeps = 10 }
+# every_substep: run Newton's collision pipeline before every solver step (else once per control period).
+collision = { every_substep = true }
+# 10 substeps x 4 iterations, immediate response: fastest setting that balances like MuJoCo (base wanders 0.10 m
+# in 10 s in both) with lower peak and mean penetration (0.8 / 0.06 vs 2.1 / 0.51 mm). 10 substeps are fixed by the
+# policy (control_decimation 5 at 100 Hz). Colliding once per control period instead of every substep makes the
+# robot fall; 2 iterations is no faster, and point friction overflows 256 rows. enable_joint_friction: the MJCF joints carry
+# frictionloss (wheels and rollers 0.1 N m), which MuJoCo enforces. articulation_constraint_max: the 36 rollers
+# on the ball need up to 244 rows per world. Joint limits off (not measured): the arms hold their targets well
+# inside their ranges and the wheels and rollers are continuous.
+solver = { solve_mode = "matrix_free", iterations = 4, articulated_contact_response = "immediate", articulation_constraint_max = 384, enable_joint_friction = true, enable_joint_limits = false }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
