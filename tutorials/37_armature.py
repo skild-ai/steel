@@ -1,4 +1,4 @@
-"""Joint armature: rotor inertia added to a DOF slows its response and stabilizes light links."""
+"""Joint armature: rotor inertia added to a DOF slows its response and damps fast light links."""
 
 import math
 
@@ -12,6 +12,7 @@ from replay import Recorder
 DT = 1.0 / 240.0
 SUBSTEPS = 8
 ARMATURE = [0.0, 0.02, 0.1]  # kg m^2
+CHAIN_ARMATURE = [0.0, 0.001, 0.01]  # kg m^2
 
 
 def tf(x, y, z):
@@ -69,6 +70,13 @@ def build_chain(armature):
     return builder.finalize()
 
 
+def swing_energy(model, state):
+    """Energy above the chain hanging straight down at rest [J]."""
+    rest = model.state()
+    newton.eval_fk(model, wp.zeros_like(model.joint_q), model.joint_qd, rest)
+    return energy(model, state) - energy(model, rest)
+
+
 def energy(model, state):
     """Kinetic plus potential energy, including the joints' armature [J]."""
     mass, inertia = model.body_mass.numpy(), model.body_inertia.numpy()
@@ -91,11 +99,11 @@ def simulate_chain(rec, armature):
     contacts = pipeline.contacts()
     state_0, state_1, control = model.state(), model.state(), model.control()
     newton.eval_fk(model, model.joint_q, model.joint_qd, state_0)
-    start = energy(model, state_0)
+    start, swing = energy(model, state_0), swing_energy(model, state_0)
 
     run = rec.variant(f"light chain, armature {armature:g}", model, scene="chain")
-    for _ in range(rec.frames(4.0)):
-        run.frame(state_0, energy_change_pct=100.0 * (energy(model, state_0) - start) / start)
+    for _ in range(rec.frames(8.0)):
+        run.frame(state_0, energy_change_pct=100.0 * (energy(model, state_0) - start) / swing)
         for _ in range(SUBSTEPS):
             pipeline.collide(state_0, contacts)
             solver.step(state_0, state_1, control, contacts, DT)
@@ -125,6 +133,6 @@ def simulate(rec, label):
 if __name__ == "__main__":
     rec = Recorder()
     simulate(rec, "armature 0 | 0.02 | 0.1 kg m^2")
-    for armature in [0.0, 0.001]:
+    for armature in CHAIN_ARMATURE:
         simulate_chain(rec, armature)
     rec.save()

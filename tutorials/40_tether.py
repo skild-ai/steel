@@ -36,6 +36,8 @@ def build(kind):
         joints = [
             builder.add_joint_distance(-1, weight, parent_xform=tf(*ANCHOR), max_distance=LENGTH)
         ]
+        # add_joint_distance leaves joint_q at zero, which would put the weight on the anchor
+        builder.joint_q[-7:-4] = [start[i] - ANCHOR[i] for i in range(3)]
     else:
         # a massless swivel at the anchor, then a slider out along the tether limited to [0, LENGTH]
         swivel = builder.add_link(xform=tf(*ANCHOR), mass=0.0)

@@ -10,12 +10,13 @@ cone; the experimental modes solve normal and friction impulses together and use
 friction."""
 look = [
   "fixed_normal (default) and coulomb_newton stop the box at 404 mm.",
-  "bisection stops it at 431 mm.",
+  "bisection stops it at 431 mm: its friction is too weak while the box slides.",
   "All three modes give the ball the same 0.84 m/s rolling speed.",
-  "Second scene, a box at 90% of its friction limit with only 4 iterations: fixed_normal slips 1.17 mm in 5 s, coulomb_newton 0.38 mm and bisection 0.02 mm. With few iterations the coupled modes win.",
+  "Second scene, a box at 97% of its friction limit with the default 12 iterations: fixed_normal slips 0.11 mm in 5 s and coulomb_newton 0.07 mm, while bisection slides 1.2 m.",
+  "Both bisection results come from one cause: each probe scales the stick impulse radially onto the friction disk, which is the wrong projection for a contact off the center of mass. More iterations do not help.",
 ]
 try = [
-  "Raise iterations and see whether bisection moves toward 408 mm.",
+  "Raise iterations to 32: bisection still slides on the slope.",
   "Add \"bisection_desaxce\" to the loop.",
 ]
 spacing = [0, 0.7, 0]
@@ -40,7 +41,7 @@ unit = "m/s"
 [[metric.charts]]
 scene = "slope"
 key = "slope_slip_mm"
-label = "slip on a slope at 90% of the limit, 4 iterations"
+label = "slip on a slope at 97% of the limit"
 unit = "mm"
 
 [concept]
@@ -52,7 +53,8 @@ and coulomb_newton solve normal and tangent impulses of a contact together."""
 here = """\
 fixed_normal and coulomb_newton stop the sliding box at 404 mm against 408 mm analytic; \
 bisection stops it at 431 mm. All three give the spinning ball 0.84 m/s against 0.857 \
-analytic."""
+analytic. At 97% of the limit fixed_normal and coulomb_newton hold the box to 0.1 mm, and \
+bisection lets it slide 1.2 m in 5 s."""
 
 [[concept.consider]]
 term = "Cost"
@@ -61,14 +63,17 @@ text = "The coupled modes do more work per contact and use point friction."
 [[concept.consider]]
 term = "Accuracy"
 text = """\
-With few iterations the coupled modes hold static friction better: at 90% of the limit and 4 \
-iterations, slip is 1.17 mm (fixed_normal), 0.38 (coulomb_newton), 0.02 (bisection)."""
+coulomb_newton matches fixed_normal on these checks. At 90% of the limit with only 4 \
+iterations, one run had bisection slipping least (0.02 mm against 1.17 mm for fixed_normal and \
+0.38 mm for coulomb_newton); that was a transient that happened to fall its way, not an \
+advantage."""
 
 [[concept.consider]]
 term = "Failure modes"
 text = """\
-In a separate run at 97% of the limit, bisection let the box slide away even at 12 iterations \
-while coulomb_newton held it to 0.002 mm."""
+bisection and bisection_desaxce converge to a slipping answer near the friction limit, and their \
+normal-impulse bracket can miss the root. In a separate run at 97% of the limit, \
+bisection_desaxce slid 0.44 m in 5 s at 12 iterations and 0.28 m at 32."""
 
 [[concept.consider]]
 term = "Interactions"
@@ -77,5 +82,9 @@ text = "Patches, torsion, compliance and contact_regularization need fixed_norma
 [[concept.consider]]
 term = "Use it when"
 text = """\
-coulomb_newton for free-body contacts near the friction limit at low iteration counts; \
-otherwise fixed_normal with patches."""
+fixed_normal with patches; coulomb_newton for free-body contacts near the friction limit. Avoid \
+the bisection modes until the fix below lands."""
+
+[[in_review]]
+pr = 26
+text = "Solves each bisection probe's friction on the disk and brackets the normal impulse so it holds the root; in its tests both bisection modes hold a box at 97% of the limit and stop the sliding box at 404 mm."

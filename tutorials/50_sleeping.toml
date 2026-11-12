@@ -5,16 +5,22 @@ title = "Sleeping islands"
 about = """\
 Four towers settle and fall asleep (shown in blue) once their bodies stay below 0.05 m/s and \
 0.15 rad/s for 0.5 s. Islands are rebuilt every step from contacts, and sleeping islands skip \
-their rows and their dynamics. A ball pushed at 7 s wakes only the tower it hits."""
+their rows and their dynamics. A ball pushed at 7 s wakes only the tower it hits. A second \
+scene runs 64 worlds of the same towers, with the default collision pipeline and with \
+CollisionPipeline(deterministic=True); the replay shows world 0 and the chart counts every \
+world."""
 look = [
-  "The towers settle, and by about 2.7 s every body is asleep.",
+  "One world: the towers settle, and by about 2.8 s every body is asleep.",
   "At 7 s the ball wakes and topples one tower; the other three stay asleep.",
+  "64 worlds, default pipeline: only 12% of the bodies are asleep after 6 s. The pipeline writes the same contacts in a different order on each call, and sleeping rules out warm start, so resting boxes keep a jitter that reaches the 0.15 rad/s threshold.",
+  "64 worlds, CollisionPipeline(deterministic=True): sorted contacts roughly halve the jitter, and every body is asleep by 1.2 s.",
 ]
 try = [
   "Set sleep_quiet_time=2.0.",
   "Pass sleep_skip_constraints=False to keep the rows of sleeping islands.",
+  "Keep the default pipeline in the 64-world scene and set sleep_angular_threshold=0.3.",
 ]
-spacing = [0, 0, 0]
+spacing = [0, 2.2, 0]
 
 [param]
 name = "enable_sleeping"
@@ -22,10 +28,17 @@ text = """\
 Experimental. sleep_linear_threshold, sleep_angular_threshold and sleep_quiet_time set when an \
 island sleeps; the body_awake observable reports it."""
 
-[metric]
+[[metric.charts]]
+scene = "one"
 key = "awake_bodies"
-label = "awake bodies"
+label = "awake bodies, one world"
 unit = ""
+
+[[metric.charts]]
+scene = "worlds"
+key = "asleep_pct"
+label = "bodies asleep across 64 worlds"
+unit = "%"
 
 [concept]
 name = "Sleeping islands"
@@ -34,18 +47,26 @@ Bodies in contact are joined into islands every step. A supported island whose b
 below 0.05 m/s and 0.15 rad/s for 0.5 s falls asleep: its state is frozen and its rows and \
 dynamics are skipped until a wake event such as a force, a contact with a moving body or lost \
 support."""
-here = "All 21 bodies are asleep at 2.7 s; the ball pushed at 7 s wakes one tower plus itself."
+here = """\
+All 21 bodies are asleep at 2.8 s; the ball pushed at 7 s wakes one tower plus itself. In 64 \
+worlds, 12% of the bodies sleep after 6 s with the default pipeline and all of them by 1.2 s \
+with the deterministic one."""
 
 [[concept.consider]]
 term = "Cost"
 text = """\
-In one world the settled towers step 6.7× faster (2.0 → 0.30 ms). In 64 and 1024 copies of the \
-same world there was no gain, because most bodies never fell asleep: 995 of 1280 were still \
-awake after 6 s in a separate 64-world run (8 worlds: all asleep by 5 s)."""
+In one world the settled towers step 7× faster (2.0 → 0.28 ms). The table's 64 and 1024 worlds \
+use the default pipeline and show no gain, because most bodies stay awake. In a separate \
+measurement on the same GPU with CollisionPipeline(deterministic=True), every island slept and \
+a 1024-world solver step took 1.09 ms instead of 3.49 ms."""
 
 [[concept.consider]]
 term = "Failure modes"
-text = "Check body_awake in batched setups before counting on the saving."
+text = """\
+With the default pipeline, whether islands sleep varies between runs and does not change \
+monotonically with the world count: in separate runs 8 worlds mostly slept, while 16 to 128 \
+worlds left most bodies awake. Nothing in this scene couples the worlds. Check body_awake in \
+batched setups."""
 
 [[concept.consider]]
 term = "Interactions"
@@ -55,7 +76,9 @@ awake; contact_f reads zero under sleeping bodies."""
 
 [[concept.consider]]
 term = "Use it when"
-text = "Large mostly-resting scenes, measured on your own setup."
+text = """\
+Large mostly-resting scenes, with CollisionPipeline(deterministic=True) or a larger \
+sleep_angular_threshold in batched setups; measure on your own setup."""
 
 [timing]
 group = "sleeping"
@@ -63,4 +86,8 @@ scene = "Scene: four 5-box towers per world, timed after 4 s of settling."
 
 [timing.notes]
 "enable_sleeping=False" = ""
-"enable_sleeping=True" = "1 world: all asleep at 2.7 s; 64 worlds: most stay awake (separate run)"
+"enable_sleeping=True" = "1 world: all asleep at 2.8 s; 64 and 1024 worlds: most stay awake with this default pipeline"
+
+[[in_review]]
+pr = 25
+text = "Documents in the solver why resting stacks can stay awake with the default contact order, and the deterministic pipeline and threshold remedies."

@@ -22,8 +22,9 @@ spacing = [0, 0, 0]
 name = "stiffness / rest_q / damping"
 text = """\
 Joint arguments, applied explicitly: springs stay stable for roughly dt·√(k/m) < 2, and \
-damping for dt·d/I well below 1. For stiff springs or heavy damping on light links use \
-target_ke and target_kd, which Steel integrates implicitly."""
+damping while dt·d·λmax(H⁻¹) < 2, where λmax(H⁻¹) is 1/I for one link but much larger for \
+chains of light links. For stiff springs or heavy damping on light links use target_ke and \
+target_kd, which Steel integrates implicitly."""
 
 [metric]
 key = "k6_d0.3"
@@ -45,11 +46,17 @@ returns without overshoot."""
 [[concept.consider]]
 term = "Stability"
 text = """\
-Keep h·√(k/m) < 2 and h·d/I well below 1. While recording, damping 0.05 on a chain of ~0.1 kg \
-capsule links diverged within 0.05 s."""
+Keep h·√(k/m) < 2 and h·d·λmax(H⁻¹) < 2. A six-link chain of 0.1 kg capsules has \
+λmax(H⁻¹) ≈ 4×10⁴, so at 240 Hz damping above about 0.012 diverges; while recording, damping \
+0.05 on it went to NaN within 0.06 s. SolverFeatherstone has the same limit; MuJoCo treats \
+joint damping implicitly."""
 
 [[concept.consider]]
 term = "Use it when"
 text = """\
 Soft passive springs. For stiff springs or strong damping on light links use target_ke and \
 target_kd, which Steel integrates implicitly."""
+
+[[in_review]]
+pr = 18
+text = "Integrates passive joint damping implicitly, like the drives, which removes the damping limit above."

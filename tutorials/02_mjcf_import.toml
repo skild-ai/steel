@@ -6,8 +6,8 @@ about = """\
 The same MJCF scene loaded twice: a box under a ceiling and a ball rolling on the floor. \
 SolverSteel.register_custom_attributes(builder) before add_mjcf makes the importer read a \
 geom's adhesion attribute into steel:adhesion, and MJCF's friction=\"slide torsional rolling\" \
-fills shape_material_mu, _torsional and _rolling. steel:condim cannot be written in MJCF, so \
-the script sets it after import."""
+fills shape_material_mu, _torsional and _rolling. The importer does not read a geom's condim \
+into steel:condim, so the script sets it after import."""
 look = [
   "Without adhesion the box falls 0.9 m to the floor; with adhesion=\"20\" (4 corner contacts, 80 N against 9.8 N) it hangs.",
   "With condim 6 set after import, the ball's imported rolling coefficient stops it in 2.0 s; with condim 3 it keeps rolling at 0.68 m/s.",
@@ -46,8 +46,9 @@ coefficient stops the ball once condim 6 is set."""
 [[concept.consider]]
 term = "Interactions"
 text = """\
-MJCF condim belongs to SolverMuJoCo; steel:condim needs a namespaced XML attribute, which the \
-importer does not read, so set it in Python or through USD newton:steel:condim."""
+MJCF condim fills only SolverMuJoCo's mujoco:condim. steel:condim cannot be written in MJCF \
+either: a prefixed XML attribute needs a namespace declaration, and the importer does not read \
+the namespaced form. Set it in Python or through USD newton:steel:condim."""
 
 [[concept.consider]]
 term = "Failure modes"
@@ -60,3 +61,7 @@ text = "The USD route was not recorded here: the recording environment has no US
 [[concept.consider]]
 term = "Use it when"
 text = "Assets authored for MuJoCo or PhysX should carry their contact behaviour into Steel."
+
+[[in_review]]
+pr = 22
+text = "Reads MJCF condim into steel:condim as well as mujoco:condim (condim 1 imports as 3), so a condim authored on a free body's geom reaches Steel without the fill after import."

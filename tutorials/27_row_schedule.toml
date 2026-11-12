@@ -14,7 +14,7 @@ look = [
   "Grasp: interleaved and phased hold the box within a few millimetres through the shake; contact_then_internal drops it (258 mm of slip).",
 ]
 try = [
-  "Raise iterations to 12 and compare the stop.",
+  "Raise iterations to 64: interleaved's overshoot past the stop nearly vanishes, and contact_then_internal still drops the box.",
   "Use drive_mode=\"augmented\" in the grasp and see which schedules still differ.",
 ]
 spacing = [0, 0.8, 0]
@@ -51,7 +51,8 @@ Interleaving lets contacts and internal rows trade impulses every iteration."""
 here = """\
 Solving every internal row after the contacts held the hinge limit exactly but let the loaded \
 box pass through the arm, and released the grasp. Phased matched interleaved within 0.2 mm of \
-slip."""
+slip. The box falls at 4, 8, 16 and 64 iterations alike: it is the order, not the iteration \
+count."""
 
 [[concept.consider]]
 term = "Cost"
@@ -61,7 +62,11 @@ contact_then_internal 8 to 11% slower (1, 64 and 1024 worlds)."""
 
 [[concept.consider]]
 term = "Failure modes"
-text = "A late block of internal rows can override contacts that support a load."
+text = """\
+During the contact iterations a link held by a limit or drive looks free, so the contacts pass \
+the load into it, and the internal rows then take it away again. The load reaches the limit only \
+through position correction: a body of mass M resting on a link of effective mass m sinks about \
+(1 + M/m)·g·h²/baumgarte, at any iteration count, and a heavy enough body falls through."""
 
 [[concept.consider]]
 term = "Interactions"
@@ -70,8 +75,8 @@ text = "Torsion, compliance and sparse factors require interleaved."
 [[concept.consider]]
 term = "Use it when"
 text = """\
-Keep interleaved. Use phased to match a PhysX-tuned grasp; we found no scene where \
-contact_then_internal was better."""
+Keep interleaved. Use phased to match a PhysX-tuned grasp. Avoid contact_then_internal when \
+contacts load a limit or drive; we found no scene where it was better."""
 
 [timing]
 group = "row_schedule"
@@ -81,3 +86,7 @@ scene = "Scene: the hinged arm on its stop under the heavy box, 4 iterations."
 "row_schedule=\"interleaved\"" = "1.6° past the stop, box held"
 "row_schedule=\"contact_then_internal\"" = "limit exact, box falls through"
 "row_schedule=\"phased\"" = "same as interleaved"
+
+[[in_review]]
+pr = 20
+text = "Documents in the solver that contact_then_internal sinks a contact load carried by an internal row, at any iteration count."

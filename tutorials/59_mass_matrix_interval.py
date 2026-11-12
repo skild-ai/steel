@@ -23,7 +23,7 @@ def build():
         link = builder.add_link(xform=tf(0.0, 0.0, 1.0 - 0.1 * i - 0.05))
         builder.add_shape_capsule(link, radius=0.02, half_height=0.03)
         anchor = tf(0.0, 0.0, 1.0) if parent < 0 else tf(0.0, 0.0, -0.05)
-        # a little armature keeps a chain of very light links from gaining energy
+        # the armature tutorial's 0.001: at 240 Hz this light chain still gains energy
         joints.append(
             builder.add_joint_revolute(
                 parent,
@@ -38,6 +38,13 @@ def build():
         parent = link
     builder.add_articulation(joints)
     return builder.finalize()
+
+
+def swing_energy(model, state):
+    """Energy above the chain hanging straight down at rest [J]."""
+    rest = model.state()
+    newton.eval_fk(model, wp.zeros_like(model.joint_q), model.joint_qd, rest)
+    return energy(model, state) - energy(model, rest)
 
 
 def energy(model, state):
@@ -55,21 +62,26 @@ def energy(model, state):
     return total + 0.5 * (model.joint_armature.numpy() * state.joint_qd.numpy() ** 2).sum()
 
 
-def simulate(rec, interval):
+def simulate(rec, interval, substeps=SUBSTEPS):
     model = build()
     solver = SolverSteel(model, update_mass_matrix_interval=interval)
     pipeline = newton.CollisionPipeline(model)
     contacts = pipeline.contacts()
     state_0, state_1, control = model.state(), model.state(), model.control()
     newton.eval_fk(model, model.joint_q, model.joint_qd, state_0)
+    start, swing = energy(model, state_0), swing_energy(model, state_0)
+    dt = DT * SUBSTEPS / substeps
 
     label = f"update_mass_matrix_interval={interval}" + (" (default)" if interval == 1 else "")
+    if substeps != SUBSTEPS:
+        label += f", {round(1.0 / dt)} Hz steps"
     run = rec.variant(label, model)
-    for _ in range(rec.frames(4.0)):
-        run.frame(state_0, tip_x=state_0.body_q.numpy()[-1, 0], energy=energy(model, state_0))
-        for _ in range(SUBSTEPS):
+    for _ in range(rec.frames(8.0)):
+        energy_change = 100.0 * (energy(model, state_0) - start) / swing
+        run.frame(state_0, tip_x=state_0.body_q.numpy()[-1, 0], energy_change_pct=energy_change)
+        for _ in range(substeps):
             pipeline.collide(state_0, contacts)
-            solver.step(state_0, state_1, control, contacts, DT)
+            solver.step(state_0, state_1, control, contacts, dt)
             state_0, state_1 = state_1, state_0
     run.check(solver)
 
@@ -78,4 +90,5 @@ if __name__ == "__main__":
     rec = Recorder()
     for interval in [1, 4, 16]:
         simulate(rec, interval)
+    simulate(rec, 1, substeps=4 * SUBSTEPS)  # a quarter of the step, for reference
     rec.save()

@@ -7,15 +7,17 @@ relaxation scales every Gauss-Seidel update: each row moves its impulse ω times
 would satisfy it. ω above 1 over-relaxes and carries corrections further per sweep; below 1 \
 under-relaxes. cfm adds a small constant to every row's effective-mass diagonal. The eight-box \
 stack runs at 6 iterations with ω = 1, 1.4 and 1.8 and with cfm = 0.01; a second scene drops a \
-ball with restitution 0.8 at ω = 1 and 1.8."""
+ball with restitution 0.8 at ω = 1 and 1.8; a third rests a 1 kg sphere on the ground with and \
+without contact_regularization, at cfm 1e-6 (default) and 1."""
 look = [
-  "Stack: sag falls from 4.4 mm (ω = 1) to 2.2 mm (1.4) and 1.2 mm (1.8).",
-  "cfm 0.01 leaves the sag at 4.4 mm: these rows are not redundant enough to need it.",
+  "Stack: sag falls from 4.3 mm (ω = 1) to 2.5 mm (1.4) and 1.1 mm (1.8).",
+  "cfm 0.01 leaves the sag at about 4.4 mm. cfm only enters the denominator of each update, so it scales each step by A/(A + cfm), with A the row's unit response (1/m for a contact in line with a body's center of mass, more off it); for these 1 kg boxes 0.01 changes each step by about 1% or less.",
+  "Resting sphere: without regularization, cfm 1 still leaves it on the surface, since the sweep converges to the same impulse. With contact_regularization=0.5 it settles 0.43 mm deep, and cfm 1, equal to its A, doubles that to 0.85 mm.",
   "Bounce: at ω = 1.8 the second bounce reaches 23 cm instead of 32 cm, and the ball stops sooner.",
 ]
 try = [
   "Try ω = 1.8 on the four-bar loop closure tutorial at 2 iterations.",
-  "Raise cfm to 0.1 and watch the stack soften.",
+  "Raise cfm to 0.1 on the stack: the converged sag barely changes; lower iterations to 2 to see the slower sweep.",
 ]
 spacing = [0, 0.35, 0]
 
@@ -37,23 +39,37 @@ key = "height"
 label = "ball height"
 unit = "m"
 
+[[metric.charts]]
+scene = "rest"
+key = "penetration_mm"
+label = "resting sphere penetration"
+unit = "mm"
+
 [concept]
 name = "Successive over-relaxation and constraint force mixing"
 what = """\
 Over-relaxation multiplies each row's Gauss-Seidel correction by ω. On slowly converging \
 problems, such as load running down a stack, it speeds convergence. Coupled friction modes are \
-not scaled. cfm adds a small value to every row's diagonal, which keeps redundant rows from \
-fighting."""
+not scaled. cfm adds a value to every row's diagonal: it shortens each step like ω below 1 and \
+leaves the answer of an unregularized row unchanged, but a row regularized by \
+contact_regularization settles at a residual that grows with A + cfm."""
 eq = "λ ← λ + ω · Δλ"
 here = """\
-ω = 1.8 cut the stack's sag from 4.4 to 1.2 mm at 6 iterations, but took 28% off the second \
+ω = 1.8 cut the stack's sag from 4.3 to 1.1 mm at 6 iterations, but took 28% off the second \
 bounce of a restitution 0.8 ball (32 → 23 cm). In separate runs ω = 1.6 cut a four-bar's \
 closure gap at 2 iterations from 163 to 52 mm; ω = 1.4 left a 40-object pile with five times \
-the residual kinetic energy of ω = 1; cfm from 1e-6 to 0.01 changed neither scene."""
+the residual kinetic energy of ω = 1; cfm from 1e-6 to 0.01 changed neither scene. On the \
+regularized sphere cfm 1 doubled the resting penetration (0.43 → 0.85 mm)."""
 
 [[concept.consider]]
 term = "Cost"
 text = "None: the same sweeps with a different step."
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+cfm also floors the regularization of enable_bilateral_preelimination. Drive rows of \
+drive_mode="rows" and the coupled friction modes' contact blocks leave it out."""
 
 [[concept.consider]]
 term = "Accuracy"
@@ -63,4 +79,9 @@ text = "ω > 1 overshoots single contacts, which damps bounces and can leave pil
 term = "Use it when"
 text = """\
 Raise ω to 1.4–1.8 for stacks and loops at low iteration counts after checking bounces and \
-resting piles; leave cfm at its default unless rows are truly redundant."""
+resting piles. Leave cfm at its default; to soften contacts use contact_regularization or \
+contact_compliance."""
+
+[[in_review]]
+pr = 24
+text = "Documents in the solver what cfm does: it scales each Gauss-Seidel step, keeps the converged answer of unregularized rows, and deepens regularized contacts."

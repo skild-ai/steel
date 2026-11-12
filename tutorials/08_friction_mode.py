@@ -28,30 +28,32 @@ def build():
     return model
 
 
-def build_slope(ratio=0.9):
-    """A box on a slope at ``ratio`` of its friction limit."""
+def build_slope(ratio=0.97):
+    """A box near the top of a 3 m slope, at ``ratio`` of its friction limit, above a floor."""
     builder = newton.ModelBuilder()
-    tilt = wp.quat_from_axis_angle(wp.vec3(0.0, 1.0, 0.0), -math.atan(ratio * MU))
+    angle = math.atan(ratio * MU)
+    tilt = wp.quat_from_axis_angle(wp.vec3(0.0, 1.0, 0.0), -angle)
     cfg = newton.ModelBuilder.ShapeConfig(mu=MU)
-    builder.add_shape_box(
-        -1, xform=wp.transform((0.0, 0.0, 0.3), tilt), hx=0.6, hy=0.2, hz=0.05, cfg=cfg
-    )
+    builder.add_ground_plane(cfg=cfg)
+    center = np.array([0.0, 0.0, 1.5 * math.sin(angle)])
+    builder.add_shape_box(-1, xform=wp.transform(center, tilt), hx=1.5, hy=0.2, hz=0.05, cfg=cfg)
     normal = np.array(wp.quat_rotate(tilt, wp.vec3(0.0, 0.0, 1.0)))
-    box = builder.add_body(xform=wp.transform(np.array([0.0, 0.0, 0.3]) + 0.11 * normal, tilt))
+    uphill = np.array(wp.quat_rotate(tilt, wp.vec3(1.0, 0.0, 0.0)))
+    start = center + 1.2 * uphill + 0.11 * normal
+    box = builder.add_body(xform=wp.transform(start, tilt))
     builder.add_shape_box(box, hx=0.12, hy=0.08, hz=0.06, cfg=cfg)
     return builder.finalize()
 
 
 def simulate_slope(rec, mode):
     model = build_slope()
-    # few iterations leave the normal impulse unconverged, which the coupled modes account for
-    solver = SolverSteel(model, friction_mode=mode, friction_anchor_beta=0.0, iterations=4)
+    solver = SolverSteel(model, friction_mode=mode, friction_anchor_beta=0.0)
     pipeline = newton.CollisionPipeline(model)
     contacts = pipeline.contacts()
     state_0, state_1, control = model.state(), model.state(), model.control()
     start = state_0.body_q.numpy()[0, :3].copy()
 
-    run = rec.variant(f'slope, iterations=4, "{mode}"', model, scene="slope")
+    run = rec.variant(f'slope at 97% of the limit, "{mode}"', model, scene="slope")
     for _ in range(rec.frames(5.0)):
         run.frame(
             state_0, slope_slip_mm=1000.0 * np.linalg.norm(state_0.body_q.numpy()[0, :3] - start)

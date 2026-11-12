@@ -52,13 +52,19 @@ Memory grows with capacity × worlds: for 1024 eight-box worlds the solver alloc
 
 [[concept.consider]]
 term = "Failure modes"
-text = "Dropped contacts let objects sink or fall through, sometimes only for a frame."
+text = """\
+Dropped contacts let objects sink or fall through, sometimes only for a frame. Which contacts \
+keep their rows follows the order of reservation, which by default changes every step; a \
+contact that penetrated while dropped is pushed out when it gets rows back, which adds energy \
+and can make the state diverge. With deterministic=RUN_TO_RUN and \
+CollisionPipeline(deterministic=True) the same contacts keep their rows and an overflow repeats \
+exactly, which helps reproduce it but does not fix it."""
 
 [[concept.consider]]
 term = "Use it when"
 text = """\
-Size from row_watermark over a representative episode with margin; check \
-check_constraint_capacity in tests."""
+Size from row_watermark over a representative episode with margin, so that nothing overflows; \
+check check_constraint_capacity in tests."""
 
 [timing]
 group = "capacity"
@@ -68,3 +74,7 @@ scene = "Scene: the 8-box stack in each world, 8 steps of 1/240 s per frame."
 "free_body_constraint_max=128" = "drops rows on this stack"
 "free_body_constraint_max=512 (default)" = "fits"
 "free_body_constraint_max=2048" = "fits"
+
+[[in_review]]
+pr = 21
+text = "Documents in the solver which contacts keep their rows when a capacity overflows, and that a changing kept set can add energy."

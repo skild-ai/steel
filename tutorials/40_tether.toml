@@ -3,12 +3,14 @@
 id = "tether"
 title = "Tethers and distance joints"
 about = """\
-A 0.4 m tether two ways. A DISTANCE root joint with max_distance=0.4 is simulated by Steel as \
-a free joint: its distance limits are not enforced (the builder documents distance joints for \
-SolverXPBD), so the weight falls to the floor. A massless swivel on a ball joint plus a \
-prismatic slider limited to [0, 0.4] m, with enable_joint_limits=True, holds the range."""
+A 0.4 m tether two ways, both started 0.32 m from the anchor. A DISTANCE root joint with \
+max_distance=0.4 is simulated by Steel as a free joint: its distance limits are not enforced, \
+even with enable_joint_limits=True, so the weight falls to the floor. A massless swivel on a \
+ball joint plus a prismatic slider limited to [0, 0.4] m, with enable_joint_limits=True, holds \
+the range. add_joint_distance leaves joint_q at zero, which would put the weight on the anchor, \
+so the script sets the joint's position coordinates to the start offset."""
 look = [
-  "DISTANCE joint: the weight ends 0.95 m from the anchor, on the floor.",
+  "DISTANCE joint: the weight ends 1.0 m from the anchor, on the floor.",
   "Ball + slider: the weight swings and never exceeds 0.400 m.",
 ]
 try = [
@@ -36,7 +38,8 @@ A tether is a one-sided distance limit. Steel accepts DISTANCE joints only as ro
 treats them like free joints, without the distance limit. In reduced coordinates the same \
 constraint is a swivel plus a slider whose joint limit becomes a unilateral row."""
 here = """\
-The DISTANCE weight falls to 0.95 m; the swivel-and-slider weight stays at or inside 0.4 m."""
+The DISTANCE weight falls to 1.0 m from the anchor; the swivel-and-slider weight stays at or \
+inside 0.4 m."""
 
 [[concept.consider]]
 term = "Cost"
@@ -52,4 +55,10 @@ text = "Needs enable_joint_limits=True; slack tethers impose nothing."
 
 [[concept.consider]]
 term = "Use it when"
-text = "Cables, leashes and safety tethers in Steel; use SolverXPBD for DISTANCE joints."
+text = """\
+Cables, leashes and safety tethers in Steel. For DISTANCE joints with limits, use SolverXPBD \
+until the change below lands."""
+
+[[in_review]]
+pr = 23
+text = "Enforces min_distance and max_distance with enable_joint_limits=True on DISTANCE joints that root their articulation, and raises for limited DISTANCE joints elsewhere."

@@ -11,7 +11,8 @@ applies cached body responses instead of walking the tree each iteration, and \
 propagation_color_order picks the order of the colored batches."""
 look = [
   "The chain lands the same way in every run; same_articulation_rows turns the 96 dense self-contact rows into propagation rows.",
-  "The 96 dense rows do not fit the default articulation_constraint_max of 32. As propagation rows they do: the last run uses the default capacity and lands like the others. A separate run that kept them dense at 32 dropped rows and went non-finite.",
+  "The 96 dense rows do not fit the default articulation_constraint_max of 32. As propagation rows they do: the last run uses the default capacity and lands like the others. Separate runs that kept them dense at 32 dropped rows, and some went non-finite.",
+  "The divergence comes from which contacts keep their rows: by default that set changes every step, and contacts that penetrated while dropped are pushed out when they return, which adds energy. In 6 runs each it diverged in 1 with this colored propagation solve and in 4 with the default immediate response; with deterministic solver and pipeline order it repeated exactly and stayed finite.",
 ]
 try = [
   "Set propagation_constraint_max=64 and shrink free_body_constraint_max.",
@@ -77,3 +78,7 @@ scene = "Scene: the folding twelve-link chain in each world."
 "propagation_cached_response=False" = "same result"
 "propagation_color_order=\"rotating\"" = "same result"
 "propagation_constraint_max=64, free_body_constraint_max=8" = "fits, less memory"
+
+[[in_review]]
+pr = 21
+text = "Documents in the solver which contacts keep their rows when a capacity overflows, and that a changing kept set can add energy."
