@@ -877,7 +877,7 @@
         "line": 499
       }
     ],
-    "shelf/02_many_contacts/vbd_rigid_rigid_contact/example.py": [
+    "shelf/02_many_contacts/shapes_in_box/example.py": [
       {
         "call": "get_asset_directory",
         "function": "newton.examples.get_asset_directory",
@@ -968,7 +968,7 @@
         "line": 104
       }
     ],
-    "shelf/05_looped_linkages/kamino_basic_dr_testmech/example.py": [
+    "shelf/05_looped_linkages/loop_dr_testmech/example.py": [
       {
         "call": "download_asset",
         "function": "newton.utils.download_asset",
@@ -980,7 +980,7 @@
         "line": 41
       }
     ],
-    "shelf/05_looped_linkages/kamino_basic_fourbar/example.py": [
+    "shelf/05_looped_linkages/loop_fourbar/example.py": [
       {
         "call": "get_kamino_basics_asset",
         "function": "get_kamino_basics_asset",
@@ -992,7 +992,7 @@
         "line": 69
       }
     ],
-    "shelf/05_looped_linkages/kamino_basic_heterogeneous/example.py": [
+    "shelf/05_looped_linkages/loop_mixed_worlds/example.py": [
       {
         "call": "get_kamino_basics_asset",
         "function": "get_kamino_basics_asset",
@@ -1004,7 +1004,7 @@
         "line": 79
       }
     ],
-    "shelf/06_looped_linkages_contacts/kamino_robot_anymal_d/example.py": [
+    "shelf/06_looped_linkages_contacts/anymal_d_many_worlds/example.py": [
       {
         "call": "download_asset",
         "function": "newton.utils.download_asset",
@@ -1016,7 +1016,7 @@
         "line": 44
       }
     ],
-    "shelf/06_looped_linkages_contacts/kamino_robot_dr_legs/example.py": [
+    "shelf/06_looped_linkages_contacts/loop_dr_legs/example.py": [
       {
         "call": "download_asset",
         "function": "newton.utils.download_asset",
@@ -1195,6 +1195,28 @@
         "line": 79
       }
     ],
+    "shelf/08_volumetric_soft_bodies/hanging_bag_of_shapes/example.py": [
+      {
+        "call": "get_asset_directory",
+        "function": "newton.examples.get_asset_directory",
+        "argument": "",
+        "arguments": [],
+        "keywords": [],
+        "line": 155,
+        "path_expression": "os.path.join(newton.examples.get_asset_directory(), 'bear.usd')"
+      }
+    ],
+    "shelf/08_volumetric_soft_bodies/shapes_in_cloth_bags/example.py": [
+      {
+        "call": "get_asset_directory",
+        "function": "newton.examples.get_asset_directory",
+        "argument": "",
+        "arguments": [],
+        "keywords": [],
+        "line": 141,
+        "path_expression": "os.path.join(newton.examples.get_asset_directory(), 'bear.usd')"
+      }
+    ],
     "shelf/08_volumetric_soft_bodies/softbody_franka/example.py": [
       {
         "call": "download_asset",
@@ -1215,28 +1237,6 @@
         ],
         "keywords": [],
         "line": 250
-      }
-    ],
-    "shelf/08_volumetric_soft_bodies/vbd_soft_rigid_contact/example.py": [
-      {
-        "call": "get_asset_directory",
-        "function": "newton.examples.get_asset_directory",
-        "argument": "",
-        "arguments": [],
-        "keywords": [],
-        "line": 141,
-        "path_expression": "os.path.join(newton.examples.get_asset_directory(), 'bear.usd')"
-      }
-    ],
-    "shelf/08_volumetric_soft_bodies/vbd_soft_rigid_mix_contact/example.py": [
-      {
-        "call": "get_asset_directory",
-        "function": "newton.examples.get_asset_directory",
-        "argument": "",
-        "arguments": [],
-        "keywords": [],
-        "line": 155,
-        "path_expression": "os.path.join(newton.examples.get_asset_directory(), 'bear.usd')"
       }
     ],
     "shelf/09_thin_shells_and_rods/cloth_franka/example.py": [
@@ -1273,7 +1273,7 @@
         "line": 155
       }
     ],
-    "shelf/11_particles/mpm_anymal/example.py": [
+    "shelf/11_particles/anymal_on_sand/example.py": [
       {
         "call": "download_asset",
         "function": "newton.utils.download_asset",
@@ -1283,6 +1283,18 @@
         ],
         "keywords": [],
         "line": 62
+      }
+    ],
+    "shelf/12_coupling/franka_chain_on_cable/example.py": [
+      {
+        "call": "download_asset",
+        "function": "newton.utils.download_asset",
+        "argument": "'franka_emika_panda'",
+        "arguments": [
+          "'franka_emika_panda'"
+        ],
+        "keywords": [],
+        "line": 280
       }
     ],
     "shelf/12_coupling/franka_cloth_block/example.py": [
@@ -1317,18 +1329,6 @@
         ],
         "keywords": [],
         "line": 180
-      }
-    ],
-    "shelf/12_coupling/mujoco_franka_vbd_cable_admm_solver/example.py": [
-      {
-        "call": "download_asset",
-        "function": "newton.utils.download_asset",
-        "argument": "'franka_emika_panda'",
-        "arguments": [
-          "'franka_emika_panda'"
-        ],
-        "keywords": [],
-        "line": 280
       }
     ],
     "shelf/13_sensors/sensor_camera/example.py": [

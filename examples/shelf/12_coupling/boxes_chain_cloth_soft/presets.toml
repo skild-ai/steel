@@ -1,0 +1,73 @@
+example = "boxes_chain_cloth_soft"
+source = "newton/examples/multiphysics/example_mujoco_vbd_coupled_solver.py @ skild-ai/newton 7565a26b1"
+default = "steel_vbd"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "2", "--set", "solver.proxy_iterations=1"]  # original: --proxy-iterations 1
+
+[gallery]
+short = "Rigid boxes and a pendulum chain meet a cloth sheet and soft bodies."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "works"
+sim = { fps = 60, substeps = 8 }
+solver = { iterations = 10, friction_epsilon = 0.01, particle_enable_self_contact = true, particle_self_contact_margin = 0.01, particle_self_contact_gap = 0.0 }
+check = { args = ["--num-frames", "2"] }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "untested"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
+
+[mujoco_vbd]
+status = "works"
+sim = { fps = 60, substeps = 8 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0, collide_interval = 1 }
+entries.mujoco.solver = { use_mujoco_contacts = false, njmax = 200 }
+entries.vbd.solver = { iterations = 10, friction_epsilon = 0.01, particle_enable_self_contact = true, particle_self_contact_margin = 0.01, particle_self_contact_gap = 0.0 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[kamino_vbd]
+status = "works"
+sim = { fps = 60, substeps = 8 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0, collide_interval = 1 }
+entries.kamino.solver = { use_collision_detector = false, use_fk_solver = false, dynamics = { preconditioning = true }, padmm = { max_iterations = 120, primal_tolerance = 1.0e-5, dual_tolerance = 1.0e-5, compl_tolerance = 1.0e-5, rho_0 = 0.1, use_acceleration = true, warmstart_mode = "containers" } }
+entries.vbd.solver = { iterations = 10, friction_epsilon = 0.01, particle_enable_self_contact = true, particle_self_contact_margin = 0.01, particle_self_contact_gap = 0.0 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[steel_vbd]
+status = "works"
+# 6 substeps x 4 Steel iterations: 16.7 ms/frame vs MuJoCo's 20.1 at 8 (Steel's default 12 iterations at 8: 20.7).
+# Rigid penetration 23.0 / 0.21 mm peak / mean vs MuJoCo's 28.1 / 0.32: in both the peak is a falling box meeting
+# another between the once-per-frame collision passes. Cloth/soft penetration 20.7 / 0.52 mm vs 20.1 / 0.71.
+# 4 substeps doubles the box-box peak (37.9 mm); 4 iterations at 8 substeps raise the soft mean to 1.66 mm.
+sim = { fps = 60, substeps = 6 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0, collide_interval = 1 }
+# The pendulum's revolute joints have no limits, so enable_joint_limits has nothing to enforce.
+entries.steel.solver = { solve_mode = "matrix_free", iterations = 4 }
+entries.vbd.solver = { iterations = 10, friction_epsilon = 0.01, particle_enable_self_contact = true, particle_self_contact_margin = 0.01, particle_self_contact_gap = 0.0 }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"

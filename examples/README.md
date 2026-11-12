@@ -7,7 +7,7 @@ with a solver preset for every solver that can run it.
 
 *Each cubby holds one of 26 shelf examples, run with its Steel preset (coupled with VBD for the cloth,
 cable and soft-body scenes), recorded, and set in as a miniature. The camera passes from room to room
-through the shelves to `jenga`, `franka_shirt_fold_stack` and `steel_wrecking_ball`.*
+through the shelves to `jenga`, `franka_shirt_fold_stack` and `crane_wrecking_ball`.*
 
 The shelf holds 147 examples. 102 are Newton's own examples from the pinned Newton revision (see *Setup*), sorted
 by the feature they exercise rather than by solver. 33 are scenes from
@@ -229,8 +229,8 @@ uv run python -m shelf check <changed examples> --every --dry-run
 # Steel smoke set: robot arms, exported scenes, SDF contact, loops, a coupled preset
 uv run python -m shelf check basic_pendulum pyramid toaster cereal viaduct_kit nut_bolt_sdf \
     mjorg_house_of_cards ratio_stack basic_conveyor_forces loop_stewart_platform robot_g1 \
-    steel_cup_unpacking --solver steel --dry-run
-uv run python -m shelf check mujoco_xpbd_coupled_solver --solver steel_xpbd --dry-run
+    cup_unpacking --solver steel --dry-run
+uv run python -m shelf check boxes_chain_on_cloth --solver steel_xpbd --dry-run
 ```
 
 Every line should read `works`. A Newton pin change also needs the whole shelf:

@@ -1,0 +1,55 @@
+example = "gripper_soft_grid"
+source = "newton/examples/vbd/example_vbd_gripper_soft_grid.py @ skild-ai/newton 7565a26b1"
+default = "vbd"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "360"]
+
+[gallery]
+short = "A parallel-jaw gripper clamps and lifts a soft grid."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "works"
+sim = { fps = 60, substeps = 20 }
+solver = { iterations = 5, integrate_with_external_rigid_solver = false, rigid_body_contact_buffer_size = 512 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "unsupported"
+reason = "Steel does not simulate particles (SolverSteel raises NotImplementedError at construction); steel_vbd runs the gripper on Steel and the grid on VBD"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
+
+[steel_vbd]
+status = "works"
+# Steel owns the gripper, VBD the grid; the finger pads proxy into VBD, which grips the grid's diagonal edge with
+# full-surface contacts against them. Light proxy pads give way under the pinch (at mass_scale 1-5 the grid turns on
+# edge and slides out or drops); at 30 the grid stays held as under VBD. Articulation rows: twice the measured peak.
+sim = { fps = 60, substeps = 20 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 30.0 }
+entries.steel.solver = { solve_mode = "serial", iterations = 12, articulation_constraint_max = 16 }
+entries.vbd.solver = { iterations = 5, rigid_body_contact_buffer_size = 512 }
+checked = "2026-11-11, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"

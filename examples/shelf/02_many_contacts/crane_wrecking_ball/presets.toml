@@ -1,0 +1,44 @@
+example = "crane_wrecking_ball"
+source = "newton/examples/robot/example_steel_wrecking_ball.py @ skild-ai/newton 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = []
+
+[gallery]
+short = "A UR10 grasps a toy crane and slews its ball into a dry-stacked miniature building."
+frame = 720
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+sim = { substeps = 4 }
+solver = { solve_mode = "colored", iterations = 16, articulated_contact_response = "propagation" }
+checked = "2026-11-09, newton c42985a6c, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

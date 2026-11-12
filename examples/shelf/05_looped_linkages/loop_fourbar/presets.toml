@@ -1,0 +1,53 @@
+example = "loop_fourbar"
+source = "newton/examples/kamino/example_kamino_basic_fourbar.py @ skild-ai/newton 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "120"]
+
+[gallery]
+short = "A four-bar linkage in many worlds on Kamino."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+sim = { fps = 50, substeps = 4 }
+# loop-closing joints need the "immediate" response. articulation_constraint_max = 64: the landing needs 35 rows,
+# and at the default 32 Steel drops contact rows (5.5 mm mean penetration). 4 substeps x 32 iterations: the fastest
+# setting (RTX PRO 6000 sweep, 2026-11-04) with a loop-closure gap like Kamino's (0.20 mm vs 0.19 mm); at 12-16
+# iterations, or 5-6 substeps with 16-24, the landing leaves an out-of-plane tilt that grows until the planar
+# linkage falls on its side. Joint limits are enforced (without them it also falls over);
+# joint_limit_activation_gap = 0.1 rad adds a limit row only near its limit.
+solver = { solve_mode = "matrix_free", iterations = 32, articulated_contact_response = "immediate", enable_joint_limits = true, joint_limit_activation_gap = 0.1, articulation_constraint_max = 64 }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "works"
+# substeps = frame_dt / sim_dt with sim_dt = 0.0025 s
+sim = { fps = 50, substeps = 8 }
+solver = { use_collision_detector = true, use_fk_solver = true, collision_detector = { pipeline = "primitive" }, dynamics = { preconditioning = true }, padmm = { primal_tolerance = 1e-4, dual_tolerance = 1e-4, compl_tolerance = 1e-4, max_iterations = 200, rho_0 = 0.1, use_acceleration = true, warmstart_mode = "containers", contact_warmstart_method = "geom_pair_net_force" } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
