@@ -18,8 +18,10 @@ import sys
 from pathlib import Path
 
 import tomllib
+from timing_groups import runners
 
 TUTORIALS = Path(__file__).resolve().parent.parent
+TIMING_RUNNERS = runners()
 REQUIRED = {"id": str, "title": str, "about": str, "look": list, "try": list, "param": dict}
 OPTIONAL = {
     "spacing": list,
@@ -74,6 +76,10 @@ def main():
             errors.append(f"{tid}: {name}.py changed after it was recorded; record it again")
         if any(v.get("overflow") for v in rec["variants"]) and not meta.get("allow_dropped_rows"):
             errors.append(f"{tid}: the recording dropped rows")
+        if "timing" in meta and meta["timing"].get("group") not in TIMING_RUNNERS:
+            errors.append(
+                f"{tid}: no tools/timing*.py runner defines group {meta['timing'].get('group')}"
+            )
         if "timing" in meta and "timing" not in rec:
             errors.append(
                 f"{tid}: [timing] is set but the recording has no cost rows; record with --timing"
@@ -121,6 +127,17 @@ def check_poses(rec):
             yield f"{v['label']}: pose count does not match frames x bodies"
         elif not np.isfinite(poses).all():
             yield f"{v['label']}: non-finite poses"
+        particles = v.get("particles")
+        if particles:
+            n = particles["count"]
+            frames = np.frombuffer(base64.b64decode(particles["frames"]), dtype=np.float32)
+            if frames.size != v["frames"] * n * 3:
+                yield f"{v['label']}: particle count does not match frames x particles"
+            elif not np.isfinite(frames).all():
+                yield f"{v['label']}: non-finite particle positions"
+            tris = particles.get("tris") or []
+            if len(tris) % 3 or any(not 0 <= i < n for i in tris):
+                yield f"{v['label']}: particle triangle indices out of range"
 
 
 if __name__ == "__main__":

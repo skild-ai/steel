@@ -5,11 +5,13 @@ usage: python tutorials/tools/record_all.py [--only ID ...] [--device cuda:0] [-
 
 Runs every tutorial in ``tutorials/index.toml`` (or only the given ids) from the tutorials folder,
 in the active Python environment, which needs the Newton build the docs describe. ``--timing`` also
-runs ``tools/timing.py`` for tutorials with a ``[timing]`` table and stores the cost rows in their
-recordings; without it, cost rows already in a recording are kept.
+runs the timing runner (``tools/timing*.py``) of every ``[timing]`` group and stores the cost rows,
+with the Newton commit and runner hash they were measured with, in the recordings. Without it, a
+recording keeps its old cost rows only if neither its script nor the Newton commit changed.
 """
 
 import argparse
+import hashlib
 import json
 import os
 import subprocess
@@ -18,6 +20,7 @@ import tempfile
 from pathlib import Path
 
 import tomllib
+from timing_groups import runners
 
 TUTORIALS = Path(__file__).resolve().parent.parent
 
@@ -27,7 +30,7 @@ def main():
     ap.add_argument("--only", nargs="*", help="tutorial ids to record (default: all)")
     ap.add_argument("--device", help="Warp device passed to each script, for example cuda:0")
     ap.add_argument(
-        "--timing", action="store_true", help="also measure the cost tables with tools/timing.py"
+        "--timing", action="store_true", help="also measure the cost tables (tools/timing*.py)"
     )
     ap.add_argument("--timeout", type=int, default=1200, help="seconds per script")
     args = ap.parse_args()
@@ -40,7 +43,7 @@ def main():
     env = dict(os.environ, NEWTON_COMMIT=os.environ.get("NEWTON_COMMIT") or newton_commit())
     (TUTORIALS / "recordings").mkdir(exist_ok=True)
 
-    timing = measure_timing(selected, env) if args.timing else {}
+    timing = measure_timing(selected, env, args.device, args.timeout) if args.timing else {}
     failed = []
     for t in selected:
         out = TUTORIALS / "recordings" / f"{t['id']}.json"
@@ -56,7 +59,16 @@ def main():
             failed.append(t["id"])
             continue
         recording = json.loads(out.read_text())
-        rows = timing.get(t["id"]) or previous.get("timing")
+        rows = timing.get(t["id"])
+        unchanged = (
+            previous.get("script_sha256") == recording["script_sha256"]
+            and previous.get("newton_commit") == recording["newton_commit"]
+        )
+        if rows is None and "timing" in previous:
+            if unchanged:
+                rows = previous["timing"]
+            else:
+                print(f"{t['id']}: dropped its old cost table; record with --timing", flush=True)
         if rows:
             recording["timing"] = rows
             out.write_text(json.dumps(recording, separators=(",", ":"), ensure_ascii=False))
@@ -76,23 +88,38 @@ def load_tutorials():
     return [by_id[i] for group in index["group"] for i in group["tutorials"]]
 
 
-def measure_timing(selected, env):
-    """Cost rows per tutorial id, from one tools/timing.py run over the groups they name."""
-    groups = {t["timing"]["group"]: t["id"] for t in selected if "timing" in t}
-    if not groups:
-        return {}
-    with tempfile.TemporaryDirectory() as tmp:
-        out = Path(tmp) / "timing.json"
-        subprocess.run(
-            [sys.executable, str(TUTORIALS / "tools" / "timing.py"), str(out), *groups],
-            env=env,
-            check=True,
-        )
-        data = json.loads(out.read_text())
-    return {
-        tid: {"gpu": data["gpu"], "rows": [r for r in data["rows"] if r["group"] == group]}
-        for group, tid in groups.items()
-    }
+def measure_timing(selected, env, device, timeout):
+    """Cost rows per tutorial id, one runner call per tools/timing*.py over the groups it owns."""
+    owner = runners()
+    by_group = {}
+    for t in selected:
+        if "timing" in t:
+            by_group.setdefault(t["timing"]["group"], []).append(t["id"])
+    missing = sorted(g for g in by_group if g not in owner)
+    if missing:
+        raise SystemExit(f"no timing runner defines: {', '.join(missing)}")
+    if device and device.startswith("cuda:"):
+        env = dict(env, CUDA_VISIBLE_DEVICES=device.split(":", 1)[1])
+    harness = (TUTORIALS / "tools" / "timing.py").read_bytes()
+    result = {}
+    for runner in sorted({owner[g] for g in by_group}):
+        groups = [g for g in by_group if owner[g] == runner]
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "timing.json"
+            cmd = [sys.executable, str(runner), str(out), *groups]
+            subprocess.run(cmd, env=env, check=True, timeout=timeout * len(groups))
+            data = json.loads(out.read_text())
+        provenance = {
+            "gpu": data["gpu"],
+            "newton_commit": env.get("NEWTON_COMMIT") or None,
+            "runner": runner.name,
+            "runner_sha256": hashlib.sha256(runner.read_bytes() + harness).hexdigest(),
+        }
+        for group in groups:
+            rows = [r for r in data["rows"] if r["group"] == group]
+            for tid in by_group[group]:
+                result[tid] = dict(provenance, rows=rows)
+    return result
 
 
 def newton_commit():

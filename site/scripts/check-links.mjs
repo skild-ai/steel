@@ -11,8 +11,8 @@ const pages = new Map();
 for (const file of walk(dist)) {
 	if (!file.endsWith('.html')) continue;
 	const html = readFileSync(file, 'utf8');
-	const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => decode(m[1])));
-	const links = [...html.matchAll(/\s(?:href|src)="([^"]+)"/g)].map((m) => decode(m[1]));
+	const ids = new Set([...html.matchAll(/\sid=(?:"([^"]+)"|'([^']+)')/g)].map((m) => decode(m[1] ?? m[2])));
+	const links = [...html.matchAll(/\s(?:href|src)=(?:"([^"]+)"|'([^']+)')/g)].map((m) => decode(m[1] ?? m[2]).replace(/\?[^#]*/, ''));
 	pages.set('/' + relative(dist, file).split('\\').join('/'), { ids, links });
 }
 

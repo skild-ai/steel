@@ -6,8 +6,8 @@ the script's exact source.
 
 ```bash
 cd tutorials
-python 02_patch_friction.py                    # prints each variant's final metric
-python 02_patch_friction.py --record out.json  # also writes the replay
+python 03_patch_friction.py                    # prints each variant's final metric
+python 03_patch_friction.py --record out.json  # also writes the replay
 ```
 
 The scripts need the Newton build the docs describe (see the site's Installation page) and a CUDA GPU for
@@ -25,7 +25,8 @@ recordings/<id>.json     the recorded replay of each tutorial, committed
 DR_GAPS.md               domain randomization cases without a tutorial, shown on the tutorials index
 tools/record_all.py      record every tutorial (or some) on a local GPU
 tools/check.py           check metadata, order and that every recording matches its script
-tools/timing.py          the cost tables some tutorials show
+tools/timing*.py         the cost tables some tutorials show (timing.py holds the shared method)
+tools/test_tools.py      CPU-only tests of the tools
 ```
 
 A tutorial's page is `/tutorials/<id>/` on the site. Ids are stable: other pages link to them, so do not
@@ -41,6 +42,10 @@ rename one.
    tutorial has a `[timing]` table.
 4. Check: `python tools/check.py --poses`, and `ruff check .` from this folder.
 5. Preview it on the site: `cd ../site && npm run dev`, then open `/tutorials/<id>/`.
+
+A recording keeps its cost table only while its script and Newton commit stay the same; re-recording
+after either changes drops the table until it is measured again with `--timing`, and `tools/check.py`
+fails until then. Measured tables carry the Newton commit and the runner they came from.
 
 Changing a script after it was recorded makes `tools/check.py` and the site flag the recording as out of
 date, because the page would show code that did not produce the replay. Record it again in the same change.
@@ -60,7 +65,7 @@ date, because the page would show code that did not produce the replay. Record i
 | `speed` | no | Initial playback speed; default 1. |
 | `fit` | no | `"end"` frames the camera on the final pose instead of the motion. |
 | `[concept]` | no | `name`, `what`, `eq` (optional, plain text), `here`, and `[[concept.consider]]` entries with `term` and `text`. |
-| `[timing]` | no | A cost table: `group` (a group in `tools/timing.py`), `scene` (one sentence), `per = "frame"` to report per frame, `rounds`, and `[timing.notes]` mapping each option label to the result it gives in this tutorial. |
+| `[timing]` | no | A cost table: `group` (a group defined in one of `tools/timing*.py`: `GROUPS` in `timing.py`, `GROUP_NAMES` in the others), `scene` (one sentence), `per = "frame"` to report per frame, `rounds`, and `[timing.notes]` mapping each option label to the result it gives in this tutorial. |
 | `notify_flag`, `update_route` | no | Domain randomization tutorials: the notification flag and when Steel sees the change. |
 | `allow_dropped_rows` | no | `true` when the tutorial drops rows on purpose. |
 

@@ -3,7 +3,7 @@
 interface Row { label: string; worlds: number; ms_per_step: number; ms_per_frame: number; solver_mem_mb: number }
 interface Props {
 	spec: { scene: string; per?: string; rounds?: number; notes?: Record<string, string> };
-	timing: { gpu: string; rows: Row[] };
+	timing: { gpu: string; rows: Row[]; newton_commit?: string | null };
 }
 const { spec, timing } = Astro.props;
 const perFrame = spec.per === 'frame';
@@ -19,7 +19,7 @@ const most = worlds[worlds.length - 1];
 	<h2 class="ch">Cost</h2>
 	<p class="cnote">
 		Time per {perFrame ? '30 Hz frame' : 'step'}, {eager ? 'eager stepping for the eager row and CUDA graph replay for the others' : 'CUDA graph replay'},
-		median of {spec.rounds ?? 7} interleaved rounds on one {timing.gpu}; ratios are against the first row. Solver allocation is the GPU
+		median of {spec.rounds ?? 7} interleaved rounds on one {timing.gpu}{timing.newton_commit && ` with Newton ${timing.newton_commit.slice(0, 7)}`}; ratios are against the first row. Solver allocation is the GPU
 		memory the solver allocates at construction, before warm-up and graph capture. {spec.scene}
 	</p>
 	<div class="tbl">
