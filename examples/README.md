@@ -16,7 +16,7 @@ The other 27 simulate only cloth, soft bodies, MPM or particles, with no rigid o
 Every example runs exactly as it does in Newton, but its solver settings live in a `presets.toml` next to it
 instead of in the code.
 
-This collection was migrated from [Steel Shelf](https://github.com/skild-ai/steel-shelf).
+This collection was migrated from the Steel Shelf project.
 It remains a separate Python project inside `examples/`; its Newton dependency is pinned
 in `pyproject.toml`. Run the commands below from this directory.
 

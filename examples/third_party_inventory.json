@@ -16,7 +16,6 @@
         "licenses/Franka-complete-LICENSE.txt"
       ],
       "direct_source": "steel-webgpu assets/scenes",
-      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
       "model_evidence": {
         "xml_source": "https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/universal_robots_ur5e/ur5e.xml",
         "mass_prefix": [
@@ -34,14 +33,13 @@
         "path": "shelf/01_basic_contacts/air_hockey/scene.bin",
         "sha256": "a6fcc49019cad030267bfd3f878f6c061b2d4451b624d7a9000103b673a0ba19",
         "bytes": 56472,
-        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
-        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
-        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_commit": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
+        "source_evidence": "Byte-identical to assets/scenes/air_hockey/scene.bin in public steel-webgpu at this commit; unchanged since 58246f3.",
         "source_path": "assets/scenes/air_hockey/scene.bin"
       },
-      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_commit": "58246f3d3c6647edc66dd8518e50f13641418c38",
       "source_path": "assets/scenes/air_hockey/scene.json",
-      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+      "source_evidence": "Byte-identical to assets/scenes/air_hockey/scene.json in public steel-webgpu at this commit."
     },
     {
       "path": "shelf/01_basic_contacts/beer_pong/scene.json",
@@ -53,19 +51,17 @@
         "licenses/Franka-complete-LICENSE.txt"
       ],
       "direct_source": "steel-webgpu assets/scenes",
-      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
       "binary_payload": {
         "path": "shelf/01_basic_contacts/beer_pong/scene.bin",
         "sha256": "753f50c7b1d56ef498ef45e463e88c00287d9344e1536930df45f631380d06dd",
         "bytes": 217536,
-        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
-        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
-        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_commit": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
+        "source_evidence": "Byte-identical to assets/scenes/beer_pong/scene.bin in public steel-webgpu at this commit; unchanged since 58246f3.",
         "source_path": "assets/scenes/beer_pong/scene.bin"
       },
-      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_commit": "58246f3d3c6647edc66dd8518e50f13641418c38",
       "source_path": "assets/scenes/beer_pong/scene.json",
-      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+      "source_evidence": "Byte-identical to assets/scenes/beer_pong/scene.json in public steel-webgpu at this commit."
     },
     {
       "path": "shelf/01_basic_contacts/spinning_top/scene.json",
@@ -78,7 +74,6 @@
         "licenses/Franka-complete-LICENSE.txt"
       ],
       "direct_source": "steel-webgpu assets/scenes",
-      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
       "model_evidence": {
         "xml_source": "https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/universal_robots_ur10e/ur10e.xml",
         "mass_prefix": [
@@ -96,14 +91,13 @@
         "path": "shelf/01_basic_contacts/spinning_top/scene.bin",
         "sha256": "48ab3a525ce36f255d3e6ea99943dd6db76dda0d498b3abdd004523e3a2ee688",
         "bytes": 86732,
-        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
-        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
-        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_commit": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
+        "source_evidence": "Byte-identical to assets/scenes/spinning_top/scene.bin in public steel-webgpu at this commit; unchanged since 58246f3.",
         "source_path": "assets/scenes/spinning_top/scene.bin"
       },
-      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_commit": "58246f3d3c6647edc66dd8518e50f13641418c38",
       "source_path": "assets/scenes/spinning_top/scene.json",
-      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+      "source_evidence": "Byte-identical to assets/scenes/spinning_top/scene.json in public steel-webgpu at this commit."
     },
     {
       "path": "shelf/02_many_contacts/brick_pour/scene.json",
@@ -116,7 +110,6 @@
         "licenses/Franka-complete-LICENSE.txt"
       ],
       "direct_source": "steel-webgpu assets/scenes",
-      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
       "model_evidence": {
         "xml_source": "https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/universal_robots_ur10e/ur10e.xml",
         "mass_prefix": [
@@ -134,14 +127,13 @@
         "path": "shelf/02_many_contacts/brick_pour/scene.bin",
         "sha256": "1eda60fcf2befdab4316b52dfeda81223dad749fdbb58928fd5b58c52555e529",
         "bytes": 917992,
-        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
-        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
-        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_commit": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
+        "source_evidence": "Byte-identical to assets/scenes/brick_pour/scene.bin in public steel-webgpu at this commit; unchanged since 58246f3.",
         "source_path": "assets/scenes/brick_pour/scene.bin"
       },
-      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_commit": "58246f3d3c6647edc66dd8518e50f13641418c38",
       "source_path": "assets/scenes/brick_pour/scene.json",
-      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+      "source_evidence": "Byte-identical to assets/scenes/brick_pour/scene.json in public steel-webgpu at this commit."
     },
     {
       "path": "shelf/02_many_contacts/cereal/scene.json",
@@ -154,7 +146,6 @@
         "licenses/Franka-complete-LICENSE.txt"
       ],
       "direct_source": "steel-webgpu assets/scenes",
-      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
       "model_evidence": {
         "xml_source": "https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/universal_robots_ur10e/ur10e.xml",
         "mass_prefix": [
@@ -172,14 +163,13 @@
         "path": "shelf/02_many_contacts/cereal/scene.bin",
         "sha256": "000143a1d50a310222cdd17ae3211ce97738ae8e840c407794428913accea38b",
         "bytes": 259908,
-        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
-        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
-        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_commit": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
+        "source_evidence": "Byte-identical to assets/scenes/cereal/scene.bin in public steel-webgpu at this commit; unchanged since 58246f3.",
         "source_path": "assets/scenes/cereal/scene.bin"
       },
-      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_commit": null,
       "source_path": "assets/scenes/cereal/scene.json",
-      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+      "source_evidence": "Exported from steel-webgpu at a pre-release revision that is not in its public history; scene.bin matches public steel-webgpu."
     },
     {
       "path": "shelf/02_many_contacts/jenga/scene.json",
@@ -191,19 +181,17 @@
         "licenses/Franka-complete-LICENSE.txt"
       ],
       "direct_source": "steel-webgpu assets/scenes",
-      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
       "binary_payload": {
         "path": "shelf/02_many_contacts/jenga/scene.bin",
         "sha256": "9187e9fb01ccc2e3c8bb65c129b6fc30b4d568bbf94d3defd0abfcb62225e45b",
         "bytes": 75960,
-        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
-        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
-        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_commit": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
+        "source_evidence": "Byte-identical to assets/scenes/jenga/scene.bin in public steel-webgpu at this commit; unchanged since 58246f3.",
         "source_path": "assets/scenes/jenga/scene.bin"
       },
-      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_commit": null,
       "source_path": "assets/scenes/jenga/scene.json",
-      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+      "source_evidence": "Exported from steel-webgpu at a pre-release revision that is not in its public history; scene.bin matches public steel-webgpu."
     },
     {
       "path": "shelf/02_many_contacts/lava_fall/scene.json",
@@ -213,19 +201,17 @@
       "license": "Apache-2.0",
       "notices": [],
       "direct_source": "steel-webgpu assets/scenes",
-      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
       "binary_payload": {
         "path": "shelf/02_many_contacts/lava_fall/scene.bin",
         "sha256": "4a942d32e74d7d57d944cb7341d422a7137b39b24eb66a0f0b57efde22315784",
         "bytes": 228056,
-        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
-        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
-        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_commit": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
+        "source_evidence": "Byte-identical to assets/scenes/lava_fall/scene.bin in public steel-webgpu at this commit; unchanged since 58246f3.",
         "source_path": "assets/scenes/lava_fall/scene.bin"
       },
-      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_commit": null,
       "source_path": "assets/scenes/lava_fall/scene.json",
-      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+      "source_evidence": "Exported from steel-webgpu at a pre-release revision that is not in its public history; scene.bin matches public steel-webgpu."
     },
     {
       "path": "shelf/03_mesh_sdf_contacts/viaduct_kit/scene.json",
@@ -238,7 +224,6 @@
         "licenses/Franka-complete-LICENSE.txt"
       ],
       "direct_source": "steel-webgpu assets/scenes",
-      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
       "model_evidence": {
         "xml_source": "https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/kinova_gen3/gen3.xml",
         "mass_prefix": [
@@ -257,14 +242,13 @@
         "path": "shelf/03_mesh_sdf_contacts/viaduct_kit/scene.bin",
         "sha256": "1fe039d140d12ec3068e6a6e685e0f8825bd834ac293b1386e555b5804cbc88b",
         "bytes": 323432,
-        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
-        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
-        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_commit": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
+        "source_evidence": "Byte-identical to assets/scenes/viaduct_kit/scene.bin in public steel-webgpu at this commit; unchanged since 58246f3.",
         "source_path": "assets/scenes/viaduct_kit/scene.bin"
       },
-      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_commit": "58246f3d3c6647edc66dd8518e50f13641418c38",
       "source_path": "assets/scenes/viaduct_kit/scene.json",
-      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+      "source_evidence": "Byte-identical to assets/scenes/viaduct_kit/scene.json in public steel-webgpu at this commit."
     },
     {
       "path": "shelf/07_articulations/balance_board/scene.json",
@@ -276,19 +260,17 @@
         "licenses/Franka-complete-LICENSE.txt"
       ],
       "direct_source": "steel-webgpu assets/scenes",
-      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
       "binary_payload": {
         "path": "shelf/07_articulations/balance_board/scene.bin",
         "sha256": "ac9b28a5c03fbd70f6251a71f8071b6b5e6c4bcead7429b0db78865db1e8b64f",
         "bytes": 145232,
-        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
-        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
-        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_commit": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
+        "source_evidence": "Byte-identical to assets/scenes/balance_board/scene.bin in public steel-webgpu at this commit; unchanged since 58246f3.",
         "source_path": "assets/scenes/balance_board/scene.bin"
       },
-      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_commit": "58246f3d3c6647edc66dd8518e50f13641418c38",
       "source_path": "assets/scenes/balance_board/scene.json",
-      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+      "source_evidence": "Byte-identical to assets/scenes/balance_board/scene.json in public steel-webgpu at this commit."
     },
     {
       "path": "shelf/07_articulations/box_turn/scene.json",
@@ -301,7 +283,6 @@
         "licenses/Franka-complete-LICENSE.txt"
       ],
       "direct_source": "steel-webgpu assets/scenes",
-      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
       "model_evidence": {
         "xml_source": "https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/universal_robots_ur10e/ur10e.xml",
         "mass_prefix": [
@@ -319,19 +300,17 @@
         "path": "shelf/07_articulations/box_turn/scene.bin",
         "sha256": "080e7f9bdadb69b68f224d9b15110be095c62cc279a1280c224f393025fe9e03",
         "bytes": 96248,
-        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
-        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
-        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_commit": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
+        "source_evidence": "Byte-identical to assets/scenes/box_turn/scene.bin in public steel-webgpu at this commit; unchanged since 58246f3.",
         "source_path": "assets/scenes/box_turn/scene.bin"
       },
-      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_commit": "58246f3d3c6647edc66dd8518e50f13641418c38",
       "source_path": "assets/scenes/box_turn/scene.json",
-      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
       "original_export_sha256": "55d1fe8de97f295128770d2b86911e08dea43a3248fa6ab771c026d8cc35fa9d",
       "adaptation": {
-        "commit": "0cfd22d13e2c75cddae37b335140fb6c8bf1f62f",
         "change": "Collision filter pairs only; robot bodies, model data and scene.bin unchanged."
-      }
+      },
+      "source_evidence": "original_export_sha256 is byte-identical to assets/scenes/box_turn/scene.json in public steel-webgpu at this commit; the current file adds collision filter pairs."
     },
     {
       "path": "shelf/07_articulations/drawer_fork/scene.json",
@@ -343,19 +322,17 @@
         "licenses/Franka-complete-LICENSE.txt"
       ],
       "direct_source": "steel-webgpu assets/scenes",
-      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
       "binary_payload": {
         "path": "shelf/07_articulations/drawer_fork/scene.bin",
         "sha256": "372553e3e5651ec7da8464d2a09a1d67e6bf58646a0bc93da098b50dd17c4c0a",
         "bytes": 563120,
-        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
-        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
-        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_commit": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
+        "source_evidence": "Byte-identical to assets/scenes/drawer_fork/scene.bin in public steel-webgpu at this commit; unchanged since 58246f3.",
         "source_path": "assets/scenes/drawer_fork/scene.bin"
       },
-      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_commit": "58246f3d3c6647edc66dd8518e50f13641418c38",
       "source_path": "assets/scenes/drawer_fork/scene.json",
-      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+      "source_evidence": "Byte-identical to assets/scenes/drawer_fork/scene.json in public steel-webgpu at this commit."
     },
     {
       "path": "shelf/07_articulations/toaster/scene.json",
@@ -368,7 +345,6 @@
         "licenses/Franka-complete-LICENSE.txt"
       ],
       "direct_source": "steel-webgpu assets/scenes",
-      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
       "model_evidence": {
         "xml_source": "https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/universal_robots_ur10e/ur10e.xml",
         "mass_prefix": [
@@ -386,19 +362,17 @@
         "path": "shelf/07_articulations/toaster/scene.bin",
         "sha256": "4b7f837650811a9153bf31cb9e0897491cb3c3a271f0dc4a804d530ed6a5f0b3",
         "bytes": 423444,
-        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
-        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
-        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_commit": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
+        "source_evidence": "Byte-identical to assets/scenes/toaster/scene.bin in public steel-webgpu at this commit; unchanged since 58246f3.",
         "source_path": "assets/scenes/toaster/scene.bin"
       },
-      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_commit": "58246f3d3c6647edc66dd8518e50f13641418c38",
       "source_path": "assets/scenes/toaster/scene.json",
-      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
       "original_export_sha256": "467191554011b7d3f6770d8680c27a1731372ac0b8431eaa06ece771b0b3234b",
       "adaptation": {
-        "commit": "0cfd22d13e2c75cddae37b335140fb6c8bf1f62f",
         "change": "Collision filter pairs only; robot bodies, model data and scene.bin unchanged."
-      }
+      },
+      "source_evidence": "original_export_sha256 is byte-identical to assets/scenes/toaster/scene.json in public steel-webgpu at this commit; the current file adds collision filter pairs."
     },
     {
       "path": "shelf/07_articulations/toy_train/scene.json",
@@ -411,7 +385,6 @@
         "licenses/Franka-complete-LICENSE.txt"
       ],
       "direct_source": "steel-webgpu assets/scenes",
-      "import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
       "model_evidence": {
         "xml_source": "https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/universal_robots_ur10e/ur10e.xml",
         "mass_prefix": [
@@ -429,14 +402,13 @@
         "path": "shelf/07_articulations/toy_train/scene.bin",
         "sha256": "ee1eb4f5b75906e194f52f5dcbc81b24bdf9b1bb22e1cdde1d2c09a260648fd7",
         "bytes": 138140,
-        "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
-        "source_evidence": "Original export source verified byte for byte in jaredmejia PR review: https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
-        "import_commit": "9d3dcdcec048bcd1fa092b0e36883fe087133d9c",
+        "source_commit": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
+        "source_evidence": "Byte-identical to assets/scenes/toy_train/scene.bin in public steel-webgpu at this commit; unchanged since 58246f3.",
         "source_path": "assets/scenes/toy_train/scene.bin"
       },
-      "source_commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
+      "source_commit": "58246f3d3c6647edc66dd8518e50f13641418c38",
       "source_path": "assets/scenes/toy_train/scene.json",
-      "source_verification": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031"
+      "source_evidence": "Byte-identical to assets/scenes/toy_train/scene.json in public steel-webgpu at this commit."
     }
   ],
   "runtime_assets": [
@@ -1480,8 +1452,7 @@
       "path": "docs/steel_tuning/frame_time_dark.png",
       "sha256": "6200ab1690fffc5f41fe8cf89c6f053164e2531530cdeeb9408ada23e39acf0d",
       "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
-      "source_commit": "bb8e985e2792c61fd9749fecbd4bf3f5731b894e",
-      "source": "https://github.com/skild-ai/steel-shelf/commit/bb8e985e2792c61fd9749fecbd4bf3f5731b894e",
+      "source": "Steel Shelf, migrated into this repository",
       "generation": "docs/steel_tuning/charts.py with evidence.json",
       "distribution": "tracked repository documentation; excluded from wheel and sdist"
     },
@@ -1489,8 +1460,7 @@
       "path": "docs/steel_tuning/frame_time_light.png",
       "sha256": "9d36d2e54e80626556d86cc83bcd05b5ff38c6c57f284cca68596862ea082ee1",
       "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
-      "source_commit": "bb8e985e2792c61fd9749fecbd4bf3f5731b894e",
-      "source": "https://github.com/skild-ai/steel-shelf/commit/bb8e985e2792c61fd9749fecbd4bf3f5731b894e",
+      "source": "Steel Shelf, migrated into this repository",
       "generation": "docs/steel_tuning/charts.py with evidence.json",
       "distribution": "tracked repository documentation; excluded from wheel and sdist"
     },
@@ -1498,8 +1468,7 @@
       "path": "docs/steel_tuning/summary_dark.png",
       "sha256": "e6571cd3333191e2a0e774e4b2615de9ac96d7ac9d5e3839ca64ab4630a9ce30",
       "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
-      "source_commit": "bb8e985e2792c61fd9749fecbd4bf3f5731b894e",
-      "source": "https://github.com/skild-ai/steel-shelf/commit/bb8e985e2792c61fd9749fecbd4bf3f5731b894e",
+      "source": "Steel Shelf, migrated into this repository",
       "generation": "docs/steel_tuning/charts.py with evidence.json",
       "distribution": "tracked repository documentation; excluded from wheel and sdist"
     },
@@ -1507,8 +1476,7 @@
       "path": "docs/steel_tuning/summary_light.png",
       "sha256": "88443a9350647bfde0643ec5a0b26f5f7c44dbb417873beadeb802152ff99770",
       "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
-      "source_commit": "bb8e985e2792c61fd9749fecbd4bf3f5731b894e",
-      "source": "https://github.com/skild-ai/steel-shelf/commit/bb8e985e2792c61fd9749fecbd4bf3f5731b894e",
+      "source": "Steel Shelf, migrated into this repository",
       "generation": "docs/steel_tuning/charts.py with evidence.json",
       "distribution": "tracked repository documentation; excluded from wheel and sdist"
     },
@@ -1516,8 +1484,7 @@
       "path": "docs/teaser.webp",
       "sha256": "f2142c53387eaed5fa516da08c0941efa40284ee3e0fc9b357af069749cbde8e",
       "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
-      "source_commit": "a16a5ce0a0643ca89707d77f368158d959640efa",
-      "source": "https://github.com/skild-ai/steel-shelf/commit/a16a5ce0a0643ca89707d77f368158d959640efa",
+      "source": "Steel Shelf, migrated into this repository",
       "generation": "Project-created example visualization, as recorded in the source commit",
       "distribution": "tracked repository documentation; excluded from wheel and sdist"
     },
@@ -1525,23 +1492,19 @@
       "path": "docs/tuner.gif",
       "sha256": "d62fc606cda872206836aaa2b32a308b7fd5a41b0f3cb6f88fc249dab8938002",
       "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
-      "source_commit": "d0cc3d8a0355b28bb411fed1d1d5f36ec5e20945",
-      "source": "https://github.com/skild-ai/steel-shelf/commit/d0cc3d8a0355b28bb411fed1d1d5f36ec5e20945",
+      "source": "Steel Shelf, migrated into this repository",
       "generation": "Project-created example visualization, as recorded in the source commit",
       "distribution": "tracked repository documentation; excluded from wheel and sdist"
     }
   ],
   "historical_source_reference": {
     "recorded_in_presets": "ad03e49",
-    "commit": "ad03e498a46ad0052c001da7a41ea31386d7eec6",
     "repository": "https://github.com/skild-ai/steel-webgpu",
-    "status": "verified export source",
-    "verification_basis": "jaredmejia reports all 26 original export files match byte for byte in the linked PR review; current local SHA-256 hashes and distribution bytes are checked by this audit.",
-    "verification_source": "https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031",
-    "json_import_commit": "98ef020c3e3f03093a15cb71151928adadc2b20a",
-    "binary_import_pr": "https://github.com/skild-ai/steel-shelf/pull/11"
+    "status": "pre-release steel-webgpu revision; not in the public history",
+    "public_json_commit": "58246f3d3c6647edc66dd8518e50f13641418c38",
+    "public_binary_commit": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
+    "verification_basis": "Each bundled scene file was hashed against the public steel-webgpu history: 10 JSON exports match 58246f3 (box_turn and toaster before their collision-filter edit), all 13 binaries match f2f72c1, and the cereal, jenga and lava_fall JSON come from the pre-release revision. This audit checks the current SHA-256 hashes and distribution bytes."
   },
-  "reviewed_base_commit": "ba8ae1975f35e3ac13c31f068a4fbb72fee3074a",
   "newton_test_assets": {
     "license": "Apache-2.0 under the pinned Newton repository license",
     "source_license": "https://github.com/dylanturpin/newton-collab/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md",
@@ -1592,10 +1555,7 @@
     "version_scope": "This records the uv.lock version; other separately installed Warp versions retain their supplied notices."
   },
   "migration": {
-    "source_repository": "https://github.com/skild-ai/steel-shelf",
-    "source_commit": "6d00abad2b77ce6b8cd4ed6952ccd046534cc4cb",
-    "license_review_source_commit": "29c571a31403154341efa1c9f1e62e5a777e3634",
-    "source_subdirectory": "examples/",
+    "source": "Steel Shelf, migrated into examples/",
     "newton_license_check": "LICENSE.md blob unchanged between c42985a6 and f6fc82a8; newton-assets default remains f8fb7ab."
   },
   "additional_bundled_assets": [
@@ -1909,7 +1869,7 @@
       "path": "shelf/05_looped_linkages/loop_delta_robot/reference.json",
       "sha256": "4281dd3a53b8ba11e4e58f92c81b449510892f814a4ce629f0d84f4034dd2d34",
       "license": "Apache-2.0",
-      "source": "https://github.com/skild-ai/steel-shelf/tree/6d00abad2b77ce6b8cd4ed6952ccd046534cc4cb",
+      "source": "Generated by the scripts next to the example",
       "notice": "LICENSE",
       "evidence": "Project-generated reference trajectories, with generators retained next to the example."
     },
@@ -1917,7 +1877,7 @@
       "path": "shelf/05_looped_linkages/loop_hoberman_sphere/reference_drive_all.npz",
       "sha256": "c58ea62fe393939a8f67023fe0fe2241b05dde4f092fa9a0507bba9938c02066",
       "license": "Apache-2.0",
-      "source": "https://github.com/skild-ai/steel-shelf/tree/6d00abad2b77ce6b8cd4ed6952ccd046534cc4cb",
+      "source": "Generated by the scripts next to the example",
       "notice": "LICENSE",
       "evidence": "Project-generated reference trajectories, with generators retained next to the example."
     },
@@ -1925,7 +1885,7 @@
       "path": "shelf/05_looped_linkages/loop_hoberman_sphere/reference_drive_one.npz",
       "sha256": "98f1cc782f7cb553a6fa325e0f8e0278996defd4a069ab6b027592bf9396b61a",
       "license": "Apache-2.0",
-      "source": "https://github.com/skild-ai/steel-shelf/tree/6d00abad2b77ce6b8cd4ed6952ccd046534cc4cb",
+      "source": "Generated by the scripts next to the example",
       "notice": "LICENSE",
       "evidence": "Project-generated reference trajectories, with generators retained next to the example."
     },
@@ -1933,7 +1893,7 @@
       "path": "shelf/05_looped_linkages/loop_parallel_gripper/reference.json",
       "sha256": "b3cc053f3b857443d071301b3a8d362182b04a2732afc000e87f08754dad07b1",
       "license": "Apache-2.0",
-      "source": "https://github.com/skild-ai/steel-shelf/tree/6d00abad2b77ce6b8cd4ed6952ccd046534cc4cb",
+      "source": "Generated by the scripts next to the example",
       "notice": "LICENSE",
       "evidence": "Project-generated reference trajectories, with generators retained next to the example."
     },
@@ -1941,7 +1901,7 @@
       "path": "shelf/05_looped_linkages/loop_stewart_platform/reference.json",
       "sha256": "44c8ba1ebd7774ac3bec202c68ee6afab243eaa4309ebd561d9d456780582c28",
       "license": "Apache-2.0",
-      "source": "https://github.com/skild-ai/steel-shelf/tree/6d00abad2b77ce6b8cd4ed6952ccd046534cc4cb",
+      "source": "Generated by the scripts next to the example",
       "notice": "LICENSE",
       "evidence": "Project-generated reference trajectories, with generators retained next to the example."
     }

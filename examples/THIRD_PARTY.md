@@ -43,24 +43,36 @@ original mesh or URDF is absent.
 
 Newton-derived examples retain their original copyright and Apache-2.0 SPDX
 headers. The pinned Newton dependency is
-[c42985a6](https://github.com/dylanturpin/newton-collab/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md).
+[f6fc82a8](https://github.com/dylanturpin/newton-collab/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md).
 
 The 33 Steel WebGPU ports (20 builder scenes and 13 exported scenes) identify
 **steel-webgpu as their direct source** in the source header and `presets.toml`.
-The checked [steel-webgpu LICENSE.md](https://skild-ai.ghe.com/skild-ai/steel-webgpu/blob/53d501692bb5f5336a5cef1caf2d0f1594d88b4b/LICENSE.md)
-provides Apache-2.0 code terms and model notices. Its bundled-model summary is
-supplemented above for UR5e, Gen3 and the appended Franka terms.
+The [steel-webgpu LICENSE.md](https://github.com/skild-ai/steel-webgpu/blob/f2f72c1e99aea7192cf2366eb918e630135afcf9/LICENSE.md)
+provides Apache-2.0 code terms and, under *Bundled models*, the UR10e, UR5e and
+Kinova Gen3 notices used above. It lists the Franka model under Apache-2.0; the
+appended BSD/Willow Garage terms are supplemented above.
 
-The original 13 `scene.json` / `scene.bin` pairs matched the steel-webgpu export
-at [`ad03e498a46a`](https://github.com/skild-ai/steel-webgpu/commit/ad03e498a46ad0052c001da7a41ea31386d7eec6)
-byte for byte, as verified in [jaredmejia's source comparison](https://github.com/skild-ai/steel-shelf/pull/10#issuecomment-6739341031).
-The JSON was imported in
-[`98ef020`](https://github.com/skild-ai/steel-shelf/commit/98ef020c3e3f03093a15cb71151928adadc2b20a)
-and the binaries in [PR #11](https://github.com/skild-ai/steel-shelf/pull/11).
-The full export SHA and verification source are recorded in the inventory;
-the audit independently checks all 26 current files and both distributions
-against their recorded hashes. The original source's LICENSE.md records the
-same bundled-model terms and Menagerie revision used above.
+The 13 `scene.json` / `scene.bin` pairs can be checked against public
+[steel-webgpu](https://github.com/skild-ai/steel-webgpu) `assets/scenes/`:
+
+- All 13 `scene.bin` files are byte-identical to
+  [`f2f72c1`](https://github.com/skild-ai/steel-webgpu/tree/f2f72c1e99aea7192cf2366eb918e630135afcf9/assets/scenes)
+  (unchanged since the first public commit).
+- Eight `scene.json` files are byte-identical to
+  [`58246f3`](https://github.com/skild-ai/steel-webgpu/tree/58246f3d3c6647edc66dd8518e50f13641418c38/assets/scenes):
+  air_hockey, balance_board, beer_pong, brick_pour, drawer_fork, spinning_top,
+  toy_train and viaduct_kit. The `box_turn` and `toaster` files matched it
+  before a collision-filter-only edit (see below).
+- The `cereal`, `jenga` and `lava_fall` JSON were exported from steel-webgpu at
+  a pre-release revision that is not in its public history. They differ from
+  the public files in solver settings, initial state and a few friction values;
+  their binaries match.
+
+The 20 builder scenes come from `tools/scenes.py`, whose functions are in
+public steel-webgpu from `58246f3` on. The `@ ad03e49` in their `presets.toml`
+`source` lines names the same pre-release revision. The inventory records the
+public commit and hash for every file, and the audit checks all 26 current files
+and both distributions against those hashes.
 
 Existing copyright headers are preserved. “Modified for Steel Shelf” marks
 only the later adaptation; no copyright holder has been reassigned by this review.
@@ -163,16 +175,16 @@ These are project-created charts and rendered example recordings, not imported
 stock photos or third-party media. Original Steel Shelf chart/render artwork
 is released under Apache-2.0. Applicable model notices above are retained for
 the depicted model content; this does not relicense the underlying models.
-The media's source commits and SHA-256 hashes are in the inventory.
+The media's SHA-256 hashes are in the inventory.
 
-| File | Provenance commit | Creation |
-| --- | --- | --- |
-| `docs/steel_tuning/frame_time_dark.png` | `bb8e985` | docs/steel_tuning/charts.py with evidence.json |
-| `docs/steel_tuning/frame_time_light.png` | `bb8e985` | docs/steel_tuning/charts.py with evidence.json |
-| `docs/steel_tuning/summary_dark.png` | `bb8e985` | docs/steel_tuning/charts.py with evidence.json |
-| `docs/steel_tuning/summary_light.png` | `bb8e985` | docs/steel_tuning/charts.py with evidence.json |
-| `docs/teaser.webp` | `a16a5ce` | Project-created example visualization, as recorded in the source commit |
-| `docs/tuner.gif` | `d0cc3d8` | Project-created example visualization, as recorded in the source commit |
+| File | Creation |
+| --- | --- |
+| `docs/steel_tuning/frame_time_dark.png` | docs/steel_tuning/charts.py with evidence.json |
+| `docs/steel_tuning/frame_time_light.png` | docs/steel_tuning/charts.py with evidence.json |
+| `docs/steel_tuning/summary_dark.png` | docs/steel_tuning/charts.py with evidence.json |
+| `docs/steel_tuning/summary_light.png` | docs/steel_tuning/charts.py with evidence.json |
+| `docs/teaser.webp` | Recorded from the shelf's own examples |
+| `docs/tuner.gif` | Recorded from the shelf's own tuner |
 
 ## Optional external files and Python dependencies
 
@@ -209,9 +221,10 @@ review, even when the archive check passes.
 
 ## Additions already present in the migrated main branch
 
-The `box_turn` and `toaster` JSON files include the collision-filter-only adaptations from
-Steel Shelf commit `0cfd22d13e2c75cddae37b335140fb6c8bf1f62f`; their binaries and robot model
-data are unchanged. The inventory retains both the original JSON hash and adapted hash.
+The `box_turn` and `toaster` JSON files add collision filter pairs to the
+exported scenes (toaster's carriage against its bread-guide wires, box_turn's
+wrist against its own hand); their binaries and robot model data are unchanged.
+The inventory retains both the original JSON hash and adapted hash.
 
 The seven `mjorg_*` examples retain MuJoCo XML/model assets under Apache-2.0,
 including the card mesh and textures for the house of cards. Their per-example
