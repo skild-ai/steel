@@ -7,7 +7,7 @@ license = "Apache-2.0 AND BSD-3-Clause"
 license-files = ["LICENSE", "NOTICE", "THIRD_PARTY.md", "third_party_inventory.json", "licenses/*.txt", "licenses/runtime-assets/*.txt"]
 requires-python = ">=3.10"
 dependencies = [
-    # Newton with SolverSteel and SolverFeatherPGS (newton-collab fpgs-main).
+    # A Newton development fork, until the changes these examples need are in a Newton release.
     "newton[examples] @ git+https://github.com/dylanturpin/newton-collab.git@f6fc82a8b06d036e1e6d02a61d77a2d300476e8d",
     "tomlkit>=0.13",  # `shelf check` writes results into presets.toml, keeping comments
 ]
@@ -23,6 +23,7 @@ build-backend = "hatchling.build"
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
+# Not ready for PyPI as is: the top-level `common` package would collide with other distributions.
 packages = ["common", "shelf"]
 
 [tool.ruff]

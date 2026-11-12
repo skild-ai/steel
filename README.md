@@ -36,7 +36,7 @@ uv run python -m shelf list
 uv run python -m shelf play basic_pendulum
 ```
 
-The examples are a separate Python project under `examples/`. They install an exact pinned revision of the Newton development fork; the solver itself is not copied into this repository. See the [examples README](examples/README.md) for setup, tuning, testing, supported presets and asset requirements.
+The examples are a separate Python project under `examples/`. They are pinned to a Newton development fork until the changes they need are in a Newton release; the solver itself is not copied into this repository. See the [examples README](examples/README.md) for setup, tuning, testing, supported presets and asset requirements.
 
 ## Code and demos
 
@@ -47,6 +47,8 @@ The examples are a separate Python project under `examples/`. They install an ex
 - [Blog](https://www.skild.ai/blogs/steel) — the launch write-up.
 
 ## Projects using Steel
+
+So far these are our own:
 
 - **[Steel examples](examples/README.md)** — Newton scenes with Steel presets, including rigid-body examples and scenes coupling Steel with deformable solvers.
 - **[Steel Playground](https://www.skild.ai/steel/playground)** — interactive browser demos using the [WebGPU implementation](https://github.com/skild-ai/steel-webgpu).

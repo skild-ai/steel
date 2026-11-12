@@ -9,16 +9,17 @@ with a solver preset for every solver that can run it.
 cable and soft-body scenes), recorded, and set in as a miniature. The camera passes from room to room
 through the shelves to `jenga`, `franka_shirt_fold_stack` and `steel_wrecking_ball`.*
 
-102 of the 129 examples from Newton (newton-collab `fpgs-main`, which adds `SolverSteel` and `SolverFeatherPGS`)
-are here, sorted by the feature they exercise rather than by solver, plus the 33 scenes of
+The shelf holds 147 examples. 102 are Newton's own examples from the pinned Newton revision (see *Setup*), sorted
+by the feature they exercise rather than by solver. 33 are scenes from
 [steel-webgpu](https://github.com/skild-ai/steel-webgpu) that Newton has no example for (see *Ported scenes*).
-The other 27 simulate only cloth, soft bodies, MPM or particles, with no rigid or articulated part for Steel.
-Every example runs exactly as it does in Newton, but its solver settings live in a `presets.toml` next to it
+The other 12 are the shelf's own: four closed-loop mechanisms, `pyramid_drop`, and seven scenes adapted from
+MuJoCo's `model/` directory (`mjorg_*`). Most of the Newton examples left out simulate only cloth, soft bodies,
+MPM or particles, with no rigid or articulated part for Steel.
+Every Newton example runs exactly as it does in Newton, but its solver settings live in a `presets.toml` next to it
 instead of in the code.
 
 This collection was migrated from the Steel Shelf project.
-It remains a separate Python project inside `examples/`; its Newton dependency is pinned
-in `pyproject.toml`. Run the commands below from this directory.
+It remains a separate Python project inside `examples/`. Run the commands below from this directory.
 
 ## Setup
 
@@ -29,7 +30,9 @@ uv sync
 uv run python -m shelf list
 ```
 
-Newton is pinned in `pyproject.toml`. A GPU with CUDA is recommended; most examples also run on CPU.
+Newton is pinned in `pyproject.toml` to a revision of a Newton development fork
+([dylanturpin/newton-collab](https://github.com/dylanturpin/newton-collab)), until the changes these examples
+need are in a Newton release. A GPU with CUDA is recommended; most examples also run on CPU.
 
 ## Three ways to run an example
 
@@ -150,8 +153,8 @@ thumbs` renders them on demand (`--missing`, `--force`, `--jobs N`). What a card
 example's `presets.toml`: a `[gallery]` table with `short`, the one line, and optionally `frame`, the
 frame the preview shows (default 60), and `title`. A file without one gets a warning.
 
-**Ported scenes.** The 35 steel-webgpu scenes that are not Newton examples live on the shelf too, each in the
-section its feature belongs to, with a `[steel]` preset carrying the browser's settings. The 22 built in
+**Ported scenes.** The 35 steel-webgpu scenes that are not Newton examples live on the shelf too, 33 as examples
+of their own and two as options of existing ones, each in the section its feature belongs to, with a `[steel]` preset carrying the browser's settings. The 22 built in
 steel-webgpu's `tools/scenes.py` are examples on `common/steel_scenes.py`: the builder function moved in as it
 is, the shelf's loop around it; where the browser has a compare toggle, a `[steel_off]` preset is the toggle
 off. Two of them extend existing examples instead: `domino_spiral --num-dominoes 480 --scale 0.28` and
@@ -202,6 +205,9 @@ solver arguments (`solver`) and per-solver model tweaks (`model`), plus a `statu
 | unsupported | the solver cannot simulate this scene; see its `reason` |
 | untested | no preset yet |
 
+The `feather_pgs` tables are inert at this pin: they map to `SolverFeatherPGS`, Steel's earlier name, which the
+pinned Newton does not have, and every one of them is `untested` or `unsupported`.
+
 [PRESETS.md](PRESETS.md) shows every example against every solver. To check presets:
 
 ```bash
@@ -222,6 +228,7 @@ uv run python -m shelf check --all                    # every working preset; re
   have `shelf bench` load them, and record the measured throughput, GPU and world count with each.
 - [ ] **`--world-count` everywhere.** Add a world-count argument to the examples that simulate a single
   scene, so every example can be benchmarked at scale.
+- [ ] **`feather_pgs` tables.** Drop the inert `feather_pgs` column, or map it to a solver the pin has.
 - [ ] **Featherstone `angular_damping`.** The pinned Newton stores it on `SolverFeatherstone` but never
   reads it, so the `featherstone.solver.angular_damping` presets change nothing. Drop them or fix upstream.
 

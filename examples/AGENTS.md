@@ -35,6 +35,7 @@ If `VIRTUAL_ENV` points at another project, unset it first.
 `presets.toml` has a top-level `example`, `source`, `default` (the preset used when no `--solver` is given),
 a `[check]` table with the arguments `check` passes, and one table per solver:
 `xpbd vbd mujoco featherstone semi_implicit feather_pgs steel kamino implicit_mpm style3d`.
+(`feather_pgs` names `SolverFeatherPGS`, which the pinned Newton does not have; leave those tables as they are.)
 
 ```toml
 [mujoco]
