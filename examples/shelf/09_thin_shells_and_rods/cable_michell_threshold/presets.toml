@@ -1,5 +1,5 @@
 example = "cable_michell_threshold"
-source = "newton/examples/vbd/example_cable_michell_threshold.py @ newton-collab 7565a26b1"
+source = "newton/examples/vbd/example_cable_michell_threshold.py @ skild-ai/newton 7565a26b1"
 default = "vbd"
 
 [check]

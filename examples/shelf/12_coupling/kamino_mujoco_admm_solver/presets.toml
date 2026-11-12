@@ -1,5 +1,5 @@
 example = "kamino_mujoco_admm_solver"
-source = "newton/examples/multiphysics/example_kamino_mujoco_admm_solver.py @ newton-collab 7565a26b1"
+source = "newton/examples/multiphysics/example_kamino_mujoco_admm_solver.py @ skild-ai/newton 7565a26b1"
 default = "kamino_steel"
 
 [check]

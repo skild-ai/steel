@@ -1,5 +1,5 @@
 example = "replay_viewer"
-source = "newton/examples/basic/example_replay_viewer.py @ newton-collab 7565a26b1"
+source = "newton/examples/basic/example_replay_viewer.py @ skild-ai/newton 7565a26b1"
 default = "none"
 
 [check]

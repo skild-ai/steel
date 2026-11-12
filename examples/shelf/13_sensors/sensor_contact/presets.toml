@@ -1,5 +1,5 @@
 example = "sensor_contact"
-source = "newton/examples/sensors/example_sensor_contact.py @ newton-collab 7565a26b1"
+source = "newton/examples/sensors/example_sensor_contact.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

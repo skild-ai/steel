@@ -1,5 +1,5 @@
 example = "ik_h1"
-source = "newton/examples/ik/example_ik_h1.py @ newton-collab 7565a26b1"
+source = "newton/examples/ik/example_ik_h1.py @ skild-ai/newton 7565a26b1"
 default = "none"
 
 [check]

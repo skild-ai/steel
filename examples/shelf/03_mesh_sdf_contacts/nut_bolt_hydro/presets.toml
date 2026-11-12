@@ -1,5 +1,5 @@
 example = "nut_bolt_hydro"
-source = "newton/examples/contacts/example_nut_bolt_hydro.py @ newton-collab 7565a26b1"
+source = "newton/examples/contacts/example_nut_bolt_hydro.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

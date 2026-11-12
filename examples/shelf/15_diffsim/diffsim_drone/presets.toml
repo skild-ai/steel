@@ -1,5 +1,5 @@
 example = "diffsim_drone"
-source = "newton/examples/diffsim/example_diffsim_drone.py @ newton-collab 7565a26b1"
+source = "newton/examples/diffsim/example_diffsim_drone.py @ skild-ai/newton 7565a26b1"
 default = "semi_implicit"
 
 [check]

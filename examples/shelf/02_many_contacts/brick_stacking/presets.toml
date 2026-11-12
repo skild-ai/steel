@@ -1,5 +1,5 @@
 example = "brick_stacking"
-source = "newton/examples/contacts/example_brick_stacking.py @ newton-collab 7565a26b1"
+source = "newton/examples/contacts/example_brick_stacking.py @ skild-ai/newton 7565a26b1"
 default = "mujoco"
 
 [check]

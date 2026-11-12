@@ -30,9 +30,8 @@ uv sync
 uv run python -m shelf list
 ```
 
-Newton is pinned in `pyproject.toml` to a revision of a Newton development fork
-([dylanturpin/newton-collab](https://github.com/dylanturpin/newton-collab)), until the changes these examples
-need are in a Newton release. A GPU with CUDA is recommended; most examples also run on CPU.
+Newton is pinned in `pyproject.toml` to a revision of [skild-ai/newton](https://github.com/skild-ai/newton), a
+Newton development fork, until the changes these examples need are in a Newton release. A GPU with CUDA is recommended; most examples also run on CPU.
 
 ## Three ways to run an example
 

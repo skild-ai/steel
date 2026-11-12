@@ -43,7 +43,7 @@ original mesh or URDF is absent.
 
 Newton-derived examples retain their original copyright and Apache-2.0 SPDX
 headers. The pinned Newton dependency is
-[f6fc82a8](https://github.com/dylanturpin/newton-collab/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md).
+[f6fc82a8](https://github.com/skild-ai/newton/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md).
 
 The 33 Steel WebGPU ports (20 builder scenes and 13 exported scenes) identify
 **steel-webgpu as their direct source** in the source header and `presets.toml`.
@@ -137,7 +137,7 @@ by these examples, not unrelated IsaacGymEnvs assets.
 `newton.examples.get_asset()` resolves files inside the pinned Newton
 installation, not inside this project's packages. The dependency distributes
 its built-in example assets under its
-[Apache-2.0 repository license](https://github.com/dylanturpin/newton-collab/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md).
+[Apache-2.0 repository license](https://github.com/skild-ai/newton/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md).
 All 31 files in that asset directory are enumerated by path and Git blob ID
 in the inventory, and the Shelf call sites are listed separately. This includes
 bunny, bear, Crazyflie, RJ45, cloth, cartpole, quadruped, ant/humanoid and the
@@ -145,7 +145,7 @@ procedural tabletop assets. These dependency files are not copied into the
 Steel Shelf wheel or sdist.
 
 The tabletop source notes identify the crane and mug as procedurally generated.
-The [Pelican bicycle note](https://github.com/dylanturpin/newton-collab/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/newton/examples/assets/steel_tabletop/pelican_bicycle.md)
+The [Pelican bicycle note](https://github.com/skild-ai/newton/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/newton/examples/assets/steel_tabletop/pelican_bicycle.md)
 credits original CAD by liinbor under Apache-2.0 and links its permanent source
 tag. The Newton helpers separately load Franka and Menagerie robot models;
 those model notices are preserved above rather than inferred from Newton's code license.

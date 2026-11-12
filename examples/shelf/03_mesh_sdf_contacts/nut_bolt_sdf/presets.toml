@@ -1,5 +1,5 @@
 example = "nut_bolt_sdf"
-source = "newton/examples/contacts/example_nut_bolt_sdf.py @ newton-collab 7565a26b1"
+source = "newton/examples/contacts/example_nut_bolt_sdf.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

@@ -1,5 +1,5 @@
 example = "basic_multi_solver_overlay"
-source = "newton/examples/basic/example_basic_multi_solver_overlay.py @ newton-collab 7565a26b1"
+source = "newton/examples/basic/example_basic_multi_solver_overlay.py @ skild-ai/newton 7565a26b1"
 default = "xpbd_featherstone_mujoco_kamino"
 
 [check]

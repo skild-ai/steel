@@ -1,5 +1,5 @@
 example = "proxy_joint_gripper"
-source = "newton/examples/multiphysics/example_proxy_joint_gripper.py @ newton-collab 7565a26b1"
+source = "newton/examples/multiphysics/example_proxy_joint_gripper.py @ skild-ai/newton 7565a26b1"
 default = "steel_vbd"
 
 [check]

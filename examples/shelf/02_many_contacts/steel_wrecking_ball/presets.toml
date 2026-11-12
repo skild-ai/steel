@@ -1,5 +1,5 @@
 example = "steel_wrecking_ball"
-source = "newton/examples/robot/example_steel_wrecking_ball.py @ newton-collab 7565a26b1"
+source = "newton/examples/robot/example_steel_wrecking_ball.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

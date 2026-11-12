@@ -1,5 +1,5 @@
 example = "mujoco_xpbd_coupled_solver"
-source = "newton/examples/multiphysics/example_mujoco_xpbd_coupled_solver.py @ newton-collab 7565a26b1"
+source = "newton/examples/multiphysics/example_mujoco_xpbd_coupled_solver.py @ skild-ai/newton 7565a26b1"
 default = "steel_xpbd"
 
 [check]

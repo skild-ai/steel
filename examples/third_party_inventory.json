@@ -604,7 +604,7 @@
   ],
   "builtin_newton_assets": {
     "license": "Apache-2.0 as distributed under the pinned Newton repository license",
-    "source_license": "https://github.com/dylanturpin/newton-collab/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md",
+    "source_license": "https://github.com/skild-ai/newton/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md",
     "distribution": "dependency assets; not copied into Steel Shelf wheel or sdist",
     "files": [
       {
@@ -1507,7 +1507,7 @@
   },
   "newton_test_assets": {
     "license": "Apache-2.0 under the pinned Newton repository license",
-    "source_license": "https://github.com/dylanturpin/newton-collab/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md",
+    "source_license": "https://github.com/skild-ai/newton/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md",
     "source_helper": "newton/tests/__init__.py:get_kamino_basics_asset",
     "distribution": "separately installed dependency; not copied into Steel Shelf wheel or sdist",
     "files": [

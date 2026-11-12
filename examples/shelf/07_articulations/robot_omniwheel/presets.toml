@@ -1,5 +1,5 @@
 example = "robot_omniwheel"
-source = "newton/examples/robot/example_robot_omniwheel.py @ newton-collab 7565a26b1"
+source = "newton/examples/robot/example_robot_omniwheel.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

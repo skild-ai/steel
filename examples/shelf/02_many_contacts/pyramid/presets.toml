@@ -1,5 +1,5 @@
 example = "pyramid"
-source = "newton/examples/contacts/example_pyramid.py @ newton-collab 7565a26b1"
+source = "newton/examples/contacts/example_pyramid.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

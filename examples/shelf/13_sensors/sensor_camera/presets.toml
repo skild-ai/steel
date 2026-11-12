@@ -1,5 +1,5 @@
 example = "sensor_camera"
-source = "newton/examples/sensors/example_sensor_camera.py @ newton-collab 7565a26b1"
+source = "newton/examples/sensors/example_sensor_camera.py @ skild-ai/newton 7565a26b1"
 default = "none"
 
 [check]

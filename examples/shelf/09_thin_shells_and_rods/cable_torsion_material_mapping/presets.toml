@@ -1,5 +1,5 @@
 example = "cable_torsion_material_mapping"
-source = "newton/examples/vbd/example_cable_torsion_material_mapping.py @ newton-collab 7565a26b1"
+source = "newton/examples/vbd/example_cable_torsion_material_mapping.py @ skild-ai/newton 7565a26b1"
 default = "vbd"
 
 [check]

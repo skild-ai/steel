@@ -1,5 +1,5 @@
 example = "basic_joints"
-source = "newton/examples/basic/example_basic_joints.py @ newton-collab 7565a26b1"
+source = "newton/examples/basic/example_basic_joints.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

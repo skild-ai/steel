@@ -1,5 +1,5 @@
 example = "cable_bend_stiffness"
-source = "newton/examples/vbd/example_cable_bend_stiffness.py @ newton-collab 7565a26b1"
+source = "newton/examples/vbd/example_cable_bend_stiffness.py @ skild-ai/newton 7565a26b1"
 default = "vbd"
 
 [check]

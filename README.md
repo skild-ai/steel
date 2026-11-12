@@ -36,7 +36,7 @@ uv run python -m shelf list
 uv run python -m shelf play basic_pendulum
 ```
 
-The examples are a separate Python project under `examples/`. They are pinned to a Newton development fork until the changes they need are in a Newton release; the solver itself is not copied into this repository. See the [examples README](examples/README.md) for setup, tuning, testing, supported presets and asset requirements.
+The examples are a separate Python project under `examples/`. They are pinned to [skild-ai/newton](https://github.com/skild-ai/newton), a Newton development fork, until the changes they need are in a Newton release; the solver itself is not copied into this repository. See the [examples README](examples/README.md) for setup, tuning, testing, supported presets and asset requirements.
 
 ## Code and demos
 

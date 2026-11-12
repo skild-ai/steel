@@ -1,5 +1,5 @@
 example = "franka_cable_ik_pick_place"
-source = "newton/examples/multiphysics/example_franka_cable_ik_pick_place.py @ newton-collab 7565a26b1"
+source = "newton/examples/multiphysics/example_franka_cable_ik_pick_place.py @ skild-ai/newton 7565a26b1"
 default = "steel_vbd"
 
 [check]

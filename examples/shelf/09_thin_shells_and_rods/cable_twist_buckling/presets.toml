@@ -1,5 +1,5 @@
 example = "cable_twist_buckling"
-source = "newton/examples/vbd/example_cable_twist_buckling.py @ newton-collab 7565a26b1"
+source = "newton/examples/vbd/example_cable_twist_buckling.py @ skild-ai/newton 7565a26b1"
 default = "vbd"
 
 [check]

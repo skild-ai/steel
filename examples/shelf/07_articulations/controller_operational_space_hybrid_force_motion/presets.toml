@@ -1,5 +1,5 @@
 example = "controller_operational_space_hybrid_force_motion"
-source = "newton/examples/controllers/example_controller_operational_space_hybrid_force_motion.py @ newton-collab 7565a26b1"
+source = "newton/examples/controllers/example_controller_operational_space_hybrid_force_motion.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

@@ -1,5 +1,5 @@
 example = "vbd_gripper_soft_triangle"
-source = "newton/examples/vbd/example_vbd_gripper_soft_triangle.py @ newton-collab 7565a26b1"
+source = "newton/examples/vbd/example_vbd_gripper_soft_triangle.py @ skild-ai/newton 7565a26b1"
 default = "vbd"
 
 [check]

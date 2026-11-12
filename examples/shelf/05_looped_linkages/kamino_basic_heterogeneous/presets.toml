@@ -1,5 +1,5 @@
 example = "kamino_basic_heterogeneous"
-source = "newton/examples/kamino/example_kamino_basic_heterogeneous.py @ newton-collab 7565a26b1"
+source = "newton/examples/kamino/example_kamino_basic_heterogeneous.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

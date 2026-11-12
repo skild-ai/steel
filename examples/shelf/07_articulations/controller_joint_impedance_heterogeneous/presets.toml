@@ -1,5 +1,5 @@
 example = "controller_joint_impedance_heterogeneous"
-source = "newton/examples/controllers/example_controller_joint_impedance_heterogeneous.py @ newton-collab 7565a26b1"
+source = "newton/examples/controllers/example_controller_joint_impedance_heterogeneous.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

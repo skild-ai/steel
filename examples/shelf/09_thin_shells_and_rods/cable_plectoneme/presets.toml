@@ -1,5 +1,5 @@
 example = "cable_plectoneme"
-source = "newton/examples/cable/example_cable_plectoneme.py @ newton-collab 7565a26b1"
+source = "newton/examples/cable/example_cable_plectoneme.py @ skild-ai/newton 7565a26b1"
 default = "vbd"
 
 [check]

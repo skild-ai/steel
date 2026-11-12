@@ -1,5 +1,5 @@
 example = "ik_cube_stacking"
-source = "newton/examples/ik/example_ik_cube_stacking.py @ newton-collab 7565a26b1"
+source = "newton/examples/ik/example_ik_cube_stacking.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

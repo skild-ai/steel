@@ -1,5 +1,5 @@
 example = "contacts_rj45_plug"
-source = "newton/examples/contacts/example_contacts_rj45_plug.py @ newton-collab 7565a26b1"
+source = "newton/examples/contacts/example_contacts_rj45_plug.py @ skild-ai/newton 7565a26b1"
 default = "vbd"
 
 [check]

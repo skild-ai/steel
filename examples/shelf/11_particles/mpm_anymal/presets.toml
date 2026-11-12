@@ -1,5 +1,5 @@
 example = "mpm_anymal"
-source = "newton/examples/mpm/example_mpm_anymal.py @ newton-collab 7565a26b1"
+source = "newton/examples/mpm/example_mpm_anymal.py @ skild-ai/newton 7565a26b1"
 default = "steel_implicit_mpm"
 
 [check]

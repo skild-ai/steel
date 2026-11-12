@@ -1,5 +1,5 @@
 example = "pyramid_drop"
-source = "pyramid_steel.py, the Steel side of a pyramid-drop comparison against MuJoCo 4.0 (newton-collab f6fc82a8)"
+source = "pyramid_steel.py, the Steel side of a pyramid-drop comparison against MuJoCo 4.0 (skild-ai/newton f6fc82a8)"
 default = "steel"
 
 [check]

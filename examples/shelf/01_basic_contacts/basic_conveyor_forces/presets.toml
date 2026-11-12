@@ -1,5 +1,5 @@
 example = "basic_conveyor_forces"
-source = "newton/examples/basic/example_basic_conveyor_forces.py @ newton-collab 7565a26b1"
+source = "newton/examples/basic/example_basic_conveyor_forces.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 # model.shape_margin: a small positive collision margin smooths the belt-to-belt seam
 # transitions. VBD's rigid-contact handling needs a larger margin than XPBD to keep

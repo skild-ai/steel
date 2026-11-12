@@ -1,5 +1,5 @@
 example = "basic_urdf"
-source = "newton/examples/basic/example_basic_urdf.py @ newton-collab 7565a26b1"
+source = "newton/examples/basic/example_basic_urdf.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

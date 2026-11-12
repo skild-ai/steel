@@ -1,5 +1,5 @@
 example = "cable_pile"
-source = "newton/examples/cable/example_cable_pile.py @ newton-collab 7565a26b1"
+source = "newton/examples/cable/example_cable_pile.py @ skild-ai/newton 7565a26b1"
 default = "vbd"
 
 [check]

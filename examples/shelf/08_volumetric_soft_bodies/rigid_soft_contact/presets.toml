@@ -1,5 +1,5 @@
 example = "rigid_soft_contact"
-source = "newton/examples/multiphysics/example_rigid_soft_contact.py @ newton-collab 7565a26b1"
+source = "newton/examples/multiphysics/example_rigid_soft_contact.py @ skild-ai/newton 7565a26b1"
 default = "steel_xpbd"
 
 [check]

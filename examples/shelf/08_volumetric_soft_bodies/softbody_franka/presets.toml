@@ -1,5 +1,5 @@
 example = "softbody_franka"
-source = "newton/examples/softbody/example_softbody_franka.py @ newton-collab 7565a26b1"
+source = "newton/examples/softbody/example_softbody_franka.py @ skild-ai/newton 7565a26b1"
 default = "steel_vbd"
 
 [check]

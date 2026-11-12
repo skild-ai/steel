@@ -1,5 +1,5 @@
 example = "vbd_gripper_soft_grid"
-source = "newton/examples/vbd/example_vbd_gripper_soft_grid.py @ newton-collab 7565a26b1"
+source = "newton/examples/vbd/example_vbd_gripper_soft_grid.py @ skild-ai/newton 7565a26b1"
 default = "vbd"
 
 [check]

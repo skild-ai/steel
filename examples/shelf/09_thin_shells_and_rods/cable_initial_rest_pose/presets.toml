@@ -1,5 +1,5 @@
 example = "cable_initial_rest_pose"
-source = "newton/examples/cable/example_cable_initial_rest_pose.py @ newton-collab 7565a26b1"
+source = "newton/examples/cable/example_cable_initial_rest_pose.py @ skild-ai/newton 7565a26b1"
 default = "vbd"
 
 [check]

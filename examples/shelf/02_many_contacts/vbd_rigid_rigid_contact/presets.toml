@@ -1,5 +1,5 @@
 example = "vbd_rigid_rigid_contact"
-source = "newton/examples/vbd/example_vbd_rigid_rigid_contact.py @ newton-collab 7565a26b1"
+source = "newton/examples/vbd/example_vbd_rigid_rigid_contact.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

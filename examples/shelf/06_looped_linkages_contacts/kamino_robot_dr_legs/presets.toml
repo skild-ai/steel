@@ -1,5 +1,5 @@
 example = "kamino_robot_dr_legs"
-source = "newton/examples/kamino/example_kamino_robot_dr_legs.py @ newton-collab 7565a26b1"
+source = "newton/examples/kamino/example_kamino_robot_dr_legs.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

@@ -1,5 +1,5 @@
 example = "tendon_capstan_friction"
-source = "newton/examples/tendon/example_tendon_capstan_friction.py @ newton-collab 7565a26b1"
+source = "newton/examples/tendon/example_tendon_capstan_friction.py @ skild-ai/newton 7565a26b1"
 default = "xpbd"
 
 [check]

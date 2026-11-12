@@ -1,5 +1,5 @@
 example = "selection_articulations"
-source = "newton/examples/selection/example_selection_articulations.py @ newton-collab 7565a26b1"
+source = "newton/examples/selection/example_selection_articulations.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

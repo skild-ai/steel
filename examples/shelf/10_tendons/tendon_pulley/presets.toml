@@ -1,5 +1,5 @@
 example = "tendon_pulley"
-source = "newton/examples/tendon/example_tendon_pulley.py @ newton-collab 7565a26b1"
+source = "newton/examples/tendon/example_tendon_pulley.py @ skild-ai/newton 7565a26b1"
 default = "xpbd"
 
 [check]

@@ -1,5 +1,5 @@
 example = "controller_differential_ik"
-source = "newton/examples/controllers/example_controller_differential_ik.py @ newton-collab 7565a26b1"
+source = "newton/examples/controllers/example_controller_differential_ik.py @ skild-ai/newton 7565a26b1"
 default = "none"
 
 [check]

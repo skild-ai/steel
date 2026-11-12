@@ -14,8 +14,9 @@ uv sync
 uv run python -m shelf list
 ```
 
-`uv sync` installs the Newton revision pinned in `pyproject.toml`, a Newton development fork until the
-changes the examples need are in a Newton release. A CUDA GPU is recommended; most examples also run on CPU.
+`uv sync` installs the Newton revision pinned in `pyproject.toml`, from
+[skild-ai/newton](https://github.com/skild-ai/newton), a Newton development fork, until the changes the
+examples need are in a Newton release. A CUDA GPU is recommended; most examples also run on CPU.
 If `VIRTUAL_ENV` points at another project, unset it first.
 
 ## Running an example

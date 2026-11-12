@@ -1,5 +1,5 @@
 example = "franka_shirt_fold_stack"
-source = "newton/examples/multiphysics/example_franka_shirt_fold_stack.py @ newton-collab 7565a26b1"
+source = "newton/examples/multiphysics/example_franka_shirt_fold_stack.py @ skild-ai/newton 7565a26b1"
 default = "steel_vbd"
 
 [check]

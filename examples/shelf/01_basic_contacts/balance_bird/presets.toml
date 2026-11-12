@@ -1,5 +1,5 @@
 example = "balance_bird"
-source = "newton/examples/contacts/example_balance_bird.py @ newton-collab 7565a26b1"
+source = "newton/examples/contacts/example_balance_bird.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

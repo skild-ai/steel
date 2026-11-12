@@ -1,5 +1,5 @@
 example = "basic_viewer"
-source = "newton/examples/basic/example_basic_viewer.py @ newton-collab 7565a26b1"
+source = "newton/examples/basic/example_basic_viewer.py @ skild-ai/newton 7565a26b1"
 default = "none"
 
 [check]

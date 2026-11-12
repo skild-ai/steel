@@ -1,5 +1,5 @@
 example = "tendon_mujoco_switch"
-source = "newton/examples/tendon/example_tendon_mujoco_switch.py @ newton-collab 7565a26b1"
+source = "newton/examples/tendon/example_tendon_mujoco_switch.py @ skild-ai/newton 7565a26b1"
 default = "xpbd"
 
 [check]

@@ -1,5 +1,5 @@
 example = "domino_spiral"
-source = "newton/examples/contacts/example_domino_spiral.py @ newton-collab 7565a26b1"
+source = "newton/examples/contacts/example_domino_spiral.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

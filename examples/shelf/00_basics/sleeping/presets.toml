@@ -1,5 +1,5 @@
 example = "sleeping"
-source = "newton/examples/mujoco/example_mujoco_sleeping.py @ newton-collab 7565a26b1"
+source = "newton/examples/mujoco/example_mujoco_sleeping.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

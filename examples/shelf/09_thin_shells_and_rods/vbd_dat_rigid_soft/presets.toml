@@ -1,5 +1,5 @@
 example = "vbd_dat_rigid_soft"
-source = "newton/examples/multiphysics/example_vbd_dat_rigid_soft.py @ newton-collab 7565a26b1"
+source = "newton/examples/multiphysics/example_vbd_dat_rigid_soft.py @ skild-ai/newton 7565a26b1"
 default = "vbd"
 
 [check]

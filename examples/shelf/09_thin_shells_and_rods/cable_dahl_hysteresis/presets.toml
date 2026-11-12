@@ -1,5 +1,5 @@
 example = "cable_dahl_hysteresis"
-source = "newton/examples/vbd/example_cable_dahl_hysteresis.py @ newton-collab 7565a26b1"
+source = "newton/examples/vbd/example_cable_dahl_hysteresis.py @ skild-ai/newton 7565a26b1"
 default = "vbd"
 
 [check]

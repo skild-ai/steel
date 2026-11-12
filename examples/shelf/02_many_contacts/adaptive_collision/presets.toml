@@ -1,5 +1,5 @@
 example = "adaptive_collision"
-source = "newton/examples/contacts/example_adaptive_collision.py @ newton-collab 7565a26b1"
+source = "newton/examples/contacts/example_adaptive_collision.py @ skild-ai/newton 7565a26b1"
 default = "xpbd"
 
 [check]

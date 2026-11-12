@@ -1,5 +1,5 @@
 example = "selection_multiple"
-source = "newton/examples/selection/example_selection_multiple.py @ newton-collab 7565a26b1"
+source = "newton/examples/selection/example_selection_multiple.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]

@@ -1,5 +1,5 @@
 example = "cable_cross_slide_table"
-source = "newton/examples/cable/example_cable_cross_slide_table.py @ newton-collab 7565a26b1"
+source = "newton/examples/cable/example_cable_cross_slide_table.py @ skild-ai/newton 7565a26b1"
 default = "vbd"
 
 [check]

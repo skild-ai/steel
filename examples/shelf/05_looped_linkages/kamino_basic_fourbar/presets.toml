@@ -1,5 +1,5 @@
 example = "kamino_basic_fourbar"
-source = "newton/examples/kamino/example_kamino_basic_fourbar.py @ newton-collab 7565a26b1"
+source = "newton/examples/kamino/example_kamino_basic_fourbar.py @ skild-ai/newton 7565a26b1"
 default = "steel"
 
 [check]
