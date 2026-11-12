@@ -2,7 +2,7 @@
 
 [![Watch the Steel launch video](assets/launch-poster.jpg)](https://github.com/user-attachments/assets/be138f43-7852-40dc-a7ab-de1b2aa49cde)
 
-Steel is Skild's GPU-accelerated rigid-body physics solver for scalable simulation of manipulation, developed in collaboration with NVIDIA and implemented inside Newton.
+Steel is Skild's GPU-accelerated rigid-body physics solver for scalable simulation of manipulation. Skild AI developed Steel in collaboration with NVIDIA. Steel is implemented inside [Newton](https://github.com/newton-physics/newton), the open-source physics engine hosted by the Linux Foundation.
 
 Across 20 robot-learning benchmarks, Steel delivers **3.8× PhysX's simulation throughput** (geometric mean), and **up to 13×** on heterogeneous batches that mix different robots and tasks, while using less GPU memory. See the [launch write-up](https://www.skild.ai/blogs/steel) for the benchmarks and evaluation conditions.
 
@@ -63,10 +63,10 @@ Steel solver development happens inside Newton. Changes to the implementation ne
 
 ## License
 
-Copyright 2026 Skild AI. Steel is licensed under the [Apache License, Version 2.0](LICENSE). The solver is distributed as part of [Newton](https://github.com/newton-physics/newton), which is also licensed under Apache-2.0.
+Copyright 2026 Skild AI and the Steel contributors. Steel was created by Skild AI in collaboration with NVIDIA; the authors are listed in [AUTHORS](AUTHORS). Steel is licensed under the [Apache License, Version 2.0](LICENSE). The solver is distributed as part of [Newton](https://github.com/newton-physics/newton), the open-source physics engine hosted by the Linux Foundation, which is also licensed under Apache-2.0.
 
 The examples package includes Apache-2.0 code and BSD-3-Clause robot model data. Its component licenses, notices and distribution metadata are retained under [examples/THIRD_PARTY.md](examples/THIRD_PARTY.md), [examples/NOTICE](examples/NOTICE), and [examples/licenses/](examples/licenses/). Optional downloaded assets and media retain their own terms; the root Apache license does not replace them.
 
-The launch video footage and its poster in [assets/](assets/) are Copyright 2026 Skild AI. The footage, the poster and the video's music are not licensed under Apache-2.0; see [NOTICE](NOTICE).
+The launch video and its poster in [assets/](assets/) are Copyright 2026 Skild AI and licensed under Apache-2.0.
 
 Skild, Skild AI and the Skild logo are trademarks of Skild AI and are not licensed under Apache-2.0.

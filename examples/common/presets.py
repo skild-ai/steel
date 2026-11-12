@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
 # SPDX-License-Identifier: Apache-2.0
 
 """Solver presets: per-example, per-solver settings stored in ``presets.toml``.

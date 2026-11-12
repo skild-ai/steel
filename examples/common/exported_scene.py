@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
 # SPDX-License-Identifier: Apache-2.0
 
 """Exported steel-webgpu scenes rebuilt as Newton models: the hero-montage demos.

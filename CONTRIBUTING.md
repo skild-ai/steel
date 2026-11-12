@@ -75,7 +75,7 @@ model files, binary files and asset downloads.
 
 - Keep existing copyright and SPDX headers. An example ported from Newton keeps Newton's header; one ported from
   elsewhere names its direct source in a header line and in the `source` of its `presets.toml`. New code you
-  write carries the header of its copyright holder, e.g. `Copyright (c) 2026 Skild AI` for Skild AI work.
+  write carries the header in [Contribution terms](#contribution-terms).
 - Add only files whose license allows redistribution, and say where each came from. A new bundled file needs
   an inventory entry with its path, SHA-256, license and notice, and the complete notice text under
   `examples/licenses/`. Describe it in [THIRD_PARTY.md](examples/THIRD_PARTY.md).
@@ -85,6 +85,20 @@ model files, binary files and asset downloads.
   `examples/licenses/runtime-assets/`.
 - Evidence in the inventory and THIRD_PARTY.md must be something any reader can open: public commits, files
   and URLs.
+
+## Contribution terms
+
+Contributions are accepted under the [Apache License, Version 2.0](LICENSE), the license of the project: what
+you submit is licensed inbound under the same terms it is distributed outbound, as Apache-2.0 section 5 sets
+out. There is no CLA and no sign-off. You keep the copyright in your contribution. A new file you write starts
+with this header (in the comment style of its language):
+
+```python
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+```
+
+The project's authors are listed in [AUTHORS](AUTHORS).
 
 ## Pull requests
 

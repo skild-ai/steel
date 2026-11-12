@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
 # SPDX-License-Identifier: Apache-2.0
 
 """The shelf's side bar: one imgui window on the left, in place of Newton's panel.

@@ -47,7 +47,7 @@ headers. The pinned Newton dependency is
 The 27 Steel WebGPU ports (16 builder scenes and 11 exported scenes) identify
 **steel-webgpu as their direct source** in the source header and `presets.toml`.
 Skild AI wrote both steel-webgpu's scenes and these ports, so the port headers
-read `Copyright (c) 2026 Skild AI`. The
+read `Copyright (c) 2026 Skild AI and the Steel contributors`. The
 [steel-webgpu LICENSE.md](https://github.com/skild-ai/steel-webgpu/blob/f2f72c1e99aea7192cf2366eb918e630135afcf9/LICENSE.md)
 carries `Copyright 2026 Skild AI` and `Copyright 2025 The Newton Developers`;
 it is retained in full in
@@ -81,7 +81,7 @@ Newton-derived examples keep their original copyright headers, and “Modified
 for Steel Shelf” marks the later adaptation. The ports, the shelf's own
 examples (`loop_delta_robot`, `loop_hoberman_sphere`, `loop_parallel_gripper`
 and the six `mjorg_*` scenes) and the shared `common/`, `scripts/` and `tests/`
-code were written by Skild AI and carry `Copyright (c) 2026 Skild AI` headers.
+code were written by Skild AI and carry `Copyright (c) 2026 Skild AI and the Steel contributors` headers.
 The MuJoCo model files in the `mjorg_*` scenes keep their own notices.
 
 ## Models and policies downloaded at runtime

@@ -1096,7 +1096,7 @@
       "Copyright 2026 Skild AI",
       "Copyright 2025 The Newton Developers"
     ],
-    "port_header": "# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI",
+    "port_header": "# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors",
     "authorship": "The steel-webgpu scenes and the 27 ports were written by Skild AI; the notice file is the verbatim pinned source license."
   },
   "newton_test_assets": {

@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
 # SPDX-License-Identifier: Apache-2.0
 
 """Previews for the example browser: one frame of each example, rendered headless and cached per look.

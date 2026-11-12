@@ -1,8 +1,10 @@
 Steel Shelf
-Copyright 2026 Skild AI
+Copyright 2026 Skild AI and the Steel contributors.
+Steel was created by Skild AI in collaboration with NVIDIA.
+Authors: https://github.com/skild-ai/steel/blob/main/AUTHORS
 
 Project-original source, including the 27 Steel WebGPU ports, carries a
-"Copyright (c) 2026 Skild AI" SPDX header.
+"Copyright (c) 2026 Skild AI and the Steel contributors" SPDX header.
 
 Newton-derived source:
 Copyright (c) 2025-2026 The Newton Developers.
