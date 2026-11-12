@@ -24,6 +24,16 @@ NOTICES = ['LICENSE', 'NOTICE', 'THIRD_PARTY.md', 'third_party_inventory.json'] 
 ]
 
 
+class AuditError(Exception):
+    """A declared license, notice or asset does not match the tree or a distribution."""
+
+
+def require(condition, message='license audit check failed'):
+    """Explicit check that still runs under ``python -O``."""
+    if not condition:
+        raise AuditError(message)
+
+
 def asset_calls(source):
     """Keep source positions for navigation, but review the semantic call signature."""
     found = []
@@ -68,41 +78,45 @@ def call_site_signatures(sites):
 
 
 def check_sources():
-    assert EXPECTED == {s['path'] for s in INVENTORY['bundled_scenes']}, 'Update the scene inventory'
-    assert call_site_signatures(call_sites()) == call_site_signatures(INVENTORY['runtime_call_sites']), (
-        'Review new/changed runtime asset references; after review run '
-        'python scripts/check_distribution_licenses.py --update-call-sites'
-    )
+    require(EXPECTED == {s['path'] for s in INVENTORY['bundled_scenes']}, 'Update the scene inventory')
+    require(call_site_signatures(call_sites()) == call_site_signatures(INVENTORY['runtime_call_sites']),
+            'Review new/changed runtime asset references; after review run '
+            'python scripts/check_distribution_licenses.py --update-call-sites')
     for entry in INVENTORY['runtime_assets']:
-        assert hashlib.sha256((ROOT / entry['notice']).read_bytes()).hexdigest() == entry['notice_sha256']
+        require(hashlib.sha256((ROOT / entry['notice']).read_bytes()).hexdigest() == entry['notice_sha256'],
+                (entry['notice'], 'runtime notice hash differs'))
     for name, entry in ADDITIONAL.items():
-        assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == entry['sha256'], name
-        assert (ROOT / entry['notice']).is_file(), name
+        require(hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == entry['sha256'], (name, 'hash differs'))
+        require((ROOT / entry['notice']).is_file(), (name, 'missing notice'))
     for entry in INVENTORY['documentation_media']:
-        assert hashlib.sha256((ROOT / entry['path']).read_bytes()).hexdigest() == entry['sha256']
+        require(hashlib.sha256((ROOT / entry['path']).read_bytes()).hexdigest() == entry['sha256'],
+                (entry['path'], 'hash differs'))
     for entry in INVENTORY['bundled_scenes']:
         binary = entry['binary_payload']
-        assert hashlib.sha256((ROOT / binary['path']).read_bytes()).hexdigest() == binary['sha256']
+        require(hashlib.sha256((ROOT / binary['path']).read_bytes()).hexdigest() == binary['sha256'],
+                (binary['path'], 'hash differs'))
         data = (ROOT / entry['path']).read_bytes()
-        assert hashlib.sha256(data).hexdigest() == entry['sha256']
+        require(hashlib.sha256(data).hexdigest() == entry['sha256'], (entry['path'], 'hash differs'))
         scene = json.loads(data)
-        assert (scene.get('info', {}).get('robot') or 'none') == entry['robot']
+        require((scene.get('info', {}).get('robot') or 'none') == entry['robot'], (entry['path'], 'robot differs'))
         for name in entry['notices']:
-            assert name in NOTICES, (entry['path'], 'undeclared notice', name)
+            require(name in NOTICES, (entry['path'], 'undeclared notice', name))
         if 'model_evidence' in entry:
             expected = entry['model_evidence']['mass_prefix']
             actual = scene['bodies']['mass'][:len(expected)]
-            assert len(actual) == len(expected) and all(abs(a - b) < 1e-6 for a, b in zip(actual, expected))
+            require(len(actual) == len(expected) and all(abs(a - b) < 1e-6 for a, b in zip(actual, expected)),
+                    (entry['path'], 'model masses differ'))
     ports = [p for p in ROOT.glob('shelf/**/presets.toml') if 'source = "steel-webgpu' in p.read_text()]
-    assert len(ports) == 33
-    assert all('# Direct source: steel-webgpu;' in p.with_name('example.py').read_text() for p in ports)
+    require(len(ports) == 33, ('expected 33 steel-webgpu ports', len(ports)))
+    require(all('# Direct source: steel-webgpu;' in p.with_name('example.py').read_text() for p in ports),
+            'a steel-webgpu port lacks its direct-source header')
     for name in ['nut_bolt_hydro', 'nut_bolt_sdf']:
         path = next(ROOT.glob(f'shelf/**/{name}/example.py'))
         tree = ast.parse(path.read_text())
         calls = [n for n in ast.walk(tree) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute)
                  and n.func.attr == 'download_external_git_folder']
-        assert len(calls) == 1 and any(k.arg == 'ref' for k in calls[0].keywords)
-        assert 'aeed298638a1f7b5421b38f5f3cc2d1079b6d9c3' in path.read_text()
+        require(len(calls) == 1 and any(k.arg == 'ref' for k in calls[0].keywords), (name, 'download is not pinned'))
+        require('aeed298638a1f7b5421b38f5f3cc2d1079b6d9c3' in path.read_text(), (name, 'unexpected download revision'))
 
 
 def check(path):
@@ -116,34 +130,40 @@ def check(path):
                      for m in archive.getmembers() if m.isfile()}
         metadata_name = 'PKG-INFO'
     metadata = BytesParser().parsebytes(files[metadata_name])
-    assert metadata['License-Expression'] == INVENTORY['package_license_expression']
+    require(metadata['License-Expression'] == INVENTORY['package_license_expression'],
+            (path, 'license expression differs'))
     declared = metadata.get_all('License-File', [])
-    assert set(declared) == set(NOTICES), (path, 'license metadata differs', set(declared) ^ set(NOTICES))
+    require(set(declared) == set(NOTICES), (path, 'license metadata differs', set(declared) ^ set(NOTICES)))
     for name in NOTICES:
         matches = [v for k, v in files.items() if k == name or k.endswith('/licenses/' + name)]
-        assert matches and all(v == (ROOT / name).read_bytes() for v in matches), (path, 'missing/altered notice', name)
+        require(matches and all(v == (ROOT / name).read_bytes() for v in matches),
+                (path, 'missing/altered notice', name))
     json_files = {n for n in files if n.endswith('.json')}
     known_json = EXPECTED | set(ADDITIONAL) | {'third_party_inventory.json', 'docs/steel_tuning/evidence.json'}
-    assert all(n in known_json or n.endswith('/licenses/third_party_inventory.json') for n in json_files), (path, 'unreviewed JSON data')
+    require(all(n in known_json or n.endswith('/licenses/third_party_inventory.json') for n in json_files),
+            (path, 'unreviewed JSON data'))
     scenes = {n for n in files if n.startswith('shelf/') and n.endswith('/scene.json')}
-    assert scenes == EXPECTED, (path, 'scene inventory differs', scenes ^ EXPECTED)
-    assert all(files[n] == (ROOT / n).read_bytes() for n in scenes), (path, 'scene bytes differ')
+    require(scenes == EXPECTED, (path, 'scene inventory differs', scenes ^ EXPECTED))
+    require(all(files[n] == (ROOT / n).read_bytes() for n in scenes), (path, 'scene bytes differ'))
     actual_bins = {n for n in files if n.endswith('.bin')}
-    assert actual_bins == BINARIES, (path, 'binary scene inventory differs', actual_bins ^ BINARIES)
-    assert all(files[n] == (ROOT / n).read_bytes() for n in BINARIES), (path, 'binary scene bytes differ')
+    require(actual_bins == BINARIES, (path, 'binary scene inventory differs', actual_bins ^ BINARIES))
+    require(all(files[n] == (ROOT / n).read_bytes() for n in BINARIES), (path, 'binary scene bytes differ'))
     for name in ADDITIONAL:
-        assert name in files and files[name] == (ROOT / name).read_bytes(), (path, 'missing/altered additional asset', name)
+        require(name in files and files[name] == (ROOT / name).read_bytes(),
+                (path, 'missing/altered additional asset', name))
     forbidden = { '.obj', '.stl', '.urdf', '.xml', '.mjcf', '.usd', '.usda', '.usdc', '.usdz',
                  '.onnx', '.pt', '.npz', '.npy', '.glb', '.gltf', '.ply', '.fbx'}
-    assert not any(Path(n).suffix.lower() in forbidden for n in files if n not in ADDITIONAL), (path, 'external model/policy was bundled')
-    assert not any(n.startswith('docs/') and Path(n).suffix.lower() in {'.png', '.gif', '.webp'} for n in files)
+    require(not any(Path(n).suffix.lower() in forbidden for n in files if n not in ADDITIONAL),
+            (path, 'external model/policy was bundled'))
+    require(not any(n.startswith('docs/') and Path(n).suffix.lower() in {'.png', '.gif', '.webp'} for n in files),
+            (path, 'documentation image was bundled'))
     for name, data in files.items():
         if name in BINARIES or name in ADDITIONAL:
             continue
         try:
             data.decode('utf-8')
         except UnicodeDecodeError:
-            raise AssertionError((path, 'unreviewed binary file', name)) from None
+            raise AuditError((path, 'unreviewed binary file', name)) from None
     print(f'{path.name}: {len(scenes)} exact JSON/binary pairs; {len(NOTICES)} complete license/inventory files; metadata and distribution boundaries passed')
 
 
@@ -164,6 +184,6 @@ if __name__ == '__main__':
     directory = Path(args.dist_dir)
     wheels = list(directory.glob('*.whl'))
     sdists = list(directory.glob('*.tar.gz'))
-    assert wheels and sdists, 'Build both a wheel and sdist first'
+    require(wheels and sdists, 'Build both a wheel and sdist first')
     for artifact in sorted(wheels + sdists):
         check(artifact)

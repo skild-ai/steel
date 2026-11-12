@@ -1,7 +1,9 @@
-"""Regression checks for semantic runtime-asset call comparisons."""
+"""Regression checks for the license audit: call-site signatures and source checks."""
+import copy
 import importlib.util
 from pathlib import Path
 import unittest
+from unittest import mock
 
 spec = importlib.util.spec_from_file_location('audit', Path(__file__).parents[1] / 'scripts/check_distribution_licenses.py')
 audit = importlib.util.module_from_spec(spec)
@@ -41,6 +43,21 @@ class AssetCallSignatures(unittest.TestCase):
     def test_directory_asset_filename_is_tracked(self):
         self.assertNotEqual(signature("os.path.join(warp.examples.get_asset_directory(), 'square_cloth.usd')"),
                             signature("os.path.join(warp.examples.get_asset_directory(), 'other.usd')"))
+
+
+
+class SourceChecks(unittest.TestCase):
+    def test_tree_passes(self):
+        audit.check_sources()
+
+    def test_changed_scene_hash_fails(self):
+        inventory = copy.deepcopy(audit.INVENTORY)
+        inventory['bundled_scenes'][0]['sha256'] = '0' * 64
+        with mock.patch.object(audit, 'INVENTORY', inventory):
+            self.assertRaises(audit.AuditError, audit.check_sources)
+
+    def test_require_is_not_an_assert(self):
+        self.assertRaises(audit.AuditError, audit.require, False, 'message')
 
 
 if __name__ == '__main__':

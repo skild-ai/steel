@@ -1,4 +1,4 @@
-name: Examples distribution licenses
+name: Examples
 on:
   pull_request:
   push:
@@ -6,6 +6,22 @@ on:
 permissions:
   contents: read
 jobs:
+  lock-and-lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: examples
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check uv==0.8.19 ruff==0.14.10
+      - name: uv.lock matches pyproject.toml
+        run: uv lock --check
+      - name: Ruff (syntax errors and undefined names)
+        run: ruff check --select E9,F63,F7,F82 .
   package-licenses:
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -20,7 +36,8 @@ jobs:
       - run: python -m pip install --disable-pip-version-check build numpy
       - run: python -m unittest discover -s tests -p 'test_distribution_licenses.py' -v
       - run: python -m build
-      - run: python scripts/check_distribution_licenses.py dist
+      - name: License audit (with -O, so it cannot rely on assert)
+        run: python -O scripts/check_distribution_licenses.py dist
       - name: Smoke-test source CLI
         run: python -m shelf list
       - name: Smoke-test installed wheel outside the checkout
