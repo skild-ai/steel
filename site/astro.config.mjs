@@ -6,6 +6,7 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import { unified } from '@astrojs/markdown-remark';
 import { remarkBaseLinks } from './src/lib/remark-base-links.mjs';
+import { rehypeTables } from './src/lib/rehype-tables.mjs';
 import { tutorialSidebar } from './src/lib/tutorial-sidebar.mjs';
 
 // Deploy under a subpath with STEEL_SITE_BASE=/steel/docs; absolute links in content get the prefix.
@@ -21,7 +22,7 @@ export default defineConfig({
 	base,
 	trailingSlash: 'always',
 	markdown: {
-		processor: unified({ remarkPlugins: [remarkMath, [remarkBaseLinks, { base }]], rehypePlugins: [rehypeKatex] }),
+		processor: unified({ remarkPlugins: [remarkMath, [remarkBaseLinks, { base }]], rehypePlugins: [rehypeKatex, rehypeTables] }),
 	},
 	integrations: [
 		starlight({

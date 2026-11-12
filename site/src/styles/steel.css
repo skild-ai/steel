@@ -68,32 +68,79 @@
 		font-weight: 500;
 		letter-spacing: -0.015em;
 	}
+	/* Tables: cells wrap, the box scrolls sideways with edge shadows when the columns cannot fit. */
+	:is(.table-scroll, .tbl) {
+		overflow-x: auto;
+		max-width: 100%;
+		margin-block: 1rem;
+		scrollbar-width: thin;
+		scrollbar-color: var(--static) transparent;
+		background:
+			linear-gradient(to right, var(--bg) 40%, transparent) left / 2rem 100% no-repeat local,
+			linear-gradient(to left, var(--bg) 40%, transparent) right / 2rem 100% no-repeat local,
+			radial-gradient(farthest-side at 0 50%, color-mix(in srgb, var(--fg) 22%, transparent), transparent) left / 0.75rem 100% no-repeat scroll,
+			radial-gradient(farthest-side at 100% 50%, color-mix(in srgb, var(--fg) 22%, transparent), transparent) right / 0.75rem 100% no-repeat scroll;
+	}
+	:is(.table-scroll, .tbl):focus-visible {
+		outline: 2px solid var(--hot);
+		outline-offset: 2px;
+	}
+	.sl-markdown-content :is(.table-scroll, .tbl) > table {
+		display: table;
+		width: 100%;
+		margin: 0;
+		background: none;
+	}
 	.sl-markdown-content table {
 		font-size: 0.92em;
 		line-height: 1.5;
+	}
+	.sl-markdown-content :is(th, td) {
+		vertical-align: top;
+		overflow-wrap: break-word;
+		background: none;
 	}
 	.sl-markdown-content th {
 		color: var(--muted);
 	}
 	.sl-markdown-content :is(th, td) code {
-		white-space: nowrap;
+		overflow-wrap: break-word;
 	}
-	.sl-markdown-content td:last-child code {
-		white-space: normal;
-	}
-	/* Wide tables scroll inside their own box, never the page. */
-	.sl-markdown-content table {
-		display: block;
-		overflow-x: auto;
-		max-width: 100%;
-	}
-	@media (max-width: 50rem) {
-		/* Narrow screens: columns keep a readable width and the table scrolls sideways instead. */
-		.sl-markdown-content :is(td, th) {
-			min-width: 8.5rem;
+	@media (max-width: 40rem) {
+		.sl-markdown-content table.stack td code {
+			overflow-wrap: anywhere;
 		}
-		.sl-markdown-content :is(td, th):last-child {
-			min-width: 13rem;
+		/* Phones: a table of three or more columns becomes one block per row, each cell under its column name. */
+		.sl-markdown-content table.stack,
+		.sl-markdown-content table.stack :is(tbody, tr, td) {
+			display: block;
+			width: 100%;
+		}
+		.sl-markdown-content table.stack thead {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			clip-path: inset(50%);
+		}
+		.sl-markdown-content table.stack tr {
+			border-top: 1px solid var(--rule);
+			padding-block: 0.6rem;
+		}
+		.sl-markdown-content table.stack td {
+			border: 0;
+			padding: 0.15rem 0;
+		}
+		.sl-markdown-content table.stack td[data-label]::before {
+			content: attr(data-label);
+			display: block;
+			font: 500 0.7rem/1.5 var(--mono);
+			letter-spacing: 0.07em;
+			text-transform: uppercase;
+			color: var(--muted);
+		}
+		.sl-markdown-content table.stack td[data-label='']::before {
+			display: none;
 		}
 	}
 	.katex-display {

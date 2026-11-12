@@ -6,27 +6,29 @@ interface Props {
 	table: 'attributes' | 'inputs' | 'methods';
 }
 const { table } = Astro.props;
+// Inline code that may break after _ . : / ( and inside camelCase.
+const code = (s: string) => `<code>${s.replace(/[&<>]/g, (c) => `&#${c.charCodeAt(0)};`).replace(/([_.:/(]|[a-z](?=[A-Z]))(?=.)/g, '$1<wbr>')}</code>`;
 ---
 
-<div class="reftable">
+<div class="reftable table-scroll">
 	{
 		table === 'attributes' && (
-			<table>
+			<table class="stack">
 				<thead>
 					<tr><th>Attribute</th><th>Per</th><th>Default</th><th>Units</th><th>USD / MJCF</th><th>Meaning</th></tr>
 				</thead>
 				<tbody>
 					{reference.attributes.map((a) => (
 						<tr id={`attr-${a.name.replace(':', '-')}`}>
-							<td><code>{a.name}</code></td>
-							<td>{a.frequency.replace('_', ' ')}</td>
-							<td><code>{a.default}</code></td>
-							<td>{a.units}</td>
-							<td class="wrap">
-								{a.usd && <code>{a.usd}</code>}
-								{a.mjcf && (<><br />MJCF <code>{a.mjcf}</code></>)}
+							<td data-label="Attribute" set:html={code(a.name)} />
+							<td data-label="Per">{a.frequency.replace('_', ' ')}</td>
+							<td data-label="Default" set:html={code(a.default)} />
+							<td data-label="Units">{a.units}</td>
+							<td data-label="USD / MJCF">
+								{a.usd && <Fragment set:html={code(a.usd)} />}
+								{a.mjcf && (<><br />MJCF <Fragment set:html={code(a.mjcf)} /></>)}
 							</td>
-							<td class="wrap" set:html={a.doc} />
+							<td data-label="Meaning" class="wrap" set:html={a.doc} />
 						</tr>
 					))}
 				</tbody>
@@ -35,11 +37,11 @@ const { table } = Astro.props;
 	}
 	{
 		table === 'inputs' && (
-			<table>
+			<table class="stack">
 				<thead><tr><th>Input</th><th>How Steel uses it</th></tr></thead>
 				<tbody>
 					{reference.inputs.map((i) => (
-						<tr><td><code>{i.name}</code></td><td class="wrap" set:html={i.context} /></tr>
+						<tr><td data-label="Input" set:html={code(i.name)} /><td data-label="How Steel uses it" class="wrap" set:html={i.context} /></tr>
 					))}
 				</tbody>
 			</table>
@@ -47,11 +49,11 @@ const { table } = Astro.props;
 	}
 	{
 		table === 'methods' && (
-			<table>
+			<table class="stack">
 				<thead><tr><th>Name</th><th>Kind</th><th>Summary</th></tr></thead>
 				<tbody>
 					{reference.methods.map((m) => (
-						<tr id={`method-${m.name}`}><td><code>{m.name}</code></td><td>{m.kind}</td><td class="wrap" set:html={m.doc} /></tr>
+						<tr id={`method-${m.name}`}><td data-label="Name" set:html={code(m.name)} /><td data-label="Kind">{m.kind}</td><td data-label="Summary" class="wrap" set:html={m.doc} /></tr>
 					))}
 				</tbody>
 			</table>
@@ -62,6 +64,4 @@ const { table } = Astro.props;
 <style>
 	.reftable :global(td.wrap code) { white-space: normal; overflow-wrap: anywhere; }
 	.reftable :global(td p) { margin: 0 0 6px; }
-	.reftable { overflow-x: auto; }
-	.reftable table { display: table; min-width: 560px; }
 </style>
