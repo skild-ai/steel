@@ -160,7 +160,12 @@ class _SolverLayer:
                 self._sim_dt,
                 observables=self.solver_observables if substep == self._sim_substeps - 1 else None,
             )
-            self.state_0, self.state_1 = self.state_1, self.state_0
+            if self._sim_substeps % 2 == 1 and substep == self._sim_substeps - 1:
+                # an odd count under graph capture: copy the last result into state_0 instead of swapping,
+                # so every replay of the captured graph starts from the newest state
+                self.state_0.assign(self.state_1)
+            else:
+                self.state_0, self.state_1 = self.state_1, self.state_0
 
     def _capture(self) -> wp.Graph | None:
         if not wp.get_device().is_cuda:

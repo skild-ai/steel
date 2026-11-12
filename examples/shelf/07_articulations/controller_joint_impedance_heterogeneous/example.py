@@ -209,10 +209,15 @@ class Example:
         """Pure GPU work: controller step + physics substeps. Safe to graph-capture."""
         self.controller.step(inputs=self._input, outputs=self._output, dt=self.sim_dt)
 
-        for _ in range(self.sim_substeps):
+        for substep in range(self.sim_substeps):
             self.state_0.clear_forces()
             self.solver.step(self.state_0, self.state_1, self.control, None, self.sim_dt)
-            self.state_0, self.state_1 = self.state_1, self.state_0
+            if self.sim_substeps % 2 == 1 and substep == self.sim_substeps - 1:
+                # an odd count under graph capture: copy the last result into state_0 instead of swapping,
+                # so every replay of the captured graph starts from the newest state
+                self.state_0.assign(self.state_1)
+            else:
+                self.state_0, self.state_1 = self.state_1, self.state_0
 
     def step(self):
         # Update targets on the CPU — cannot be graph-captured.

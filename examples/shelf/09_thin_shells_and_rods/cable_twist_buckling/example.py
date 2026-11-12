@@ -325,7 +325,12 @@ class Example:
                 self.collision_pipeline.collide(self.state_0, self.contacts)
             self.solver.set_rigid_history_update(True)
             self.solver.step(self.state_0, self.state_1, self.control, self.contacts, self.sim_dt)
-            self.state_0, self.state_1 = self.state_1, self.state_0
+            if self.sim_substeps % 2 == 1 and i == self.sim_substeps - 1:
+                # an odd count under graph capture: copy the last result into state_0 instead of swapping,
+                # so every replay of the captured graph starts from the newest state
+                self.state_0.assign(self.state_1)
+            else:
+                self.state_0, self.state_1 = self.state_1, self.state_0
 
     def capture(self) -> None:
         if self.solver.device.is_cuda and self.sim_substeps % 2 == 0:

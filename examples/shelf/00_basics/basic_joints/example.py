@@ -215,7 +215,7 @@ class Example:
 
     def simulate(self):
         contacts = None if self.solver_type == "kamino" else self.contacts
-        for _ in range(self.sim_substeps):
+        for substep in range(self.sim_substeps):
             self.state_0.clear_forces()
 
             # apply forces to the model
@@ -226,7 +226,12 @@ class Example:
             self.solver.step(self.state_0, self.state_1, self.control, contacts, self.sim_dt)
 
             # swap states
-            self.state_0, self.state_1 = self.state_1, self.state_0
+            if self.sim_substeps % 2 == 1 and substep == self.sim_substeps - 1:
+                # an odd count under graph capture: copy the last result into state_0 instead of swapping,
+                # so every replay of the captured graph starts from the newest state
+                self.state_0.assign(self.state_1)
+            else:
+                self.state_0, self.state_1 = self.state_1, self.state_0
 
     def step(self):
         if self.graph:
