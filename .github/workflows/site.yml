@@ -53,12 +53,12 @@ jobs:
         env:
           STEEL_SITE_BASE: /steel/
       - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         with:
           path: site/dist
   # Needs the repository's Pages source set to "GitHub Actions".
   deploy:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: [tutorials, build]
     runs-on: ubuntu-latest
     timeout-minutes: 10
