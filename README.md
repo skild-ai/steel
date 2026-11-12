@@ -57,7 +57,7 @@ Using Steel in a project? Open a pull request to add it here, with a link and a 
 
 ## Contributing
 
-Contributions to the examples and this documentation belong in this repository. Read [the examples guide](examples/AGENTS.md) before changing a scene or a preset; include the checks you ran.
+Contributions to the examples and this documentation belong in this repository. Read [CONTRIBUTING.md](CONTRIBUTING.md) before changing a scene or a preset; include the checks you ran.
 
 Steel solver development happens inside Newton. Changes to the implementation need a pull request against the Newton code repository containing the version you are changing, rather than this README-and-examples repository. The examples' current development-fork revision is pinned in [pyproject.toml](examples/pyproject.toml).
 

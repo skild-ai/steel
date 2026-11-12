@@ -217,6 +217,26 @@ uv run python -m shelf check --all                    # every working preset; re
 
 [AGENTS.md](AGENTS.md) has the rules for editing examples and presets.
 
+### Checking on a GPU
+
+CI runs on GitHub-hosted runners without a GPU, so it checks the lockfile, lint, license audit and
+`shelf list`, but no physics. Before merging a change to a preset, an example, `common/` or the Newton
+pin, run `shelf check` on a CUDA GPU from `examples/` and paste the result table into the pull request.
+`--dry-run` leaves `presets.toml` and `PRESETS.md` untouched:
+
+```bash
+uv sync
+uv run python -m shelf check <changed examples> --every --dry-run
+# Steel smoke set: robot arms, exported scenes, SDF contact, loops, a coupled preset
+uv run python -m shelf check basic_pendulum pyramid toaster cereal viaduct_kit nut_bolt_sdf \
+    mjorg_house_of_cards ratio_stack basic_conveyor_forces loop_stewart_platform robot_g1 \
+    steel_cup_unpacking --solver steel --dry-run
+uv run python -m shelf check mujoco_xpbd_coupled_solver --solver steel_xpbd --dry-run
+```
+
+Every line should read `works`. A Newton pin change also needs the whole shelf:
+`uv run python -m shelf check --all` records the results in `presets.toml` and rewrites `PRESETS.md`.
+
 ## TODO
 
 - [ ] **Play presets for every solver.** Fill and check a preset for each solver that can simulate each
