@@ -1,13 +1,23 @@
 Steel Shelf
+Copyright 2026 Skild AI and the Steel contributors.
+Steel was created by Skild AI in collaboration with NVIDIA.
+Authors: https://github.com/skild-ai/steel/blob/main/AUTHORS
+
+Project-original source, including the 27 Steel WebGPU ports, carries a
+"Copyright (c) 2026 Skild AI and the Steel contributors" SPDX header.
 
 Newton-derived source:
 Copyright (c) 2025-2026 The Newton Developers.
 Original copyright and Apache-2.0 SPDX headers are retained.
 
-The direct source of the 27 Steel WebGPU ports is steel-webgpu, as recorded
-in their headers and presets.toml. "Modified for Steel Shelf" identifies
-subsequent changes; it does not assign original authorship or imply that all
-ports were directly derived from Newton. See THIRD_PARTY.md for provenance.
+Steel WebGPU ports:
+The 27 ports were written by Skild AI from steel-webgpu, as recorded in their
+headers and presets.toml. "Modified for Steel Shelf" identifies the later
+adaptation. The pinned steel-webgpu license (f2f72c1e) carries these notices:
+Copyright 2026 Skild AI
+Copyright 2025 The Newton Developers
+Its complete text is retained in licenses/steel-webgpu-LICENSE.txt. See
+THIRD_PARTY.md for provenance.
 
 Bundled Universal Robots model data:
 UR10e: spinning_top, brick_pour, box_turn, toaster, toy_train.
@@ -28,7 +38,8 @@ licenses/Franka-complete-LICENSE.txt. This covers full Franka exports and
 Franka gripper components where present in other robot scenes.
 
 Pelican bicycle CAD in the separately installed Newton dependency:
-Original CAD created and supplied by liinbor under Apache-2.0.
+Original CAD created by liinbor (LuckyIYI) of the Skild AI team.
+Copyright 2026 Skild AI; Apache-2.0.
 
 Original project documentation charts and rendered recordings are Apache-2.0.
 Model notices remain applicable to depicted third-party model content.

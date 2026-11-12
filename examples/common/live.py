@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
 """Apply changed preset settings to a running example without rebuilding the scene.
 
 The tuner calls :func:`apply` with the settings the user changed. Each setting has a *tier*,

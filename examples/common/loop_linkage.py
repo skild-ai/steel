@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
 """Closed-loop linkages run the shelf's way: a shared base, so each example is just its mechanism.
 
 A mechanism (:mod:`common.loop_mechanisms`) is a set of bodies and joints at a reference pose where every loop is

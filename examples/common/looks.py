@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
 """Looks: palettes and lighting for the OpenGL viewer, read from ``looks.toml``.
 
 A look changes how a scene is drawn, never what is simulated. It recolors the shapes

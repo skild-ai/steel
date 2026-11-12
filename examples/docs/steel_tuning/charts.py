@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
 """Charts for the Steel tuning PR, from the Solver Tuning Book's evidence log (evidence.json).
 
 usage: python charts.py OUT_DIR  -> frame_time_{light,dark}.png, summary_{light,dark}.png, data.csv

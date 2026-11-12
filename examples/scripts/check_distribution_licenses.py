@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
 """Verify the license declarations and actual contents of wheel and sdist.
 
 Usage: python scripts/check_distribution_licenses.py DIST_DIR
@@ -110,6 +113,18 @@ def check_sources():
     require(len(ports) == 27, ('expected 27 steel-webgpu ports', len(ports)))
     require(all('# Direct source: steel-webgpu;' in p.with_name('example.py').read_text() for p in ports),
             'a steel-webgpu port lacks its direct-source header')
+    source = INVENTORY['steel_webgpu_source']
+    notice = (ROOT / source['notice']).read_bytes()
+    require(hashlib.sha256(notice).hexdigest() == source['notice_sha256'], 'steel-webgpu notice hash differs')
+    require(all(line in notice.decode() for line in source['copyright']), 'steel-webgpu copyright lines missing')
+    require(all(p.with_name('example.py').read_text().startswith(source['port_header'] + '\n') for p in ports),
+            'a steel-webgpu port lacks its copyright header')
+    skild_lines = [(p.relative_to(ROOT).as_posix(), line) for p in sorted(ROOT.glob('**/*.py'))
+                   if '.venv' not in p.parts for line in p.read_text().splitlines()
+                   if line.startswith('# SPDX-FileCopyrightText:') and 'Skild AI' in line]
+    require(all(line == source['port_header'] for _, line in skild_lines),
+            ('Skild AI headers must read', source['port_header'],
+             [name for name, line in skild_lines if line != source['port_header']]))
     for name in ['nut_bolt_hydro', 'nut_bolt_sdf']:
         path = next(ROOT.glob(f'shelf/**/{name}/example.py'))
         tree = ast.parse(path.read_text())

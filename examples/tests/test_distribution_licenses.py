@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
 """Regression checks for the license audit: call-site signatures and source checks."""
 import copy
 import importlib.util
@@ -55,6 +58,22 @@ class SourceChecks(unittest.TestCase):
         inventory['bundled_scenes'][0]['sha256'] = '0' * 64
         with mock.patch.object(audit, 'INVENTORY', inventory):
             self.assertRaises(audit.AuditError, audit.check_sources)
+
+    def test_changed_port_header_fails(self):
+        inventory = copy.deepcopy(audit.INVENTORY)
+        inventory['steel_webgpu_source']['port_header'] = '# SPDX-FileCopyrightText: Copyright (c) 2026 Someone'
+        with mock.patch.object(audit, 'INVENTORY', inventory):
+            self.assertRaises(audit.AuditError, audit.check_sources)
+
+    def test_bare_skild_header_fails(self):
+        inventory = copy.deepcopy(audit.INVENTORY)
+        inventory['steel_webgpu_source']['port_header'] = '# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI'
+        with mock.patch.object(audit, 'INVENTORY', inventory):
+            self.assertRaises(audit.AuditError, audit.check_sources)
+
+    def test_port_header_names_contributors(self):
+        self.assertEqual(audit.INVENTORY['steel_webgpu_source']['port_header'],
+                         '# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors')
 
     def test_require_is_not_an_assert(self):
         self.assertRaises(audit.AuditError, audit.require, False, 'message')

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
 """Exercise the tuner's live-apply tiers on one example, headless.
 
     python scripts/live_check.py <example> [--solver <preset>] [--presets <file>]
