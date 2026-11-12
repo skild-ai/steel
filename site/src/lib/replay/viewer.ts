@@ -272,8 +272,8 @@ export async function mountReplay(root: HTMLElement): Promise<void> {
 		sc.updateProjectionMatrix();
 	}
 
+	// Draws the poses at `time` without moving the playback clock `t`.
 	function setPose(time: number) {
-		t = time;
 		variants.forEach((V) => {
 			const v = V.v;
 			const f = Math.min(v.frames - 1, Math.max(0, time * v.fps));
@@ -487,7 +487,8 @@ export async function mountReplay(root: HTMLElement): Promise<void> {
 	});
 	scrub.addEventListener('input', () => {
 		setPlaying(false);
-		setPose((T * +scrub.value) / 1000);
+		t = (T * +scrub.value) / 1000;
+		setPose(t);
 	});
 	const speedGroup = q('.speed');
 	const setSpeed = (s: number) => {
@@ -518,9 +519,24 @@ export async function mountReplay(root: HTMLElement): Promise<void> {
 			drawCharts();
 		}
 	}).observe(chartwrap);
-	// Render only while the stage is on screen.
-	let visible = true;
-	new IntersectionObserver((entries) => (visible = entries[0].isIntersecting)).observe(stage);
+	// Render only while the stage is on screen; the clock holds at 0 until the stage is first seen.
+	let visible = false, seen = false;
+	new IntersectionObserver((entries) => {
+		visible = entries[0].isIntersecting;
+		if (visible && !seen) {
+			seen = true;
+			restart();
+		}
+	}).observe(stage);
+	function restart() {
+		t = 0;
+		last = performance.now();
+		setPose(0);
+		setPlaying(true);
+	}
+	// A page restored from the back/forward cache plays again from the start.
+	window.addEventListener('pageshow', (e) => e.persisted && restart());
+	document.addEventListener('visibilitychange', () => (last = performance.now()));
 
 	resize();
 	build(false);
@@ -529,16 +545,12 @@ export async function mountReplay(root: HTMLElement): Promise<void> {
 	onThemeChange(() => build(true));
 
 	function tick(now: number) {
-		const dt = Math.min(0.1, (now - last) / 1000);
+		const dt = Math.max(0, Math.min(0.1, (now - last) / 1000));
 		last = now;
-		if (playing) {
-			let nt = t + dt * speed;
-			if (nt > T) {
-				nt = T;
-				t = T;
-				setPlaying(false);
-			}
-			setPose(nt);
+		if (playing && seen) {
+			t = Math.min(T, t + dt * speed);
+			if (t >= T) setPlaying(false);
+			setPose(t);
 		}
 		if (visible) {
 			controls.update();

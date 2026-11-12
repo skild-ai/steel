@@ -24,7 +24,7 @@ SteelViz.register("reduced", (root, lib) => {
     const p = params();
     inputs.forEach((i) => (i.previousElementSibling.textContent = i.value));
     run = chainRun(p.n, p.ratio, p.iters, 3, 1 / 240, 8);
-    frame = 0; t0 = 0;
+    frame = 0; clock = 0; last = 0;
     const worst = Math.max(...run.stretch) * 1000;
     out.innerHTML = `Maximal coordinates, ${p.iters} iterations: links stretch by up to <b>${worst.toFixed(1)} mm</b> during the swing. Reduced coordinates: <b>0 mm</b>; the state is the joint angles, so the links cannot stretch.`;
     draw();
@@ -81,23 +81,27 @@ SteelViz.register("reduced", (root, lib) => {
     });
     stage.req();
   }
-  let t0 = 0;
+  // The clock sums frame times capped at 0.1 s, so a background tab does not skip ahead; it holds at 0 until seen.
+  let clock = 0, last = 0, seen = false;
   function tick(now) {
     raf = 0;
     if (!playing || !run) return;
-    if (!t0) t0 = now - (frame / 30) * 1000;
-    const next = Math.floor(((now - t0) / 1000) * 30) % run.red.length;   // recorded at 30 frames per second
+    if (seen) clock += last ? Math.max(0, Math.min(0.1, (now - last) / 1000)) : 0;
+    last = now;
+    const next = Math.floor(clock * 30) % run.red.length;   // recorded at 30 frames per second
     if (next !== frame) { frame = next; draw(); }
     raf = requestAnimationFrame(tick);
   }
+  new IntersectionObserver((entries) => { if (entries[0].isIntersecting) seen = true; }).observe(f);
   const playBtn = f.querySelector("[data-role=play]");
   playBtn.textContent = playing ? "Pause" : "Play";
   playBtn.addEventListener("click", () => {
-    playing = !playing; playBtn.textContent = playing ? "Pause" : "Play"; t0 = 0;
+    playing = !playing; playBtn.textContent = playing ? "Pause" : "Play"; clock = frame / 30; last = 0;
     if (playing && !raf) raf = requestAnimationFrame(tick);
   });
   lib.tabs(f.querySelector("[data-role=view]"), (v) => {
     view = v; svg.toggleAttribute("hidden", v === "3d"); st.hidden = v !== "3d";
+    frame = 0; clock = 0; last = 0;
     draw(); if (stage) stage.resize();
   });
   inputs.forEach((i) => i.addEventListener("input", recompute));
