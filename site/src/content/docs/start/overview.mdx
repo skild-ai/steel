@@ -39,7 +39,7 @@ Steel can also be one entry of Newton's experimental coupled solvers, next to VB
 
 <InfoCard title="Supported">
 
-- Joints: PRISMATIC, REVOLUTE, BALL, FIXED, D6, and root FREE and DISTANCE joints
+- Joints: PRISMATIC, REVOLUTE, BALL, FIXED, D6, and root FREE and DISTANCE joints (a DISTANCE joint moves like a free joint)
 - Implicit PD drives, or drives as solver rows with exact effort limits
 - Joint position and velocity limits, passive springs, dry joint friction
 - Mimic joints, and loop-closing BALL, REVOLUTE and FIXED joints
@@ -58,6 +58,8 @@ Steel can also be one entry of Newton's experimental coupled solvers, next to VB
 - Gradients: construction raises for `model.requires_grad=True`
 - Mimic couplings across articulations, and loop closures between two dynamic articulations
 - On CPU: contact torsion, contact compliance, joint friction, Nesterov momentum and the non-default friction modes
+- DISTANCE joint limits: `min_distance` and `max_distance` are ignored, also with `enable_joint_limits=True`
+- MJCF `condim`: the importer leaves `steel:condim` at 3; set it after import
 
 </InfoCard>
 
@@ -65,6 +67,6 @@ Steel can also be one entry of Newton's experimental coupled solvers, next to VB
 
 <Note title="In progress" variant="plain">
 
-MuJoCo-style tendons for Steel are in review on the integration branch. Rolling and spin friction for free-body contacts, implicit joint damping and per-body gravity scale are in review upstream. See the [changelog](https://github.com/skild-ai/steel) for the current list.
+MuJoCo-style tendons for Steel are in review on the integration branch. Rolling and spin friction for free-body contacts, implicit joint damping and per-body gravity scale are in review upstream. On skild-ai/newton, changes that enforce DISTANCE joint limits ([#23](https://github.com/skild-ai/newton/pull/23)), read MJCF `condim` ([#22](https://github.com/skild-ai/newton/pull/22)), integrate passive joint damping implicitly ([#18](https://github.com/skild-ai/newton/pull/18)) and fix the bisection friction modes ([#26](https://github.com/skild-ai/newton/pull/26)) are in review. See the [changelog](https://github.com/skild-ai/steel) for the current list.
 
 </Note>

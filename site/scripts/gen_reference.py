@@ -64,9 +64,13 @@ WHEN = {
                   "full-episode check passes at the lower value.",
     "relaxation": "Leave at 1. Under-relaxation (about 0.6) helped one momentum-accelerated rope; values above 1 "
                   "made a heavy impactor sink further.",
-    "cfm": "Rarely changed. It regularizes redundant rows such as closures and coplanar contacts.",
-    "row_schedule": "Try \"phased\" for grasps tuned against PhysX. Contact torsion, compliance and the sparse mass "
-                    "factors need \"interleaved\".",
+    "cfm": "Rarely changed. It shifts each row's diagonal, which damps the sweep like a relaxation below 1 and "
+           "leaves the converged impulses of unregularized rows unchanged. It deepens the resting penetration of "
+           "contacts under contact_regularization and floors the pre-elimination regularization; soften contacts "
+           "with contact_regularization or contact_compliance instead.",
+    "row_schedule": "Try \"phased\" for grasps tuned against PhysX. Avoid \"contact_then_internal\" when contacts "
+                    "load a joint limit or drive: the load sinks through at any iteration count. Contact torsion, "
+                    "compliance and the sparse mass factors need \"interleaved\".",
     "nesterov_momentum": "Resting stacks with mass ratios of roughly 100:1 to 1000:1 and long chains, when more "
                          "iterations alone are too slow. Serial sweep, immediate response, CUDA only.",
     "velocity_iterations": "Set 2 to 4 when position correction launches bodies (deep start overlaps). Must be 0 "
@@ -86,7 +90,9 @@ WHEN = {
     "contact_gap_gate": "Set 0 where speculative rows never engage (for example many small rollers) to save rows.",
     "friction_anchor_beta": "Keep the default (anchors) for anything held, carried or pinched. Set 0 (point "
                             "friction) for scenes where nothing is held; it is cheaper.",
-    "friction_mode": "Experimental. Leave at \"fixed_normal\" unless you are studying the coupled Coulomb solve.",
+    "friction_mode": "Experimental. Leave at \"fixed_normal\"; \"coulomb_newton\" for free bodies near the friction "
+                     "limit. At this commit \"bisection\" and \"bisection_desaxce\" let a box near the friction "
+                     "limit slide; a fix is in review in skild-ai/newton#26.",
     "friction_combine": "Match the combine mode of the engine you are porting from (PhysX average, min, multiply "
                         "or max).",
     "contact_friction_scale": "Sweeps or domain randomization over friction without editing shape materials.",
@@ -107,7 +113,8 @@ WHEN = {
     "contact_compliance": "Experimental. Soft fingertips or pads modeled with hydroelastic contacts.",
     "free_rigid_torsional_friction": "Sweeps over spin friction of free bodies without editing shapes.",
     "free_rigid_rolling_friction": "Sweeps over rolling friction of free bodies without editing shapes.",
-    "enable_joint_limits": "Set True whenever the model authors joint limits. Off, limits are not simulated.",
+    "enable_joint_limits": "Set True whenever the model authors joint limits. Off, limits are not simulated. "
+                           "DISTANCE joint limits are ignored either way at this commit.",
     "joint_limit_activation_gap": "A fixed gap such as 0.1 builds limit rows only near a limit and is often faster "
                                   "than the speed-aware default. Keep it above 2 * max|qd| * dt.",
     "enable_joint_velocity_limits": "Set True when the task depends on joint velocity limits.",
@@ -119,7 +126,7 @@ WHEN = {
                   "sim-to-real), or to solve drives together with contacts.",
     "articulation_constraint_max": "Size from row_watermark: about 2x the requested mark while overflowing, then "
                                    "1.3x a non-overflowing mark. Robots with limits or self-contacts often need "
-                                   "more than 32.",
+                                   "more than 32. An overflowing run can gain energy and diverge.",
     "free_body_constraint_max": "Size from row_watermark under the immediate response. Very large values stop the "
                                 "immediate kernels from building; move such scenes to colored propagation.",
     "propagation_constraint_max": "Size from row_watermark under the propagation response.",
@@ -132,13 +139,17 @@ WHEN = {
                                             "tree walk.",
     "propagation_color_order": "\"rotating\" spreads Gauss-Seidel bias over a symmetric grasp on a sorted contact "
                                "stream; \"longest_first\" can shorten sweeps with uneven row counts.",
-    "enable_sleeping": "Settling scenes with many passive objects. Excludes warm start and velocity iterations.",
+    "enable_sleeping": "Settling scenes with many passive objects. Excludes warm start and velocity iterations. In "
+                       "many worlds, pair it with CollisionPipeline(deterministic=True), or most islands can stay "
+                       "awake; check body_awake.",
     "sleep_linear_threshold": "Lower if bodies fall asleep while still creeping.",
-    "sleep_angular_threshold": "Lower if slowly spinning bodies fall asleep.",
+    "sleep_angular_threshold": "Lower if slowly spinning bodies fall asleep. Raise (for example to 0.3) if resting "
+                               "stacks stay awake with the default contact order.",
     "sleep_quiet_time": "Raise if islands fall asleep before they settle.",
     "sleep_skip_constraints": "Set False when consumers read contact forces of sleeping bodies.",
     "update_mass_matrix_interval": "Above 1 only for slowly moving articulations; it must divide the steps per "
-                                   "captured graph.",
+                                   "captured graph. It does not cure energy gain on fast, light chains: the stale "
+                                   "matrix loses energy instead.",
     "parallel_tree": "Broad trees such as hands; time the full step before keeping it.",
     "reuse_kinematics": "Time it on your scene; call notify_state_changed after writing state outside step().",
     "use_parallel_streams": "Models with several articulation sizes, or many independent single-DOF joints on one "
@@ -298,13 +309,16 @@ def custom_attributes(cls: ast.ClassDef, constants: dict[str, str]) -> list[dict
         kw = {k.arg: k.value for k in call.keywords}
         name = ast.literal_eval(kw["name"])
         text = bullets.get(name, ("", ""))[1]
+        mjcf = ast.literal_eval(kw["mjcf_attribute_name"]) if "mjcf_attribute_name" in kw else ""
+        # A prefixed name is not well-formed MJCF without a namespace declaration, so no file can author it.
+        mjcf = "" if ":" in mjcf else mjcf
         out.append({
             "name": f"steel:{name}",
             "frequency": ast.unparse(kw["frequency"]).split(".")[-1].lower(),
             "dtype": ast.unparse(kw["dtype"]).replace("wp.", ""),
             "default": ast.unparse(kw["default"]).replace("_DEFAULT_ANGULAR_DAMPING", "0.05"),
             "usd": usd_name(kw, constants),
-            "mjcf": ast.literal_eval(kw["mjcf_attribute_name"]) if "mjcf_attribute_name" in kw else "",
+            "mjcf": mjcf,
             "units": leading_units(text),
             "doc": rst_to_html(re.sub(r"^\s*\[[^\]]*\]\s*", "", re.sub(r"\s+", " ", text)).strip(" .") + "."),
         })
