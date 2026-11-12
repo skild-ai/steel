@@ -1,4 +1,4 @@
-"""Joint armature: rotor inertia added to a DOF slows its response and damps fast light links."""
+"""Joint armature: rotor inertia added to a DOF slows its response, also on fast light links."""
 
 import math
 

@@ -61,7 +61,7 @@
    "step": false,
    "category": "Solve",
    "doc": "<p>Constraint force mixing added to every row's effective-mass diagonal, which regularizes redundant rows. Drive rows of <code>drive_mode=\"rows\"</code> use their exact unit response instead, and the coupled contact solves of a <code>friction_mode</code> other than <code>\"fixed_normal\"</code> leave it off their contact blocks.</p>",
-   "when": "Rarely changed. It shifts each row's diagonal, which damps the sweep like a relaxation below 1 and leaves the converged impulses of unregularized rows unchanged. It deepens the resting penetration of contacts under contact_regularization and floors the pre-elimination regularization; soften contacts with contact_regularization or contact_compliance instead.",
+   "when": "Rarely changed. On ordinary scalar rows it shifts the diagonal, which damps the sweep like a relaxation below 1 and leaves the converged impulses of unregularized rows unchanged. It deepens the resting penetration of contacts under contact_regularization and floors the pre-elimination regularization; soften contacts with contact_regularization or contact_compliance instead.",
    "available": {
     "Newton 1.8.0": true,
     "Newton main": true
@@ -93,7 +93,7 @@
    "step": false,
    "category": "Performance",
    "doc": "<p>Rebuild and refactor the mass matrix every this many calls to <code>step</code>; <code>1</code> rebuilds it every step. Larger values reuse a stale factorization between rebuilds. A change of <code>dt</code>, <code>reset</code> and <code>notify_model_changed</code> still request a refresh of the affected articulations. Under CUDA graph capture the host-side cadence is baked into the graph, so the interval should divide the number of steps captured per graph.</p>",
-   "when": "Above 1 only for slowly moving articulations; it must divide the steps per captured graph. It does not cure energy gain on fast, light chains: the stale matrix loses energy instead.",
+   "when": "Above 1 only for slowly moving articulations; it must divide the steps per captured graph. It does not cure energy gain on fast, light chains: on the measured chains the stale matrix lost energy instead.",
    "available": {
     "Newton 1.8.0": true,
     "Newton main": true

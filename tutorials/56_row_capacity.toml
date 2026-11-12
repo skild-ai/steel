@@ -57,8 +57,9 @@ Dropped contacts let objects sink or fall through, sometimes only for a frame. W
 keep their rows follows the order of reservation, which by default changes every step; a \
 contact that penetrated while dropped is pushed out when it gets rows back, which adds energy \
 and can make the state diverge. With deterministic=RUN_TO_RUN and \
-CollisionPipeline(deterministic=True) the same contacts keep their rows and an overflow repeats \
-exactly, which helps reproduce it but does not fix it."""
+CollisionPipeline(deterministic=True) the selection repeats for the same inputs; in a measured \
+folding-chain scene the kept set changed much less between steps and repeated runs matched \
+bitwise. That helps reproduce an overflow but does not fix it."""
 
 [[concept.consider]]
 term = "Use it when"

@@ -75,7 +75,7 @@ def simulate_worlds(rec, deterministic):
     shown = shown.finalize()
 
     solver = SolverSteel(model, enable_sleeping=True)
-    # the default pipeline orders contacts differently on every collide; this one sorts them
+    # the default pipeline can order contacts differently on each collide; this one sorts them
     pipeline = newton.CollisionPipeline(model, deterministic=deterministic)
     contacts = pipeline.contacts()
     observed = solver.observables({"body_awake"})

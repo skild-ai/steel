@@ -50,7 +50,7 @@ name = "Successive over-relaxation and constraint force mixing"
 what = """\
 Over-relaxation multiplies each row's Gauss-Seidel correction by ω. On slowly converging \
 problems, such as load running down a stack, it speeds convergence. Coupled friction modes are \
-not scaled. cfm adds a value to every row's diagonal: it shortens each step like ω below 1 and \
+not scaled. cfm adds a value to the diagonal of ordinary scalar rows: it shortens each step like ω below 1 and \
 leaves the answer of an unregularized row unchanged, but a row regularized by \
 contact_regularization settles at a residual that grows with A + cfm."""
 eq = "λ ← λ + ω · Δλ"
@@ -69,7 +69,8 @@ text = "None: the same sweeps with a different step."
 term = "Interactions"
 text = """\
 cfm also floors the regularization of enable_bilateral_preelimination. Drive rows of \
-drive_mode="rows" and the coupled friction modes' contact blocks leave it out."""
+drive_mode="rows" and the coupled friction modes' contact blocks leave it out, and compliant \
+normal rows of contact_compliance replace it with their compliance term."""
 
 [[concept.consider]]
 term = "Accuracy"

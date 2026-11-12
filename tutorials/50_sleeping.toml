@@ -10,10 +10,10 @@ scene runs 64 worlds of the same towers, with the default collision pipeline and
 CollisionPipeline(deterministic=True); the replay shows world 0 and the chart counts every \
 world."""
 look = [
-  "One world: the towers settle, and by about 2.8 s every body is asleep.",
+  "One world: the towers settle, and by about 2.1 s every body is asleep.",
   "At 7 s the ball wakes and topples one tower; the other three stay asleep.",
-  "64 worlds, default pipeline: only 12% of the bodies are asleep after 6 s. The pipeline writes the same contacts in a different order on each call, and sleeping rules out warm start, so resting boxes keep a jitter that reaches the 0.15 rad/s threshold.",
-  "64 worlds, CollisionPipeline(deterministic=True): sorted contacts roughly halve the jitter, and every body is asleep by 1.2 s.",
+  "64 worlds, default pipeline: only 7% of the bodies are asleep after 6 s. The pipeline can write the same contacts in a different order on each call, and sleeping rules out warm start, so resting boxes keep a jitter whose fast tail reaches the 0.15 rad/s threshold.",
+  "64 worlds, CollisionPipeline(deterministic=True): with sorted contacts the jitter was lower in these runs, and every body is asleep by 1.0 s.",
 ]
 try = [
   "Set sleep_quiet_time=2.0.",
@@ -48,14 +48,15 @@ below 0.05 m/s and 0.15 rad/s for 0.5 s falls asleep: its state is frozen and it
 dynamics are skipped until a wake event such as a force, a contact with a moving body or lost \
 support."""
 here = """\
-All 21 bodies are asleep at 2.8 s; the ball pushed at 7 s wakes one tower plus itself. In 64 \
-worlds, 12% of the bodies sleep after 6 s with the default pipeline and all of them by 1.2 s \
+All 21 bodies are asleep at 2.1 s; the ball pushed at 7 s wakes one tower plus itself. In 64 \
+worlds, 7% of the bodies sleep after 6 s with the default pipeline and all of them by 1.0 s \
 with the deterministic one."""
 
 [[concept.consider]]
 term = "Cost"
 text = """\
-In one world the settled towers step 7× faster (2.0 → 0.28 ms). The table's 64 and 1024 worlds \
+In one world sleeping cut the step from 2.0 to 0.77 ms in this table; the saving depends on \
+how many islands are asleep in the timed window, which varies between runs. The table's 64 and 1024 worlds \
 use the default pipeline and show no gain, because most bodies stay awake. In a separate \
 measurement on the same GPU with CollisionPipeline(deterministic=True), every island slept and \
 a 1024-world solver step took 1.09 ms instead of 3.49 ms."""
@@ -86,7 +87,7 @@ scene = "Scene: four 5-box towers per world, timed after 4 s of settling."
 
 [timing.notes]
 "enable_sleeping=False" = ""
-"enable_sleeping=True" = "1 world: all asleep at 2.8 s; 64 and 1024 worlds: most stay awake with this default pipeline"
+"enable_sleeping=True" = "1 world: all asleep at 2.1 s; 64 and 1024 worlds: most stay awake with this default pipeline"
 
 [[in_review]]
 pr = 25

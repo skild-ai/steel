@@ -64,7 +64,7 @@ WHEN = {
                   "full-episode check passes at the lower value.",
     "relaxation": "Leave at 1. Under-relaxation (about 0.6) helped one momentum-accelerated rope; values above 1 "
                   "made a heavy impactor sink further.",
-    "cfm": "Rarely changed. It shifts each row's diagonal, which damps the sweep like a relaxation below 1 and "
+    "cfm": "Rarely changed. On ordinary scalar rows it shifts the diagonal, which damps the sweep like a relaxation below 1 and "
            "leaves the converged impulses of unregularized rows unchanged. It deepens the resting penetration of "
            "contacts under contact_regularization and floors the pre-elimination regularization; soften contacts "
            "with contact_regularization or contact_compliance instead.",
@@ -148,8 +148,8 @@ WHEN = {
     "sleep_quiet_time": "Raise if islands fall asleep before they settle.",
     "sleep_skip_constraints": "Set False when consumers read contact forces of sleeping bodies.",
     "update_mass_matrix_interval": "Above 1 only for slowly moving articulations; it must divide the steps per "
-                                   "captured graph. It does not cure energy gain on fast, light chains: the stale "
-                                   "matrix loses energy instead.",
+                                   "captured graph. It does not cure energy gain on fast, light chains: on the "
+                                   "measured chains the stale matrix lost energy instead.",
     "parallel_tree": "Broad trees such as hands; time the full step before keeping it.",
     "reuse_kinematics": "Time it on your scene; call notify_state_changed after writing state outside step().",
     "use_parallel_streams": "Models with several articulation sizes, or many independent single-DOF joints on one "
