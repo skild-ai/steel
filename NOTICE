@@ -17,16 +17,13 @@ Copyright 2026 Skild AI. Licensed under Apache-2.0.
 
 Trademarks:
 Skild, Skild AI and the Skild logo are trademarks of Skild AI and are not
-licensed under Apache-2.0.
+licensed under Apache-2.0. The logo files site/src/assets/skild-mark-*.svg
+and site/public/favicon.svg are not covered by the Apache-2.0 grant.
 
 The examples/ collection was migrated from the Steel Shelf project. Its
 component notices and asset inventory are retained in examples/NOTICE,
 examples/THIRD_PARTY.md, examples/third_party_inventory.json and
 examples/licenses/.
-
-"Skild", "Skild AI" and the Skild logo are trademarks of Skild AI. They are not
-licensed under Apache-2.0, and the logo files (site/src/assets/skild-mark-*.svg
-and site/public/favicon.svg) are excluded from the Apache-2.0 grant.
 
 The documentation site in site/ ships third-party code and fonts under their own
 licenses; the build writes their notices to third-party-notices.txt at the site root.
