@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """An RL loop: many worlds, one graph launch per frame, device-side terminations and resets."""
 
 import newton

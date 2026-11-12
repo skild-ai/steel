@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """restitution_velocity_threshold: the slowest impact that still bounces."""
 
 import newton

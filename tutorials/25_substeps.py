@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Substeps vs iterations: split the same 30 Hz frame into more, cheaper solver steps."""
 
 import newton

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Terrain friction randomization: one floor shape per world, each with its own mu."""
 
 import newton

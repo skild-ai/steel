@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Penetration recovery: Baumgarte bias adds velocity; velocity_iterations remove it."""
 
 import newton

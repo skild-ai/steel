@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 import { loadTutorials } from './tutorials-data.mjs';
 
 /** Sidebar group for the tutorials: the index, then one collapsed sublist per tutorial group. */

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Solve modes: the serial sweep vs the colored sweep with the propagation contact response."""
 
 import time

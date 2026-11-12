@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Propagation options: same-articulation rows, cached responses and the colored contact order."""
 
 import newton

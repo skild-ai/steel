@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Per-step cost of Steel options on small replicated scenes, timed by CUDA graph replay.
 
 Each group builds every option at every world count, then times them in interleaved rounds and

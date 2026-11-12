@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 # Page text for 33_joint_velocity_limits.py. Fields: tutorials/README.md.
 
 id = "velocity-limits"

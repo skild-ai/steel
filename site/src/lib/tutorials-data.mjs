@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 // Build-time access to the repository's tutorials/ folder: index.toml, <script>.toml, <script>.py, recordings/.
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
@@ -54,7 +57,9 @@ export function loadRecording(meta) {
 	const path = join(tutorialsDir, 'recordings', `${meta.id}.json`);
 	if (!existsSync(path)) return null;
 	const rec = JSON.parse(readFileSync(path, 'utf8'));
-	const sha = createHash('sha256').update(readFileSync(join(tutorialsDir, meta.file))).digest('hex');
+	// Same digest as tutorials/source_hash.py: the script without its leading SPDX header.
+	const source = readFileSync(join(tutorialsDir, meta.file), 'latin1').replace(/^(#![^\n]*\n)?(?:# SPDX-[^\n]*\n)+\n?/, '$1');
+	const sha = createHash('sha256').update(source, 'latin1').digest('hex');
 	rec.stale = rec.script_sha256 !== sha;
 	return rec;
 }

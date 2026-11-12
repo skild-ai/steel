@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 /* Reduced vs maximal coordinates: the same hanging chain with a heavy tip, simulated twice. */
 SteelViz.register("reduced", (root, lib) => {
   const { css, el, text } = lib;

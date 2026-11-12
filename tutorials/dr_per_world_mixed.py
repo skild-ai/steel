@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Several randomizations on a quadruped: one notify with OR-ed flags, then a partial reset."""
 
 import newton

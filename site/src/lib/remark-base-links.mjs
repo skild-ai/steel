@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 import { visit } from 'unist-util-visit';
 
 /** Prefix the site base to root-relative links in Markdown, so content can link to `/concepts/...`. */

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Sleeping islands: settled towers fall asleep and skip their work until something wakes them."""
 
 from types import SimpleNamespace

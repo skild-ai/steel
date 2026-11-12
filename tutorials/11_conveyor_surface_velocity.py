@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Conveyor belts: a static mesh with per-vertex surface velocity carries boxes through friction."""
 
 import newton

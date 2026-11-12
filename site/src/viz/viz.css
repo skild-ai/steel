@@ -1,3 +1,6 @@
+/* SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI */
+/* SPDX-License-Identifier: Apache-2.0 */
+
 /* Styles of the docs visuals in src/viz/ (figures, steppers, concept bubbles). Tokens only. */
 figure.viz .frame{display:grid;gap:10px}
 .vizbar{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}

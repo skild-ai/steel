@@ -144,7 +144,8 @@ A tutorial is three files in `tutorials/`: the script `NN_name.py`, its page tex
 recording `recordings/<id>.json`; its id goes into a group in `tutorials/index.toml`. Record on a GPU with
 `python tutorials/tools/record_all.py --only <id>` and check with `python tutorials/tools/check.py --poses`.
 The site shows the committed script next to the replay, so a script changed after recording fails the
-check until it is recorded again. [tutorials/README.md](tutorials/README.md) lists every field.
+check until it is recorded again. The digest skips the file's SPDX header, so adding
+or changing that header does not. [tutorials/README.md](tutorials/README.md) lists every field.
 
 ### Style
 

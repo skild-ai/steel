@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Torsional friction on articulated contacts with steel:min_torsional_patch_radius."""
 
 import newton

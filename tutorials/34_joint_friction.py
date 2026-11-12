@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Dry joint friction (MuJoCo frictionloss) with enable_joint_friction."""
 
 import math

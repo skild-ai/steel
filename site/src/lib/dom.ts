@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 /** Small DOM helpers shared by the demos. */
 
 const SVGNS = 'http://www.w3.org/2000/svg';

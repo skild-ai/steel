@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Loop closures: a four-bar linkage as a chain plus one closing revolute joint."""
 
 import math

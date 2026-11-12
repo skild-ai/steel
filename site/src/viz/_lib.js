@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 /* Steel docs visuals: shared helpers and the module registry.
    Each visual registers mount(root, lib) and reads only its own root element; colors come from CSS tokens. */
 window.SteelViz = (function () {

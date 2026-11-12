@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Joint PD drives: position targets (target_ke, target_kd) and velocity targets (target_kd)."""
 
 import math

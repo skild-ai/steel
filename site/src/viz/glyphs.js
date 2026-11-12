@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 /* Option glyphs for the reference: SteelVizGlyph(option) returns a small inline SVG string. */
 window.SteelVizGlyph = (function () {
   /* option glyphs: one small icon per kind of knob */

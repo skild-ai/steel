@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Change model properties mid-run: edit friction in place, then call notify_model_changed."""
 
 import math

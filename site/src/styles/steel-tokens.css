@@ -1,3 +1,6 @@
+/* SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI */
+/* SPDX-License-Identifier: Apache-2.0 */
+
 /* Steel style tokens. Paste into every Steel page; components use only these. */
 :root{
   --bg:#ffffff; --fg:#1b2b28; --muted:#5c6670; --rule:#e6e4dd; --panel:#f7f5f1;

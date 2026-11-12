@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 import { visit, SKIP } from 'unist-util-visit';
 
 const wbr = () => ({ type: 'element', tagName: 'wbr', properties: {}, children: [] });

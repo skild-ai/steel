@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Tethers: Steel ignores DISTANCE joint limits; a ball joint plus a limited slider holds them."""
 
 import math

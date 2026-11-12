@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """friction_mode: the per-contact Coulomb update, checked against analytic results."""
 
 import math

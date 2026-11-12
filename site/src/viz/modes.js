@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 /* Solve modes: serial and colored sweeps, immediate and propagation responses, on one small world. */
 SteelViz.register("modes", (root, lib) => {
   const { css, el, text } = lib;

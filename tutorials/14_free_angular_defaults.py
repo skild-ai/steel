@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Model-wide spin and rolling friction for free bodies with one SolverSteel argument."""
 
 import newton

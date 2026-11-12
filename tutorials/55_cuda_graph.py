@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """CUDA graph capture: record one frame of collide + step calls once, then replay it."""
 
 import time

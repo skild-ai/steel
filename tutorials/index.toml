@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 # Tutorial order. Each group lists its tutorials by id, in page order; numbers follow this order.
 # A tutorial is <script>.py + <script>.toml in this folder and recordings/<id>.json.
 

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Drive saturation: drive_mode="augmented" vs "rows" when a stiff drive hits its effort limit."""
 
 import math

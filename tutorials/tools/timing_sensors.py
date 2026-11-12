@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Per-step cost of sleeping options for the contact-sensor tutorial, with timing.py's method.
 
 usage: python tutorials/tools/timing_sensors.py OUT.json [sensors_sleep]

@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Measure where SolverSteel's contact warm start helps and where it hurts.
 
 Each scene runs many worlds with ``contact_warmstart`` off and on. Both arms use the same collision pipeline

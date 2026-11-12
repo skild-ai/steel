@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Sticky contacts with steel:adhesion: a box hangs under a ceiling until it is pulled off."""
 
 import newton

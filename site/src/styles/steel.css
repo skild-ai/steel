@@ -1,3 +1,6 @@
+/* SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI */
+/* SPDX-License-Identifier: Apache-2.0 */
+
 /*
   Site theme. Colors and fonts come only from steel-tokens.css (the shared Steel style, kept verbatim so it
   can be replaced as a whole); this file maps them onto Starlight and styles the shared components.

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Performance options: parallel_tree, use_parallel_streams, double_buffer and reuse_kinematics."""
 
 import math

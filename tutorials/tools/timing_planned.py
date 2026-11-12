@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Per-step cost of the limit-gap, performance, friction, propagation and RL tutorials' options.
 
 Timed like timing.py. Scenes come from the tutorial scripts; each is replicated into 1, 64

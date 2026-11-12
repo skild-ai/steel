@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 # Page text for 38_limit_activation_gap.py. Fields: tutorials/README.md.
 
 id = "limit-activation-gap"

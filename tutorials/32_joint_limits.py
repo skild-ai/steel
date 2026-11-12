@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Joint position limits are off by default; enable_joint_limits turns them into unilateral rows."""
 
 import math

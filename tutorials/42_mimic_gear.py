@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Mimic joints as gears: q_follower = offset + ratio * q_leader, editable at runtime."""
 
 import math

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Joint damping randomization: per-world joint_damping + JOINT_DOF_FORCE_PROPERTIES."""
 
 import math

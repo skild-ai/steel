@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 /**
  * Loads the docs visuals in this folder and mounts every [data-viz] element on the page.
  * Each module is a plain script that calls SteelViz.register(name, (root, lib) => ...); _lib.js defines

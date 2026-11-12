@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 // Check every internal link and #anchor in the built site (dist/), including generated tutorial pages.
 // usage: node scripts/check-links.mjs [dist]
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';

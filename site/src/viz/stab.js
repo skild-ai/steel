@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 /* Stabilization, bounces, drives and limits: one measured Steel run per sub-concept, with the rule it shows. */
 SteelViz.register("stab", (root, lib) => {
   const { css } = lib;

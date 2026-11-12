@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Check tutorials/: metadata fields, index order, and that every recording matches its script.
 
 usage: python tutorials/tools/check.py [--poses]
@@ -12,13 +15,12 @@ numpy for --poses.
 
 import argparse
 import base64
-import hashlib
 import json
 import sys
 from pathlib import Path
 
 import tomllib
-from timing_groups import runners
+from timing_groups import runners, source_sha256
 
 TUTORIALS = Path(__file__).resolve().parent.parent
 TIMING_RUNNERS = runners()
@@ -72,7 +74,7 @@ def main():
             errors.append(f"{tid}: no recording; run tools/record_all.py --only {tid}")
             continue
         rec = json.loads(recording.read_text())
-        sha = hashlib.sha256(script.read_bytes()).hexdigest()
+        sha = source_sha256(script)
         if rec.get("script_sha256") != sha:
             errors.append(f"{tid}: {name}.py changed after it was recorded; record it again")
         if any(v.get("overflow") for v in rec["variants"]) and not meta.get("allow_dropped_rows"):

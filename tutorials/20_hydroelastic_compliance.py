@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Hydroelastic contacts, solved rigidly or with contact_compliance."""
 
 import newton

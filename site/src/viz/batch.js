@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 /* Mixed batch: six different worlds routed to dynamics groups and contact-solve kernels, per step. Schematic. */
 SteelViz.register("batch", (root, lib) => {
   const { css, el, text } = lib;

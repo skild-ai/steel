@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 /* CUDA graphs: launch-by-launch stepping against one captured replay, and what stays outside capture. Schematic. */
 SteelViz.register("graphs", (root, lib) => {
   const { css, el, text } = lib;

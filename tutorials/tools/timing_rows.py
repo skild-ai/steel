@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Per-step cost for the row-order, fused-limit and pre-elimination tutorials, timed like timing.py.
 
 usage: python tutorials/tools/timing_rows.py OUT.json [group ...]

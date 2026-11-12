@@ -1,11 +1,20 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Which timing runner in tools/ measures each cost-table group, found without importing Newton."""
 
 import ast
 import hashlib
 import re
+import sys
 from pathlib import Path
 
 TOOLS = Path(__file__).resolve().parent
+sys.path.insert(0, str(TOOLS.parent))
+
+from source_hash import source_bytes, source_sha256  # noqa: E402
+
+__all__ = ["runners", "source_sha256", "workload_sha256"]
 
 
 def runners():
@@ -44,5 +53,5 @@ def workload_sha256(runner):
         raise SystemExit(f"{runner.name} loads missing scripts: {', '.join(missing)}")
     h = hashlib.sha256()
     for part in parts:
-        h.update(part.name.encode() + b"\0" + part.read_bytes())
+        h.update(part.name.encode() + b"\0" + source_bytes(part))
     return h.hexdigest()

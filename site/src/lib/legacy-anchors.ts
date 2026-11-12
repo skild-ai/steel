@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 /** Section ids of the earlier single-page docs, mapped to their pages here. */
 export const legacyAnchors: Record<string, string> = {
 	"overview": "/start/overview/",

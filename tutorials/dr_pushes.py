@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Random pushes: kick each world's base through state.joint_qd, or push it with state.body_f."""
 
 import newton

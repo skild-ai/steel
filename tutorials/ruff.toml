@@ -1,6 +1,9 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 line-length = 100
 [lint]
 select = ["E", "F", "W", "I", "B", "UP"]
 [lint.isort]
 known-third-party = ["newton", "warp"]
-known-local-folder = ["replay"]
+known-local-folder = ["replay", "source_hash"]

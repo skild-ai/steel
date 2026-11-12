@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Inertia randomization: per-world body_inertia at fixed mass changes the natural frequency."""
 
 import math

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Record Steel tutorial runs as replay JSON for the tutorials page, or print a summary.
 
 Every tutorial imports this module. ``python NN_name.py`` runs the variants and prints
@@ -7,7 +10,6 @@ series that the page replays in 3D.
 
 import argparse
 import base64
-import hashlib
 import json
 import os
 import subprocess
@@ -17,6 +19,8 @@ import time
 import newton
 import numpy as np
 import warp as wp
+
+from source_hash import source_sha256
 
 _RENDERED_TYPES = {
     newton.GeoType.PLANE,
@@ -73,8 +77,7 @@ class Recorder:
             print(f"{variant.label:<48} {json.dumps(last)}  {variant.wall:.2f} s{flag}")
         if not self.args.record:
             return
-        with open(self.script, "rb") as f:
-            source_sha = hashlib.sha256(f.read()).hexdigest()
+        source_sha = source_sha256(self.script)
         doc = {
             "script": os.path.basename(self.script),
             "script_sha256": source_sha,

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Free-body gyroscopics: a T-handle spun about its middle axis flips (Dzhanibekov effect)."""
 
 import newton

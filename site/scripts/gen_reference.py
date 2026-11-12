@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Generate the Steel configuration reference from SolverSteel's source.
 
 Reads ``newton/_src/solvers/steel/solver_steel.py`` with ``ast`` (nothing is imported, so no GPU or Warp

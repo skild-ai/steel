@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Restitution randomization: per-world shape_material_restitution + SHAPE_PROPERTIES."""
 
 import newton

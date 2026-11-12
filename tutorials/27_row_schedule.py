@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """row_schedule: the order of contact rows and internal rows (drives, limits, mimics)."""
 
 import math

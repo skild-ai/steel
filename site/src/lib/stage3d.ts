@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 /**
  * Shared three.js helpers for the 3D stages on the site: the Steel studio look (sky gradient, checker
  * floor, hemisphere fill and warm key light, ACES), theme tokens, and a small orbit stage for demos.

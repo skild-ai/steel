@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Cap how fast overlapping bodies are pushed apart: steel:rigid_body_max_depenetration_velocity."""
 
 import newton

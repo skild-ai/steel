@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Speculative contacts: a contact gap that covers one step of travel stops a fast ball.
 
 The shape gap decides which contacts the pipeline reports;

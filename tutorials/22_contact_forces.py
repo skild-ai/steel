@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Per-contact forces from the contact_f observable, and a unique indeterminate load split."""
 
 import newton

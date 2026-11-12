@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """joint_limit_activation_gap: create joint-limit rows only near a bound."""
 
 import math

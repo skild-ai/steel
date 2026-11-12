@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 // Write dist/third-party-notices.txt for the third-party code and fonts the built site ships. Fails when a
 // file in dist/_astro is neither built from site/src nor matched to a component below, or when a shipped
 // component has no license text. usage: node scripts/write-notices.mjs [dist]

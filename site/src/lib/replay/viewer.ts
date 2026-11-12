@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 /**
  * The tutorial replay: loads tutorials/recordings/<id>.json, rebuilds every recorded variant's shapes,
  * plays the body poses back with a scrubber, and draws the metric charts with a playhead.

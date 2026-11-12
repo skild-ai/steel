@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-License-Identifier: Apache-2.0
+
 /* Concept bubbles: <button class="term" data-viz="term" data-term="warp">warp</button>.
    One shared popover; tap or click opens it, Escape, the close button or a click outside closes it. */
 SteelViz.register("term", (root, lib) => {

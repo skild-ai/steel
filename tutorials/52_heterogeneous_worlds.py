@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Heterogeneous worlds: different structures in one model, stepped by one solver."""
 
 import newton

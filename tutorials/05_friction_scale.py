@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """contact_friction_scale: scale every shape's friction in the solver without editing the model."""
 
 import math
