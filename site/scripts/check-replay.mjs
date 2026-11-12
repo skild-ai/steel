@@ -29,6 +29,21 @@ const check = (ok, what) => (ok ? console.log(`  ok  ${what}`) : failures.push(w
 
 try {
 	const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+	// Records the first time the readout shows after each page entry, independent of how slowly the test samples.
+	await context.addInitScript(() => {
+		const watch = () => {
+			window.replayEntryTime = undefined;
+			const el = document.querySelector('.replay .time');
+			if (!el) return;
+			new MutationObserver((_, obs) => {
+				if (!el.textContent.includes('/')) return;
+				window.replayEntryTime = parseFloat(el.textContent);
+				obs.disconnect();
+			}).observe(el, { childList: true, characterData: true, subtree: true });
+		};
+		document.addEventListener('DOMContentLoaded', watch);
+		window.addEventListener('pageshow', (e) => e.persisted && watch());
+	});
 	const page = await context.newPage();
 	page.on('pageerror', (e) => failures.push(`page error: ${e.message}`));
 
@@ -114,11 +129,12 @@ async function replayTime(page) {
 	return page.evaluate(() => parseFloat(document.querySelector('.replay .time').textContent));
 }
 
-// The recording loads, the readout starts near 0 s, and playback advances.
+// The recording loads, the first readout after entry is near 0 s, and playback advances.
 async function expectStart(page, what) {
-	await page.waitForFunction(() => document.querySelector('.replay .time')?.textContent.includes('/'), null, { timeout: 15000 });
+	const handle = await page.waitForFunction(() => window.replayEntryTime !== undefined && [window.replayEntryTime], null, { timeout: 15000, polling: 50 }).catch(() => null);
+	const entry = (await handle?.jsonValue())?.[0];
 	const t0 = await replayTime(page);
 	await page.waitForTimeout(400);
 	const t1 = await replayTime(page);
-	check(t0 < 0.5 && t1 > t0 && (await page.textContent('.replay .play')) === 'Pause', `${what}: starts at ${t0.toFixed(3)} s and advances to ${t1.toFixed(3)} s`);
+	check(entry !== undefined && entry < 0.2 && t1 > t0 && (await page.textContent('.replay .play')) === 'Pause', `${what}: enters at ${entry?.toFixed(3)} s and advances from ${t0.toFixed(3)} to ${t1.toFixed(3)} s`);
 }
