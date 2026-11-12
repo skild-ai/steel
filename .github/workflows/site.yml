@@ -5,6 +5,7 @@ on:
   push:
     branches: [main]
     paths: ['site/**', 'tutorials/**', 'CHANGELOG.md', '.github/workflows/site.yml']
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
@@ -27,7 +28,7 @@ jobs:
           ruff check site/scripts
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     defaults:
       run:
         working-directory: site
@@ -39,24 +40,37 @@ jobs:
           cache: npm
           cache-dependency-path: site/package-lock.json
       - run: npm ci
+      # Pull requests build the same /steel/ site that main deploys to https://skild-ai.github.io/steel/.
       - name: Build and check internal links and anchors
         run: npm run build
         env:
           ASTRO_TELEMETRY_DISABLED: '1'
-      # Deploy stub for GitHub Pages, off until hosting is decided. To enable: set the repository's Pages
-      # source to "GitHub Actions", set STEEL_SITE_BASE (e.g. /steel/) on the build step above, add
-      # `pages: write` and `id-token: write` to permissions, and uncomment.
-      # - uses: actions/upload-pages-artifact@v3
-      #   if: github.event_name == 'push'
-      #   with:
-      #     path: site/dist
-  # deploy:
-  #   if: github.event_name == 'push'
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   environment:
-  #     name: github-pages
-  #     url: ${{ steps.deployment.outputs.page_url }}
-  #   steps:
-  #     - id: deployment
-  #       uses: actions/deploy-pages@v4
+          STEEL_SITE_BASE: /steel/
+      - name: Check that every figure renders and no table is clipped
+        run: |
+          npx playwright-core install --with-deps chromium
+          node scripts/check-figures.mjs dist
+        env:
+          STEEL_SITE_BASE: /steel/
+      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
+        if: github.event_name != 'pull_request'
+        with:
+          path: site/dist
+  # Needs the repository's Pages source set to "GitHub Actions".
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: [tutorials, build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
