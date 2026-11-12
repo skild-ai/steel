@@ -1,7 +1,8 @@
 # Contributing
 
-This repository holds Steel's documentation and its examples. The solver itself lives in
-[Newton](https://github.com/newton-physics/newton); see [Solver changes](#solver-changes).
+This repository holds Steel's documentation site, its tutorials and its examples. The solver itself lives
+in [Newton](https://github.com/newton-physics/newton); see [Solver changes](#solver-changes). For the site
+and the tutorials, see [Documentation site and tutorials](#documentation-site-and-tutorials).
 
 ## Setup
 
@@ -52,7 +53,8 @@ This writes the result and a `checked` stamp (date, Newton commit, GPU) into `pr
 
 ## Checks
 
-CI runs on GitHub-hosted runners with no GPU. It checks that `uv.lock` matches `pyproject.toml`, runs ruff for
+CI runs on GitHub-hosted runners with no GPU. For the site it builds `site/`, checks every internal link
+and anchor, and runs `tutorials/tools/check.py`. For the examples it checks that `uv.lock` matches `pyproject.toml`, runs ruff for
 syntax errors and undefined names, runs the license audit on the built wheel and sdist, and lists the examples.
 You can run the same checks locally:
 
@@ -99,6 +101,65 @@ with this header (in the comment style of its language):
 ```
 
 The project's authors are listed in [AUTHORS](AUTHORS).
+
+## Documentation site and tutorials
+
+The site in `site/` is an [Astro](https://astro.build) + [Starlight](https://starlight.astro.build)
+project. Its pages are Markdown or MDX, its interactive demos are components, and its tutorial pages are
+generated from `tutorials/`. Node 22.23.4 or newer:
+
+```bash
+cd site
+npm ci
+npm run dev       # http://localhost:4321, reloads on edits
+npm run build     # the static site in site/dist, then a check of every internal link and anchor
+```
+
+### A docs page
+
+Add a `.md` or `.mdx` file under `site/src/content/docs/<group>/` with a `title`, a one-sentence
+`description` and `sidebar.order` in its frontmatter; the folder (`start`, `concepts`, `guides`,
+`reference`) is its sidebar group. Link to other pages with root-relative paths such as
+`/concepts/friction/#friction-patches-and-anchors`; the build fails on a broken link or anchor. Math is TeX
+between `$...$` or `$$...$$`. In MDX, the components in `site/src/components/` are available: `Note`,
+`CardGrid` with `InfoCard`, `Figure` for a static numbered figure, `Viz` for an interactive one, and
+`Term` for a term with a concept bubble (`<Term name="warp">warp</Term>`; definitions in
+`site/src/viz/terms.js`).
+
+### An interactive figure
+
+An interactive figure is one script in `site/src/viz/<name>.js` that calls
+`SteelViz.register("<name>", (root, lib) => { ... })` and draws only inside `root`. `lib` (from
+`site/src/viz/_lib.js`) provides `frame`, `lineChart`, `stepper`, `tabs`, `stage3d` (a three.js orbit
+stage), `css` for token colors, `onTheme` to redraw when the theme changes, and `data`, the measured series
+in `series.json`. Place it with `<Viz name="<name>" n={14} title="Bold first sentence.">Caption.</Viz>`.
+Larger demos with their own controls can be Astro components in `site/src/components/demos/` instead,
+importing `three` and `site/src/lib/stage3d.ts`. Say what a figure simplifies.
+
+### A tutorial
+
+A tutorial is three files in `tutorials/`: the script `NN_name.py`, its page text `NN_name.toml`, and its
+recording `recordings/<id>.json`; its id goes into a group in `tutorials/index.toml`. Record on a GPU with
+`python tutorials/tools/record_all.py --only <id>` and check with `python tutorials/tools/check.py --poses`.
+The site shows the committed script next to the replay, so a script changed after recording fails the
+check until it is recorded again. [tutorials/README.md](tutorials/README.md) lists every field.
+
+### Style
+
+- Colors and fonts come only from the Steel style tokens in `site/src/styles/steel-tokens.css`, which is
+  kept verbatim from the shared Steel style; update it by replacing the whole file. Components use
+  `var(--token)` in CSS and `css('--token')` in scripts, never a literal color.
+- Orange (`--hot`, `--hot-fill`, `--series-2`) marks the one thing a figure or section is about; comparisons
+  use `--series-1`, `--series-3` and `--series-4`.
+- Write plainly. State measured numbers with the scene, commit and GPU they come from, and keep claims to
+  what the code at the documented commit does.
+- Check new pages at phone width (390 px): no sideways scrolling of the page, controls large enough to tap.
+
+### What is public
+
+Everything in this repository is public. Link only to public repositories, commits and pages; do not add
+internal hostnames, cluster or job-scheduler details, absolute paths from your machine, or private notes.
+Recordings carry the Newton commit and GPU name they were made with, nothing else about the machine.
 
 ## Pull requests
 
