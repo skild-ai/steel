@@ -12,7 +12,9 @@ export function rehypeTables() {
 		visit(tree, 'element', (node, index, parent) => {
 			if (node.tagName !== 'table' || !parent || index === undefined) return;
 			const rows = [];
-			visit(node, 'element', (n) => (n.tagName === 'tr' ? rows.push(n) : undefined));
+			visit(node, 'element', (n) => {
+				if (n.tagName === 'tr') rows.push(n);
+			});
 			const cells = (tr) => tr.children.filter((c) => c.type === 'element' && (c.tagName === 'td' || c.tagName === 'th'));
 			const headers = rows.length ? cells(rows[0]).map((c) => text(c).trim()) : [];
 			for (const tr of rows.slice(1)) cells(tr).forEach((c, i) => (c.properties.dataLabel = headers[i] ?? ''));
