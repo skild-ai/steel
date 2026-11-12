@@ -9,6 +9,8 @@ npm run dev       # http://localhost:4321, reloads on edits
 npm run build     # static site in dist/, then a check of every internal link and anchor
 npm run preview   # serve dist/
 npm run check-figures   # every page in headless Chromium: figures render, no console errors, no clipped table
+npm run build:pages     # the GitHub Pages build under /steel/, in dist-pages/ so it never replaces dist/
+npm run check-figures:pages
 ```
 
 Node 22.23.4 or newer (see `.nvmrc`). `check-figures` needs a Chromium: `npx playwright-core install chromium`,

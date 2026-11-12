@@ -8,6 +8,8 @@
     "preview": "astro preview",
     "check-links": "node scripts/check-links.mjs dist",
     "check-figures": "node scripts/check-figures.mjs dist",
+    "build:pages": "export STEEL_SITE_BASE=/steel/ && astro build --outDir dist-pages && node scripts/write-notices.mjs dist-pages && node scripts/check-links.mjs dist-pages",
+    "check-figures:pages": "STEEL_SITE_BASE=/steel/ node scripts/check-figures.mjs dist-pages",
     "astro": "astro"
   },
   "dependencies": {
