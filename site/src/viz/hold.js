@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
 // SPDX-License-Identifier: Apache-2.0
 
 /* Friction patches vs point friction for a box pushed sideways on a table: where the friction acts this step

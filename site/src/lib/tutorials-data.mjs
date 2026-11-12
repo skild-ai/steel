@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
 // SPDX-License-Identifier: Apache-2.0
 
 // Build-time access to the repository's tutorials/ folder: index.toml, <script>.toml, <script>.py, recordings/.

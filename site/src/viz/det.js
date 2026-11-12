@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
 // SPDX-License-Identifier: Apache-2.0
 
 /* Determinism: the largest pose difference between two runs from identical inputs, as Steel measured it. */

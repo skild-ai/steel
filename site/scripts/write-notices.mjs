@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
 // SPDX-License-Identifier: Apache-2.0
 
 // Write dist/third-party-notices.txt for the third-party code and fonts the built site ships. Fails when a

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
 // SPDX-License-Identifier: Apache-2.0
 
 /* Row estimate for one world: inputs grouped by source, rows per family as stacked bars against the default
