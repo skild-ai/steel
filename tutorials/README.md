@@ -43,9 +43,10 @@ rename one.
 4. Check: `python tools/check.py --poses`, and `ruff check .` from this folder.
 5. Preview it on the site: `cd ../site && npm run dev`, then open `/tutorials/<id>/`.
 
-A recording keeps its cost table only while its script and Newton commit stay the same; re-recording
-after either changes drops the table until it is measured again with `--timing`, and `tools/check.py`
-fails until then. Measured tables carry the Newton commit and the runner they came from.
+A recording keeps its cost table only while its script, the Newton commit and the timed workload (the
+runner, `timing.py` and the scripts the runner builds scenes from) stay the same; otherwise re-recording
+drops the table until it is measured again with `--timing`, and `tools/check.py` fails until then.
+Measured tables carry the Newton commit, the runner and a hash of that workload.
 
 Changing a script after it was recorded makes `tools/check.py` and the site flag the recording as out of
 date, because the page would show code that did not produce the replay. Record it again in the same change.

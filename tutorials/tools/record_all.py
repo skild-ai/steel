@@ -7,11 +7,11 @@ Runs every tutorial in ``tutorials/index.toml`` (or only the given ids) from the
 in the active Python environment, which needs the Newton build the docs describe. ``--timing`` also
 runs the timing runner (``tools/timing*.py``) of every ``[timing]`` group and stores the cost rows,
 with the Newton commit and runner hash they were measured with, in the recordings. Without it, a
-recording keeps its old cost rows only if neither its script nor the Newton commit changed.
+recording keeps its old cost rows only if its script, the Newton commit and the timed workload are
+unchanged.
 """
 
 import argparse
-import hashlib
 import json
 import os
 import subprocess
@@ -20,7 +20,7 @@ import tempfile
 from pathlib import Path
 
 import tomllib
-from timing_groups import runners
+from timing_groups import runners, workload_sha256
 
 TUTORIALS = Path(__file__).resolve().parent.parent
 
@@ -63,6 +63,7 @@ def main():
         unchanged = (
             previous.get("script_sha256") == recording["script_sha256"]
             and previous.get("newton_commit") == recording["newton_commit"]
+            and timing_current(t, previous.get("timing"))
         )
         if rows is None and "timing" in previous:
             if unchanged:
@@ -75,6 +76,19 @@ def main():
     print(f"recorded {len(selected) - len(failed)} of {len(selected)}", flush=True)
     if failed:
         raise SystemExit(f"failed: {', '.join(failed)}")
+
+
+def timing_current(meta, timing):
+    """Whether a stored cost table came from the current runner, timing.py and scene scripts.
+    Tables without that provenance are not reused."""
+    if not timing or "timing" not in meta or "runner_sha256" not in timing:
+        return False
+    runner = runners().get(meta["timing"]["group"])
+    return (
+        runner is not None
+        and timing.get("runner") == runner.name
+        and (timing["runner_sha256"] == workload_sha256(runner))
+    )
 
 
 def load_tutorials():
@@ -100,7 +114,6 @@ def measure_timing(selected, env, device, timeout):
         raise SystemExit(f"no timing runner defines: {', '.join(missing)}")
     if device and device.startswith("cuda:"):
         env = dict(env, CUDA_VISIBLE_DEVICES=device.split(":", 1)[1])
-    harness = (TUTORIALS / "tools" / "timing.py").read_bytes()
     result = {}
     for runner in sorted({owner[g] for g in by_group}):
         groups = [g for g in by_group if owner[g] == runner]
@@ -113,7 +126,7 @@ def measure_timing(selected, env, device, timeout):
             "gpu": data["gpu"],
             "newton_commit": env.get("NEWTON_COMMIT") or None,
             "runner": runner.name,
-            "runner_sha256": hashlib.sha256(runner.read_bytes() + harness).hexdigest(),
+            "runner_sha256": workload_sha256(runner),
         }
         for group in groups:
             rows = [r for r in data["rows"] if r["group"] == group]

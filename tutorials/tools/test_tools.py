@@ -15,7 +15,7 @@ import tomllib
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import record_all  # noqa: E402
-from timing_groups import runners  # noqa: E402
+from timing_groups import runners, workload_sha256  # noqa: E402
 
 TUTORIALS = Path(__file__).resolve().parent.parent
 
@@ -61,7 +61,7 @@ class Provenance(unittest.TestCase):
             root = Path(tmp)
             (root / "recordings").mkdir()
             (root / "index.toml").write_text('[[group]]\nname = "G"\ntutorials = ["t"]\n')
-            (root / "01_t.toml").write_text('id = "t"\n')
+            (root / "01_t.toml").write_text('id = "t"\n[timing]\ngroup = "patch"\n')
             out = root / "recordings" / "t.json"
             out.write_text(json.dumps(previous))
 
@@ -79,10 +79,16 @@ class Provenance(unittest.TestCase):
                 record_all.main()
             return json.loads(out.read_text())
 
+    RUNNER = runners()["patch"]
     OLD = {
         "script_sha256": "s1",
         "newton_commit": "n1",
-        "timing": {"gpu": "OLD", "rows": [{"ms": 99}]},
+        "timing": {
+            "gpu": "OLD",
+            "runner": "timing.py",
+            "runner_sha256": workload_sha256(runners()["patch"]),
+            "rows": [{"ms": 99}],
+        },
     }
 
     def test_unchanged_recording_keeps_its_cost_table(self):
@@ -90,6 +96,26 @@ class Provenance(unittest.TestCase):
 
     def test_changed_script_drops_the_cost_table(self):
         self.assertNotIn("timing", self.record("s2", "n1", self.OLD))
+
+    def test_changed_timing_harness_drops_the_cost_table(self):
+        stale = dict(self.OLD, timing=dict(self.OLD["timing"], runner_sha256="0" * 64))
+        self.assertNotIn("timing", self.record("s1", "n1", stale))
+
+    def test_table_without_provenance_is_not_reused(self):
+        legacy = dict(self.OLD, timing={"gpu": "OLD", "rows": [{"ms": 99}]})
+        self.assertNotIn("timing", self.record("s1", "n1", legacy))
+
+    def test_workload_hash_covers_scene_scripts(self):
+        runner = runners()["row_schedule"]
+        self.assertIn("27_row_schedule", runner.read_text())
+        real = Path.read_bytes
+        base = workload_sha256(runner)
+
+        def edited(path):
+            return b"changed" if path.name == "27_row_schedule.py" else real(path)
+
+        with mock.patch.object(Path, "read_bytes", edited):
+            self.assertNotEqual(base, workload_sha256(runner))
 
     def test_changed_newton_drops_the_cost_table(self):
         self.assertNotIn("timing", self.record("s1", "n2", self.OLD))
