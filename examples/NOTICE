@@ -4,7 +4,7 @@ Newton-derived source:
 Copyright (c) 2025-2026 The Newton Developers.
 Original copyright and Apache-2.0 SPDX headers are retained.
 
-The direct source of the 33 Steel WebGPU ports is steel-webgpu, as recorded
+The direct source of the 32 Steel WebGPU ports is steel-webgpu, as recorded
 in their headers and presets.toml. "Modified for Steel Shelf" identifies
 subsequent changes; it does not assign original authorship or imply that all
 ports were directly derived from Newton. See THIRD_PARTY.md for provenance.

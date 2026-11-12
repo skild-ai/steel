@@ -45,7 +45,7 @@ Newton-derived examples retain their original copyright and Apache-2.0 SPDX
 headers. The pinned Newton dependency is
 [f6fc82a8](https://github.com/skild-ai/newton/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md).
 
-The 33 Steel WebGPU ports (20 builder scenes and 13 exported scenes) identify
+The 32 Steel WebGPU ports (19 builder scenes and 13 exported scenes) identify
 **steel-webgpu as their direct source** in the source header and `presets.toml`.
 The [steel-webgpu LICENSE.md](https://github.com/skild-ai/steel-webgpu/blob/f2f72c1e99aea7192cf2366eb918e630135afcf9/LICENSE.md)
 provides Apache-2.0 code terms and, under *Bundled models*, the UR10e, UR5e and
@@ -68,7 +68,7 @@ The 13 `scene.json` / `scene.bin` pairs can be checked against public
   the public files in solver settings, initial state and a few friction values;
   their binaries match.
 
-The 20 builder scenes come from `tools/scenes.py`, whose functions are in
+The 19 builder scenes come from `tools/scenes.py`, whose functions are in
 public steel-webgpu from `58246f3` on. The `@ ad03e49` in their `presets.toml`
 `source` lines names the same pre-release revision. The inventory records the
 public commit and hash for every file, and the audit checks all 26 current files
@@ -107,7 +107,6 @@ are pinned below and in the inventory.
 | `unitree_g1` | BSD-3-Clause | [Full notice](licenses/runtime-assets/unitree_g1.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_g1/LICENSE) |
 | `unitree_go2/rl_policies` | Apache-2.0 | [Full notice](licenses/runtime-assets/unitree_go2--rl_policies.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_go2/rl_policies/LICENSE) |
 | `unitree_go2` | BSD-3-Clause | [Full notice](licenses/runtime-assets/unitree_go2.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_go2/LICENSE) |
-| `unitree_h1` | BSD-3-Clause | [Full notice](licenses/runtime-assets/unitree_h1.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_h1/LICENSE) |
 | `universal_robots_ur10` | BSD-3-Clause | [Full notice](licenses/runtime-assets/universal_robots_ur10.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/universal_robots_ur10/LICENSE) |
 | `wonik_allegro` | BSD-2-Clause | [Full notice](licenses/runtime-assets/wonik_allegro.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/wonik_allegro/LICENSE) |
 | `MuJoCo Menagerie UR10e` | BSD-3-Clause | [Full notice](licenses/UR10e-BSD-3-Clause.txt) · [Pinned source](https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/universal_robots_ur10e/LICENSE) |
@@ -152,12 +151,11 @@ those model notices are preserved above rather than inferred from Newton's code 
 
 ### Newton test and Warp example assets
 
-The two optional Kamino USD-loading examples use
-`newton.tests.get_kamino_basics_asset()`, which resolves six basic test scenes
-inside the pinned Newton dependency. Their paths and Git blob IDs are recorded
-separately in the inventory. They are covered by Newton's Apache-2.0 repository
-license; the files identify manually authored test scenes, with the cartpole
-file crediting Disney Research as its generator. These files are separate
+The optional Kamino USD-loading example uses
+`newton.tests.get_kamino_basics_asset()`, which resolves a basic test scene
+inside the pinned Newton dependency. Its path and Git blob ID are recorded
+separately in the inventory. It is covered by Newton's Apache-2.0 repository
+license; the file identifies a manually authored test scene. It is separate
 from the custom-licensed Disney robot downloads described above.
 
 The `cloth_twist` and `cloth_stiff_material_hanging` examples use

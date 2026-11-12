@@ -20,18 +20,18 @@ OUT.mkdir(parents=True, exist_ok=True)
 rows = json.load(open(Path(__file__).with_name("evidence.json")))[1:]
 
 GROUPS = {
-    "Basics": "basic_pendulum basic_dzhanibekov basic_heightfield basic_shapes basic_joints basic_urdf recording "
-    "selection_articulations selection_cartpole selection_materials selection_multiple sleeping basic_mimic_joint",
+    "Basics": "basic_pendulum basic_dzhanibekov basic_shapes basic_joints basic_urdf selection_cartpole sleeping "
+    "basic_mimic_joint",
     "Contacts": "balance_bird basic_conveyor basic_conveyor_forces newton_cradle domino_spiral pyramid "
     "vbd_rigid_rigid_contact nut_bolt_hydro nut_bolt_sdf robot_panda_hydro",
-    "Articulations": "controller_joint_impedance_heterogeneous controller_operational_space_hybrid_force_motion "
-    "robot_allegro_hand robot_anymal_c_walk robot_anymal_d robot_asroballet robot_cartpole robot_g1 robot_h1 "
-    "robot_omniwheel robot_policy robot_ur10 sensor_contact ik_cube_stacking",
-    "Linkages and soft": "kamino_basic_dr_testmech kamino_basic_fourbar kamino_basic_heterogeneous kamino_robot_dr_legs "
-    "kamino_robot_anymal_d rigid_soft_contact softbody_franka cloth_franka franka_cable_ik_pick_place mpm_anymal",
+    "Articulations": "controller_operational_space_hybrid_force_motion robot_allegro_hand robot_anymal_c_walk "
+    "robot_anymal_d robot_asroballet robot_cartpole robot_g1 robot_omniwheel robot_policy robot_ur10 "
+    "sensor_contact",
+    "Linkages and soft": "kamino_basic_dr_testmech kamino_basic_fourbar kamino_robot_dr_legs kamino_robot_anymal_d "
+    "rigid_soft_contact softbody_franka franka_cable_ik_pick_place mpm_anymal",
     "Coupling": "franka_cloth_block franka_shirt_fold_stack kamino_mujoco_admm_solver mpm_twoway_coupling "
-    "mujoco_franka_vbd_cable_admm_solver mujoco_mpm_coupled_solver mujoco_vbd_admm_solver mujoco_vbd_coupled_solver "
-    "mujoco_xpbd_coupled_solver proxy_joint_gripper admm_contact_solver",
+    "mujoco_franka_vbd_cable_admm_solver mujoco_mpm_coupled_solver mujoco_vbd_admm_solver "
+    "mujoco_vbd_coupled_solver proxy_joint_gripper admm_contact_solver",
 }
 group_of = {ex: g for g, names in GROUPS.items() for ex in names.split()}
 BASELINE_FIX = {"basic_dzhanibekov": "VBD"}  # the evidence log lists XPBD; its default before PR #1 was VBD
@@ -54,7 +54,7 @@ for r in rows:
         dict(example=ex, label=r[0], group=group_of[ex], baseline_solver=BASELINE_FIX.get(ex, r[1]),
              baseline=num(base), tuned=num(tuned), template=num(template))
     )
-assert len(data) == 58 and all(d["group"] for d in data)
+assert len(data) == len(rows) and all(d["group"] for d in data)
 with open(OUT / "data.csv", "w", newline="") as f:
     w = csv.DictWriter(f, fieldnames=["group", "example", "baseline_solver", "baseline", "template", "tuned"])
     w.writeheader()
@@ -124,7 +124,7 @@ for mode, t in THEMES.items():
     ax.set_yticklabels(yl, fontsize=8.5, color=t["ink2"])
     ax.set_ylim(0.3, n + 0.7)
     ax.set_xlabel("mean frame time, ms (log scale; RTX PRO 6000 Blackwell)", color=t["ink2"], fontsize=9.5)
-    fig.suptitle(f"Tuned Steel is faster than the previous default in {faster} of 58 examples",
+    fig.suptitle(f"Tuned Steel is faster than the previous default in {faster} of {len(data)} examples",
                  x=0.02, ha="left", fontsize=14, fontweight="bold", color=t["ink"])
     from matplotlib.lines import Line2D
 
@@ -144,7 +144,7 @@ for mode, t in THEMES.items():
     plt.close(fig)
 
     # 2. per-group geometric mean of frame time relative to the previous default
-    groups = list(GROUPS) + ["All 58 examples"]
+    groups = list(GROUPS) + [f"All {len(data)} examples"]
     stats = []
     for g in groups:
         ds = data if g.startswith("All") else [d for d in data if d["group"] == g]
@@ -190,6 +190,6 @@ for mode, t in THEMES.items():
     fig.savefig(OUT / f"summary_{mode}.png", facecolor=t["surface"])
     plt.close(fig)
 
-print(f"faster in {faster}/58; geometric mean template {all_tmpl:.2f}x, tuned {all_tuned:.2f}x of baseline")
+print(f"faster in {faster}/{len(data)}; geometric mean template {all_tmpl:.2f}x, tuned {all_tuned:.2f}x of baseline")
 for g, tmpl, tuned, k in stats:
     print(f"  {g:22s} n={k:2d} template {tmpl:.2f}x tuned {tuned:.2f}x")

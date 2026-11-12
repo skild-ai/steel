@@ -107,7 +107,7 @@ def check_sources():
             require(len(actual) == len(expected) and all(abs(a - b) < 1e-6 for a, b in zip(actual, expected)),
                     (entry['path'], 'model masses differ'))
     ports = [p for p in ROOT.glob('shelf/**/presets.toml') if 'source = "steel-webgpu' in p.read_text()]
-    require(len(ports) == 33, ('expected 33 steel-webgpu ports', len(ports)))
+    require(len(ports) == 32, ('expected 32 steel-webgpu ports', len(ports)))
     require(all('# Direct source: steel-webgpu;' in p.with_name('example.py').read_text() for p in ports),
             'a steel-webgpu port lacks its direct-source header')
     for name in ['nut_bolt_hydro', 'nut_bolt_sdf']:

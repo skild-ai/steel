@@ -5,7 +5,7 @@ click an example for its `presets.toml`. *other* lists coupled presets (several 
 scene) and `none` (examples that build no physics solver).
 
 ✅ works · ⚠️ unstable · — unsupported · · untested. **Bold** is the example's default.
-147 examples, 1541 presets: 291 works, 5 unstable, 133 unsupported, 1112 untested.
+98 examples, 1036 presets: 219 works, 3 unstable, 37 unsupported, 777 untested.
 
 
 ## 00_basics
@@ -13,24 +13,16 @@ scene) and `none` (examples that build no physics solver).
 | Example | xpbd | vbd | mujoco | featherstone | semi_implicit | feather_pgs | steel | kamino | implicit_mpm | style3d | other |
 | --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | [basic_dzhanibekov](shelf/00_basics/basic_dzhanibekov/presets.toml) | ✅ | ✅ | ✅ | · | · | · | **✅** | ✅ | · | · |  |
-| [basic_heightfield](shelf/00_basics/basic_heightfield/presets.toml) | ✅ | · | ✅ | · | · | · | **✅** | ✅ | · | · |  |
 | [basic_joints](shelf/00_basics/basic_joints/presets.toml) | ✅ | ✅ | · | · | · | · | **✅** | ✅ | · | · |  |
 | [basic_multi_solver_overlay](shelf/00_basics/basic_multi_solver_overlay/presets.toml) | · | · | · | · | · | · | · | · | · | · | **xpbd_featherstone_mujoco_kamino ✅**, xpbd_featherstone_mujoco_kamino_steel ✅ |
 | [basic_pendulum](shelf/00_basics/basic_pendulum/presets.toml) | ✅ | · | · | · | · | · | **✅** | ✅ | · | · |  |
-| [basic_plotting](shelf/00_basics/basic_plotting/presets.toml) | · | · | **✅** | · | · | · | — | · | · | · |  |
 | [basic_shapes](shelf/00_basics/basic_shapes/presets.toml) | ✅ | ✅ | · | · | · | · | **✅** | ✅ | · | · |  |
 | [basic_urdf](shelf/00_basics/basic_urdf/presets.toml) | ⚠️ | ⚠️ | · | · | · | · | **✅** | ✅ | · | · |  |
-| [basic_viewer](shelf/00_basics/basic_viewer/presets.toml) | — | — | — | — | — | — | — | — | — | — | **none ✅** |
 | [body_limits](shelf/00_basics/body_limits/presets.toml) | — | — | — | — | — | — | **✅** | — | — | — |  |
 | [d6](shelf/00_basics/d6/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
 | [drives](shelf/00_basics/drives/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · | steel_off ✅ |
 | [load_friction](shelf/00_basics/load_friction/presets.toml) | — | — | — | — | — | — | **✅** | — | — | — |  |
-| [recording](shelf/00_basics/recording/presets.toml) | · | · | ✅ | · | · | · | **✅** | · | · | · |  |
-| [replay_viewer](shelf/00_basics/replay_viewer/presets.toml) | — | — | — | — | — | — | — | — | — | — | **none ✅** |
-| [selection_articulations](shelf/00_basics/selection_articulations/presets.toml) | · | · | ✅ | · | · | · | **✅** | ✅ | · | · |  |
 | [selection_cartpole](shelf/00_basics/selection_cartpole/presets.toml) | · | · | ✅ | · | · | · | **✅** | ✅ | · | · |  |
-| [selection_materials](shelf/00_basics/selection_materials/presets.toml) | · | · | ✅ | · | · | · | **✅** | ✅ | · | · |  |
-| [selection_multiple](shelf/00_basics/selection_multiple/presets.toml) | · | · | ✅ | · | · | · | **✅** | ✅ | · | · |  |
 | [sleeping](shelf/00_basics/sleeping/presets.toml) | · | · | ✅ | · | · | · | **✅** | · | · | · |  |
 | [vel_limit](shelf/00_basics/vel_limit/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
 | [worlds](shelf/00_basics/worlds/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
@@ -46,7 +38,6 @@ scene) and `none` (examples that build no physics solver).
 | [beer_pong](shelf/01_basic_contacts/beer_pong/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
 | [bounce](shelf/01_basic_contacts/bounce/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
 | [compliance](shelf/01_basic_contacts/compliance/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · | steel_off ✅ |
-| [dumbbells](shelf/01_basic_contacts/dumbbells/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · | steel_off ✅ |
 | [incline](shelf/01_basic_contacts/incline/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · | steel_off ✅ |
 | [kinematic](shelf/01_basic_contacts/kinematic/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
 | [mjorg_baseball_bat](shelf/01_basic_contacts/mjorg_baseball_bat/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
@@ -67,11 +58,9 @@ scene) and `none` (examples that build no physics solver).
 | [adaptive_collision](shelf/02_many_contacts/adaptive_collision/presets.toml) | **✅** | · | · | · | · | · | ✅ | · | · | · |  |
 | [bolt_sweep](shelf/02_many_contacts/bolt_sweep/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
 | [brick_pour](shelf/02_many_contacts/brick_pour/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
-| [brick_stacking](shelf/02_many_contacts/brick_stacking/presets.toml) | · | · | **✅** | · | · | · | ⚠️ | · | · | · |  |
 | [card_house](shelf/02_many_contacts/card_house/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
 | [cereal](shelf/02_many_contacts/cereal/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
 | [crane_wrecking_ball](shelf/02_many_contacts/crane_wrecking_ball/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
-| [cup_unpacking](shelf/02_many_contacts/cup_unpacking/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
 | [domino_spiral](shelf/02_many_contacts/domino_spiral/presets.toml) | ✅ | ✅ | ✅ | ✅ | · | · | **✅** | ✅ | · | · |  |
 | [jenga](shelf/02_many_contacts/jenga/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
 | [lava_fall](shelf/02_many_contacts/lava_fall/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
@@ -110,7 +99,6 @@ scene) and `none` (examples that build no physics solver).
 | [loop_dr_testmech](shelf/05_looped_linkages/loop_dr_testmech/presets.toml) | · | · | · | · | · | · | **✅** | ✅ | · | · |  |
 | [loop_fourbar](shelf/05_looped_linkages/loop_fourbar/presets.toml) | · | · | · | · | · | · | **✅** | ✅ | · | · |  |
 | [loop_hoberman_sphere](shelf/05_looped_linkages/loop_hoberman_sphere/presets.toml) | · | · | ✅ | · | · | · | **✅** | ✅ | · | · | mujoco_all ✅, steel_all ✅, kamino_all ✅ |
-| [loop_mixed_worlds](shelf/05_looped_linkages/loop_mixed_worlds/presets.toml) | · | · | · | · | · | · | **✅** | ✅ | · | · |  |
 | [loop_parallel_gripper](shelf/05_looped_linkages/loop_parallel_gripper/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
 | [loop_stewart_platform](shelf/05_looped_linkages/loop_stewart_platform/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
 
@@ -128,8 +116,6 @@ scene) and `none` (examples that build no physics solver).
 | --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | [balance_board](shelf/07_articulations/balance_board/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
 | [box_turn](shelf/07_articulations/box_turn/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
-| [controller_differential_ik](shelf/07_articulations/controller_differential_ik/presets.toml) | — | — | — | — | — | — | — | — | — | — | **none ✅** |
-| [controller_joint_impedance_heterogeneous](shelf/07_articulations/controller_joint_impedance_heterogeneous/presets.toml) | · | · | ✅ | · | · | · | **✅** | ✅ | · | · |  |
 | [controller_operational_space_hybrid_force_motion](shelf/07_articulations/controller_operational_space_hybrid_force_motion/presets.toml) | · | · | ✅ | · | · | · | **✅** | · | · | · |  |
 | [drawer_fork](shelf/07_articulations/drawer_fork/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
 | [ragdoll](shelf/07_articulations/ragdoll/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
@@ -139,98 +125,48 @@ scene) and `none` (examples that build no physics solver).
 | [robot_asroballet](shelf/07_articulations/robot_asroballet/presets.toml) | · | · | ✅ | · | · | · | **✅** | · | · | · |  |
 | [robot_cartpole](shelf/07_articulations/robot_cartpole/presets.toml) | · | · | ✅ | · | · | · | **✅** | ✅ | · | · |  |
 | [robot_g1](shelf/07_articulations/robot_g1/presets.toml) | · | · | ✅ | · | · | · | **✅** | ✅ | · | · |  |
-| [robot_h1](shelf/07_articulations/robot_h1/presets.toml) | · | · | **✅** | · | · | · | ⚠️ | ✅ | · | · |  |
 | [robot_omniwheel](shelf/07_articulations/robot_omniwheel/presets.toml) | · | · | ✅ | · | · | · | **✅** | · | · | · |  |
 | [robot_policy](shelf/07_articulations/robot_policy/presets.toml) | · | · | ✅ | · | · | · | **✅** | · | · | · |  |
 | [robot_ur10](shelf/07_articulations/robot_ur10/presets.toml) | · | · | ✅ | · | · | · | **✅** | ✅ | · | · |  |
 | [toaster](shelf/07_articulations/toaster/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
 | [toy_train](shelf/07_articulations/toy_train/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
-| [toy_well](shelf/07_articulations/toy_well/presets.toml) | · | · | · | · | · | · | **✅** | · | · | · |  |
 
 ## 08_volumetric_soft_bodies
 
 | Example | xpbd | vbd | mujoco | featherstone | semi_implicit | feather_pgs | steel | kamino | implicit_mpm | style3d | other |
 | --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| [hanging_bag_of_shapes](shelf/08_volumetric_soft_bodies/hanging_bag_of_shapes/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · |  |
 | [rigid_soft_contact](shelf/08_volumetric_soft_bodies/rigid_soft_contact/presets.toml) | ✅ | ✅ | · | · | ✅ | · | · | · | · | · | mujoco_semi_implicit ✅, mujoco_xpbd ✅, mujoco_vbd ✅, kamino_semi_implicit ✅, kamino_xpbd ✅, kamino_vbd ✅, vbd_semi_implicit ✅, vbd_xpbd ✅, vbd_vbd ✅, steel_semi_implicit ✅, **steel_xpbd ✅**, steel_vbd ✅ |
-| [shapes_in_cloth_bags](shelf/08_volumetric_soft_bodies/shapes_in_cloth_bags/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · |  |
 | [softbody_franka](shelf/08_volumetric_soft_bodies/softbody_franka/presets.toml) | · | · | · | · | · | · | · | · | · | · | featherstone_vbd ✅, **steel_vbd ✅** |
 
 ## 09_thin_shells_and_rods
 
 | Example | xpbd | vbd | mujoco | featherstone | semi_implicit | feather_pgs | steel | kamino | implicit_mpm | style3d | other |
 | --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| [bodies_between_sheets](shelf/09_thin_shells_and_rods/bodies_between_sheets/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · |  |
-| [cable_bend_stiffness](shelf/09_thin_shells_and_rods/cable_bend_stiffness/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · |  |
-| [cable_bend_twist_analytic](shelf/09_thin_shells_and_rods/cable_bend_twist_analytic/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · |  |
-| [cable_bundle_hysteresis](shelf/09_thin_shells_and_rods/cable_bundle_hysteresis/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · |  |
-| [cable_cross_slide_table](shelf/09_thin_shells_and_rods/cable_cross_slide_table/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · |  |
-| [cable_dahl_hysteresis](shelf/09_thin_shells_and_rods/cable_dahl_hysteresis/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · |  |
-| [cable_initial_rest_pose](shelf/09_thin_shells_and_rods/cable_initial_rest_pose/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · |  |
-| [cable_michell_threshold](shelf/09_thin_shells_and_rods/cable_michell_threshold/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · |  |
-| [cable_pile](shelf/09_thin_shells_and_rods/cable_pile/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · |  |
-| [cable_plectoneme](shelf/09_thin_shells_and_rods/cable_plectoneme/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · |  |
-| [cable_torsion_material_mapping](shelf/09_thin_shells_and_rods/cable_torsion_material_mapping/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · |  |
-| [cable_twist](shelf/09_thin_shells_and_rods/cable_twist/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · |  |
-| [cable_twist_buckling](shelf/09_thin_shells_and_rods/cable_twist_buckling/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · |  |
-| [cable_twist_transfer](shelf/09_thin_shells_and_rods/cable_twist_transfer/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · |  |
-| [cable_y_junction](shelf/09_thin_shells_and_rods/cable_y_junction/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · |  |
-| [cloth_franka](shelf/09_thin_shells_and_rods/cloth_franka/presets.toml) | · | · | · | · | · | · | · | · | · | · | featherstone_vbd ✅, **steel_vbd ✅** |
 | [franka_cable_ik_pick_place](shelf/09_thin_shells_and_rods/franka_cable_ik_pick_place/presets.toml) | · | · | · | · | · | · | · | · | · | · | mujoco_vbd ✅, **steel_vbd ✅** |
-| [gripper_soft_grid](shelf/09_thin_shells_and_rods/gripper_soft_grid/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · | steel_vbd ✅ |
-| [gripper_soft_triangle](shelf/09_thin_shells_and_rods/gripper_soft_triangle/presets.toml) | · | **✅** | · | · | · | · | — | · | · | · | steel_vbd ✅ |
 
-## 10_tendons
+## 10_particles
 
 | Example | xpbd | vbd | mujoco | featherstone | semi_implicit | feather_pgs | steel | kamino | implicit_mpm | style3d | other |
 | --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| [tendon_3d_routing](shelf/10_tendons/tendon_3d_routing/presets.toml) | **✅** | · | · | · | · | · | — | · | · | · |  |
-| [tendon_capstan_friction](shelf/10_tendons/tendon_capstan_friction/presets.toml) | **✅** | · | · | · | · | · | — | · | · | · |  |
-| [tendon_pinhole](shelf/10_tendons/tendon_pinhole/presets.toml) | **✅** | · | · | · | · | · | — | · | · | · |  |
-| [tendon_pulley](shelf/10_tendons/tendon_pulley/presets.toml) | **✅** | · | · | · | · | · | — | · | · | · |  |
-| [tendon_wrap_switch](shelf/10_tendons/tendon_wrap_switch/presets.toml) | **✅** | · | · | · | · | · | — | · | · | · |  |
+| [anymal_on_sand](shelf/10_particles/anymal_on_sand/presets.toml) | · | · | · | · | · | · | · | · | · | · | mujoco_implicit_mpm ✅, **steel_implicit_mpm ✅** |
 
-## 11_particles
+## 11_coupling
 
 | Example | xpbd | vbd | mujoco | featherstone | semi_implicit | feather_pgs | steel | kamino | implicit_mpm | style3d | other |
 | --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| [anymal_on_sand](shelf/11_particles/anymal_on_sand/presets.toml) | · | · | · | · | · | · | · | · | · | · | mujoco_implicit_mpm ✅, **steel_implicit_mpm ✅** |
+| [ball_tied_to_cloth](shelf/11_coupling/ball_tied_to_cloth/presets.toml) | · | · | · | · | · | · | · | · | · | · | mujoco_vbd ✅, kamino_vbd ✅, **steel_vbd ✅** |
+| [boxes_chain_cloth_soft](shelf/11_coupling/boxes_chain_cloth_soft/presets.toml) | · | ✅ | · | · | · | · | · | · | · | · | mujoco_vbd ✅, kamino_vbd ✅, **steel_vbd ✅** |
+| [boxes_into_sand](shelf/11_coupling/boxes_into_sand/presets.toml) | · | · | · | · | · | · | · | · | · | · | mujoco_implicit_mpm ✅, kamino_implicit_mpm ✅, **steel_implicit_mpm ✅** |
+| [fourbar_split_solvers](shelf/11_coupling/fourbar_split_solvers/presets.toml) | · | · | · | · | · | · | · | · | · | · | kamino_mujoco ✅, **kamino_steel ✅** |
+| [franka_chain_on_cable](shelf/11_coupling/franka_chain_on_cable/presets.toml) | · | · | · | · | · | · | · | · | · | · | mujoco_xpbd ✅, **steel_xpbd ✅**, mujoco_vbd ✅, steel_vbd ✅ |
+| [franka_cloth_block](shelf/11_coupling/franka_cloth_block/presets.toml) | · | · | · | · | · | · | · | · | · | · | mujoco_vbd ✅, **steel_vbd ✅** |
+| [franka_shirt_fold_stack](shelf/11_coupling/franka_shirt_fold_stack/presets.toml) | · | · | · | · | · | · | · | · | · | · | mujoco_vbd ✅, **steel_vbd ✅** |
+| [particle_pad_drawer](shelf/11_coupling/particle_pad_drawer/presets.toml) | · | · | · | · | · | · | · | · | · | · | semi_implicit_xpbd ✅, mujoco_xpbd ✅, **steel_xpbd ✅** |
+| [proxy_joint_gripper](shelf/11_coupling/proxy_joint_gripper/presets.toml) | · | · | · | · | · | · | · | · | · | · | mujoco_vbd ✅, **steel_vbd ✅** |
+| [shapes_onto_sand](shelf/11_coupling/shapes_onto_sand/presets.toml) | · | · | · | · | · | · | · | · | · | · | mujoco_implicit_mpm ✅, **steel_implicit_mpm ✅** |
 
-## 12_coupling
-
-| Example | xpbd | vbd | mujoco | featherstone | semi_implicit | feather_pgs | steel | kamino | implicit_mpm | style3d | other |
-| --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| [ball_tied_to_cloth](shelf/12_coupling/ball_tied_to_cloth/presets.toml) | · | · | · | · | · | · | · | · | · | · | mujoco_vbd ✅, kamino_vbd ✅, **steel_vbd ✅** |
-| [boxes_chain_cloth_soft](shelf/12_coupling/boxes_chain_cloth_soft/presets.toml) | · | ✅ | · | · | · | · | · | · | · | · | mujoco_vbd ✅, kamino_vbd ✅, **steel_vbd ✅** |
-| [boxes_chain_on_cloth](shelf/12_coupling/boxes_chain_on_cloth/presets.toml) | ✅ | · | · | · | · | · | · | · | · | · | mujoco_xpbd ✅, kamino_xpbd ✅, **steel_xpbd ✅** |
-| [boxes_into_sand](shelf/12_coupling/boxes_into_sand/presets.toml) | · | · | · | · | · | · | · | · | · | · | mujoco_implicit_mpm ✅, kamino_implicit_mpm ✅, **steel_implicit_mpm ✅** |
-| [fourbar_split_solvers](shelf/12_coupling/fourbar_split_solvers/presets.toml) | · | · | · | · | · | · | · | · | · | · | kamino_mujoco ✅, **kamino_steel ✅** |
-| [franka_chain_on_cable](shelf/12_coupling/franka_chain_on_cable/presets.toml) | · | · | · | · | · | · | · | · | · | · | mujoco_xpbd ✅, **steel_xpbd ✅**, mujoco_vbd ✅, steel_vbd ✅ |
-| [franka_cloth_block](shelf/12_coupling/franka_cloth_block/presets.toml) | · | · | · | · | · | · | · | · | · | · | mujoco_vbd ✅, **steel_vbd ✅** |
-| [franka_shirt_fold_stack](shelf/12_coupling/franka_shirt_fold_stack/presets.toml) | · | · | · | · | · | · | · | · | · | · | mujoco_vbd ✅, **steel_vbd ✅** |
-| [particle_pad_drawer](shelf/12_coupling/particle_pad_drawer/presets.toml) | · | · | · | · | · | · | · | · | · | · | semi_implicit_xpbd ✅, mujoco_xpbd ✅, **steel_xpbd ✅** |
-| [proxy_joint_gripper](shelf/12_coupling/proxy_joint_gripper/presets.toml) | · | · | · | · | · | · | · | · | · | · | mujoco_vbd ✅, **steel_vbd ✅** |
-| [shapes_onto_sand](shelf/12_coupling/shapes_onto_sand/presets.toml) | · | · | · | · | · | · | · | · | · | · | mujoco_implicit_mpm ✅, **steel_implicit_mpm ✅** |
-
-## 13_sensors
+## 12_sensors
 
 | Example | xpbd | vbd | mujoco | featherstone | semi_implicit | feather_pgs | steel | kamino | implicit_mpm | style3d | other |
 | --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| [sensor_camera](shelf/13_sensors/sensor_camera/presets.toml) | — | — | — | — | — | — | — | — | — | — | **none ✅** |
-| [sensor_contact](shelf/13_sensors/sensor_contact/presets.toml) | · | · | ✅ | · | · | · | **✅** | ✅ | · | · |  |
-| [sensor_imu](shelf/13_sensors/sensor_imu/presets.toml) | · | · | **✅** | · | · | · | — | ✅ | · | · |  |
-
-## 14_ik
-
-| Example | xpbd | vbd | mujoco | featherstone | semi_implicit | feather_pgs | steel | kamino | implicit_mpm | style3d | other |
-| --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| [ik_cube_stacking](shelf/14_ik/ik_cube_stacking/presets.toml) | · | · | ✅ | · | · | · | **✅** | · | · | · |  |
-| [ik_custom](shelf/14_ik/ik_custom/presets.toml) | — | — | — | — | — | — | — | — | — | — | **none ✅** |
-| [ik_franka](shelf/14_ik/ik_franka/presets.toml) | — | — | — | — | — | — | — | — | — | — | **none ✅** |
-| [ik_h1](shelf/14_ik/ik_h1/presets.toml) | — | — | — | — | — | — | — | — | — | — | **none ✅** |
-
-## 15_diffsim
-
-| Example | xpbd | vbd | mujoco | featherstone | semi_implicit | feather_pgs | steel | kamino | implicit_mpm | style3d | other |
-| --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| [diffsim_drone](shelf/15_diffsim/diffsim_drone/presets.toml) | · | · | · | · | **✅** | · | · | · | · | · |  |
+| [sensor_contact](shelf/12_sensors/sensor_contact/presets.toml) | · | · | ✅ | · | · | · | **✅** | ✅ | · | · |  |

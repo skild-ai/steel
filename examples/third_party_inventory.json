@@ -557,15 +557,6 @@
       "distribution": "runtime download; model/policy files not bundled"
     },
     {
-      "asset": "unitree_h1",
-      "license": "BSD-3-Clause",
-      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_h1/LICENSE",
-      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
-      "notice": "licenses/runtime-assets/unitree_h1.txt",
-      "notice_sha256": "84aac59fd3246e3ddc49d1387644e8fcf43b0def4f0b9fe687f372e90446df2d",
-      "distribution": "runtime download; model/policy files not bundled"
-    },
-    {
       "asset": "universal_robots_ur10",
       "license": "BSD-3-Clause",
       "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/universal_robots_ur10/LICENSE",
@@ -735,18 +726,6 @@
     "policy_note": "The legacy anymal_walking_policy.pt belongs to Newton; Shelf robot_policy uses the separately licensed downloaded rl_policies entries listed above."
   },
   "runtime_call_sites": {
-    "shelf/00_basics/basic_plotting/example.py": [
-      {
-        "call": "get_asset",
-        "function": "newton.examples.get_asset",
-        "argument": "'nv_humanoid.xml'",
-        "arguments": [
-          "'nv_humanoid.xml'"
-        ],
-        "keywords": [],
-        "line": 49
-      }
-    ],
     "shelf/00_basics/basic_shapes/example.py": [
       {
         "call": "get_asset",
@@ -771,52 +750,6 @@
         "line": 54
       }
     ],
-    "shelf/00_basics/basic_viewer/example.py": [
-      {
-        "call": "get_asset",
-        "function": "newton.examples.get_asset",
-        "argument": "'bunny.usd'",
-        "arguments": [
-          "'bunny.usd'"
-        ],
-        "keywords": [],
-        "line": 46
-      }
-    ],
-    "shelf/00_basics/recording/example.py": [
-      {
-        "call": "get_asset",
-        "function": "newton.examples.get_asset",
-        "argument": "'nv_humanoid.xml'",
-        "arguments": [
-          "'nv_humanoid.xml'"
-        ],
-        "keywords": [],
-        "line": 45
-      }
-    ],
-    "shelf/00_basics/selection_articulations/example.py": [
-      {
-        "call": "get_asset",
-        "function": "newton.examples.get_asset",
-        "argument": "'nv_ant.xml'",
-        "arguments": [
-          "'nv_ant.xml'"
-        ],
-        "keywords": [],
-        "line": 103
-      },
-      {
-        "call": "get_asset",
-        "function": "newton.examples.get_asset",
-        "argument": "'nv_humanoid.xml'",
-        "arguments": [
-          "'nv_humanoid.xml'"
-        ],
-        "keywords": [],
-        "line": 109
-      }
-    ],
     "shelf/00_basics/selection_cartpole/example.py": [
       {
         "call": "get_asset",
@@ -829,30 +762,6 @@
         "line": 69
       }
     ],
-    "shelf/00_basics/selection_materials/example.py": [
-      {
-        "call": "get_asset",
-        "function": "newton.examples.get_asset",
-        "argument": "'nv_ant.xml'",
-        "arguments": [
-          "'nv_ant.xml'"
-        ],
-        "keywords": [],
-        "line": 76
-      }
-    ],
-    "shelf/00_basics/selection_multiple/example.py": [
-      {
-        "call": "get_asset",
-        "function": "newton.examples.get_asset",
-        "argument": "'nv_ant.xml'",
-        "arguments": [
-          "'nv_ant.xml'"
-        ],
-        "keywords": [],
-        "line": 105
-      }
-    ],
     "shelf/00_basics/sleeping/example.py": [
       {
         "call": "get_asset",
@@ -863,18 +772,6 @@
         ],
         "keywords": [],
         "line": 134
-      }
-    ],
-    "shelf/02_many_contacts/brick_stacking/example.py": [
-      {
-        "call": "download_asset",
-        "function": "newton.utils.download_asset",
-        "argument": "'franka_emika_panda'",
-        "arguments": [
-          "'franka_emika_panda'"
-        ],
-        "keywords": [],
-        "line": 499
       }
     ],
     "shelf/02_many_contacts/shapes_in_box/example.py": [
@@ -992,18 +889,6 @@
         "line": 69
       }
     ],
-    "shelf/05_looped_linkages/loop_mixed_worlds/example.py": [
-      {
-        "call": "get_kamino_basics_asset",
-        "function": "get_kamino_basics_asset",
-        "argument": "f'{asset_name}.usda'",
-        "arguments": [
-          "f'{asset_name}.usda'"
-        ],
-        "keywords": [],
-        "line": 79
-      }
-    ],
     "shelf/06_looped_linkages_contacts/anymal_d_many_worlds/example.py": [
       {
         "call": "download_asset",
@@ -1031,28 +916,6 @@
           }
         ],
         "line": 94
-      }
-    ],
-    "shelf/07_articulations/controller_differential_ik/example.py": [
-      {
-        "call": "download_asset",
-        "function": "newton.utils.download_asset",
-        "argument": "'franka_emika_panda'",
-        "arguments": [
-          "'franka_emika_panda'"
-        ],
-        "keywords": [],
-        "line": 241
-      },
-      {
-        "call": "download_asset",
-        "function": "newton.utils.download_asset",
-        "argument": "'universal_robots_ur10'",
-        "arguments": [
-          "'universal_robots_ur10'"
-        ],
-        "keywords": [],
-        "line": 242
       }
     ],
     "shelf/07_articulations/controller_operational_space_hybrid_force_motion/example.py": [
@@ -1149,18 +1012,6 @@
         "line": 49
       }
     ],
-    "shelf/07_articulations/robot_h1/example.py": [
-      {
-        "call": "download_asset",
-        "function": "newton.utils.download_asset",
-        "argument": "'unitree_h1'",
-        "arguments": [
-          "'unitree_h1'"
-        ],
-        "keywords": [],
-        "line": 54
-      }
-    ],
     "shelf/07_articulations/robot_policy/example.py": [
       {
         "call": "download_asset",
@@ -1195,28 +1046,6 @@
         "line": 79
       }
     ],
-    "shelf/08_volumetric_soft_bodies/hanging_bag_of_shapes/example.py": [
-      {
-        "call": "get_asset_directory",
-        "function": "newton.examples.get_asset_directory",
-        "argument": "",
-        "arguments": [],
-        "keywords": [],
-        "line": 155,
-        "path_expression": "os.path.join(newton.examples.get_asset_directory(), 'bear.usd')"
-      }
-    ],
-    "shelf/08_volumetric_soft_bodies/shapes_in_cloth_bags/example.py": [
-      {
-        "call": "get_asset_directory",
-        "function": "newton.examples.get_asset_directory",
-        "argument": "",
-        "arguments": [],
-        "keywords": [],
-        "line": 141,
-        "path_expression": "os.path.join(newton.examples.get_asset_directory(), 'bear.usd')"
-      }
-    ],
     "shelf/08_volumetric_soft_bodies/softbody_franka/example.py": [
       {
         "call": "download_asset",
@@ -1239,28 +1068,6 @@
         "line": 250
       }
     ],
-    "shelf/09_thin_shells_and_rods/cloth_franka/example.py": [
-      {
-        "call": "download_asset",
-        "function": "newton.utils.download_asset",
-        "argument": "'franka_emika_panda'",
-        "arguments": [
-          "'franka_emika_panda'"
-        ],
-        "keywords": [],
-        "line": 379
-      },
-      {
-        "call": "get_asset",
-        "function": "newton.examples.get_asset",
-        "argument": "'unisex_shirt.usd'",
-        "arguments": [
-          "'unisex_shirt.usd'"
-        ],
-        "keywords": [],
-        "line": 141
-      }
-    ],
     "shelf/09_thin_shells_and_rods/franka_cable_ik_pick_place/example.py": [
       {
         "call": "download_asset",
@@ -1273,7 +1080,7 @@
         "line": 155
       }
     ],
-    "shelf/11_particles/anymal_on_sand/example.py": [
+    "shelf/10_particles/anymal_on_sand/example.py": [
       {
         "call": "download_asset",
         "function": "newton.utils.download_asset",
@@ -1285,7 +1092,7 @@
         "line": 62
       }
     ],
-    "shelf/12_coupling/franka_chain_on_cable/example.py": [
+    "shelf/11_coupling/franka_chain_on_cable/example.py": [
       {
         "call": "download_asset",
         "function": "newton.utils.download_asset",
@@ -1297,7 +1104,7 @@
         "line": 280
       }
     ],
-    "shelf/12_coupling/franka_cloth_block/example.py": [
+    "shelf/11_coupling/franka_cloth_block/example.py": [
       {
         "call": "download_asset",
         "function": "newton.utils.download_asset",
@@ -1309,7 +1116,7 @@
         "line": 127
       }
     ],
-    "shelf/12_coupling/franka_shirt_fold_stack/example.py": [
+    "shelf/11_coupling/franka_shirt_fold_stack/example.py": [
       {
         "call": "get_asset",
         "function": "newton.examples.get_asset",
@@ -1331,29 +1138,7 @@
         "line": 180
       }
     ],
-    "shelf/13_sensors/sensor_camera/example.py": [
-      {
-        "call": "get_asset",
-        "function": "newton.examples.get_asset",
-        "argument": "'bunny.usd'",
-        "arguments": [
-          "'bunny.usd'"
-        ],
-        "keywords": [],
-        "line": 132
-      },
-      {
-        "call": "download_asset",
-        "function": "newton.utils.download_asset",
-        "argument": "'franka_emika_panda'",
-        "arguments": [
-          "'franka_emika_panda'"
-        ],
-        "keywords": [],
-        "line": 135
-      }
-    ],
-    "shelf/13_sensors/sensor_contact/example.py": [
+    "shelf/12_sensors/sensor_contact/example.py": [
       {
         "call": "get_asset",
         "function": "newton.examples.get_asset",
@@ -1364,93 +1149,12 @@
         "keywords": [],
         "line": 48
       }
-    ],
-    "shelf/13_sensors/sensor_imu/example.py": [
-      {
-        "call": "get_asset",
-        "function": "newton.examples.get_asset",
-        "argument": "'axis_cube.usda'",
-        "arguments": [
-          "'axis_cube.usda'"
-        ],
-        "keywords": [],
-        "line": 60
-      }
-    ],
-    "shelf/14_ik/ik_cube_stacking/example.py": [
-      {
-        "call": "download_asset",
-        "function": "newton.utils.download_asset",
-        "argument": "'franka_emika_panda'",
-        "arguments": [
-          "'franka_emika_panda'"
-        ],
-        "keywords": [],
-        "line": 329
-      }
-    ],
-    "shelf/14_ik/ik_custom/example.py": [
-      {
-        "call": "download_asset",
-        "function": "newton.utils.download_asset",
-        "argument": "'franka_emika_panda'",
-        "arguments": [
-          "'franka_emika_panda'"
-        ],
-        "keywords": [],
-        "line": 152
-      }
-    ],
-    "shelf/14_ik/ik_franka/example.py": [
-      {
-        "call": "download_asset",
-        "function": "newton.utils.download_asset",
-        "argument": "'franka_emika_panda'",
-        "arguments": [
-          "'franka_emika_panda'"
-        ],
-        "keywords": [],
-        "line": 41
-      }
-    ],
-    "shelf/14_ik/ik_h1/example.py": [
-      {
-        "call": "download_asset",
-        "function": "newton.utils.download_asset",
-        "argument": "'unitree_h1'",
-        "arguments": [
-          "'unitree_h1'"
-        ],
-        "keywords": [],
-        "line": 43
-      }
-    ],
-    "shelf/15_diffsim/diffsim_drone/example.py": [
-      {
-        "call": "get_asset",
-        "function": "newton.examples.get_asset",
-        "argument": "'crazyflie.usd'",
-        "arguments": [
-          "'crazyflie.usd'"
-        ],
-        "keywords": [],
-        "line": 29
-      },
-      {
-        "call": "get_asset_directory",
-        "function": "newton.examples.get_asset_directory",
-        "argument": "",
-        "arguments": [],
-        "keywords": [],
-        "line": 787,
-        "path_expression": "os.path.join(newton.examples.get_asset_directory(), 'crazyflie.usd')"
-      }
     ]
   },
   "documentation_media": [
     {
       "path": "docs/steel_tuning/frame_time_dark.png",
-      "sha256": "6200ab1690fffc5f41fe8cf89c6f053164e2531530cdeeb9408ada23e39acf0d",
+      "sha256": "75bb9e558ed25d23bf1d86c7afeb559efe90cb7c567faadaecbbe8834a26fac9",
       "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
       "source": "Steel Shelf, migrated into this repository",
       "generation": "docs/steel_tuning/charts.py with evidence.json",
@@ -1458,7 +1162,7 @@
     },
     {
       "path": "docs/steel_tuning/frame_time_light.png",
-      "sha256": "9d36d2e54e80626556d86cc83bcd05b5ff38c6c57f284cca68596862ea082ee1",
+      "sha256": "e00bf67e4fa8ace4640b9dfaf93a438930e05278a98f2f8effb1f16f2c4b5cd5",
       "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
       "source": "Steel Shelf, migrated into this repository",
       "generation": "docs/steel_tuning/charts.py with evidence.json",
@@ -1466,7 +1170,7 @@
     },
     {
       "path": "docs/steel_tuning/summary_dark.png",
-      "sha256": "e6571cd3333191e2a0e774e4b2615de9ac96d7ac9d5e3839ca64ab4630a9ce30",
+      "sha256": "54ad9cca5ce7a0918f3585c0d2cebadbf3c689d8b3e41ac64189ef3e7f5ef83c",
       "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
       "source": "Steel Shelf, migrated into this repository",
       "generation": "docs/steel_tuning/charts.py with evidence.json",
@@ -1474,7 +1178,7 @@
     },
     {
       "path": "docs/steel_tuning/summary_light.png",
-      "sha256": "88443a9350647bfde0643ec5a0b26f5f7c44dbb417873beadeb802152ff99770",
+      "sha256": "c1af9e530dd3a2fc1d0e80116bd312232aa7565ccf8e51e2c78f0c3768089b4b",
       "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
       "source": "Steel Shelf, migrated into this repository",
       "generation": "docs/steel_tuning/charts.py with evidence.json",
@@ -1512,31 +1216,11 @@
     "distribution": "separately installed dependency; not copied into Steel Shelf wheel or sdist",
     "files": [
       {
-        "path": "newton/tests/assets/kamino/basics/box_on_plane.usda",
-        "git_blob": "b511482a246b0ed5c3447176dec2173260cdc09d"
-      },
-      {
-        "path": "newton/tests/assets/kamino/basics/box_pendulum.usda",
-        "git_blob": "d576b6198ad9d45bf32209bc5f84c678d245c6e5"
-      },
-      {
         "path": "newton/tests/assets/kamino/basics/boxes_fourbar.usda",
         "git_blob": "0c9d684a0320c7ebf8bf43fe76dc346ab46aa945"
-      },
-      {
-        "path": "newton/tests/assets/kamino/basics/boxes_hinged.usda",
-        "git_blob": "9552608a5738d3cc082fdc318de8e9fa132947cf"
-      },
-      {
-        "path": "newton/tests/assets/kamino/basics/boxes_nunchaku.usda",
-        "git_blob": "4497c9e495d51027fc61eda1db485450f86ee03b"
-      },
-      {
-        "path": "newton/tests/assets/kamino/basics/cartpole.usda",
-        "git_blob": "322e210f04436c652e92c3e13d3cc16a3968dddf"
       }
     ],
-    "source_notes": "The USD files identify manually authored test scenes; cartpole identifies Disney Research as generator. These are Newton test assets, separate from the custom-licensed dr_legs/dr_testmech downloads."
+    "source_notes": "The USD file identifies a manually authored test scene. It is a Newton test asset, separate from the custom-licensed dr_legs/dr_testmech downloads."
   },
   "warp_example_assets": {
     "dependency": "warp-lang",

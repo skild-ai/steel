@@ -24,14 +24,6 @@
   "Bar not met: at 2 substeps (0.30 ms) the flip misses the test's 100 frames; ~0.12 ms launch cost per substep."
  ],
  [
-  "basic_heightfield",
-  "XPBD",
-  "1.565 \u2192 0.765 (5.62)",
-  "1.40/0.064 \u2192 0.77/0.044",
-  "2 \u00d7 3, immediate",
-  "1 substep or 2 iterations raise the mean above XPBD's."
- ],
- [
   "basic_shapes",
   "XPBD",
   "0.941 \u2192 0.876 (3.36)",
@@ -56,44 +48,12 @@
   "32 rows overflow in every world. No finite limits. XPBD itself fails its check."
  ],
  [
-  "recording",
-  "MuJoCo",
-  "4.378 \u2192 1.840 (65.5)",
-  "76.5/0.555 \u2192 54/0.28",
-  "4 \u00d7 3, immediate, limits + gap 0.1, rows 128",
-  "Colored 7\u00d7 slower on humanoids. Limits off: limbs 2.9 rad past them. 32 rows: humanoids fall through."
- ],
- [
-  "selection_articulations",
-  "MuJoCo",
-  "4.946 \u2192 2.195 (38.3)",
-  "194/5.0 \u2192 167/4.75",
-  "4 \u00d7 6, immediate, limits + gap, rows 128",
-  "32 rows: a body peaked at 78 m. Colored 3\u20135\u00d7 slower."
- ],
- [
   "selection_cartpole",
   "MuJoCo",
   "1.717 \u2192 0.182 (2.36)",
   "no contacts",
   "2 \u00d7 4, immediate, limits on",
   "Cost is launch count; limits cost 0.02 ms."
- ],
- [
-  "selection_materials",
-  "MuJoCo",
-  "2.960 \u2192 0.705 (11.58)",
-  "16.0/0.97 \u2192 6.6/0.72",
-  "2 \u00d7 3, immediate, limits + gap, rows 128",
-  "2 iterations: mean 1.22 mm. Limits off: legs 1.1 rad past them."
- ],
- [
-  "selection_multiple",
-  "MuJoCo",
-  "4.255 \u2192 0.913 (10.29)",
-  "81/4.7 \u2192 70/1.9",
-  "2 \u00d7 8, immediate, limits + gap, rows 128",
-  "6 iterations overshoot limits 0.081 vs MuJoCo's 0.069 rad."
  ],
  [
   "sleeping",
@@ -192,14 +152,6 @@
   "Bar not met (~5\u00d7). 12 or fewer iterations or 6 or fewer substeps drop the object; 8 substeps passed on Blackwell, dropped on an RTX 3090. Limits cut peak penetration 0.49 \u2192 0.09 mm at no cost."
  ],
  [
-  "controller_joint_impedance_heterogeneous",
-  "MuJoCo",
-  "0.727 \u2192 0.241 (1.266)",
-  "no contacts",
-  "2 \u00d7 4, immediate",
-  "Tracking 0.290 vs 0.294 rad; propagation responses 0.45 ms."
- ],
- [
   "controller_operational_space_hybrid_force_motion",
   "MuJoCo",
   "3.057 \u2192 0.726 (3.073)",
@@ -256,14 +208,6 @@
   "Colored falls over at 1 \u00d7 4 and 2 \u00d7 2. Limits at gap inf overflow 128 and it falls. Point friction makes it creep."
  ],
  [
-  "robot_h1",
-  "MuJoCo",
-  "1.207 \u2192 0.639 (3.627)",
-  "",
-  "1 \u00d7 8, immediate, rows 256, point friction, limits + gap 0.1",
-  "Lying on the ground uses 159 rows. Patch friction never settled."
- ],
- [
   "robot_omniwheel",
   "MuJoCo",
   "4.435 \u2192 2.015 (19.0, overflow)",
@@ -296,14 +240,6 @@
   "Patch friction costs 19% more. 11 rows per world."
  ],
  [
-  "ik_cube_stacking",
-  "MuJoCo",
-  "6.001 \u2192 5.322 (21.7, overflow)",
-  "",
-  "3 \u00d7 5, colored, propagation rows 768",
-  "16/16 stacked. ~290 contacts per world: immediate 4 \u00d7 4 9.8 ms. Needs 673 propagation rows (default 544). contact_gap_gate = 0 drops success to 0\u201381%."
- ],
- [
   "kamino_basic_dr_testmech",
   "Kamino",
   "35.0 \u2192 3.32 (7.09)",
@@ -318,14 +254,6 @@
   "2.85/0.17 \u2192 0.02/0.00",
   "4 \u00d7 32, rows 64, gap 0.1",
   "Loop gap 0.20 vs 0.19 mm. Template overflowed 32 rows and dropped contact rows (6.3 mm). Fewer iterations or other substep counts make it fall over."
- ],
- [
-  "kamino_basic_heterogeneous",
-  "Kamino",
-  "39.4 \u2192 2.41 (4.98)",
-  "111/34 \u2192 0.38/0.05",
-  "4 \u00d7 12, gap 0.1",
-  "Loop gap 0.029 vs 0.020 mm. Kamino's boxes fall through the floor (z = \u2212176 m). 2 or 3 substeps overflow rows."
  ],
  [
   "kamino_robot_dr_legs",
@@ -358,14 +286,6 @@
   "soft 0.04/0.01 both",
   "Steel 1 iteration, update_mass_matrix_interval = 10",
   "Arm path identical; VBD sets the cost and the penetration."
- ],
- [
-  "cloth_franka",
-  "Featherstone+VBD",
-  "22.77 \u2192 22.35 (22.60)",
-  "276/141 both",
-  "same as softbody_franka",
-  "Identical penetration: VBD is in control. Cloth is chaotic: 110\u2013190 mm particle deviation even between Steel variants."
  ],
  [
   "franka_cable_ik_pick_place",
@@ -446,14 +366,6 @@
   "rigid below MuJoCo's, soft matches",
   "6 substeps (was 8) \u00d7 4",
   "The 12 mm rigid mean before was misleading: per contact pair, both solvers have deep box-on-box impacts between once-per-frame collision passes; MuJoCo's many shallow box-ground contacts lower its mean."
- ],
- [
-  "mujoco_xpbd_coupled_solver",
-  "MuJoCo+XPBD",
-  "35.80 \u2192 34.51 (43.79)",
-  "rigid far below; cloth peak 1.3 vs 0.3\u20130.8, mean lower",
-  "12 substeps (was 16)",
-  "Fewer substeps or Steel iterations cost the cloth more. 64 rows overflow: rigid 122 mm."
  ],
  [
   "proxy_joint_gripper",
