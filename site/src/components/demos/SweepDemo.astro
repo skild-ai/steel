@@ -1,0 +1,225 @@
+---
+/** Demo: dense vs matrix-free Gauss-Seidel (and momentum) on a 1D resting stack, with a 3D exploded view. */
+interface Props {
+	n?: number;
+}
+const { n = 1 } = Astro.props;
+---
+
+<div class="demo not-content" id="demo-sweep">
+	<div class="dh">
+		<b><span class="n">Demo {n}</span>Gauss-Seidel on a resting stack</b><span>illustrative · float64 · runs in your browser</span>
+	</div>
+	<div class="db">
+		<div class="plot">
+			<svg id="sw-plot" viewBox="0 0 520 300" role="img" aria-label="Error of the impulses against the exact solution, per sweep, for dense Gauss-Seidel, the matrix-free sweep and the matrix-free sweep with momentum."></svg>
+			<div class="legend">
+				<span><i style="background:var(--series-1)"></i>dense GS</span><span><i style="background:var(--series-2)"></i>matrix-free GS</span><span><i style="background:var(--series-3)"></i>matrix-free + momentum</span>
+			</div>
+			<div class="seg" role="group" aria-label="Load view" style="margin-top:12px">
+				<button type="button" class="on" id="sw-m2">load bars</button><button type="button" id="sw-m3">3D stack</button>
+			</div>
+			<svg id="sw-bars" viewBox="0 0 520 120" role="img" aria-label="Fraction of each contact's exact load reached after the chosen number of sweeps."></svg>
+			<div class="stage3d" id="sw-3d" hidden tabindex="0" aria-label="Exploded 3D view of the stack; contact arrows show the share of each contact's exact load reached. Drag to orbit.">
+				<button type="button" class="reset">Reset view</button>
+			</div>
+		</div>
+		<div class="ctl">
+			<label for="sw-n"><span class="row">Boxes in the stack <span class="v" id="sw-n-v"></span></span><input type="range" id="sw-n" min="2" max="12" step="1" value="6" /></label>
+			<label for="sw-r"><span class="row">Mass of each box / box below <span class="v" id="sw-r-v"></span></span><input type="range" id="sw-r" min="-2" max="3" step="0.05" value="0" /></label>
+			<label for="sw-k"><span class="row">Sweeps shown in the load view <span class="v" id="sw-k-v"></span></span><input type="range" id="sw-k" min="1" max="200" step="1" value="12" /></label>
+			<div class="readout" id="sw-read"></div>
+		</div>
+	</div>
+</div>
+
+<style>
+	#sw-3d {
+		aspect-ratio: 4 / 3;
+		margin-top: 10px;
+	}
+</style>
+
+<script>
+	import { makeStage, col, css, onThemeChange, boxEdges, line3, arrow3, type Stage } from '../../lib/stage3d';
+	import { svgEl as el, fmt, byId } from '../../lib/dom';
+
+	const root = document.getElementById('demo-sweep')!;
+	const $ = <T extends HTMLElement | SVGElement = HTMLElement>(id: string) => byId<T>(root, id);
+	const SW = { n: $<HTMLInputElement>('sw-n'), r: $<HTMLInputElement>('sw-r'), k: $<HTMLInputElement>('sw-k') };
+	const G = 9.81;
+	const H = 1 / 60;
+	const MAXIT = 200;
+
+	type Mode = 'dense' | 'mf' | 'momentum';
+	// Box k sits on box k-1; box 0 on the ground. Contact k is under box k. Sweeps run from the ground up.
+	function stackRun(N: number, ratio: number, mode: Mode) {
+		const m = Array.from({ length: N }, (_, i) => Math.pow(ratio, i));
+		const vhat = new Float64Array(N).fill(-G * H);
+		const exact = new Float64Array(N);
+		for (let k = N - 1, s = 0; k >= 0; k--) {
+			s += m[k];
+			exact[k] = G * H * s;
+		}
+		const lam = new Float64Array(N);
+		const v = Float64Array.from(vhat);
+		const diag = (k: number) => 1 / m[k] + (k > 0 ? 1 / m[k - 1] : 0);
+		const A = (i: number, j: number) => (i === j ? diag(i) : Math.abs(i - j) === 1 ? -1 / m[Math.min(i, j)] : 0);
+		const rhs = (k: number) => vhat[k] - (k > 0 ? vhat[k - 1] : 0);
+		const applyY = (k: number, d: number) => {
+			v[k] += d / m[k];
+			if (k > 0) v[k - 1] -= d / m[k - 1];
+		};
+		const err: number[] = [];
+		const snaps: Float64Array[] = [];
+		let prev = Float64Array.from(lam);
+		let t = 0;
+		for (let it = 0; it < MAXIT; it++) {
+			const start = Float64Array.from(lam);
+			if (mode === 'momentum' && t >= 1) {
+				const beta = (t - 1) / (t + 2);
+				for (let k = 0; k < N; k++) {
+					const ex = Math.max(0, lam[k] + beta * (lam[k] - prev[k]));
+					applyY(k, ex - lam[k]);
+					lam[k] = ex;
+				}
+			}
+			const extrap = Float64Array.from(lam);
+			for (let k = 0; k < N; k++) {
+				let res: number;
+				if (mode === 'dense') {
+					res = rhs(k);
+					for (let j = 0; j < N; j++) res += A(k, j) * lam[j];
+				} else res = v[k] - (k > 0 ? v[k - 1] : 0);
+				const nl = Math.max(0, lam[k] - res / diag(k));
+				if (mode !== 'dense') applyY(k, nl - lam[k]);
+				lam[k] = nl;
+			}
+			if (mode === 'momentum') {
+				let dot = 0;
+				for (let k = 0; k < N; k++) dot += (lam[k] - extrap[k]) * (extrap[k] - start[k]);
+				t = dot < 0 ? 0 : t + 1;
+			}
+			prev = start;
+			let e = 0;
+			for (let k = 0; k < N; k++) e = Math.max(e, Math.abs(lam[k] - exact[k]));
+			err.push(e / exact[0]);
+			snaps.push(Float64Array.from(lam));
+		}
+		return { err, snaps, exact };
+	}
+
+	const SW3: { on: boolean; stage: Stage | null; last: { snap: Float64Array; exact: Float64Array; N: number } | null } = {
+		on: false,
+		stage: null,
+		last: null,
+	};
+
+	function drawSweep() {
+		const N = +SW.n.value;
+		const ratio = Math.pow(2, +SW.r.value);
+		const K = +SW.k.value;
+		$('sw-n-v').textContent = String(N);
+		$('sw-r-v').textContent = ratio.toFixed(2) + '×';
+		$('sw-k-v').textContent = String(K);
+		const dense = stackRun(N, ratio, 'dense');
+		const mf = stackRun(N, ratio, 'mf');
+		const mom = stackRun(N, ratio, 'momentum');
+		let diff = 0;
+		dense.snaps.forEach((s, i) => s.forEach((x, k) => (diff = Math.max(diff, Math.abs(x - mf.snaps[i][k]) / dense.exact[0]))));
+		const svg = $<SVGSVGElement>('sw-plot');
+		svg.innerHTML = '';
+		const W = 520, Hh = 300, L = 64, R = 12, T = 12, B = 34, lo = -16, hi = 0;
+		const X = (i: number) => L + (W - L - R) * (i / (MAXIT - 1));
+		const Y = (e: number) => {
+			const l = Math.log10(Math.max(e, 1e-16));
+			return T + (Hh - T - B) * (1 - (Math.min(Math.max(l, lo), hi) - lo) / (hi - lo));
+		};
+		for (let p = lo; p <= hi; p += 4) {
+			svg.appendChild(el('line', { x1: L, x2: W - R, y1: Y(10 ** p), y2: Y(10 ** p), stroke: css('--rule'), 'stroke-width': 1 }));
+			svg.appendChild(el('text', { x: L - 8, y: Y(10 ** p) + 4, 'text-anchor': 'end', 'font-size': 11, 'font-family': css('--mono'), fill: css('--muted') }, p === 0 ? '1' : '1e' + p));
+		}
+		[1, 50, 100, 150, 200].forEach((i) =>
+			svg.appendChild(el('text', { x: X(i - 1), y: Hh - 12, 'text-anchor': 'middle', 'font-size': 11, 'font-family': css('--mono'), fill: css('--muted') }, String(i))),
+		);
+		svg.appendChild(el('text', { x: (L + W - R) / 2, y: Hh, 'text-anchor': 'middle', 'font-size': 11, fill: css('--muted') }, 'sweeps'));
+		svg.appendChild(el('text', { x: 10, y: (T + Hh - B) / 2, 'text-anchor': 'middle', 'font-size': 11, fill: css('--muted'), transform: `rotate(-90 10 ${(T + Hh - B) / 2})` }, 'error / ground load'));
+		svg.appendChild(el('line', { x1: X(K - 1), x2: X(K - 1), y1: T, y2: Hh - B, stroke: css('--hot'), 'stroke-width': 1, 'stroke-dasharray': '3 3' }));
+		const path = (errs: number[], color: string, width: number, dash?: string) => {
+			const d = errs.map((e, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ',' + Y(e).toFixed(1)).join('');
+			const a: Record<string, string | number> = { d, fill: 'none', stroke: color, 'stroke-width': width, 'stroke-linejoin': 'round' };
+			if (dash) a['stroke-dasharray'] = dash;
+			svg.appendChild(el('path', a));
+		};
+		path(dense.err, css('--series-1'), 4);
+		path(mf.err, css('--series-2'), 1.8, '6 4');
+		path(mom.err, css('--series-3'), 2);
+		SW3.last = { snap: mf.snaps[K - 1], exact: mf.exact, N };
+		drawSweep3();
+		const bars = $<SVGSVGElement>('sw-bars');
+		bars.innerHTML = '';
+		const bw = (W - L - R) / N;
+		const snap = mf.snaps[K - 1];
+		const ms = mom.snaps[K - 1];
+		bars.appendChild(el('text', { x: 0, y: 14, 'font-size': 11, fill: css('--muted') }, `load reached after ${K} sweeps, per contact (ground at left)`));
+		for (let k = 0; k < N; k++) {
+			const f = Math.min(1.2, snap[k] / mf.exact[k]);
+			const g = Math.min(1.2, ms[k] / mom.exact[k]);
+			const x0 = L + k * bw;
+			const h0 = 80;
+			bars.appendChild(el('rect', { x: x0 + 2, y: 24, width: bw - 4, height: h0, fill: css('--panel'), stroke: css('--rule') }));
+			bars.appendChild(el('rect', { x: x0 + 2, y: 24 + h0 * (1 - Math.min(f, 1)), width: (bw - 4) / 2, height: h0 * Math.min(f, 1), fill: css('--series-2') }));
+			bars.appendChild(el('rect', { x: x0 + 2 + (bw - 4) / 2, y: 24 + h0 * (1 - Math.min(g, 1)), width: (bw - 4) / 2, height: h0 * Math.min(g, 1), fill: css('--series-3') }));
+			bars.appendChild(el('text', { x: x0 + bw / 2, y: 118, 'text-anchor': 'middle', 'font-size': 10, 'font-family': css('--mono'), fill: css('--muted') }, String(k)));
+		}
+		bars.appendChild(el('text', { x: L - 8, y: 28, 'text-anchor': 'end', 'font-size': 10, 'font-family': css('--mono'), fill: css('--muted') }, '100%'));
+		bars.appendChild(el('text', { x: L - 8, y: 104, 'text-anchor': 'end', 'font-size': 10, 'font-family': css('--mono'), fill: css('--muted') }, '0'));
+		const first = (errs: number[]) => {
+			const i = errs.findIndex((e) => e < 1e-3);
+			return i < 0 ? `> ${MAXIT}` : String(i + 1);
+		};
+		$('sw-read').innerHTML =
+			`Top-to-bottom mass ratio <span class="n">${fmt(Math.pow(ratio, N - 1), 1)}:1</span><br>` +
+			`Sweeps to 0.1% error: GS <span class="n">${first(mf.err)}</span>, with momentum <span class="n">${first(mom.err)}</span><br>` +
+			`Largest dense vs matrix-free difference <span class="n">${diff.toExponential(1)}</span> of the ground load`;
+	}
+
+	// Exploded stack: the same numbers as the load bars (matrix-free sweep).
+	function drawSweep3() {
+		if (!SW3.on || !SW3.last) return;
+		if (!SW3.stage) SW3.stage = makeStage($('sw-3d'), { target: [0, 0, 1.0], dist: 4.2, theta: -1.0, phi: 0.25 });
+		const S3 = SW3.stage;
+		if (!S3) return;
+		S3.clear();
+		const G3 = S3.group;
+		const { snap, exact, N } = SW3.last;
+		const h = 0.1, gap = 0.12, Lr = gap - 0.01;
+		G3.add(boxEdges([0.9, 0.9, 0.03], [0, 0, -0.015], col('--static'), col('--floor'), 1));
+		for (let k = 0; k < N; k++) {
+			const zb = k * (2 * h + gap) + gap;
+			G3.add(boxEdges([2 * h, 2 * h, 2 * h], [0, 0, zb + h], col('--series-1'), col('--series-1'), 0.35));
+			const frac = Math.max(0, Math.min(1.2, snap[k] / exact[k]));
+			const z0 = zb - gap;
+			for (const [cx, cy] of [[-0.07, -0.07], [0.07, -0.07], [-0.07, 0.07], [0.07, 0.07]]) {
+				G3.add(line3([[cx + 0.025, cy, z0 + Lr], [cx - 0.025, cy, z0 + Lr]], col('--muted')));
+				G3.add(arrow3([cx, cy, z0], [0, 0, frac * Lr], col('--series-2'), 0.03));
+			}
+		}
+		S3.req();
+	}
+
+	function setMode(m: '2d' | '3d') {
+		SW3.on = m === '3d';
+		$('sw-m2').classList.toggle('on', !SW3.on);
+		$('sw-m3').classList.toggle('on', SW3.on);
+		$('sw-bars').toggleAttribute('hidden', SW3.on);
+		$('sw-3d').hidden = !SW3.on;
+		drawSweep();
+		SW3.stage?.resize();
+	}
+	$('sw-m2').addEventListener('click', () => setMode('2d'));
+	$('sw-m3').addEventListener('click', () => setMode('3d'));
+	[SW.n, SW.r, SW.k].forEach((x) => x.addEventListener('input', drawSweep));
+	drawSweep();
+	onThemeChange(drawSweep);
+</script>

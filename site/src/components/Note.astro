@@ -1,0 +1,36 @@
+---
+/** A boxed note with a mono kicker. `variant="plain"` is for status and side notes, the default for advice. */
+interface Props {
+	title: string;
+	variant?: 'hot' | 'plain';
+}
+const { title, variant = 'hot' } = Astro.props;
+---
+
+<aside class:list={['steel-note', variant]}>
+	<div class="h">{title}</div>
+	<slot />
+</aside>
+
+<style>
+	.steel-note {
+		border: 1px solid var(--rule);
+		border-left: 3px solid var(--hot);
+		background: var(--bg);
+		border-radius: 4px;
+		padding: 12px 16px;
+		margin: 1rem 0 1.25rem;
+		font-size: 15px;
+	}
+	.steel-note.plain { border-left-color: var(--static); }
+	.h {
+		font: 600 11px/1.4 var(--mono);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--hot);
+		margin-bottom: 4px;
+	}
+	.plain .h { color: var(--muted); }
+	.steel-note :global(> :last-child) { margin-bottom: 0; }
+	.steel-note :global(p), .steel-note :global(ul) { margin-top: 0.5rem; }
+</style>

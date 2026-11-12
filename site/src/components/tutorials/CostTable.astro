@@ -1,0 +1,66 @@
+---
+/** The measured cost of a tutorial's options: time per step or frame at several world counts, and memory. */
+interface Row { label: string; worlds: number; ms_per_step: number; ms_per_frame: number; solver_mem_mb: number }
+interface Props {
+	spec: { scene: string; per?: string; rounds?: number; notes?: Record<string, string> };
+	timing: { gpu: string; rows: Row[] };
+}
+const { spec, timing } = Astro.props;
+const perFrame = spec.per === 'frame';
+const worlds = [...new Set(timing.rows.map((r) => r.worlds))].sort((a, b) => a - b);
+const labels = [...new Set(timing.rows.map((r) => r.label))];
+const get = (l: string, w: number) => timing.rows.find((r) => r.label === l && r.worlds === w);
+const value = (r: Row) => (perFrame ? r.ms_per_frame : r.ms_per_step);
+const eager = labels.some((l) => /eager/.test(l));
+const most = worlds[worlds.length - 1];
+---
+
+<section class="cost">
+	<h2 class="ch">Cost</h2>
+	<p class="cnote">
+		Time per {perFrame ? '30 Hz frame' : 'step'}, {eager ? 'eager stepping for the eager row and CUDA graph replay for the others' : 'CUDA graph replay'},
+		median of {spec.rounds ?? 7} interleaved rounds on one {timing.gpu}; ratios are against the first row. Solver allocation is the GPU
+		memory the solver allocates at construction, before warm-up and graph capture. {spec.scene}
+	</p>
+	<div class="tbl">
+		<table>
+			<thead>
+				<tr>
+					<th>Option</th>
+					{worlds.map((w) => <th>{w} world{w > 1 ? 's' : ''}</th>)}
+					<th>solver allocation, {most} worlds</th>
+					{spec.notes && <th>result in this tutorial</th>}
+				</tr>
+			</thead>
+			<tbody>
+				{
+					labels.map((l) => (
+						<tr>
+							<td>{l}</td>
+							{worlds.map((w) => {
+								const r = get(l, w);
+								const b0 = get(labels[0], w);
+								if (!r) return <td class="num">–</td>;
+								return (
+									<td class="num">
+										{value(r).toFixed(2)} ms
+										{l !== labels[0] && b0 && <span class="rel"> {(value(r) / value(b0)).toFixed(2)}×</span>}
+									</td>
+								);
+							})}
+							<td class="num">{get(l, most) ? `${get(l, most)!.solver_mem_mb.toFixed(0)} MB` : '–'}</td>
+							{spec.notes && <td>{spec.notes[l] ?? ''}</td>}
+						</tr>
+					))
+				}
+			</tbody>
+		</table>
+	</div>
+</section>
+
+<style>
+	.cost { margin-top: 24px; border-top: 1px solid var(--rule); padding-top: 14px; }
+	.ch { font: 500 11px/1.4 var(--mono) !important; letter-spacing: 0.08em !important; text-transform: uppercase; color: var(--muted); margin: 0 0 4px; }
+	.cnote { margin: 0 0 6px; color: var(--muted); font-size: 13.5px; max-width: 90ch; }
+	.rel { color: var(--muted); font-size: 12px; }
+</style>

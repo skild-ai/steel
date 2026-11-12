@@ -1,0 +1,26 @@
+---
+title: Troubleshooting
+description: Symptoms, likely causes and fixes, in the order to check them.
+sidebar:
+  order: 6
+---
+
+Work top to bottom: an earlier row makes later numbers meaningless.
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| `check_constraint_capacity()` raises; overflow warning; `*_overflow_world_steps` &gt; 0 | Capacity overflow | Size the family from `*_raw_high_water` ([Capacities](/concepts/capacities/)). Re-measure after any friction or response change: point friction needs more rows than anchors. |
+| Contact count equals the buffer size | Contact buffer full | Raise `rigid_contact_max` on the pipeline. |
+| Kernels fail to build with very large immediate capacities | More rows than one world's immediate kernel holds | Colored propagation with `propagation_constraint_max`. |
+| A start pose or velocity is lost on the first step | Written to `body_q`/`body_qd` only | Write `joint_q`/`joint_qd`. |
+| Joints far past their limits | `enable_joint_limits=False` | Turn limits on. |
+| **Jitter** of resting objects | Indeterminate load splits, warm-start overshoot, too few iterations | Keep friction anchors on; try `contact_regularization=0.01`; raise `iterations`; enable sleeping for settled piles. |
+| **Tunneling** or deep overlap of fast, small or thin objects | Travel per step far beyond the contact gap | More substeps, or a larger gap on the thin shape; keep `contact_speculative_scale=1` and no `contact_gap_gate`. |
+| **Slow convergence**: stacks sag, chains stretch, grasps slip | Iteration-limited | More iterations, Nesterov momentum, fewer substeps with more iterations, pre-elimination for loops. |
+| Bodies launched after a hard contact | `baumgarte` too high, or warm start on wedged contacts | `baumgarte` ≤ 0.5; `velocity_iterations`; warm start off. |
+| Light bodies pressed into the ground by a heavy one | Mass ratio above about 1000:1 | See the recipe in [Tuning](/guides/tuning/#recipes). |
+| Frozen scene with odd substeps under a graph | The captured state swap ends on the other buffer | Use an even substep count when swapping states inside a graph. |
+| `NotImplementedError` at construction | Particles, gradients, a CUDA-only feature on CPU, or an unsupported joint layout | See [What is supported](/start/overview/#what-is-supported). |
+| `Loop-closing joints are not supported with articulated_contact_response=...` | Loop closures under propagation | Immediate response, serial sweep. |
+| `nesterov_momentum requires solve_mode='serial' ...` | Momentum outside the serial immediate sweep | Serial, immediate, `row_schedule="interleaved"`. |
+| Contact torsion construction error | Torsion radii authored without device preparation | `contact_torsion_device=True`, and `velocity_iterations=0` under propagation. |

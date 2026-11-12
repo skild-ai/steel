@@ -1,0 +1,139 @@
+---
+/** The tutorial gallery: every tutorial by group, the planned list, and what domain randomization does not cover. */
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { drGaps, loadTutorials } from '../../lib/tutorials-data.mjs';
+
+const { tutorials, groups, planned } = loadTutorials();
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const inline = (t: string) =>
+	t
+		.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!)
+		.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
+		.replace(/`([^`]+)`/g, '<code>$1</code>');
+const headings = [
+	...groups.map((g) => ({ depth: 2, slug: slug(g), text: g })),
+	{ depth: 2, slug: 'planned', text: 'Planned tutorials' },
+];
+---
+
+<StarlightPage
+	frontmatter={{
+		title: 'Tutorials',
+		description: 'Runnable SolverSteel tutorials, each with its exact script and a 3D replay of a GPU recording.',
+	}}
+	headings={headings}
+>
+	<p class="lede">
+		One short script per Steel feature. Each replay is a recording of that exact script on a GPU, played back in 3D. Where a
+		tutorial compares settings, the variants run side by side with one option changed. The scripts are in
+		<a href="https://github.com/skild-ai/steel/tree/main/tutorials"><code>tutorials/</code></a>; run one with
+		<code>cd tutorials && python 01_hello_steel.py</code>.
+	</p>
+
+	{
+		groups.map((group) => (
+			<section>
+				<h2 id={slug(group)}>{group}</h2>
+				<ul class="tutorial-grid not-content">
+					{tutorials
+						.filter((t) => t.group === group)
+						.map((t) => (
+							<li class="tutorial-card">
+								<a href={`${base}/tutorials/${t.id}/`}>
+									<span class="n">{String(t.num).padStart(2, '0')}</span>
+									<span class="t">{t.title}</span>
+									<span class="p">{t.param.name}</span>
+								</a>
+							</li>
+						))}
+				</ul>
+			</section>
+		))
+	}
+
+	<h2 id="planned">Planned tutorials</h2>
+	<p>Steel supports these features, and tutorials for them are still to be written or recorded.</p>
+	<ul class="planned not-content">
+		{
+			planned.map((p) => (
+				<li>
+					<b>{p.title}</b>
+					<span>{p.text}</span>
+				</li>
+			))
+		}
+	</ul>
+	<h3>Domain randomization: not covered yet</h3>
+	{
+		drGaps().map((g) => (
+			<>
+				<h4>{g.title}</h4>
+				<ul>
+					{g.items.map((i) => (
+						<li set:html={inline(i)} />
+					))}
+				</ul>
+			</>
+		))
+	}
+	<p class="unsupported">
+		Not supported by Steel yet: tendons through native routes, ROD joints, particles and soft bodies (Steel simulates rigid bodies
+		and articulations; couple it with another solver for those), gradients, mimic joints across articulations, and loop closures
+		between two dynamic articulations, and limits on a root DISTANCE joint (Steel simulates it as a free joint and ignores its
+		minimum and maximum distance; use a ball joint and a limited prismatic joint, as in the <a href={`${base}/tutorials/tether/`}>tether
+		tutorial</a>).
+	</p>
+</StarlightPage>
+
+<style>
+	.lede { font-size: 1.05rem; max-width: 76ch; }
+	section h2,
+	h2#planned {
+		font-size: var(--sl-text-2xl);
+		margin-top: 2rem;
+	}
+	.tutorial-grid {
+		list-style: none;
+		margin: 0.75rem 0 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+		gap: 10px;
+	}
+	.tutorial-card a {
+		display: grid;
+		grid-template-columns: 28px minmax(0, 1fr);
+		gap: 2px 6px;
+		height: 100%;
+		padding: 10px 12px;
+		border: 1px solid var(--rule);
+		border-radius: 4px;
+		background: var(--bg);
+		color: var(--fg);
+		text-decoration: none;
+	}
+	.tutorial-card a:hover { border-color: var(--hot-fill); }
+	.tutorial-card a:hover .t { color: var(--hot); }
+	.n { font: 400 12px/1.6 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+	.t { font-weight: 500; line-height: 1.35; }
+	.p { grid-column: 2; font: 400 12px/1.4 var(--mono); color: var(--muted); overflow-wrap: anywhere; }
+	.planned {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+		gap: 12px;
+		margin: 16px 0 0;
+		padding: 0;
+		list-style: none;
+	}
+	.planned li { border: 1px solid var(--rule); border-radius: 4px; padding: 12px 14px; background: var(--panel); }
+	.planned b { display: block; font-weight: 600; margin-bottom: 4px; }
+	.planned span { color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
+	.unsupported { color: var(--muted); font-size: 14.5px; }
+</style>
+
+<script define:vars={{ ids: tutorials.map((t) => t.id) }}>
+	// Links of the form tutorials/#<id> (from the earlier one-page tutorials) open that tutorial's page.
+	const id = decodeURIComponent(location.hash.slice(1));
+	if (ids.includes(id)) location.replace(`./${id}/`);
+</script>

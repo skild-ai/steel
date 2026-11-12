@@ -1,0 +1,70 @@
+---
+title: Overview
+description: What Steel is for, how it compares with Newton's other solvers, and what it supports.
+sidebar:
+  order: 1
+---
+
+import Note from '~/components/Note.astro';
+import CardGrid from '~/components/CardGrid.astro';
+import InfoCard from '~/components/InfoCard.astro';
+import Term from '~/components/Term.astro';
+
+Steel is a GPU solver for articulated robots and rigid bodies in [Newton](https://github.com/newton-physics/newton). It integrates robots in joint coordinates, solves contacts and joint constraints with a projected Gauss-Seidel sweep that does not assemble the world's constraint matrix, and schedules every world of a batch on its own, so different robots, tasks and scenes can share one batch.
+
+<p class="chips"><span class="chip"><b>newton.solvers.SolverSteel</b></span><span class="chip">experimental in Newton 1.8</span><span class="chip">documented at skild-ai/newton <b>baffc2a</b></span></p>
+
+## What it is for
+
+Steel was built for robot learning at scale: thousands of environments per GPU, fixed memory, every step capturable in a <Term name="graph">CUDA graph</Term>, and batches that mix embodiments. Tree joints hold exactly because the state is the joint coordinates; constraint rows are needed only for contacts, limits, optional drive rows, mimic couplings and loop closures. In the default serial sweep each world's rows are solved by one GPU <Term name="warp">warp</Term> in sequence, which keeps <Term name="gs">Gauss-Seidel</Term>'s convergence while thousands of worlds run in parallel.
+
+Steel is experimental in Newton 1.8: `SolverSteel`, its constructor options and its `steel:` attributes may change without the normal deprecation period.
+
+## Choosing a solver
+
+Newton ships several solvers. A rough guide for rigid and articulated scenes:
+
+| Solver | Coordinates and contact model | Pick it when |
+|---|---|---|
+| **Steel** | Joint coordinates; hard contacts, limits and couplings as rows of a projected Gauss-Seidel solve; implicit drives | Many worlds of articulated robots with contact, including batches that mix different robots or scenes; reproducible runs (`RUN_TO_RUN`) |
+| **MuJoCo Warp**<br />`SolverMuJoCo` | Joint coordinates; MuJoCo's soft-constraint contact model | You need MuJoCo semantics: its actuators, tendons, equality constraints and `solref`/`solimp`, or parity with an existing MuJoCo model |
+| **XPBD**<br />`SolverXPBD` | Maximal coordinates; position-based constraints, joints included | Scenes with particles, cloth or soft bodies alongside rigid bodies |
+| **Featherstone**<br />`SolverFeatherstone` | Joint coordinates; penalty (spring-damper) contacts | Basic differentiable simulation, or articulated scenes where penalty contact is acceptable |
+
+Steel can also be one entry of Newton's experimental coupled solvers, next to VBD or XPBD for cloth, cables and soft bodies. See [Coupling](/guides/coupling/).
+
+## What is supported
+
+<CardGrid>
+
+<InfoCard title="Supported">
+
+- Joints: PRISMATIC, REVOLUTE, BALL, FIXED, D6, and root FREE and DISTANCE joints
+- Implicit PD drives, or drives as solver rows with exact effort limits
+- Joint position and velocity limits, passive springs, dry joint friction
+- Mimic joints, and loop-closing BALL, REVOLUTE and FIXED joints
+- Hard contacts with Coulomb friction, persistent friction patches, restitution, optional torsion
+- Kinematic bodies, heterogeneous worlds, global bodies shared by all worlds
+- CUDA graph capture of `step` and `reset`; run-to-run determinism; island sleeping
+- CPU fallback for the core solve
+
+</InfoCard>
+
+<InfoCard title="Not supported">
+
+- Particles, cloth and soft bodies: construction raises when the model has particles. Couple Steel with VBD or XPBD instead.
+- ROD joints
+- Newton's native routed tendons
+- Gradients: construction raises for `model.requires_grad=True`
+- Mimic couplings across articulations, and loop closures between two dynamic articulations
+- On CPU: contact torsion, contact compliance, joint friction, Nesterov momentum and the non-default friction modes
+
+</InfoCard>
+
+</CardGrid>
+
+<Note title="In progress" variant="plain">
+
+MuJoCo-style tendons for Steel are in review on the integration branch. Rolling and spin friction for free-body contacts, implicit joint damping and per-body gravity scale are in review upstream. See the [changelog](https://github.com/skild-ai/steel) for the current list.
+
+</Note>

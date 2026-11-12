@@ -1,0 +1,80 @@
+---
+title: Quick start
+description: A first Steel simulation, then many worlds under a CUDA graph.
+sidebar:
+  order: 4
+---
+
+A stack of three boxes. Steel steps `State.joint_q` and `State.joint_qd`; `add_body` gives each box a free joint.
+
+```python
+import warp as wp
+import newton
+
+builder = newton.ModelBuilder()
+builder.add_ground_plane()
+for i in range(3):
+    body = builder.add_body(xform=wp.transform((0.0, 0.0, 0.11 + 0.21 * i), wp.quat_identity()))
+    builder.add_shape_box(body, hx=0.1, hy=0.1, hz=0.1)
+model = builder.finalize()
+
+solver = newton.solvers.SolverSteel(model, iterations=12, row_watermark=True)
+pipeline = newton.CollisionPipeline(model)
+contacts = pipeline.contacts()
+
+state_0, state_1 = model.state(), model.state()
+control = model.control()
+dt = 1.0 / 240.0
+
+for _ in range(480):
+    state_0.clear_forces()
+    pipeline.collide(state_0, contacts)
+    solver.step(state_0, state_1, control, contacts, dt)
+    state_0, state_1 = state_1, state_0
+
+solver.check_constraint_capacity()      # raises if any row or contact was dropped
+print(state_0.body_q.numpy()[:, 2])     # about [0.1, 0.3, 0.5]
+print(solver.constraint_row_watermarks())
+```
+
+<p class="tutlinks">Tutorials [Hello Steel](/tutorials/hello-steel/) · [Shape types](/tutorials/shape-types/) · [Joint types](/tutorials/joint-types/)</p>
+
+## Many worlds and a CUDA graph
+
+Replicate the scene into worlds, capture one frame of substeps, and replay it. Capture once, after construction; the solver's buffers have fixed sizes.
+
+```python
+scene = newton.ModelBuilder()
+scene.add_ground_plane()
+# ... add the bodies of one world to scene ...
+
+builder = newton.ModelBuilder()
+builder.replicate(scene, 1024)
+model = builder.finalize()
+
+solver = newton.solvers.SolverSteel(model)
+pipeline = newton.CollisionPipeline(model)
+contacts = pipeline.contacts()
+state_0, state_1 = model.state(), model.state()
+control = model.control()
+fps, substeps = 60, 4
+dt = 1.0 / (fps * substeps)
+
+def simulate():
+    global state_0, state_1
+    for _ in range(substeps):      # even, so the captured swaps return to state_0
+        state_0.clear_forces()
+        pipeline.collide(state_0, contacts)
+        solver.step(state_0, state_1, control, contacts, dt)
+        state_0, state_1 = state_1, state_0
+
+with wp.ScopedCapture() as capture:
+    simulate()
+
+for frame in range(600):
+    wp.capture_launch(capture.graph)
+
+solver.check_constraint_capacity()  # outside capture
+```
+
+Both scripts ran at the documented commit on CUDA. Bundled examples run with `python -m newton.examples <name>`: `steel_sleeping` and `steel_determinism_arms` are in Newton 1.8; the integration branch adds `steel_magnetic_door`, `steel_wrecking_ball`, `steel_plate_rack`, `steel_bolt_sweep`, `steel_cup_unpacking`, `steel_toy_well` and `steel_pelican_bicycle`.

@@ -1,0 +1,28 @@
+---
+/**
+ * A docs visual: a numbered figure whose body is drawn by the module src/viz/<name>.js.
+ * <Viz name="sleep" n={10} title="Islands falling asleep.">Caption text.</Viz>
+ */
+interface Props {
+	name: string;
+	n?: number | string;
+	title?: string;
+}
+const { name, n, title } = Astro.props;
+---
+
+<figure class="viz steel-figure not-content" data-viz={name}>
+	<figcaption>
+		{n !== undefined && <span class="n">Figure {n}</span>}
+		{title && <b>{title}</b>}{' '}
+		<slot />
+	</figcaption>
+</figure>
+
+<style>
+	figcaption :global(p) { display: inline; margin: 0; }
+</style>
+
+<script>
+	import '../viz/runtime';
+</script>

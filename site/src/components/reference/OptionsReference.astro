@@ -1,0 +1,148 @@
+---
+/** Every SolverSteel constructor option, rendered at build time, with a client-side filter. */
+import { reference, categories, availability, glyph } from './reference-data';
+
+const opts = reference.options;
+const c = reference.counts;
+---
+
+<div class="reftools not-content" role="search">
+	<input type="search" id="ref-q" placeholder="Filter options, e.g. friction, capacity, sleep" aria-label="Filter options" />
+	<select id="ref-cat" aria-label="Category">
+		<option value="">All categories</option>
+		{categories.map((cat) => <option value={cat}>{cat}</option>)}
+	</select>
+	<label><input type="checkbox" id="ref-step" /> every step only</label>
+	<label><input type="checkbox" id="ref-new" /> not in 1.8.0</label>
+	<span class="refcount" id="ref-count">{opts.length} of {opts.length} options</span>
+</div>
+<div id="ref-options" class="not-content">
+	{
+		categories.map((cat) => (
+			<section class="refgroup" data-cat={cat}>
+				<h3 class="refcat">{cat}</h3>
+				{opts
+					.filter((o) => o.category === cat)
+					.map((o) => {
+						const where = availability(o);
+						return (
+							<article
+								class="opt"
+								id={`opt-${o.name}`}
+								data-cat={cat}
+								data-step={o.step ? '1' : ''}
+								data-new={where === 'release' ? '' : '1'}
+								data-text={`${o.name} ${o.when} ${o.doc.replace(/<[^>]+>/g, ' ')} ${cat}`.toLowerCase()}
+							>
+								<div class="oh">
+									<Fragment set:html={glyph(o)} />
+									<a class="on" href={`#opt-${o.name}`}>{o.name}</a>
+									<span class="od">
+										= <b>{o.default}</b>
+									</span>
+									<span class="od">{o.type}</span>
+									{o.units && <span class="od">[{o.units}]</span>}
+									{o.step && <span class="tag step">every step</span>}
+									{where === 'main' && <span class="tag main">Newton main, not 1.8.0</span>}
+									{where === 'branch' && <span class="tag branch">integration branch</span>}
+								</div>
+								{o.differences?.length > 0 && <p class="od">Version note: {o.differences.join('; ')}</p>}
+								<p class="ow"><span class="wl">When to change</span> {o.when}</p>
+								<details>
+									<summary>Description</summary>
+									<div class="doc" set:html={o.doc} />
+								</details>
+							</article>
+						);
+					})}
+			</section>
+		))
+	}
+	<p class="empty" id="ref-empty" hidden>No option matches. Clear the filter to see all options.</p>
+</div>
+<p class="refsrc">
+	Generated from <code>{reference.source.file}</code> at <code>{reference.source.commit.slice(0, 10)}</code>: {c.options} options
+	({c.step_options} read every step), {c.attributes} attributes, {c.inputs} inputs, {c.methods} methods.
+</p>
+
+<style>
+	.reftools {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px 12px;
+		align-items: center;
+		margin: 8px 0 14px;
+		position: sticky;
+		top: var(--sl-nav-height);
+		background: var(--bg);
+		padding-block: 8px;
+		z-index: 2;
+		border-bottom: 1px solid var(--rule);
+	}
+	.reftools input[type='search'],
+	.reftools select {
+		font: inherit;
+		font-size: 16px;
+		color: var(--fg);
+		background: var(--bg);
+		border: 1px solid var(--static);
+		border-radius: 5px;
+		padding: 5px 8px;
+		min-width: 0;
+	}
+	.reftools input[type='search'] { flex: 1 1 220px; }
+	.reftools label { font-size: 13.5px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+	.refcount { font: 500 12px var(--mono); color: var(--muted); }
+	.refcat {
+		font: 600 11px/1.4 var(--mono);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--muted);
+		margin: 26px 0 4px;
+	}
+	.opt { border-top: 1px solid var(--rule); padding: 12px 0 10px; scroll-margin-top: calc(var(--sl-nav-height) + 72px); }
+	.oh { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+	.on { font: 600 14.5px var(--mono); color: var(--fg); text-decoration: none; overflow-wrap: anywhere; }
+	.on:hover { color: var(--hot); }
+	.od { font: 400 13px var(--mono); color: var(--muted); overflow-wrap: anywhere; margin: 0; }
+	.od b { font-weight: 500; color: var(--fg); }
+	.ow { margin: 6px 0 4px; font-size: 14.5px; }
+	.wl { font: 600 11px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--hot); margin-right: 6px; }
+	details { font-size: 14.5px; }
+	summary { cursor: pointer; color: var(--muted); font-size: 13px; font-family: var(--mono); }
+	summary:hover { color: var(--fg); }
+	.doc { padding: 6px 0 2px; overflow-wrap: anywhere; }
+	.doc :global(p) { margin: 0 0 10px; }
+	.empty { color: var(--muted); font-size: 14px; padding: 12px 0; }
+	.refsrc { font-size: 13.5px; color: var(--muted); }
+	.oh :global(.oi) { width: 18px; height: 18px; fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: none; align-self: center; }
+</style>
+
+<script>
+	const q = document.getElementById('ref-q') as HTMLInputElement;
+	const cat = document.getElementById('ref-cat') as HTMLSelectElement;
+	const step = document.getElementById('ref-step') as HTMLInputElement;
+	const fresh = document.getElementById('ref-new') as HTMLInputElement;
+	const opts = [...document.querySelectorAll<HTMLElement>('#ref-options .opt')];
+	const groups = [...document.querySelectorAll<HTMLElement>('#ref-options .refgroup')];
+	const apply = () => {
+		const text = q.value.trim().toLowerCase();
+		let shown = 0;
+		for (const o of opts) {
+			const ok =
+				(!cat.value || o.dataset.cat === cat.value) &&
+				(!step.checked || o.dataset.step) &&
+				(!fresh.checked || o.dataset.new) &&
+				(!text || o.dataset.text!.includes(text));
+			o.hidden = !ok;
+			if (ok) shown++;
+		}
+		groups.forEach((g) => (g.hidden = !g.querySelector('.opt:not([hidden])')));
+		document.getElementById('ref-empty')!.hidden = shown > 0;
+		document.getElementById('ref-count')!.textContent = `${shown} of ${opts.length} options`;
+	};
+	[q, cat, step, fresh].forEach((n) => n.addEventListener('input', apply));
+	// Opening a link to one option shows its description.
+	const target = location.hash.startsWith('#opt-') && document.getElementById(location.hash.slice(1));
+	if (target) target.querySelector('details')?.setAttribute('open', '');
+</script>

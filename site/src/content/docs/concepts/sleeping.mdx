@@ -1,0 +1,19 @@
+---
+title: Sleeping
+description: "Island sleeping: when islands fall asleep, what wakes them, and its limits."
+sidebar:
+  order: 8
+---
+
+import Viz from '~/components/Viz.astro';
+
+With `enable_sleeping=True`, articulations in contact are joined into islands each step. Static geometry supports an island without joining it; a fixed-base robot with moving joints joins the island of everything it touches. A supported island whose bodies stay below `sleep_linear_threshold` (0.05 m/s) and `sleep_angular_threshold` (0.15 rad/s) for `sleep_quiet_time` (0.5 s) falls asleep: its published state is frozen and, with `sleep_skip_constraints=True`, its rows and dynamics are skipped. Collision keeps running, so a contact with an awake or moving body wakes it.
+
+<Viz name="sleep" n={10} title="Islands falling asleep, and one waking.">
+Step through the schematic; the chart is the awake-body count Steel recorded for the same scene. <span class="tutinline">Tutorial: [Sleeping islands](/tutorials/sleeping/)</span>
+</Viz>
+
+- Other wake events: nonzero or non-finite `body_f` or `joint_f`, a changed state or gravity, lost support or row capacity, `reset` of its world, `notify_model_changed` for its properties.
+- Driven articulations (nonzero drive gains) and articulations with passive springs stay awake.
+- Sleeping is rejected with `contact_warmstart`, `velocity_iterations`, models without articulations, and serial propagation. With colored propagation on CUDA, a captured step in which everything that can sleep is asleep skips the propagation solve where conditional graph nodes are supported.
+- Contacts of sleeping islands report zero in `contact_f` while their rows are skipped. Pass `sleep_skip_constraints=False` if force consumers read them.

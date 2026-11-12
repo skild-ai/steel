@@ -1,0 +1,26 @@
+---
+/** Figure: who owns what in a coupled step: Steel, the coupler and the deformable solver. */
+import Figure from '../Figure.astro';
+
+interface Props {
+	n?: number;
+}
+const { n = 13 } = Astro.props;
+---
+
+<Figure n={n} title="Who owns what in a coupled step.">
+<svg class="wide" viewBox="0 0 900 170" role="img" aria-label="Coupled solve: Steel owns rigid bodies and articulations, VBD or XPBD owns cloth and soft bodies; the coupler exchanges contacts, forces through body_f, and effective masses each coupled step.">
+      <rect x="20" y="30" width="250" height="100" rx="5" class="boxa"/><text x="145" y="62" text-anchor="middle" class="ta">SolverSteel</text><text x="145" y="84" text-anchor="middle" class="ts">rigid bodies and articulations</text><text x="145" y="102" text-anchor="middle" class="tm">ModelView of the rigid part</text>
+      <rect x="630" y="30" width="250" height="100" rx="5" class="box"/><text x="755" y="62" text-anchor="middle" class="tb">SolverVBD / SolverXPBD</text><text x="755" y="84" text-anchor="middle" class="ts">cloth, cables, soft bodies</text><text x="755" y="102" text-anchor="middle" class="tm">owns the particles</text>
+      <rect x="350" y="45" width="200" height="70" rx="5" class="boxp"/><text x="450" y="74" text-anchor="middle" class="tb">coupler</text><text x="450" y="94" text-anchor="middle" class="ts">routes contacts, sums forces</text>
+      <line x1="272" y1="64" x2="348" y2="64" class="ln" marker-end="url(#arr)"/><line x1="348" y1="96" x2="272" y2="96" class="ln" marker-end="url(#arr)"/>
+      <line x1="552" y1="64" x2="628" y2="64" class="ln" marker-end="url(#arr)"/><line x1="628" y1="96" x2="552" y2="96" class="ln" marker-end="url(#arr)"/>
+      <text x="310" y="56" text-anchor="middle" class="tm">effective mass</text><text x="310" y="114" text-anchor="middle" class="tm">body_f</text>
+      <text x="590" y="56" text-anchor="middle" class="tm">contacts</text><text x="590" y="114" text-anchor="middle" class="tm">forces</text>
+      <text x="20" y="160" class="tm">validated with solve_mode="serial" and the immediate response · experimental</text>
+    </svg>
+	<Fragment slot="caption">
+		Steel never owns particles; the coupler exchanges contacts and forces with the deformable solver every coupled
+		iteration. A coupling tutorial is planned.
+	</Fragment>
+</Figure>

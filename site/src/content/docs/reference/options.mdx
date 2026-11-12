@@ -1,0 +1,15 @@
+---
+title: Constructor options
+description: Every keyword of SolverSteel.__init__, generated from the solver's source, with guidance on when to change it.
+sidebar:
+  order: 1
+tableOfContents: false
+---
+
+import OptionsReference from '~/components/reference/OptionsReference.astro';
+
+Every keyword of `SolverSteel.__init__`, generated from the source by `site/scripts/gen_reference.py`. Descriptions are the solver's own docstrings; "when to change" is guidance. <span class="tag step">every step</span> marks options that may be assigned between steps; the others are fixed at construction. <span class="tag main">Newton main, not 1.8.0</span> and <span class="tag branch">integration branch</span> mark options that Newton 1.8.0 does not have.
+
+Link to one option with `#opt-<name>`, for example `/reference/options/#opt-friction_anchor_beta`.
+
+<OptionsReference />

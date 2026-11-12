@@ -1,0 +1,64 @@
+---
+title: FAQ
+description: Short answers to common questions about Steel.
+---
+
+### Is Steel in Newton, or a separate project?
+
+It is `newton.solvers.SolverSteel` in Newton, Apache-2.0. New work lands on the skild-ai/newton integration branch first and reaches Newton through upstream pull requests; [skild-ai/steel](https://github.com/skild-ai/steel) holds the project page and changelog.
+
+### Does Steel support gradients?
+
+Experimental support is coming soon: a differentiable Steel step is in progress. Today, construction raises for models with `requires_grad=True`.
+
+### Why are my joint limits ignored?
+
+`enable_joint_limits` defaults to `False`. Set it to `True`.
+
+### Why does my drive exceed its effort limit?
+
+Implicit drives clamp only the explicit drive force; the implicit stiffness and damping response is unbounded. Use `drive_mode="rows"` to bound the complete reaction.
+
+### Can different worlds hold different robots?
+
+Yes. Heterogeneous worlds are supported and scheduled per world. Global bodies are shared with every world; see [Mixed batches](/concepts/mixed-batches/).
+
+### Does Steel run on CPU?
+
+The core solve runs on CPU with world-serial portable kernels; `"colored"` sweeps in serial order there. Contact compliance, joint friction, Nesterov momentum and the non-default friction modes raise on CPU, as does sleeping with the colored sweep; contact torsion raises `ValueError`.
+
+### How do I make two runs identical?
+
+`deterministic=wp.DeterministicMode.RUN_TO_RUN` on the solver and `CollisionPipeline(deterministic=True)`. See [Determinism](/concepts/determinism/).
+
+### Should I turn on contact warm start?
+
+`contact_warmstart=True` starts each contact from the impulse it had last step, so the sweep begins near the answer instead of at zero. It helps where the same contacts persist and the iteration budget is the limit, and it does nothing, or harm, where contacts do not match from step to step.
+
+**Turn it on** for resting stacks at a tight iteration budget, and for grasps held with point friction (`friction_anchor_beta=0`). **Leave it off** for heavy-on-light stacks (use `nesterov_momentum` instead), for settling piles where resting jitter matters, and for anything carried fast unless contact matching keeps up.
+
+Measured with [`warmstart_experiment.py`](https://github.com/skild-ai/steel/blob/main/site/scripts/experiments/warmstart_experiment.py) at the documented commit, on one RTX PRO 6000 Blackwell, 60 fps. Both arms use the same contact matching, so only the warm start differs:
+
+| Scene (worlds) | Setting | Warm start off | Warm start on |
+|---|---|---|---|
+| Ten equal 10 cm cubes (128) | 2 substeps × 16 iterations | 0 of 128 standing after 5 s | **102 of 128 standing** |
+|  | 2 × 24 | 127 standing; top sag 7.1 mm (median) | **128 standing; 0.9 mm** |
+|  | 2 × 48 | top sag 1.9 mm | **0.25 mm** |
+| Six cubes, each 3× the one below (128) | 8 × 48 | **86 of 128 standing** | 36 standing |
+|  | 2 × 96, 4 × 24, 4 × 48, 8 × 24 | 0–1 standing | 0–1 standing (collapses later) |
+| Two-finger pinch, held 5 s, point friction (64) | 3 × 8 | 63 of 64 dropped; twist 29° | **0 dropped; twist 0.5°** |
+| Same, friction anchors (default) | 3 × 8 | 0 dropped; slip 0.3 mm | 0 dropped; slip 0.0 mm |
+| Pinch carried at 0.05 m/s, point friction (64) | 3 × 8 | 10 dropped; twist 8.4° | **0 dropped; 0.04°** |
+| Carried at 0.2 m/s, point friction, world-frame matching | 3 × 8 | 7 dropped; twist 8.6° | 0 dropped; **twist 25°** (35% of contacts matched) |
+| Same with `contact_matching_body_frame=True` | 3 × 8 | 10 dropped; twist 8.8° | **0 dropped; 1.0°** (100% matched) |
+| 40 small boxes poured into a bin (64) | 2 × 16, colored | peak body speed after 1.5 s: 0.005 m/s | 0.25 m/s |
+
+What to expect otherwise: in these runs warm start changed the frame time by −3% to +19% (median about +11%, eager stepping with contact matching in both arms), and resting bodies kept more residual motion (mean speed about 0.04 m/s against 0.004–0.006 m/s on the equal-cube stack at 32 and 48 iterations). The pile had no world-frames above the 2 m/s burst threshold after 1.5 s in either arm.
+
+**How to tell whether it helps.** Unmatched contacts start cold, so check the share of `contacts.rigid_contact_match_index >= 0` on the contacts that matter. A low match rate means fewer contacts reuse impulses; it does not by itself show incorrect matching or predict whether warm start helps (the equal-cube stack improved at 58–69% matched). Then A/B the task metric (sag, slip, twist, residual speed) at your world count, warm start off and on, with everything else identical. Body-frame matching (`contact_matching_body_frame=True`, integration branch) fixed the fast-carry case here; verify it on your scene.
+
+**Requirements and conflicts.** The collision pipeline needs contact matching (`contact_matching="latest"` or `"sticky"`); a step without it raises. Warm start is rejected with `enable_sleeping`, contact torsion, `contact_compliance`, `contact_friction_position_iterations` other than -1, and inside coupled solvers, and it keeps the dense mass factors. `contact_warmstart_decay` scales the carried impulses, and `contact_regularization=0.01` damps them if you see bursts.
+
+### How do I port a PhysX scene?
+
+See [Porting from PhysX](/guides/porting-from-physx/): attribute mapping, solver option equivalents, what differs, a step-by-step procedure and [domain randomization](/guides/domain-randomization/).

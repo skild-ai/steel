@@ -1,0 +1,18 @@
+---
+/** Two columns of InfoCards on wide screens, one on phones. */
+---
+
+<div class="card-grid"><slot /></div>
+
+<style>
+	.card-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 16px;
+		margin: 0.5rem 0 1.4rem;
+	}
+	@media (max-width: 640px) {
+		.card-grid { grid-template-columns: minmax(0, 1fr); }
+	}
+	.card-grid :global(> *) { margin-top: 0 !important; }
+</style>

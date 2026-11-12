@@ -1,0 +1,67 @@
+---
+/** One of the generated reference tables: model attributes, inputs, or methods. */
+import { reference } from './reference-data';
+
+interface Props {
+	table: 'attributes' | 'inputs' | 'methods';
+}
+const { table } = Astro.props;
+---
+
+<div class="reftable">
+	{
+		table === 'attributes' && (
+			<table>
+				<thead>
+					<tr><th>Attribute</th><th>Per</th><th>Default</th><th>Units</th><th>USD / MJCF</th><th>Meaning</th></tr>
+				</thead>
+				<tbody>
+					{reference.attributes.map((a) => (
+						<tr id={`attr-${a.name.replace(':', '-')}`}>
+							<td><code>{a.name}</code></td>
+							<td>{a.frequency.replace('_', ' ')}</td>
+							<td><code>{a.default}</code></td>
+							<td>{a.units}</td>
+							<td class="wrap">
+								{a.usd && <code>{a.usd}</code>}
+								{a.mjcf && (<><br />MJCF <code>{a.mjcf}</code></>)}
+							</td>
+							<td class="wrap" set:html={a.doc} />
+						</tr>
+					))}
+				</tbody>
+			</table>
+		)
+	}
+	{
+		table === 'inputs' && (
+			<table>
+				<thead><tr><th>Input</th><th>How Steel uses it</th></tr></thead>
+				<tbody>
+					{reference.inputs.map((i) => (
+						<tr><td><code>{i.name}</code></td><td class="wrap" set:html={i.context} /></tr>
+					))}
+				</tbody>
+			</table>
+		)
+	}
+	{
+		table === 'methods' && (
+			<table>
+				<thead><tr><th>Name</th><th>Kind</th><th>Summary</th></tr></thead>
+				<tbody>
+					{reference.methods.map((m) => (
+						<tr id={`method-${m.name}`}><td><code>{m.name}</code></td><td>{m.kind}</td><td class="wrap" set:html={m.doc} /></tr>
+					))}
+				</tbody>
+			</table>
+		)
+	}
+</div>
+
+<style>
+	.reftable :global(td.wrap code) { white-space: normal; overflow-wrap: anywhere; }
+	.reftable :global(td p) { margin: 0 0 6px; }
+	.reftable { overflow-x: auto; }
+	.reftable table { display: table; min-width: 560px; }
+</style>

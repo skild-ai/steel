@@ -1,0 +1,143 @@
+---
+/** One page per tutorial: text from tutorials/<script>.toml, replay from the recording, code from the script. */
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { Code, Tabs, TabItem } from '@astrojs/starlight/components';
+import ReplayViewer from '../../components/tutorials/ReplayViewer.astro';
+import CostTable from '../../components/tutorials/CostTable.astro';
+import ConceptBlock from '../../components/tutorials/ConceptBlock.astro';
+import Note from '../../components/Note.astro';
+import { loadRecording, loadTutorials, replaySource, tutorialSource } from '../../lib/tutorials-data.mjs';
+
+export function getStaticPaths() {
+	return loadTutorials().tutorials.map((t) => ({ params: { id: t.id }, props: { meta: t } }));
+}
+
+const { meta } = Astro.props;
+const rec = loadRecording(meta);
+const source = tutorialSource(meta);
+const num = String(meta.num).padStart(2, '0');
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const replayMeta = { metric: meta.metric, spacing: meta.spacing, fit: meta.fit, speed: meta.speed };
+const repo = 'https://github.com/skild-ai/steel/blob/main/tutorials';
+const description = meta.about.length > 200 ? meta.about.slice(0, meta.about.lastIndexOf(' ', 197)) + '…' : meta.about;
+---
+
+<StarlightPage frontmatter={{ title: meta.title, description, tableOfContents: false }}>
+	<div class="tutorial-page">
+		<p class="kicker">{num} · {meta.group}</p>
+		<p class="about">{meta.about}</p>
+
+		{
+			rec ? (
+				<ReplayViewer src={`${base}/tutorials/recordings/${meta.id}.json`} meta={replayMeta} title={meta.title} />
+			) : (
+				<Note title="Not recorded yet" variant="plain">
+					<p>
+						This tutorial has no recording. Run <code>python tutorials/tools/record_all.py --only {meta.id}</code> on a GPU to
+						add one.
+					</p>
+				</Note>
+			)
+		}
+		{
+			rec?.stale && (
+				<Note title="Recording out of date">
+					<p>The script changed after this replay was recorded. Record it again before relying on the replay.</p>
+				</Note>
+			)
+		}
+		{meta.timing && rec?.timing && <CostTable spec={meta.timing} timing={rec.timing} />}
+
+		<div class="notes">
+			<div>
+				<h2 class="nh">What to look at</h2>
+				<ul>{meta.look.map((x: string) => <li>{x}</li>)}</ul>
+			</div>
+			<div class="param">
+				<h2 class="nh">Key parameter</h2>
+				<code>{meta.param.name}</code>
+				<p>{meta.param.text}</p>
+			</div>
+			<div>
+				<h2 class="nh">Try changing</h2>
+				<ul>{meta.try.map((x: string) => <li>{x}</li>)}</ul>
+			</div>
+		</div>
+
+		{meta.concept && <ConceptBlock concept={meta.concept} />}
+
+		<h2 class="codeh">The script</h2>
+		<p class="run">
+			<code>cd tutorials && python {meta.file}</code> prints each variant's final metric; <code>--record out.json</code> also writes the replay.
+			Every tutorial imports <code>replay.py</code> from the same folder.
+		</p>
+		<Tabs>
+			<TabItem label={meta.file}>
+				<Code code={source} lang="python" title={`tutorials/${meta.file}`} />
+			</TabItem>
+			<TabItem label="replay.py">
+				<Code code={replaySource()} lang="python" title="tutorials/replay.py" />
+			</TabItem>
+		</Tabs>
+		<p class="recorded">
+			{
+				rec ? (
+					<>
+						Recorded with <code>SolverSteel</code> on Newton {rec.newton_version}
+						{rec.newton_commit && (
+							<>
+								{' '}
+								(<a href={`https://github.com/skild-ai/newton/commit/${rec.newton_commit}`}>{rec.newton_commit.slice(0, 7)}</a>)
+							</>
+						)}
+						, Warp {rec.warp_version}, {rec.gpu}. Replays read the state back every frame, so they are not a speed benchmark.{' '}
+					</>
+				) : null
+			}
+			<a href={`${repo}/${meta.file}`}>Script</a> · <a href={`${repo}/${meta.script}.toml`}>page text</a>
+		</p>
+	</div>
+</StarlightPage>
+
+<style>
+	.about {
+		max-width: 76ch;
+		font-size: 1.05rem;
+	}
+	.notes {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 18px 28px;
+		margin-top: 26px;
+		padding-top: 18px;
+		border-top: 1px solid var(--rule);
+	}
+	@media (max-width: 1050px) {
+		.notes { grid-template-columns: minmax(0, 1fr); }
+	}
+	.nh,
+	.codeh {
+		font: 500 11px/1.4 var(--mono) !important;
+		letter-spacing: 0.08em !important;
+		text-transform: uppercase;
+		color: var(--muted);
+		margin: 0 0 8px;
+	}
+	.codeh { margin-top: 2rem; }
+	.notes ul { margin: 0; padding-left: 18px; }
+	.notes li { margin: 0 0 6px; overflow-wrap: anywhere; }
+	.param code {
+		display: inline-block;
+		font-size: 13px;
+		color: var(--hot);
+		background: var(--hot-soft);
+		padding: 2px 6px;
+		border-radius: 3px;
+		margin-bottom: 6px;
+		overflow-wrap: anywhere;
+	}
+	.notes p { margin: 0; }
+	.run, .recorded { font-size: 14px; color: var(--muted); }
+	.run code { white-space: nowrap; }
+	.recorded { margin-top: 1.5rem; border-top: 1px solid var(--rule); padding-top: 12px; }
+</style>

@@ -1,0 +1,19 @@
+---
+title: Coupling with VBD and XPBD
+description: Steel as the rigid part of Newton's experimental coupled solvers.
+sidebar:
+  order: 5
+---
+
+import CouplingFigure from '~/components/figures/CouplingFigure.astro';
+
+Steel can own the rigid bodies and articulations of a scene inside Newton's experimental coupled solvers, next to `SolverVBD` or `SolverXPBD` for cloth, cables and soft bodies. Build Steel on a `ModelView` of the rigid part; a Steel entry that owns particles raises.
+
+- Steel consumes coupling forces through `state.body_f` and reports articulated effective mass from the endpoint mobility $J\tilde H^{-1}J^\top$ at `model.joint_q`. The effective mass is evaluated on the host, so issue the body, inertial and joint notifications it names outside capture.
+- When the coupler runs more than one iteration, Steel saves its friction-patch history on the first solve of a step and restores it on each restart, so repeated solves start from the same history.
+- Raised inside a coupler: sleeping, contact warm start, contact compliance, contact torsion, `RUN_TO_RUN`, and `update_mass_matrix_interval` above 1 with more than one coupler iteration. Steel cannot be a proxy destination.
+- Coupled use is validated with `solve_mode="serial"` and the immediate response. Set `model.rigid_contact_max` to the coupled contact buffer's capacity before constructing the coupled solver.
+
+<CouplingFigure n={13} />
+
+Proxy coupling is tuning-sensitive; treat coupled scenes as experiments and check them with focused metrics.

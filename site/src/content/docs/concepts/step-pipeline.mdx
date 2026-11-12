@@ -1,0 +1,21 @@
+---
+title: The step pipeline
+description: "The two halves of a Steel step: per-articulation dynamics and the per-world constraint solve."
+sidebar:
+  order: 1
+---
+
+import StepPipelineFigure from '~/components/figures/StepPipelineFigure.astro';
+import Term from '~/components/Term.astro';
+
+A step has two halves. The first runs once per articulation and is classical <Term name="crba">Featherstone dynamics</Term>, with a <Term name="chol">Cholesky</Term> factor of the mass matrix. The second runs once per world and turns contacts, limits, drives, mimic couplings and loop closures into rows of a velocity-level projected Gauss-Seidel (PGS) solve. Positions then follow from the solved velocities by symplectic Euler.
+
+<StepPipelineFigure n={1} />
+
+With joint-space inertia $H(q)$, bias forces $C(q,\dot q)$, applied generalized force $\tau$ and step $h$, the unconstrained velocity is
+
+$$
+\tilde H = H + \operatorname{diag}(\text{armature}) + \operatorname{diag}(h\,k_d + h^2 k_e),\qquad \hat v = \dot q + h\,\tilde H^{-1}\big(\tau + u_0 - C(q,\dot q)\big),
+$$
+
+where the extra diagonal folds the default implicit drives into the mass matrix and $u_0 = -k_e(q - q^* + h\dot q) - k_d(\dot q - \dot q^*)$ is the drive force at the start of the step, clamped to the effort limit. Constraint impulses $\lambda$ act through row Jacobians $J$, so $v^+ = \hat v + \tilde H^{-1}J^\top\lambda$. With $u = Jv^+$ the rows' physical velocity and $b$ their bias (position correction, speculative gaps and bounce targets), normal rows satisfy the <Term name="lcp">complementarity</Term> condition $0 \le \lambda_n \perp u_n + b_n \ge 0$ and friction rows stay in the Coulomb disk $\|\lambda_t\| \le \mu\lambda_n$.
