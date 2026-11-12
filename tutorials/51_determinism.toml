@@ -1,0 +1,67 @@
+# Page text for 51_determinism.py. Fields: tutorials/README.md.
+
+id = "determinism"
+title = "Run-to-run determinism"
+about = """\
+Forty objects poured into a bin twice from identical inputs. Run A is solid and run B is a \
+wireframe in the same place; each body of A turns orange as soon as its pose differs from B, \
+and the readout shows the largest difference. By default rows are reserved with atomics, so \
+the Gauss-Seidel order can change between runs and the chaotic pile amplifies the difference. \
+With deterministic=RUN_TO_RUN and a deterministic collision pipeline the recorded body poses \
+of the two runs are bitwise identical."""
+look = [
+  "Default: the first bodies turn orange at about 0.3 s and the runs end about 20 cm apart.",
+  "RUN_TO_RUN: every body stays neutral; the readout shows 0, bitwise identical, for the whole run.",
+]
+try = [
+  "Make only the solver deterministic.",
+  "Time both modes on a large scene.",
+]
+spacing = [0, 0.7, 0]
+fit = "end"
+
+[param]
+name = "deterministic"
+text = """\
+wp.DeterministicMode.RUN_TO_RUN, together with CollisionPipeline(model, deterministic=True)."""
+
+[metric]
+key = "divergence_mm"
+label = "largest position difference between the two runs (log scale)"
+unit = "mm"
+log = true
+
+[concept]
+name = "Run-to-run determinism"
+what = """\
+Rows are reserved with atomics by default, so their order, and with it the Gauss-Seidel \
+result, can differ between runs. RUN_TO_RUN reserves rows in a fixed order; with a \
+deterministic collision pipeline the same inputs give bitwise-identical results on the same \
+GPU and build."""
+here = "Two default pours end 20 cm apart; RUN_TO_RUN gives byte-identical recorded poses."
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+About 3.5% per step (1.64 → 1.70 ms in 1024 worlds) and about 5 MB more solver memory for 1024 \
+worlds."""
+
+[[concept.consider]]
+term = "Accuracy"
+text = "Neither order is more accurate; only reproducibility changes."
+
+[[concept.consider]]
+term = "Interactions"
+text = "body_parent_f sums with atomics and stays outside the guarantee."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Debugging, regression tests and reproducible data."
+
+[timing]
+group = "determinism"
+scene = "Scene: the 8-box stack in each world, 8 steps of 1/240 s per frame."
+
+[timing.notes]
+"default" = "pours end 20 cm apart"
+"RUN_TO_RUN" = "bitwise identical"

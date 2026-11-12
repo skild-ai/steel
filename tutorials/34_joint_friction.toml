@@ -1,0 +1,58 @@
+# Page text for 34_joint_friction.py. Fields: tutorials/README.md.
+
+id = "joint-friction"
+title = "Dry joint friction"
+about = """\
+Three pendulums released at 70° with joint friction of 0, 0.3 and 1.0 N·m. With \
+enable_joint_friction each DOF gets a row bounded by ±f·h around zero velocity, solved \
+together with contacts and drives, like MuJoCo's frictionloss. A joint sticks wherever \
+gravity's torque is below its friction."""
+look = [
+  "Default: all three swing identically, because friction is ignored.",
+  "Enabled: f = 1.0 stops at about 13°, and f = 0.3 near the bottom.",
+]
+try = [
+  "Set friction to 2.0 N·m: the pendulum never starts.",
+  "Combine friction with a drive.",
+]
+spacing = [0, 0.5, 0]
+
+[param]
+name = "enable_joint_friction"
+text = "Experimental, CUDA only. Reads Model.joint_friction [N or N·m] each step."
+
+[metric]
+key = "f_0.3"
+label = "joint angle"
+unit = "°"
+multi = ["f_0.0", "f_0.3", "f_1.0"]
+
+[concept]
+name = "Dry joint friction"
+what = """\
+Each DOF with friction f gets a row whose impulse is bounded by ±f·h around zero velocity, so \
+the joint sticks until the required effort exceeds f and then slides against it, like MuJoCo's \
+frictionloss."""
+here = "The 1 N·m pendulum sticks at 12.7°, near asin(f / mgL); 0.3 N·m stops near the bottom."
+
+[[concept.consider]]
+term = "Cost"
+text = "One row per DOF with friction: +29 to 43% per step on a 6-link chain."
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+CUDA only; not with contact compliance or pre-elimination; disables the local, paired and \
+sparse solves even when all coefficients are zero."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Gearboxes and passive joints that hold position."
+
+[timing]
+group = "joint_friction"
+scene = "Scene: a driven 6-link chain in each world (target_ke 50, joint friction 0.01)."
+
+[timing.notes]
+"joint friction off" = "friction ignored"
+"enable_joint_friction=True" = "1 N·m pendulum sticks at 12.7°"

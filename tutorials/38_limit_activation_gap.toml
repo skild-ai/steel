@@ -1,0 +1,76 @@
+# Page text for 38_limit_activation_gap.py. Fields: tutorials/README.md.
+
+id = "limit-activation-gap"
+title = "Joint limit activation gap"
+about = """\
+A twelve-link chain with ±20° hinges and no collisions, released with its root far outside its \
+limit, so the lower joints slam into their bounds. With enable_joint_limits, \
+joint_limit_activation_gap decides how close to a bound a joint gets a limit row. The default \
+is speed-aware: a row appears within 0.05 + 2·h·|v| of a bound. inf makes rows for every \
+finite limit every step; 0 makes them only once a joint is already past its bound."""
+look = [
+  "Default and inf hold the lower joints to the same worst overshoot (3.33° vs 3.32°), but the default needs 12 limit rows at most and inf 24.",
+  "gap=0 creates rows too late: the worst overshoot grows to 5.2°.",
+]
+try = [
+  "Add contacts that push the joints toward their bounds and compare None with inf.",
+  "Use drive_mode=\"rows\": then None creates every limit row, like inf.",
+]
+spacing = [0, 0.7, 0]
+
+[param]
+name = "joint_limit_activation_gap"
+text = """\
+Distance from a bound [m or rad] at which a limit row is created. None (default) is \
+speed-aware; inf creates every finite limit's row each step."""
+
+[metric]
+key = "violation_deg"
+label = "worst overshoot of the lower joints"
+unit = "°"
+
+[metric.alt]
+key = "limit_rows_high_water"
+label = "limit rows needed (high water)"
+unit = "rows"
+
+[concept]
+name = "Speculative limit rows"
+what = """\
+A limit row is speculative while the joint is inside its bound: it applies no impulse unless \
+the joint would cross the bound within the step. A row for a joint far from its bound \
+therefore does nothing but cost a row. The speed-aware gap skips those rows and keeps the ones \
+a joint can reach this step."""
+here = """\
+The default needs half the rows of inf (12 vs 24) with the same overshoot; gap=0 overshoots \
+5.2° instead of 3.3°."""
+
+[[concept.consider]]
+term = "Cost"
+text = "Fewer rows: 0.35 vs 0.41 ms per step at 1024 worlds (15%), 0.21 vs 0.25 ms in one world."
+
+[[concept.consider]]
+term = "Failure modes"
+text = """\
+Constraint impulses inside the solve, such as contacts, can push a gated joint past the margin \
+in one step; the docstring names this case."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+Mimic and loop-closure joints, their subtrees, and drive_mode=\"rows\" keep every limit row."""
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+Keep the default for robots with many limited joints; use inf when contacts drive joints into \
+their stops hard."""
+
+[timing]
+group = "limit_gap"
+scene = "Scene: the twelve-link limited chain in each world."
+
+[timing.notes]
+"gap=None (default)" = "worst overshoot 3.33°, 12 rows"
+"gap=inf" = "3.32°, 24 rows"
+"gap=0" = "5.21°, 11 rows"

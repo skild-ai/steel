@@ -1,0 +1,56 @@
+# Page text for 06_spin_rolling_friction.py. Fields: tutorials/README.md.
+
+id = "angular-friction"
+title = "Spin and rolling friction"
+about = """\
+A ball spinning at 25 rad/s about the vertical and a ball rolling at 1 m/s. A ball touches the \
+ground at one point, so sliding friction alone stops neither. The per-shape attribute \
+steel:condim uses MuJoCo's convention: 3 is sliding only, 4 adds a spin row bounded by \
+μ_torsional times the normal load, and 6 also adds a rolling pair bounded by μ_rolling."""
+look = [
+  "condim 3: both balls keep going.",
+  "condim 4: the spinning ball stops in about a second; the rolling ball keeps rolling.",
+  "condim 6: both stop.",
+]
+try = [
+  "Raise mu_rolling to 0.02 and watch the rolling ball stop sooner.",
+  "Give only the ground condim 6: a contact takes the larger coefficient of its two shapes.",
+]
+spacing = [0, 1.1, 0]
+
+[param]
+name = "steel:condim"
+text = """\
+Per shape, 3, 4 or 6. Applies to free-body contacts; register it with \
+SolverSteel.register_custom_attributes(builder) and fill model.steel.condim."""
+
+[metric]
+key = "spin"
+label = "spin rate"
+unit = "rad/s"
+
+[concept]
+name = "Spin and rolling friction"
+what = """\
+Sliding friction acts at the contact point, so it cannot stop a ball spinning about the \
+contact normal or rolling without slip. condim 4 adds a spin row bounded by μ_torsional·N, and \
+condim 6 adds two rolling rows bounded by μ_rolling·N, with N the patch's pooled normal load."""
+here = """\
+With condim 3 the spinning ball still turns at 19.5 rad/s after 5 s; condim 4 stops it in \
+about 0.6 s, and condim 6 also stops the rolling ball in about 2 s."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Up to six rows per contact instead of three; raise free_body_constraint_max if \
+constraint_overflow reports drops."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+Read only for free bodies; articulated links use steel:min_torsional_patch_radius. Contacts \
+share a patch only if their coefficients match."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Balls, wheels and pucks that should come to rest. Keep condim 3 for boxes."

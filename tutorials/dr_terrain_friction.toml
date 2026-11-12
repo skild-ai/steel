@@ -1,0 +1,72 @@
+# Page text for dr_terrain_friction.py. Fields: tutorials/README.md.
+
+id = "dr-terrain-friction"
+title = "Randomizing terrain friction"
+about = """\
+A shared ground plane is a single shape in the global world, so it has one mu for every world. \
+To randomize the floor per world, give each world its own floor shape (here a static box) and \
+write that shape's shape_material_mu, then notify SHAPE_PROPERTIES. Each box starts sliding at \
+2 m/s. With friction_combine=\"min\" the floor's mu decides and the slide distances match v^2 \
+/ (2 mu g). With the default \"average\" the box's own mu of 1.0 is averaged in and the spread \
+mostly disappears."""
+look = [
+  "\"min\": slide distance falls as 1 / mu.",
+  "\"average\": the floors look much alike.",
+]
+try = [
+  "Randomize both the floor and the box mu.",
+  "Use mesh or heightfield floors per world for rough terrain.",
+]
+spacing = [0, 1.8, 0]
+notify_flag = "SHAPE_PROPERTIES"
+update_route = "needs notify"
+
+[param]
+name = "SolverSteel(model, friction_combine=...)"
+text = """\
+How two shapes' mu combine in a contact: average (default), min, multiply or max. Fixed at \
+construction."""
+
+[metric]
+label = "slide distance"
+unit = "m"
+key = "floor mu 0.765"
+multi = [
+  "floor mu 0.267",
+  "floor mu 0.273",
+  "floor mu 0.313",
+  "floor mu 0.377",
+  "floor mu 0.765",
+]
+
+[concept]
+name = "When Steel sees a randomized value"
+what = """\
+Steel keeps a solver-side copy of this input, such as its material table, damping buffer, \
+cached body-to-COM transforms or effective armature. Writing the model array changes nothing \
+until notify_model_changed with the matching flag refreshes that copy."""
+here = "\"average\": the floors look much alike."
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Call only, default solver, six-link chain and four boxes per world, 1024 worlds (1.12 ms per \
+collide + step): SHAPE_PROPERTIES 84 µs (15 µs captured). Flags measured one at a time; \
+combined calls and feature validation can cost more. This notification does not request a \
+mass-matrix refresh."""
+
+[[concept.consider]]
+term = "Graph capture"
+text = """\
+These flags can be captured in a reset graph. Kinematic-flag changes, sleeping, and shape \
+flags with sparse factors plus restitution run eagerly; captured calls skip some value checks."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+world_mask limits which worlds lose their warm start; cached data is refreshed for every \
+world."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Locomotion over floors of different grip; give each world its own floor shape."

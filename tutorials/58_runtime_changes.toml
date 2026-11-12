@@ -1,0 +1,29 @@
+# Page text for 58_runtime_changes.py. Fields: tutorials/README.md.
+
+id = "runtime-changes"
+title = "Changing the model at runtime"
+about = """\
+Two boxes on a 25° ramp with μ = 0.8. At 1 s the script sets the second box's μ to 0.05 in \
+Model.shape_material_mu. Steel keeps its own copy of the material table, so the edit takes \
+effect only after notify_model_changed(ModelFlags.SHAPE_PROPERTIES)."""
+look = [
+  "Without notify: nothing changes.",
+  "With notify: the edited box slides from 1 s.",
+]
+try = [
+  "Change a joint's armature and notify with JOINT_DOF_PROPERTIES.",
+  "Change gravity with model.set_gravity.",
+]
+spacing = [0, 1.0, 0]
+
+[param]
+name = "solver.notify_model_changed(flags)"
+text = """\
+Call it after editing model arrays; flags name what changed (SHAPE_PROPERTIES, \
+JOINT_DOF_PROPERTIES, BODY_INERTIAL_PROPERTIES, ...)."""
+
+[metric]
+key = "edited_box"
+label = "slide distance"
+unit = "m"
+multi = ["unchanged_box", "edited_box"]

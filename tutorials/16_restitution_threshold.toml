@@ -1,0 +1,50 @@
+# Page text for 16_restitution_threshold.py. Fields: tutorials/README.md.
+
+id = "restitution-threshold"
+title = "Restitution threshold"
+about = """\
+A ball with e = 0.8 dropped from 0.5 m. Only impacts faster than \
+restitution_velocity_threshold bounce; slower ones use the ordinary contact law, so a resting \
+object pressed by gravity never jitters. The threshold therefore sets when a bouncing ball \
+comes to rest."""
+look = [
+  "0.05 m/s: many small bounces before it settles.",
+  "0.5 m/s (default): it stops after about 2.5 s.",
+  "1.5 m/s: it stops after the fourth bounce. With enable_restitution=False it does not bounce.",
+]
+try = [
+  "Drop from 2 m with threshold 3 m/s.",
+  "Set e = 1 and threshold 0: does the ball keep its height?",
+]
+spacing = [0, 0.4, 0]
+
+[param]
+name = "restitution_velocity_threshold"
+text = """\
+Minimum closing speed [m/s] at the start of the step for a rebound. Default 0.5, like PhysX's \
+bounceThreshold."""
+
+[metric]
+key = "height"
+label = "ball height"
+unit = "m"
+
+[concept]
+name = "Restitution threshold"
+what = """\
+Only contacts that close faster than restitution_velocity_threshold at the start of a step \
+bounce. Slower contacts use the ordinary resting law, so objects pressed by gravity or a \
+gripper never jitter."""
+here = """\
+A ball with e = 0.8 stops after four bounces with a 1.5 m/s threshold, after about 2.5 s with \
+the default 0.5 m/s, and keeps making small bounces with 0.05 m/s."""
+
+[[concept.consider]]
+term = "Accuracy"
+text = "A low threshold keeps low-speed bounces but can make resting contacts chatter."
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+Keep 0.5 m/s, the PhysX default, unless slow bounces matter; set enable_restitution=False to \
+turn bouncing off everywhere."""

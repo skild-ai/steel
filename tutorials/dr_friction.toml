@@ -1,0 +1,65 @@
+# Page text for dr_friction.py. Fields: tutorials/README.md.
+
+id = "dr-friction"
+title = "Randomizing friction"
+about = """\
+Five boxes on 25 degree ramps, one per world. At 1 s the script writes a sampled mu into \
+shape_material_mu for the ramp and the box of each world, then calls \
+notify_model_changed(SHAPE_PROPERTIES). Boxes with mu below tan(25 deg) = 0.47 slide; the rest \
+hold. Steel keeps its own copy of the material table, so without the notification the edit has \
+no effect."""
+look = [
+  "With notify: the boxes with mu < 0.47 slide off the ramp.",
+  "Without notify: every box holds.",
+]
+try = [
+  "Randomize only the box's mu and watch the average with the ramp's mu decide.",
+  "Pass world_mask to notify_model_changed to discard the warm start of only the changed worlds.",
+]
+spacing = [0, 1.8, 0]
+notify_flag = "SHAPE_PROPERTIES"
+update_route = "needs notify"
+
+[param]
+name = "model.shape_material_mu"
+text = """\
+One coefficient per shape; a contact combines the two shapes' values with friction_combine \
+(average by default)."""
+
+[metric]
+label = "slide distance"
+unit = "m"
+key = "mu 0.68"
+multi = ["mu 0.25", "mu 0.26", "mu 0.34", "mu 0.55", "mu 0.68"]
+
+[concept]
+name = "When Steel sees a randomized value"
+what = """\
+Steel keeps a solver-side copy of this input, such as its material table, damping buffer, \
+cached body-to-COM transforms or effective armature. Writing the model array changes nothing \
+until notify_model_changed with the matching flag refreshes that copy."""
+here = "Without notify: every box holds."
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Call only, default solver, six-link chain and four boxes per world, 1024 worlds (1.12 ms per \
+collide + step): SHAPE_PROPERTIES 84 µs (15 µs captured). Flags measured one at a time; \
+combined calls and feature validation can cost more. This notification does not request a \
+mass-matrix refresh."""
+
+[[concept.consider]]
+term = "Graph capture"
+text = """\
+These flags can be captured in a reset graph. Kinematic-flag changes, sleeping, and shape \
+flags with sparse factors plus restitution run eagerly; captured calls skip some value checks."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+world_mask limits which worlds lose their warm start; cached data is refreshed for every \
+world."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Grasping and pushing, where the friction coefficient is the usual sim-to-real gap."

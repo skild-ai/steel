@@ -1,0 +1,28 @@
+# Page text for 48_body_damping.py. Fields: tutorials/README.md.
+
+id = "body-damping"
+title = "Body damping"
+about = """\
+Four bars move at 0.6 m/s and spin at 6 rad/s with no gravity. Per-body linear and angular \
+damping scale the velocities each step by max(1 − d·dt, 0), with the same attributes and \
+defaults as PhysX rigid bodies."""
+look = [
+  "No damping: the spin stays at 6 rad/s.",
+  "Default angular damping 0.05: a slow decay.",
+  "d = 0.5 and d = 2: fast decays.",
+]
+try = [
+  "Damp only the linear velocity.",
+  "Damp a floating-base robot's root.",
+]
+spacing = [0, 0, 0]
+
+[param]
+name = "steel:rigid_body_linear_damping / _angular_damping"
+text = "Per body [1/s]. Defaults 0 and 0.05."
+
+[metric]
+key = "lin0.5_ang0.5"
+label = "spin rate"
+unit = "rad/s"
+multi = ["lin0_ang0", "lin0_ang0.05", "lin0.5_ang0.5", "lin2_ang2"]

@@ -1,0 +1,54 @@
+# Page text for 29_joint_types.py. Fields: tutorials/README.md.
+
+id = "joint-types"
+title = "Joint types"
+about = """\
+One small articulation per joint type: a revolute hinge, a prismatic slider on a tilted axis, \
+a ball joint, a D6 joint with a sprung vertical slide and two rotations, and a fixed joint. \
+Steel simulates all of them in reduced coordinates, so the joints themselves never drift \
+apart."""
+look = [
+  "The hinge swings in a plane, and the ball joint swings in a cone.",
+  "The slider slides until its tip reaches the floor, and the D6 link bobs on its spring while it swings.",
+  "The fixed link does not move.",
+]
+try = [
+  "Give the D6 a third angular axis.",
+  "Add limits to the prismatic joint and pass enable_joint_limits=True.",
+]
+spacing = [0, 0, 0]
+
+[param]
+name = "add_joint_revolute / _prismatic / _ball / _d6 / _fixed / _free"
+text = """\
+Put a tree's joints in one add_articulation call. D6 axes take JointDofConfig with their own \
+stiffness, damping and limits."""
+
+[metric]
+key = "revolute"
+label = "link tip height"
+unit = "m"
+multi = ["revolute", "prismatic", "ball", "d6", "fixed"]
+
+[concept]
+name = "Reduced-coordinate joints"
+what = """\
+Each tree joint contributes only the coordinates it allows: one for a hinge or slider, a \
+quaternion for a ball, any mix for D6. The motion is computed in those coordinates, so tree \
+joints never separate, with no rows and no iterations."""
+here = """\
+Five joint types move freely or not at all as their coordinates allow, with zero joint error."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Dense factorization grows roughly with the cube of an articulation's DOF count; Steel uses \
+sparse factors for branched trees when supported."""
+
+[[concept.consider]]
+term = "Interactions"
+text = "Joints outside the tree become loop-closure rows."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Model robots as trees and close loops only where the mechanism needs it."

@@ -1,0 +1,75 @@
+# Page text for dr_inertia.py. Fields: tutorials/README.md.
+
+id = "dr-inertia"
+title = "Randomizing inertia"
+about = """\
+Five balanced paddles on vertical hinges, held at zero by a torsional drive and released from \
+57 degrees. At 1 s the script scales each world's body_inertia by a sampled factor at fixed \
+mass. The oscillation period grows with the square root of the inertia, matching 2 pi sqrt(I / \
+ke). The second run uses update_mass_matrix_interval=10000, longer than the whole run, and \
+skips the notification: the mass matrix keeps the old inertia, and all five paddles swing with \
+the unrandomized period."""
+look = [
+  "With notify: the measured periods spread from 0.76 s to 1.41 s, as predicted.",
+  "With interval 10000 and no notify: all five swing together with the unrandomized 0.89 s period.",
+]
+try = [
+  "Scale only the hinge-axis component of body_inertia.",
+  "Add the notify call to the second run and confirm it matches the first.",
+]
+spacing = [0, 2.2, 0]
+notify_flag = "BODY_INERTIAL_PROPERTIES"
+update_route = "needs notify"
+
+[param]
+name = "update_mass_matrix_interval"
+text = """\
+With an interval above 1 the mass matrix is rebuilt only every few steps; a \
+BODY_INERTIAL_PROPERTIES notification forces a rebuild on the next step."""
+
+[metric]
+label = "angle"
+unit = "deg"
+key = "inertia x2.54"
+multi = [
+  "inertia x0.73",
+  "inertia x1.15",
+  "inertia x1.25",
+  "inertia x2.00",
+  "inertia x2.54",
+]
+
+[concept]
+name = "When Steel sees a randomized value"
+what = """\
+Notify with the matching flags after changing these model arrays so Steel refreshes all \
+derived data consistently. Some inputs are cached until notification; mass, inertia and drive \
+gains can also be picked up by periodic mass-matrix rebuilds, so their behavior without \
+notification depends on update_mass_matrix_interval."""
+here = """\
+With interval 10000 and no notify: all five swing together with the unrandomized 0.89 s \
+period."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Call only, default solver, six-link chain and four boxes per world, 1024 worlds (1.12 ms per \
+collide + step): BODY_INERTIAL_PROPERTIES 31 µs (17 µs captured). Flags measured one at a \
+time; combined calls and feature validation can cost more. Body-inertial and joint-DOF \
+notifications also request a mass-matrix refresh."""
+
+[[concept.consider]]
+term = "Graph capture"
+text = """\
+These flags can be captured in a reset graph. Kinematic-flag changes, sleeping, and shape \
+flags with sparse factors plus restitution run eagerly; captured calls skip some value checks."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+world_mask limits which worlds lose their warm start; cached data is refreshed for every \
+world."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Rotational dynamics that matter more than mass, such as wheels or paddles."

@@ -1,0 +1,28 @@
+# Page text for 44_weld_release.py. Fields: tutorials/README.md.
+
+id = "weld-release"
+title = "Weld release"
+about = """\
+A plank hinged at its left end and welded at its right end by a FIXED loop closure (three \
+point rows and three rotation rows) carries three boxes. Closure rows read Model.joint_enabled \
+every step, so writing False at 1.5 s releases the weld, also inside a captured CUDA graph, \
+and the plank swings down."""
+look = [
+  "The plank holds its load, then drops at 1.5 s and the boxes slide off.",
+]
+try = [
+  "Re-enable the weld at 2 s.",
+  "Move the weld anchor by editing joint_X_p.",
+]
+spacing = [0, 0, 0]
+
+[param]
+name = "Model.joint_enabled"
+text = """\
+Supported for loop-closing joints. joint_X_p, joint_X_c and joint_axis of a closure are read \
+every step too."""
+
+[metric]
+key = "plank_z"
+label = "plank center height"
+unit = "m"

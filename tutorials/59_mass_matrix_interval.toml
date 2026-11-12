@@ -1,0 +1,71 @@
+# Page text for 59_mass_matrix_interval.py. Fields: tutorials/README.md.
+
+id = "mass-matrix-interval"
+title = "Mass-matrix update interval"
+about = """\
+A six-link chain released at 1.2 rad swings freely. Building and factoring the joint-space \
+mass matrix is a large part of each step. update_mass_matrix_interval reuses the factorization \
+for several steps, which saves work but uses stale inertia while the chain changes shape. The \
+chart tracks the chain's total energy, armature included, and the swing of its tip."""
+look = [
+  "The default gains about 5.4% of its starting energy at most; intervals 4 and 16 stay within 2%.",
+  "The tip swings nearly overlap, so on this chain the stale factorization costs little accuracy. Measure your own scene before relying on it.",
+]
+try = [
+  "Try it on a slow robot arm, where the matrix changes little.",
+  "Compare against halving the step size.",
+]
+spacing = [0, 0.6, 0]
+
+[param]
+name = "update_mass_matrix_interval"
+text = """\
+Rebuild every N steps (default 1). Under CUDA graph capture, N should divide the number of \
+captured steps."""
+
+[metric]
+key = "energy"
+label = "chain energy"
+unit = "J"
+
+[metric.alt]
+key = "tip_x"
+label = "tip x"
+unit = "m"
+
+[concept]
+name = "Mass-matrix update interval"
+what = """\
+Each step builds and factors the joint-space mass matrix, which depends on the pose. \
+update_mass_matrix_interval reuses the factorization for several steps, accepting stale \
+inertia."""
+here = """\
+Over 4 s the default interval gains up to 5.4% energy; intervals 4 and 16 stay within 2%, and \
+the tip swings nearly overlap."""
+
+[[concept.consider]]
+term = "Cost"
+text = "On this 6-DOF chain the saving was 4 to 6% per step; larger articulations save more."
+
+[[concept.consider]]
+term = "Stability"
+text = """\
+The default gained energy on this chain of very light links even with armature; without \
+armature such chains gained more and could diverge."""
+
+[[concept.consider]]
+term = "Interactions"
+text = "dt changes, reset and notify_model_changed force a refresh."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Large, slowly moving articulations; verify energy or tracking first."
+
+[timing]
+group = "interval"
+scene = "Scene: a driven 6-link chain in each world (target_ke 50, joint friction 0.01)."
+
+[timing.notes]
+"update_mass_matrix_interval=1" = "energy within +5.4%"
+"update_mass_matrix_interval=4" = "within 0.9%"
+"update_mass_matrix_interval=16" = "within 1.7%"

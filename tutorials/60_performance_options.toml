@@ -1,0 +1,71 @@
+# Page text for 60_performance_options.py. Fields: tutorials/README.md.
+
+id = "performance-options"
+title = "Performance options"
+about = """\
+A fixed trunk with eight driven three-link branches, plus a separate two-link arm, so the \
+model has two articulation sizes. Four construction options change how Steel schedules its \
+work, not the physics: parallel_tree walks independent branches in parallel, \
+use_parallel_streams runs each size group on its own CUDA stream, double_buffer clears scratch \
+buffers on a side stream, and reuse_kinematics carries the step's kinematics into the next \
+step instead of re-deriving them."""
+look = [
+  "All four runs match the default run: the largest body difference is 0 mm, and 0.03 µm with reuse_kinematics.",
+  "The Cost table shows which one pays off on this tree.",
+]
+try = [
+  "Make the branches longer and count them again.",
+  "Add a FREE joint below the root and check solver.reuse_kinematics, which reports whether it runs.",
+]
+spacing = [0, 1.3, 0]
+
+[param]
+name = "parallel_tree / use_parallel_streams / double_buffer / reuse_kinematics"
+text = "Construction options; results are unchanged up to float summation order."
+
+[metric]
+key = "difference_mm"
+label = "largest body difference from the default run"
+unit = "mm"
+
+[concept]
+name = "Scheduling options"
+what = """\
+Steel walks each articulation tree for kinematics, dynamics and publication. parallel_tree \
+gives a branched tree up to 32 threads instead of one; use_parallel_streams overlaps the \
+factorization of different articulation sizes; double_buffer hides buffer clears; \
+reuse_kinematics skips recomputing the kinematics the last step already formed."""
+here = """\
+Trajectories are identical to the default. parallel_tree saved 9% per step at 1024 worlds \
+(0.59 vs 0.65 ms); the others were within 1–3%."""
+
+[[concept.consider]]
+term = "Cost"
+text = "double_buffer kept 30 MB more at 1024 worlds for no gain here; the rest add no memory."
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+reuse_kinematics stays off with the parallel tree, sleeping, joint velocity limits or a FREE \
+joint that is not first; state edits outside step need notify_state_changed."""
+
+[[concept.consider]]
+term = "Failure modes"
+text = "Narrow trees can get slower with parallel_tree; measure the full step."
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+parallel_tree for broad branched robots such as hands and multi-legged bodies; test the others \
+on your own model."""
+
+[timing]
+group = "performance"
+scene = "Scene: the eight-branch tree and two-link arm in each world."
+
+[timing.notes]
+"defaults" = "reference"
+"parallel_tree" = "identical trajectory"
+"use_parallel_streams" = "identical"
+"double_buffer" = "identical"
+"reuse_kinematics" = "within 0.03 µm"

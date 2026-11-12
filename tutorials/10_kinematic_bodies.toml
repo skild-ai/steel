@@ -1,0 +1,52 @@
+# Page text for 10_kinematic_bodies.py. Fields: tutorials/README.md.
+
+id = "kinematic-bodies"
+title = "Kinematic bodies and per-body gravity"
+about = """\
+A kinematic paddle (is_kinematic=True) turns at 1.2 rad/s and sweeps boxes as if it had \
+infinite mass. Steel holds a kinematic body's joint coordinates as given, so the script writes \
+its pose and velocity every step, then runs eval_fk so the collision pipeline sees the new \
+body pose. The box above it was added with disable_gravity=True and tumbles in place."""
+look = [
+  "The boxes are pushed outward, and none of them moves the paddle.",
+  "The floating box keeps its height.",
+]
+try = [
+  "Leave out the joint_qd write and compare the push.",
+  "Make the paddle move along x instead of turning.",
+]
+spacing = [0, 0, 0]
+
+[param]
+name = "is_kinematic / disable_gravity"
+text = """\
+Arguments of add_body. Write a kinematic body's joint_q and joint_qd each step, then call \
+newton.eval_fk so body_q and body_qd match before collide."""
+
+[metric]
+key = "mean_box_radius"
+label = "mean box distance from the axis"
+unit = "m"
+
+[concept]
+name = "Kinematic bodies"
+what = """\
+A kinematic body moves on a prescribed path and is not pushed back by contacts. Steel gives \
+its joint an armature of 1e10, so it has no response, and holds its coordinates as written. \
+The script writes pose and velocity, then runs eval_fk so collision sees the same pose."""
+here = """\
+The paddle sweeps the ring of boxes outward (mean radius 0.32 → 0.40 m) and is not slowed."""
+
+[[concept.consider]]
+term = "Accuracy"
+text = "Contacts use the written velocity; write a consistent velocity or the push is wrong."
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+A kinematic global body may touch every world; a kinematic global articulation with joints may \
+not."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Conveyors, robot playback and moving platforms whose motion is known."

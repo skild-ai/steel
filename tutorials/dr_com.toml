@@ -1,0 +1,71 @@
+# Page text for dr_com.py. Fields: tutorials/README.md.
+
+id = "dr-com"
+title = "Randomizing the center of mass"
+about = """\
+Five tall blocks standing on the ground, 8 cm wide. At 1 s the script moves each block's \
+body_com sideways by a sampled offset, without moving its shape. Blocks whose center of mass \
+leaves the 4 cm half-width footprint tip over. Steel caches the body-to-COM transforms, so the \
+shift takes effect only after notify_model_changed(BODY_INERTIAL_PROPERTIES); without it every \
+block keeps standing."""
+look = [
+  "With notify: the blocks with |offset| > 4 cm fall over at 1 s.",
+  "Without notify: no block moves, whatever its offset.",
+]
+try = [
+  "Offset the COM upward instead and push the blocks to see the lower tipping threshold.",
+  "Randomize the COM of a floating base in the quadruped example.",
+]
+spacing = [0, 2.0, 0]
+notify_flag = "BODY_INERTIAL_PROPERTIES"
+update_route = "needs notify"
+
+[param]
+name = "model.body_com"
+text = """\
+A body-frame offset of the center of mass. body_q stays the body origin; a free joint's \
+joint_qd is the COM velocity."""
+
+[metric]
+label = "tilt"
+unit = "deg"
+key = "com +6.31 cm"
+multi = [
+  "com -4.98 cm",
+  "com -2.63 cm",
+  "com +0.17 cm",
+  "com +6.28 cm",
+  "com +6.31 cm",
+]
+
+[concept]
+name = "When Steel sees a randomized value"
+what = """\
+Steel keeps a solver-side copy of this input, such as its material table, damping buffer, \
+cached body-to-COM transforms or effective armature. Writing the model array changes nothing \
+until notify_model_changed with the matching flag refreshes that copy."""
+here = "Without notify: no block moves, whatever its offset."
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Call only, default solver, six-link chain and four boxes per world, 1024 worlds (1.12 ms per \
+collide + step): BODY_INERTIAL_PROPERTIES 31 µs (17 µs captured). Flags measured one at a \
+time; combined calls and feature validation can cost more. Body-inertial and joint-DOF \
+notifications also request a mass-matrix refresh."""
+
+[[concept.consider]]
+term = "Graph capture"
+text = """\
+These flags can be captured in a reset graph. Kinematic-flag changes, sleeping, and shape \
+flags with sparse factors plus restitution run eagerly; captured calls skip some value checks."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+world_mask limits which worlds lose their warm start; cached data is refreshed for every \
+world."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Payloads and grasped objects whose balance point is uncertain."

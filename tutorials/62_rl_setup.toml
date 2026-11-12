@@ -1,0 +1,66 @@
+# Page text for 62_rl_setup.py. Fields: tutorials/README.md.
+
+id = "rl-setup"
+title = "Large-scale RL setup"
+about = """\
+Many copies of one small task step together: a box tossed onto a tilted pad, done when it \
+leaves the pad, times out after about 3 s, or its world dropped rows (read from \
+solver.constraint_overflow on the device). A frame is eight steps plus three kernels that find \
+done worlds, write their start pose and a random toss, and run eval_fk and solver.reset on \
+just those worlds. The whole frame is one captured CUDA graph, so nothing returns to the host."""
+look = [
+  "The replay shows 16 of the worlds; boxes that leave the pad snap back with a new random toss.",
+  "45 episodes ended in 6 s across the 16 worlds.",
+]
+try = [
+  "Add a reward kernel next to find_done.",
+  "Raise the world count to 16384 and watch the time per world fall.",
+]
+spacing = [0, 0, 0]
+
+[param]
+name = "solver.reset(state, world_mask) + eval_fk(mask=...)"
+text = """\
+world_mask has one entry per world plus one for global entities; eval_fk's mask has one entry \
+per articulation."""
+
+[metric]
+key = "resets"
+label = "episodes reset"
+unit = ""
+
+[concept]
+name = "Batched episodes"
+what = """\
+Reinforcement learning steps thousands of independent episodes at once. Keeping termination, \
+reset and stepping on the device lets one graph launch advance every world, and per-world \
+reset keeps the other worlds' solver history."""
+here = """\
+Every reset happens inside the captured graph; a world that drops rows is treated as done."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Per world-step: 23.7 µs at 16 worlds, 1.9 at 256, 0.54 at 1024, 0.16 at 4096 and 0.10 at 16384 \
+worlds (1.6 ms per step for all 16384); solver memory 1.5 GB at 16384 worlds."""
+
+[[concept.consider]]
+term = "Accuracy"
+text = """\
+constraint_overflow is per world, so a dropped-row world can be cut from training rather than \
+learned from."""
+
+[[concept.consider]]
+term = "Interactions"
+text = "check_constraint_capacity and watermark reads must stay outside capture."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Training and large evaluations: batch as many worlds as memory allows."
+
+[timing]
+group = "rl"
+scene = "Scene: the tossed-box task; one row per world count (time per step of all worlds)."
+
+[timing.notes]
+"frame graph: 8 steps, done and reset" = "per world-step: 23.7 µs (16 worlds) → 0.10 µs (16384 worlds)"

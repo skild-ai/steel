@@ -1,0 +1,67 @@
+# Page text for dr_velocity_limits.py. Fields: tutorials/README.md.
+
+id = "dr-velocity-limits"
+title = "Randomizing joint velocity limits"
+about = """\
+Five rotors spun up by the same small constant torque, each with a sampled \
+joint_velocity_limit. Steel enforces velocity limits as rows only when the solver is \
+constructed with enable_joint_velocity_limits=True; the limit values are read every step. With \
+the rows on, each rotor levels off at its own limit; with the default solver they all keep \
+accelerating."""
+look = [
+  "enable_joint_velocity_limits=True: each rotor plateaus at its sampled limit.",
+  "Default: the limits are ignored.",
+]
+try = [
+  "Lower a limit mid-run and watch the rotor brake to it.",
+  "Drive the rotors with a velocity target instead of a torque.",
+]
+spacing = [0, 2.0, 0]
+notify_flag = "JOINT_DOF_FORCE_PROPERTIES"
+update_route = "construction-only switch, values read every step"
+
+[param]
+name = "SolverSteel(model, enable_joint_velocity_limits=True)"
+text = "One row per limited DOF; the rows count against the articulation row capacity."
+
+[metric]
+label = "joint speed"
+unit = "rad/s"
+key = "limit 10.6 rad/s"
+multi = [
+  "limit 5.6 rad/s",
+  "limit 8.4 rad/s",
+  "limit 9.0 rad/s",
+  "limit 10.3 rad/s",
+  "limit 10.6 rad/s",
+]
+
+[concept]
+name = "When Steel sees a randomized value"
+what = """\
+The rows that use this input exist only if the solver was constructed with the feature \
+enabled; the values themselves are read every step. Randomize the values, not whether the \
+feature is on."""
+here = "Default: the limits are ignored."
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Call only, default solver, six-link chain and four boxes per world, 1024 worlds (1.12 ms per \
+collide + step): JOINT_DOF_FORCE_PROPERTIES 25 µs (7 µs captured). Flags measured one at a \
+time; combined calls and feature validation can cost more. Body-inertial and joint-DOF \
+notifications also request a mass-matrix refresh."""
+
+[[concept.consider]]
+term = "Graph capture"
+text = """\
+These flags can be captured in a reset graph. Kinematic-flag changes, sleeping, and shape \
+flags with sparse factors plus restitution run eagerly; captured calls skip some value checks."""
+
+[[concept.consider]]
+term = "Interactions"
+text = "Turning the feature on later needs a new solver."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Motors with uncertain top speed; build with enable_joint_velocity_limits=True."

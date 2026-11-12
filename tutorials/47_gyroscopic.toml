@@ -1,0 +1,48 @@
+# Page text for 47_gyroscopic.py. Fields: tutorials/README.md.
+
+id = "gyroscopic"
+title = "Gyroscopic stability"
+about = """\
+A T-handle spun about its intermediate principal axis in zero gravity flips over periodically \
+(the Dzhanibekov effect). Steel integrates single free bodies with an energy-preserving \
+update, so the flips stay periodic instead of drifting. The script sets angular damping to \
+zero; the default is 0.05 s⁻¹, as in PhysX."""
+look = [
+  "The handle flips every 2.9 s.",
+  "Spin speed rises at each flip while energy and angular momentum stay constant.",
+]
+try = [
+  "Spin about the long axis instead.",
+  "Restore the default damping and run for 60 s.",
+]
+spacing = [0, 0, 0]
+
+[param]
+name = "steel:rigid_body_angular_damping"
+text = "Per body [1/s], default 0.05. Damps free bodies and floating bases only."
+
+[metric]
+key = "handle_y"
+label = "handle axis · world y"
+unit = ""
+
+[concept]
+name = "Energy-preserving gyroscopics"
+what = """\
+A spinning rigid body's angular momentum is constant, but its angular velocity changes as \
+inertia rotates. An explicit update of that term adds energy. Steel updates single free bodies \
+with Cayley steps that preserve kinetic energy exactly, using 1 to 32 microsteps."""
+here = """\
+The T-handle flips about every 2.9 s and keeps doing so; spin rises to 9.4 rad/s at each flip."""
+
+[[concept.consider]]
+term = "Cost"
+text = "A few small 3×3 solves per body per step."
+
+[[concept.consider]]
+term = "Interactions"
+text = "Angular damping (default 0.05 s⁻¹) slowly removes energy; set it to 0 to compare."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Automatic for free single bodies."

@@ -1,0 +1,72 @@
+# Page text for 20_hydroelastic_compliance.py. Fields: tutorials/README.md.
+
+id = "hydroelastic-compliance"
+title = "Hydroelastic contact and compliance"
+about = """\
+A dense sphere and box dropped onto a pad. Point contacts give a few rows per pair. \
+Hydroelastic contact finds the equal-pressure surface inside the overlap, integrates pressure \
+over it, and reports contacts with a stiffness each. Steel can solve those rows rigidly, or \
+with contact_compliance as an implicit spring-damper, so objects sink to a depth set by the \
+hydroelastic modulus kh."""
+look = [
+  "The rigid variants rest at zero penetration.",
+  "With compliance, kh = 1e7 sinks the sphere about 6 mm and kh = 1e6 about 21 mm.",
+  "The box dropped from 10 cm decelerates at up to 26 g on rigid contacts, 11 g at kh = 1e7 and 4.8 g at 1e6: compliance spreads the impact.",
+]
+try = ["Set kh = 3e6.", "Drop the sphere from 20 cm."]
+spacing = [0, 0.7, 0]
+
+[param]
+name = "contact_compliance"
+text = """\
+Experimental. Requires point friction, no warm start and no velocity iterations. The stiffness \
+comes from ShapeConfig.kh with is_hydroelastic=True."""
+
+[[metric.charts]]
+key = "box_mm"
+label = "box penetration (negative is into the pad)"
+unit = "mm"
+
+[metric.charts.alt]
+key = "sphere_mm"
+label = "sphere penetration"
+unit = "mm"
+
+[[metric.charts]]
+key = "impact_g"
+label = "deceleration of the dropped box"
+unit = "g"
+
+[concept]
+name = "Compliant contact"
+what = """\
+With contact_compliance, a contact that carries a stiffness k and damping c is an implicit \
+unilateral spring-damper instead of a rigid row. Stiffness comes from the hydroelastic modulus \
+kh, so objects sink until the pressure carries their weight."""
+eq = "f = max(0, −k φ − c u)"
+here = """\
+The 4 g/cm³ box sinks 0.83 mm at kh = 1e7 and 8.6 mm at 1e6; rigid laws hold it at the \
+surface. A box dropped from 10 cm peaks at 26 g of deceleration on rigid contacts, 11 g and \
+4.8 g with compliance."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Hydroelastic patches bring many contacts: this scene raises row capacities to 512 and 4096."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+Requires point friction, no warm start, no velocity iterations, no regularization and zero \
+restitution."""
+
+[[concept.consider]]
+term = "Accuracy"
+text = """\
+Penetration is the physical deformation; it is not removed. Impact loads are lower and closer \
+to a real soft contact."""
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+Soft fingertips, pads and impacts where force peaks matter; keep rigid contacts elsewhere."""

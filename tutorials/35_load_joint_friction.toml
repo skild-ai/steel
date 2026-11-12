@@ -1,0 +1,49 @@
+# Page text for 35_load_joint_friction.py. Fields: tutorials/README.md.
+
+id = "load-joint-friction"
+title = "Load-dependent joint friction"
+about = """\
+Three pendulums with tip densities of 500, 2000 and 8000 kg/m³ and the same 0.05 N·m joint \
+friction. Constant friction stops a light pendulum sooner than a heavy one. \
+steel:joint_friction_load_coefficient adds c·(|F| + |T|) of the load the joint carries, the \
+joint friction law of older PhysX articulations, so friction grows with the weight and all \
+three stop alike."""
+look = [
+  "Constant friction: the heaviest pendulum is still swinging at 5 s.",
+  "With c = 0.02: all three settle near the bottom.",
+]
+try = ["Use c = 0.1.", "Set the base friction to zero and keep c."]
+spacing = [0, 0.5, 0]
+
+[param]
+name = "steel:joint_friction_load_coefficient"
+text = "Per DOF, with enable_joint_friction. Experimental."
+
+[metric]
+key = "tip_2000"
+label = "joint angle"
+unit = "°"
+multi = ["tip_500", "tip_2000", "tip_8000"]
+
+[concept]
+name = "Load-dependent joint friction"
+what = """\
+steel:joint_friction_load_coefficient adds c(|F| + |T|) to a DOF's friction, where F and T are \
+the force and torque the joint carries, the older PhysX articulation law. Friction then scales \
+with the load, like Coulomb friction in a bearing."""
+here = """\
+With constant friction the heaviest pendulum still swings at 5 s; with c = 0.02 all three \
+settle."""
+
+[[concept.consider]]
+term = "Accuracy"
+text = "The law sums N and N·m, as PhysX did."
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+Needs enable_joint_friction; a model built with all coefficients zero must keep them zero."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Matching PhysX assets that relied on load friction."

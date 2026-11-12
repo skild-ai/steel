@@ -1,0 +1,27 @@
+# Page text for 42_mimic_gear.py. Fields: tutorials/README.md.
+
+id = "mimic-gear"
+title = "Mimic gears"
+about = """\
+A driven wheel and a follower coupled by a mimic row with ratio −2, like two meshing gears. At \
+3 s the script rewrites Model.joint_mimic_coeffs to a ratio of −0.5, with an offset that keeps \
+the follower where it is. Steel reads the coefficients every step, so no rebuild is needed."""
+look = [
+  "Before 3 s the small wheel turns twice as fast, the other way.",
+  "After 3 s it turns at half the speed.",
+]
+try = [
+  "Make the ratio +1 for a belt drive.",
+  "Drive the follower instead and see what the mimic row does.",
+]
+spacing = [0, 0, 0]
+
+[param]
+name = "Model.joint_mimic_coeffs"
+text = "(offset, ratio) per follower joint, editable in place, also between CUDA graph replays."
+
+[metric]
+key = "follower_deg"
+label = "wheel angle"
+unit = "°"
+multi = ["leader_deg", "follower_deg"]

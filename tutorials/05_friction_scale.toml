@@ -1,0 +1,29 @@
+# Page text for 05_friction_scale.py. Fields: tutorials/README.md.
+
+id = "friction-scale"
+title = "Global friction scale"
+about = """\
+contact_friction_scale multiplies every shape's μ inside the solver's own copy of the \
+materials, so the model is unchanged. It is a quick way to sweep friction, for example for \
+domain randomization, without editing shapes. The box sits on a 20° ramp (tan 20° ≈ 0.36) with \
+μ = 0.6."""
+look = [
+  "Scales 1.0 and 0.7 (μ 0.6 and 0.42) hold the box.",
+  "Scale 0.4 (μ 0.24) lets it slide down and onto the floor.",
+]
+try = [
+  "Find the scale at which the box starts to slide (about 0.61).",
+  "Combine it with friction_combine=\"min\".",
+]
+spacing = [0, 0.6, 0]
+
+[param]
+name = "contact_friction_scale"
+text = """\
+Non-negative factor on every shape's friction coefficient, applied to friction rows, patches \
+and the torsion budget. Refreshed by notify_model_changed(SHAPE_PROPERTIES)."""
+
+[metric]
+key = "slide_m"
+label = "slide distance"
+unit = "m"

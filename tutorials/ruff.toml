@@ -1,0 +1,6 @@
+line-length = 100
+[lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+[lint.isort]
+known-third-party = ["newton", "warp"]
+known-local-folder = ["replay"]

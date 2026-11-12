@@ -1,0 +1,26 @@
+# Page text for 49_body_velocity_limits.py. Fields: tutorials/README.md.
+
+id = "body-velocity-limits"
+title = "Body speed limits"
+about = """\
+Three balls fall 1.5 m. Their linear speed is capped at infinity, 2 and 1 m/s with \
+steel:rigid_body_max_linear_velocity, matching PhysX's maxLinearVelocity. A matching angular \
+cap exists too."""
+look = [
+  "The free ball reaches about 5 m/s; the others fall at their caps and land later.",
+]
+try = [
+  "Cap the angular speed of a spinning top.",
+  "Use a cap to tame an unstable scene and see what it hides.",
+]
+spacing = [0, 0, 0]
+
+[param]
+name = "steel:rigid_body_max_linear_velocity"
+text = "Per body [m/s]. rigid_body_max_angular_velocity is in rad/s. Default unbounded."
+
+[metric]
+key = "cap_2"
+label = "ball speed"
+unit = "m/s"
+multi = ["cap_inf", "cap_2", "cap_1"]

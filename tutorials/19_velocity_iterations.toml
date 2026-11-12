@@ -1,0 +1,61 @@
+# Page text for 19_velocity_iterations.py. Fields: tutorials/README.md.
+
+id = "velocity-iterations"
+title = "Velocity iterations"
+about = """\
+Boxes spawned 2 cm into the ground. Steel corrects penetration through a velocity bias β·φ/h, \
+and that bias becomes real velocity. With β = 0.8 the box is launched. velocity_iterations \
+re-solve the velocities without the bias after the positions are integrated, so the error is \
+still removed but the box is not thrown."""
+look = [
+  "baumgarte 0.2: a small hop of about 3 cm.",
+  "baumgarte 0.8: the box flies about 70 cm.",
+  "baumgarte 0.8 with 4 velocity iterations: no hop at all.",
+]
+try = ["Use velocity_iterations=1.", "Spawn the boxes 5 cm deep."]
+spacing = [0, 0.6, 0]
+
+[param]
+name = "velocity_iterations"
+text = """\
+Velocity-only PGS iterations after the position solve. Default 0. baumgarte is the fraction of \
+penetration removed per step, default 0.2."""
+
+[metric]
+key = "z_mm"
+label = "box height above rest"
+unit = "mm"
+
+[concept]
+name = "Baumgarte stabilization and velocity iterations"
+what = """\
+Penetration φ is corrected with a velocity bias of β·φ/h, removing a fraction β of the error \
+per step. That bias becomes real velocity. velocity_iterations re-solve the velocities without \
+the bias after positions are integrated, so the error is removed without leaving velocity \
+behind."""
+eq = "target = −β · φ / h"
+here = """\
+A box 2 cm deep hops 29 mm at β = 0.2 and 74 cm at β = 0.8; four velocity iterations remove \
+the hop."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+4 velocity iterations add about 25%: 1.0 → 1.3 ms per step in one world, 1.6 → 2.0 ms in 1024."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+Not allowed with sleeping, contact compliance or contact torsion; disables pre-elimination."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Scenes with overlap at reset, or a raised β."
+
+[timing]
+group = "velocity_iterations"
+scene = "Scene: the 8-box stack in each world, 8 steps of 1/240 s per frame."
+
+[timing.notes]
+"velocity_iterations=0" = "β 0.8: box hops 74 cm"
+"velocity_iterations=4" = "β 0.8: no hop"

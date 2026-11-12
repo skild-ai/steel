@@ -1,0 +1,27 @@
+# Page text for 46_floating_base.py. Fields: tutorials/README.md.
+
+id = "floating-base"
+title = "Floating base"
+about = """\
+A body on four hinged legs with a free root joint, the structure of a legged robot. It drops, \
+lands on its legs, then its hip drives splay and sway the legs. The free joint is the first \
+joint of the articulation, and the hips are driven with PD targets through \
+Control.joint_target_q, which has one entry per joint coordinate, so the free joint's seven \
+come first."""
+look = [
+  "The body lands on its feet, then rises and dips as the hips sway the legs.",
+]
+try = [
+  "Raise the hip gains to 1000.",
+  "Load a URDF or MJCF robot with add_urdf / add_mjcf instead.",
+]
+spacing = [0, 0, 0]
+
+[param]
+name = "add_joint_free(child)"
+text = "A floating base is a FREE root joint at the start of the articulation."
+
+[metric]
+key = "torso_z"
+label = "body height"
+unit = "m"

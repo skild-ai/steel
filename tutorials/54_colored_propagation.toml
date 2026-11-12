@@ -1,0 +1,70 @@
+# Page text for 54_colored_propagation.py. Fields: tutorials/README.md.
+
+id = "colored-propagation"
+title = "Solve modes"
+about = """\
+A three-link arm sweeps through 25 boxes. The default serial mode sweeps each world's rows in \
+order in one fused kernel. solve_mode=\"colored\" with the propagation response colors \
+contacts that share no body and solves each color in parallel, and computes articulated \
+responses from the tree factorization instead of per row. Which is faster depends on the \
+scene."""
+look = [
+  "Both modes push the boxes the same way; the details differ because the pile is chaotic.",
+  "Second scene, the 8-box stack at 12 iterations: the two sweeps converge alike (2.07 vs 2.00 mm sag), and the colored sweep is several times faster on the arm scene (see Cost).",
+]
+try = [
+  "Replicate the scene into 512 worlds and time both modes.",
+  "Try propagation_color_order=\"rotating\".",
+]
+spacing = [0, 1.1, 0]
+
+[param]
+name = "solve_mode / articulated_contact_response"
+text = """\
+\"serial\" + \"immediate\" (default) or \"colored\" + \"propagation\". \
+propagation_constraint_max sizes the propagation rows."""
+
+[[metric.charts]]
+scene = "arm"
+key = "mean_push_mm"
+label = "mean box displacement"
+unit = "mm"
+
+[[metric.charts]]
+scene = "stack"
+key = "sag_mm"
+label = "8-box stack sag, 12 iterations"
+unit = "mm"
+
+[concept]
+name = "Serial vs colored solve"
+what = """\
+The serial sweep solves each world's rows in order in one fused kernel. The colored sweep \
+groups contacts that share no responding body and solves each group in parallel; with the \
+propagation response, articulated contacts use each body's response from the tree \
+factorization instead of a dense row per contact."""
+here = """\
+Both modes push the 25 boxes; trajectories differ because the pile is chaotic. On the 8-box \
+stack at 12 iterations they converge alike: 2.07 mm (serial) vs 2.00 mm (colored) sag."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+On this arm-and-boxes scene, colored+propagation took 1.5 vs 5.6 ms per step in one world and \
+2.7 vs 7.6 ms in 256 worlds, with 30 to 80% more solver memory."""
+
+[[concept.consider]]
+term = "Interactions"
+text = "Nesterov needs serial; sleeping needs colored when propagation is on."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Contact-rich scenes with articulations; measure, since it depends on the scene."
+
+[timing]
+group = "colored"
+scene = "Scene: the 3-link arm in 25 boxes in each world."
+
+[timing.notes]
+"serial + immediate" = "stack sag 2.07 mm"
+"colored + propagation" = "stack sag 2.00 mm"

@@ -1,0 +1,65 @@
+# Page text for dr_effort_limits.py. Fields: tutorials/README.md.
+
+id = "dr-effort-limits"
+title = "Randomizing effort limits"
+about = """\
+Five stiff arms with a 2.1 kg payload start hanging 80 degrees below level, with the drive \
+target at level. Each world gets a sampled joint_effort_limit. Holding the arm level takes 6.9 \
+N m, so arms with a lower limit cannot hold it there and swing below it, while the others \
+settle at the target. Steel reads joint_effort_limit every step; the script still notifies \
+JOINT_DOF_FORCE_PROPERTIES after writing it."""
+look = [
+  "Limits above 6.9 N m: the arm reaches level.",
+  "Limits below it: the arm may pass level briefly but cannot stay there.",
+]
+try = [
+  "Switch to drive_mode=\"rows\" (see Drive saturation).",
+  "Randomize the payload mass as well and watch where the threshold moves.",
+]
+spacing = [0, 2.0, 0]
+notify_flag = "JOINT_DOF_FORCE_PROPERTIES"
+update_route = "read every step"
+
+[param]
+name = "model.joint_effort_limit"
+text = """\
+With the default drive_mode=\"augmented\" only the explicit drive force is clamped; \
+drive_mode=\"rows\" clamps the whole drive reaction."""
+
+[metric]
+label = "angle"
+unit = "deg"
+key = "limit 9.0 N m"
+multi = [
+  "limit 4.3 N m",
+  "limit 6.8 N m",
+  "limit 7.7 N m",
+  "limit 8.2 N m",
+  "limit 9.0 N m",
+]
+
+[concept]
+name = "When Steel sees a randomized value"
+what = """\
+Steel reads this input from the model or state every step, so a write takes effect on the next \
+step. The tutorial still notifies where a flag exists, which keeps sleeping islands and \
+carried kinematics consistent."""
+here = "Limits below it: the arm may pass level briefly but cannot stay there."
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Call only, default solver, six-link chain and four boxes per world, 1024 worlds (1.12 ms per \
+collide + step): JOINT_DOF_FORCE_PROPERTIES 25 µs (7 µs captured). Flags measured one at a \
+time; combined calls and feature validation can cost more. Body-inertial and joint-DOF \
+notifications also request a mass-matrix refresh."""
+
+[[concept.consider]]
+term = "Graph capture"
+text = """\
+These flags can be captured in a reset graph. Kinematic-flag changes, sleeping, and shape \
+flags with sparse factors plus restitution run eagerly; captured calls skip some value checks."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Motors near their torque limit, such as lifting near capacity."

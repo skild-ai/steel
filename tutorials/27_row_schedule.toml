@@ -1,0 +1,83 @@
+# Page text for 27_row_schedule.py. Fields: tutorials/README.md.
+
+id = "row-schedule"
+title = "Row schedule"
+about = """\
+row_schedule sets the order of a sweep. The default interleaved order sweeps every row family \
+in each iteration. contact_then_internal runs all contact iterations first, then all \
+iterations of the internal rows (drives, mimics, limits, joint friction). phased approximates \
+the order PhysX uses for grasping: internal rows, then contacts, then velocity limits, each in \
+its own launch. Two scenes at 4 iterations: a hinged arm resting on its lower limit under an 8 \
+g/cm³ box, and a gripper whose fingers squeeze with effort-limited drive rows."""
+look = [
+  "Arm: interleaved and phased let the hinge sink 3.2° past its stop at first and settle 1.6° past it; contact_then_internal holds the limit exactly, but the box falls through the arm to the floor.",
+  "Grasp: interleaved and phased hold the box within a few millimetres through the shake; contact_then_internal drops it (258 mm of slip).",
+]
+try = [
+  "Raise iterations to 12 and compare the stop.",
+  "Use drive_mode=\"augmented\" in the grasp and see which schedules still differ.",
+]
+spacing = [0, 0.8, 0]
+
+[param]
+name = "row_schedule"
+text = """\
+\"interleaved\" (default), \"contact_then_internal\" or \"phased\". Contact torsion and \
+contact compliance need \"interleaved\", and sparse mass factors are only used with it."""
+
+[[metric.charts]]
+scene = "stop"
+key = "past_limit_deg"
+label = "hinge past its stop"
+unit = "°"
+
+[metric.charts.alt]
+key = "box_height"
+label = "box height (0.05 m is the floor)"
+unit = "m"
+
+[[metric.charts]]
+scene = "grasp"
+key = "slip_mm"
+label = "box slip in the grasp"
+unit = "mm"
+
+[concept]
+name = "Row order"
+what = """\
+Projected Gauss-Seidel uses each row's latest neighbours, so the order of a sweep decides \
+which constraints are satisfied best when the iterations run out: rows solved last win. \
+Interleaving lets contacts and internal rows trade impulses every iteration."""
+here = """\
+Solving every internal row after the contacts held the hinge limit exactly but let the loaded \
+box pass through the arm, and released the grasp. Phased matched interleaved within 0.2 mm of \
+slip."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+On the arm scene, phased was 3 to 4% slower per step than interleaved and \
+contact_then_internal 8 to 11% slower (1, 64 and 1024 worlds)."""
+
+[[concept.consider]]
+term = "Failure modes"
+text = "A late block of internal rows can override contacts that support a load."
+
+[[concept.consider]]
+term = "Interactions"
+text = "Torsion, compliance and sparse factors require interleaved."
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+Keep interleaved. Use phased to match a PhysX-tuned grasp; we found no scene where \
+contact_then_internal was better."""
+
+[timing]
+group = "row_schedule"
+scene = "Scene: the hinged arm on its stop under the heavy box, 4 iterations."
+
+[timing.notes]
+"row_schedule=\"interleaved\"" = "1.6° past the stop, box held"
+"row_schedule=\"contact_then_internal\"" = "limit exact, box falls through"
+"row_schedule=\"phased\"" = "same as interleaved"

@@ -1,0 +1,73 @@
+# Page text for 26_contact_warmstart.py. Fields: tutorials/README.md.
+
+id = "contact-warmstart"
+title = "Contact warm start"
+about = """\
+The eight-box stack again, at 4 iterations per step. contact_warmstart starts each step from \
+the matched contacts' impulses of the previous step, so the solve continues where it left off. \
+The collision pipeline must be created with contact matching to find last step's contacts."""
+look = [
+  "Cold start at 4 iterations: about 7 mm sag.",
+  "Warm start at 4 iterations: about 0.5 mm on average, better than 12 cold iterations, but the top box chatters by about ±1.5 mm.",
+  "With contact_warmstart_decay=0.9 the chatter falls to about a third (standard deviation 0.33 vs 1.1 mm) at about 1 mm mean sag, still below 12 cold iterations and cheaper per step (see Cost).",
+]
+try = [
+  "Use contact_matching=\"sticky\".",
+  "Set contact_warmstart_decay=0.5.",
+]
+spacing = [0, 0.35, 0]
+
+[param]
+name = "contact_warmstart"
+text = """\
+Needs CollisionPipeline(model, contact_matching=\"latest\" or \"sticky\"). \
+contact_warmstart_decay scales the carried impulses."""
+
+[metric]
+key = "sag_mm"
+label = "top-box sag"
+unit = "mm"
+
+[concept]
+name = "Warm start"
+what = """\
+Contacts that persist from step to step usually need similar impulses. With contact_warmstart \
+the solve starts from last step's impulses, matched by contact identity, scaled by the step \
+ratio and clamped to the current friction cone."""
+here = """\
+At 4 iterations the sag drops from 7.0 mm to 0.5 mm on average, better than 12 cold iterations \
+(2.1 mm), but the top box chatters (standard deviation 1.1 mm). A decay of 0.9 cuts the \
+chatter to 0.33 mm at 1.0 mm mean sag."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
++26% per step in one world and +39% in 1024 worlds (1.09 → 1.51 ms), plus 15 MB of solver \
+memory for 1024 worlds; the pipeline's contact matching adds its own memory and about 3% time \
+(separate run)."""
+
+[[concept.consider]]
+term = "Interactions"
+text = "Needs pipeline contact_matching; not with sleeping, contact compliance or torsion."
+
+[[concept.consider]]
+term = "Failure modes"
+text = """\
+Stale impulses can cause chatter at low iteration counts; contact_warmstart_decay below 1 \
+trades some sag for less chatter."""
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+Persistent stacks or grasps where 4 warm iterations beat 12 cold ones in both sag and time, as \
+here."""
+
+[timing]
+group = "warmstart"
+scene = "Scene: the 8-box stack in each world, 8 steps of 1/240 s per frame."
+
+[timing.notes]
+"iterations=4" = "sag 7.0 mm"
+"iterations=4 + warm start" = "sag 0.5 mm mean, chatters (sd 1.1 mm)"
+"iterations=8 + warm start" = "separate run: sag 0.04 mm mean, sd 0.45 mm"
+"iterations=12" = "sag 2.1 mm"

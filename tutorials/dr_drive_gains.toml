@@ -1,0 +1,73 @@
+# Page text for dr_drive_gains.py. Fields: tutorials/README.md.
+
+id = "dr-drive-gains"
+title = "Randomizing drive gains"
+about = """\
+Five arms with a heavy tip on vertical hinges. At 1 s the script writes a sampled \
+joint_target_ke and joint_target_kd per world, calls \
+notify_model_changed(JOINT_DOF_FORCE_PROPERTIES), and steps the target to 90 degrees. Stiffer \
+drives oscillate faster; lower damping overshoots more. Steel integrates drives implicitly by \
+folding dt * kd + dt^2 * ke into the mass matrix, and the notification makes sure that matrix \
+is rebuilt with the new gains."""
+look = [
+  "The oscillation period shortens as ke grows.",
+  "The arm with the lowest kd overshoots the most.",
+]
+try = [
+  "Use update_mass_matrix_interval=10 and drop the notify call.",
+  "Try drive_mode=\"rows\" and compare the responses.",
+]
+spacing = [0, 2.6, 0]
+notify_flag = "JOINT_DOF_FORCE_PROPERTIES"
+update_route = "needs notify"
+
+[param]
+name = "model.joint_target_ke / joint_target_kd"
+text = """\
+Per-DOF drive gains. The explicit drive force reads them every step; the implicit part lives \
+in the mass matrix."""
+
+[metric]
+label = "angle"
+unit = "deg"
+key = "ke 19.8 kd 0.25"
+multi = [
+  "ke 7.7 kd 0.22",
+  "ke 7.9 kd 0.23",
+  "ke 16.2 kd 0.10",
+  "ke 17.7 kd 0.27",
+  "ke 19.8 kd 0.25",
+]
+
+[concept]
+name = "When Steel sees a randomized value"
+what = """\
+Notify with the matching flags after changing these model arrays so Steel refreshes all \
+derived data consistently. Some inputs are cached until notification; mass, inertia and drive \
+gains can also be picked up by periodic mass-matrix rebuilds, so their behavior without \
+notification depends on update_mass_matrix_interval."""
+here = "The arm with the lowest kd overshoots the most."
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Call only, default solver, six-link chain and four boxes per world, 1024 worlds (1.12 ms per \
+collide + step): JOINT_DOF_FORCE_PROPERTIES 25 µs (7 µs captured). Flags measured one at a \
+time; combined calls and feature validation can cost more. Body-inertial and joint-DOF \
+notifications also request a mass-matrix refresh."""
+
+[[concept.consider]]
+term = "Graph capture"
+text = """\
+These flags can be captured in a reset graph. Kinematic-flag changes, sleeping, and shape \
+flags with sparse factors plus restitution run eagerly; captured calls skip some value checks."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+world_mask limits which worlds lose their warm start; cached data is refreshed for every \
+world."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Policies that must tolerate actuator stiffness and damping errors."

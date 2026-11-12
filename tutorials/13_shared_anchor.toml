@@ -1,0 +1,57 @@
+# Page text for 13_shared_anchor.py. Fields: tutorials/README.md.
+
+id = "shared-anchor"
+title = "Shared contact anchors"
+about = """\
+Each contact has a witness point on each shape. When the shapes overlap, the two points are \
+separated along the normal by the penetration depth, and a friction row applied at each body's \
+own point forms a couple between them. contact_friction_shared_anchor applies friction rows at \
+the midpoint, and contact_shared_anchor applies every contact row there, as PhysX applies a \
+contact at one point. A box slides at 2 m/s across a resting slab, starting 3 cm deep in it; \
+one run starts just touching."""
+look = [
+  "The pitch rate of the sliding box peaks at 0.055 rad/s with separate witness points and 0.010 rad/s with either shared anchor; with no penetration it is 0.0004 rad/s.",
+  "The effect is small here and grows with depth and friction.",
+]
+try = [
+  "Start the box 5 cm deep.",
+  "Turn on patch friction (the default) and compare.",
+]
+spacing = [0, 0.5, 0]
+
+[param]
+name = "contact_friction_shared_anchor / contact_shared_anchor"
+text = """\
+Construction options, both default False. Patch friction rows keep their own anchors, so with \
+patches contact_shared_anchor moves only the normal rows."""
+
+[metric]
+key = "box_pitch_rate"
+label = "pitch rate of the sliding box"
+unit = "rad/s"
+
+[concept]
+name = "Shared contact anchors"
+what = """\
+A contact row acts on each body at that body's witness point. When the points are separated \
+along the normal, as in deep penetration, the tangential forces on the two bodies form a \
+couple of depth times force. Applying the rows at the midpoint removes that couple. The \
+penetration still comes from the witness points."""
+here = """\
+At 3 cm of overlap the spurious pitch rate fell from 0.055 to 0.010 rad/s with either option."""
+
+[[concept.consider]]
+term = "Cost"
+text = "None measurable: only the lever arms change."
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+Patch friction acts at its own anchors; contact_friction_shared_anchor then has no effect. \
+Neither is allowed with contact compliance."""
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+Matching PhysX contact behavior, and in deep-contact grasps where friction should not twist \
+the held object."""

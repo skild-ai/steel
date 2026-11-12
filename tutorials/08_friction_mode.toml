@@ -1,0 +1,81 @@
+# Page text for 08_friction_mode.py. Fields: tutorials/README.md.
+
+id = "friction-mode"
+title = "Friction update modes"
+about = """\
+Two checks with known answers. A box slides at 2 m/s with μ = 0.5, so it should stop after \
+v²/(2μg) = 408 mm. A ball spinning at 60 rad/s without moving slides until it rolls, and then \
+rolls at 2/7·ωr = 0.857 m/s. friction_mode selects how Steel updates each contact's Coulomb \
+cone; the experimental modes solve normal and friction impulses together and use point \
+friction."""
+look = [
+  "fixed_normal (default) and coulomb_newton stop the box at 404 mm.",
+  "bisection stops it at 431 mm.",
+  "All three modes give the ball the same 0.84 m/s rolling speed.",
+  "Second scene, a box at 90% of its friction limit with only 4 iterations: fixed_normal slips 1.17 mm in 5 s, coulomb_newton 0.38 mm and bisection 0.02 mm. With few iterations the coupled modes win.",
+]
+try = [
+  "Raise iterations and see whether bisection moves toward 408 mm.",
+  "Add \"bisection_desaxce\" to the loop.",
+]
+spacing = [0, 0.7, 0]
+
+[param]
+name = "friction_mode"
+text = """\
+\"fixed_normal\" (default), \"bisection\", \"bisection_desaxce\" or \"coulomb_newton\". \
+Experimental; may change."""
+
+[[metric.charts]]
+scene = "slide"
+key = "slide_mm"
+label = "box slide distance (analytic 408 mm)"
+unit = "mm"
+
+[metric.charts.alt]
+key = "ball_v"
+label = "ball speed (analytic 0.857 m/s)"
+unit = "m/s"
+
+[[metric.charts]]
+scene = "slope"
+key = "slope_slip_mm"
+label = "slip on a slope at 90% of the limit, 4 iterations"
+unit = "mm"
+
+[concept]
+name = "Coulomb update"
+what = """\
+Each contact's friction must stay inside a cone of radius μ·λn. The default fixed_normal mode \
+solves the two tangent impulses together on the disk of the current normal impulse. bisection \
+and coulomb_newton solve normal and tangent impulses of a contact together."""
+here = """\
+fixed_normal and coulomb_newton stop the sliding box at 404 mm against 408 mm analytic; \
+bisection stops it at 431 mm. All three give the spinning ball 0.84 m/s against 0.857 \
+analytic."""
+
+[[concept.consider]]
+term = "Cost"
+text = "The coupled modes do more work per contact and use point friction."
+
+[[concept.consider]]
+term = "Accuracy"
+text = """\
+With few iterations the coupled modes hold static friction better: at 90% of the limit and 4 \
+iterations, slip is 1.17 mm (fixed_normal), 0.38 (coulomb_newton), 0.02 (bisection)."""
+
+[[concept.consider]]
+term = "Failure modes"
+text = """\
+In a separate run at 97% of the limit, bisection let the box slide away even at 12 iterations \
+while coulomb_newton held it to 0.002 mm."""
+
+[[concept.consider]]
+term = "Interactions"
+text = "Patches, torsion, compliance and contact_regularization need fixed_normal."
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+coulomb_newton for free-body contacts near the friction limit at low iteration counts; \
+otherwise fixed_normal with patches."""

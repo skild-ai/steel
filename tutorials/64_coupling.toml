@@ -1,0 +1,77 @@
+# Page text for 64_coupling.py. Fields: tutorials/README.md.
+
+id = "coupling-xpbd"
+title = "Coupling Steel with XPBD cloth"
+about = """\
+Steel simulates rigid bodies and articulations but no particles, so it cannot simulate cloth \
+on its own. SolverCoupledProxy runs two solvers on one model: here Steel owns two boxes, a \
+six-link chain and a stack of six boxes, and XPBD owns a cloth fixed along two edges. XPBD \
+sees each Steel body as a proxy body with Steel's effective mass, and the contact impulses it \
+computes are fed back to Steel. The comparison run lets XPBD simulate everything."""
+look = [
+  "Both runs drop the boxes and the chain into the cloth, which sags about 30 cm and holds them.",
+  "Steel's chain joints stay exact (largest anchor gap 0.00006 mm); XPBD's joints open by up to 0.08 mm.",
+  "The stack beside the cloth rests within 0.1 mm in both runs.",
+]
+try = [
+  "Raise Config(iterations=2) and compare the cloth sag.",
+  "Swap SolverXPBD for SolverVBD in the second entry.",
+  "Give Steel a driven arm that presses into the cloth.",
+]
+spacing = [0, 2.2, 0]
+
+[param]
+name = "SolverCoupledProxy(model, entries, coupling)"
+text = """\
+Each Entry names a solver factory and the bodies, joints or particles it owns. A Proxy maps \
+source bodies into the destination solver; Config.iterations sets the proxy relaxation passes."""
+
+[[metric.charts]]
+key = "joint_gap_mm"
+label = "largest chain joint anchor gap"
+unit = "mm"
+
+[[metric.charts]]
+key = "cloth_low_z"
+label = "lowest cloth point"
+unit = "m"
+
+[metric.charts.alt]
+key = "stack_sag_mm"
+label = "top of the box stack below rest"
+unit = "mm"
+
+[concept]
+name = "Proxy coupling"
+what = """\
+Two solvers step the same model, each owning part of it. Before the destination solver steps, \
+the source bodies are copied in as proxies with the source's effective mass and inertia. The \
+contact impulses the destination applies to those proxies are harvested and fed back to the \
+source as forces, lagged by one solve; Config.iterations repeats the exchange within a step."""
+here = """\
+Steel owns all rigid bodies and joints, XPBD the 289 cloth particles; XPBD alone also handled \
+these rigid bodies well."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Two solves per step plus the exchange: 14.6 vs 9.7 ms per eager step with XPBD alone (one \
+world, printed by the script)."""
+
+[[concept.consider]]
+term = "Accuracy"
+text = """\
+Feedback lags by one solve, so stiff contact between the two sides can need smaller steps or \
+more proxy iterations."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+At most two entries per coupled solver; set Steel options in its factory and check it via \
+coupled.solver(\"steel\")."""
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+A Steel robot or articulated scene needs cloth or soft bodies; for a scene that is mostly \
+deformables with a few free boxes, one deformable solver is simpler and faster."""

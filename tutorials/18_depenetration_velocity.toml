@@ -1,0 +1,55 @@
+# Page text for 18_depenetration_velocity.py. Fields: tutorials/README.md.
+
+id = "depenetration-velocity"
+title = "Depenetration speed limit"
+about = """\
+Three boxes spawned overlapping by 3 cm and 2 cm into the ground. Steel removes penetration \
+with a velocity bias, and a large overlap gives a large bias, so by default the top box is \
+thrown about 55 cm up. steel:rigid_body_max_depenetration_velocity caps the speed of that \
+correction per free body, matching PhysX's maxDepenetrationVelocity, so the boxes separate \
+gently."""
+look = [
+  "Unbounded: the top box jumps.",
+  "0.2 m/s: the stack pushes apart in about half a second and stays put.",
+]
+try = ["Try 1.0 m/s.", "Combine it with baumgarte=0.8."]
+spacing = [0, 0.6, 0]
+
+[param]
+name = "steel:rigid_body_max_depenetration_velocity"
+text = """\
+Per body [m/s], default unbounded. Fill model.steel.rigid_body_max_depenetration_velocity \
+after registering the attributes."""
+
+[metric]
+key = "top_z"
+label = "top box height"
+unit = "m"
+
+[concept]
+name = "Depenetration speed limit"
+what = """\
+Overlap is removed through a velocity bias proportional to depth, so a deep overlap becomes a \
+fast push. steel:rigid_body_max_depenetration_velocity caps that correction speed per free \
+body, as PhysX's maxDepenetrationVelocity does."""
+here = """\
+Unbounded, the top box is thrown about 55 cm; with a 0.2 m/s cap the overlapping boxes \
+separate in about half a second and stay stacked."""
+
+[[concept.consider]]
+term = "Cost"
+text = "None."
+
+[[concept.consider]]
+term = "Accuracy"
+text = """\
+Penetration lasts longer with a low cap; a cap far below the needed speed leaves objects \
+overlapping for many steps."""
+
+[[concept.consider]]
+term = "Interactions"
+text = "Applies to free bodies; articulations use velocity_iterations."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Spawning or randomizing objects that may overlap."

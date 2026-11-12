@@ -1,0 +1,46 @@
+# Page text for 52_heterogeneous_worlds.py. Fields: tutorials/README.md.
+
+id = "heterogeneous"
+title = "Heterogeneous worlds"
+about = """\
+Five worlds with different structure in one model and one SolverSteel: 2-, 5- and 9-link \
+chains, a pile of boxes, and a driven arm with a box. begin_world and end_world assign \
+everything in between to a world. Worlds never collide with each other, and each world's sweep \
+runs over its own live rows. Some per-world buffers are sized to the maximum DOF count across \
+worlds."""
+look = [
+  "Each world moves independently; the shared ground belongs to all of them.",
+]
+try = [
+  "Add a sixth world with a gripper.",
+  "Replicate one world 1000 times with replicate().",
+]
+spacing = [0, 0, 0]
+
+[param]
+name = "begin_world / end_world"
+text = "Group entities into worlds. Row capacities apply per world."
+
+[concept]
+name = "Batched worlds"
+what = """\
+Many independent worlds share one model and one solver. Worlds never collide with each other \
+and each world's sweep runs over its own rows, so different robots and scenes can share one \
+batch."""
+here = "Five worlds of different structure step together."
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Some per-world buffers are sized to the largest world's DOF count, and row capacities apply \
+per world, so very uneven worlds waste memory."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+Global (world −1) bodies are shared; a dynamic global body cannot touch articulations of other \
+worlds."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Mixed-task training batches."

@@ -1,0 +1,60 @@
+# Page text for 55_cuda_graph.py. Fields: tutorials/README.md.
+
+id = "cuda-graph"
+title = "CUDA graph capture"
+about = """\
+Sixteen replicated worlds. Eight collide-and-step calls are captured once into a CUDA graph \
+and replayed every frame, which removes Python and kernel-launch overhead. The physics is the \
+same as eager stepping."""
+look = [
+  "The eager and graph runs land the same way; small differences come from the default row order, which is not deterministic.",
+  "The script prints the time per frame of both.",
+]
+try = [
+  "Capture 16 steps.",
+  "Edit a mimic coefficient in place between replays.",
+]
+spacing = [1.6, 0, 0]
+
+[param]
+name = "wp.ScopedCapture / wp.capture_launch"
+text = """\
+Warm up once eagerly so kernels compile outside the capture. Use an even number of steps so \
+the state buffers end where they started."""
+
+[metric]
+key = "top_z"
+label = "highest body"
+unit = "m"
+
+[concept]
+name = "CUDA graph capture"
+what = """\
+Capturing a frame of collide and step calls records every kernel launch once; replaying the \
+graph skips Python and launch overhead. Arrays are read in place, so in-place edits between \
+replays take effect, but replaced arrays need a new capture."""
+here = "Eager and graph runs land the same way; the 16-world replay ran faster per frame."
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+On the 8-box stack: 1.0 vs 1.6 ms per step in one world, 1.64 vs 1.74 ms in 1024 worlds, so \
+the gain is largest for small batches."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+check_constraint_capacity and watermarks must run outside capture; update_mass_matrix_interval \
+should divide the captured step count."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Always for training loops; compile once eagerly before capturing."
+
+[timing]
+group = "graph"
+scene = "Scene: the 8-box stack in each world, 8 steps of 1/240 s per frame."
+
+[timing.notes]
+"eager" = "same physics"
+"CUDA graph" = "same physics"

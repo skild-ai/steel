@@ -1,0 +1,51 @@
+# Page text for 33_joint_velocity_limits.py. Fields: tutorials/README.md.
+
+id = "velocity-limits"
+title = "Joint velocity limits"
+about = """\
+A flywheel under a constant 3 N·m torque with a 6 rad/s velocity limit. Without \
+enable_joint_velocity_limits it keeps accelerating. With it, Steel scales velocities that \
+already exceed a limit and adds a pair of clamp rows per limited DOF."""
+look = [
+  "Off: the flywheel spins up to about 180 rad/s in 3 s.",
+  "On: it holds 6 rad/s.",
+]
+try = [
+  "Set velocity_limit_activation_fraction=0.9.",
+  "Use drive_mode=\"rows\" with a velocity target above the limit.",
+]
+spacing = [0, 0.6, 0]
+
+[param]
+name = "enable_joint_velocity_limits"
+text = """\
+Uses Model.joint_velocity_limit (add_joint_* velocity_limit). \
+velocity_limit_activation_fraction creates the rows only near the limit."""
+
+[metric]
+key = "omega"
+label = "angular velocity"
+unit = "rad/s"
+
+[concept]
+name = "Joint velocity limits"
+what = """\
+Steel first scales articulation velocities that already exceed a limit, then adds a pair of \
+clamp rows per limited DOF so the solve cannot exceed it."""
+here = """\
+Under a constant 3 N·m the flywheel reaches 179 rad/s in 3 s without limits and holds 6.0 \
+rad/s with them."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Two rows per limited DOF; velocity_limit_activation_fraction creates them only near the limit."""
+
+[[concept.consider]]
+term = "Accuracy"
+text = """\
+The gate samples velocity before the solve, so crossing within a step is clamped a step late."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Motors with rated speeds."

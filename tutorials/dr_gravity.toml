@@ -1,0 +1,59 @@
+# Page text for dr_gravity.py. Fields: tutorials/README.md.
+
+id = "dr-gravity"
+title = "Randomizing gravity"
+about = """\
+Five pendulums released from 30 degrees, each in a world with its own gravity, set with \
+model.set_gravity(g, world=w). The period shrinks as 1 / sqrt(g), matching the point-mass \
+estimate. Steel reads model.gravity every step; the script notifies MODEL_PROPERTIES, which \
+matters when the solver reuses carried kinematics (reuse_kinematics), where a gravity change \
+otherwise lags by one step."""
+look = [
+  "The weakest gravity swings slowest.",
+  "Every world swings with the same amplitude.",
+]
+try = [
+  "Tilt the gravity vector a few degrees per world instead of scaling it.",
+  "If your observations use the gravity vector, normalize it: it is an acceleration, not a unit vector.",
+]
+spacing = [0, 1.8, 0]
+notify_flag = "MODEL_PROPERTIES"
+update_route = "read every step"
+
+[param]
+name = "model.set_gravity(g, world=w)"
+text = """\
+Sets one world's gravity vector; model.gravity has one entry per world plus one for the global \
+world."""
+
+[metric]
+label = "angle"
+unit = "deg"
+key = "g 14.43"
+multi = ["g 3.94", "g 4.70", "g 8.67", "g 12.77", "g 14.43"]
+
+[concept]
+name = "When Steel sees a randomized value"
+what = """\
+Steel reads this input from the model or state every step, so a write takes effect on the next \
+step. The tutorial still notifies where a flag exists, which keeps sleeping islands and \
+carried kinematics consistent."""
+here = "Every world swings with the same amplitude."
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Call only, default solver, six-link chain and four boxes per world, 1024 worlds (1.12 ms per \
+collide + step): MODEL_PROPERTIES 5 µs (3 µs captured). Flags measured one at a time; combined \
+calls and feature validation can cost more. This notification does not request a mass-matrix \
+refresh."""
+
+[[concept.consider]]
+term = "Graph capture"
+text = """\
+These flags can be captured in a reset graph. Kinematic-flag changes, sleeping, and shape \
+flags with sparse factors plus restitution run eagerly; captured calls skip some value checks."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Slopes, payload tilts or other-planet tests, per world."

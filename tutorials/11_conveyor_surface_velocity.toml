@@ -1,0 +1,53 @@
+# Page text for 11_conveyor_surface_velocity.py. Fields: tutorials/README.md.
+
+id = "conveyor-surface-velocity"
+title = "Conveyor belts"
+about = """\
+Three static mesh belts carry boxes through friction alone. A Mesh created with \
+enable_surface_velocity=True has per-vertex velocities that the contacts read, and Steel uses \
+the part tangent to each contact. The belts move at 0, 0.1 and 0.25 m/s."""
+look = [
+  "Each box reaches its belt's speed in a fraction of a second.",
+  "The belt itself never moves.",
+]
+try = [
+  "Use velocities that turn around the z axis for a turntable.",
+  "Lower the boxes' μ and watch them lag behind the belt.",
+]
+spacing = [0, 0, 0]
+
+[param]
+name = "Mesh(enable_surface_velocity=True)"
+text = """\
+After finalize, write mesh.mesh.velocities (m/s per vertex). The array is read in place, also \
+inside a captured CUDA graph."""
+
+[metric]
+key = "belt_0.1"
+label = "box speed"
+unit = "m/s"
+multi = ["belt_0.0", "belt_0.1", "belt_0.25"]
+
+[concept]
+name = "Surface velocity"
+what = """\
+A mesh with surface velocity tells each contact how fast its surface moves. Friction then \
+drives the relative tangential speed to zero instead of the absolute one, so belts move \
+objects while staying in place."""
+here = "Each box reaches its belt's speed (0.10 and 0.25 m/s) within about 0.1 s."
+
+[[concept.consider]]
+term = "Cost"
+text = "One mesh query per contact on that mesh; meshes without it pay nothing."
+
+[[concept.consider]]
+term = "Accuracy"
+text = "Only the tangent component is used; normal motion needs moving geometry."
+
+[[concept.consider]]
+term = "Interactions"
+text = "The velocities array is read in place, also inside captured CUDA graphs."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Belts, turntables and treads, without simulating the moving parts."

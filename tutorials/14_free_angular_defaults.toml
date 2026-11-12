@@ -1,0 +1,66 @@
+# Page text for 14_free_angular_defaults.py. Fields: tutorials/README.md.
+
+id = "free-angular-defaults"
+title = "Free-body angular friction defaults"
+about = """\
+A ball spinning at 25 rad/s and a ball rolling at 1 m/s, as in the spin and rolling friction \
+tutorial. Instead of setting steel:condim on every shape, \
+SolverSteel(free_rigid_torsional_friction=..., free_rigid_rolling_friction=...) gives every \
+free-body contact a spin and a rolling coefficient [m] with one argument each, replacing the \
+shapes' condim gate and coefficients for that coefficient only."""
+look = [
+  "Default (condim 3, no override): the spinner still turns at 20.5 rad/s after 4 s and the roller rolls at 0.67 m/s.",
+  "Per-shape condim 6 and the override 0.01 / 0.004 m stop both balls identically: spin by 0.67 s, roll by 2.0 s.",
+  "Tripling the override stops them in 0.23 s and 0.7 s.",
+]
+try = [
+  "Sweep the rolling coefficient from 0.001 to 0.02 m in a loop of solvers.",
+  "Set only the torsional override and leave rolling to the shapes.",
+]
+spacing = [0, 1.1, 0]
+
+[param]
+name = "free_rigid_torsional_friction / free_rigid_rolling_friction"
+text = """\
+Coefficients in metres for every free-body contact; None (default) keeps the shapes' condim \
+and coefficients. Experimental, construction-only."""
+
+[[metric.charts]]
+key = "spin"
+label = "spin rate"
+unit = "rad/s"
+
+[[metric.charts]]
+key = "roll"
+label = "rolling ball speed"
+unit = "m/s"
+
+[concept]
+name = "Solver-wide angular friction"
+what = """\
+Spin and rolling rows are normally opt-in per shape through steel:condim, with coefficients \
+from shape_material_mu_torsional and _rolling. The two constructor overrides turn the rows on \
+for every free-body contact and use one coefficient each, without touching shape data."""
+here = """\
+The overrides reproduce per-shape condim 6 exactly (both stop in 0.67 s and 2.0 s); three \
+times the coefficients stop the balls about three times sooner."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Up to six rows per contact instead of three, as with condim 6; size free_body_constraint_max \
+for it."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+Free-body contacts only; articulated links use steel:min_torsional_patch_radius. Requires the \
+interleaved row schedule, fixed_normal friction and no contact compliance."""
+
+[[concept.consider]]
+term = "Accuracy"
+text = "One coefficient for all shapes: mixed materials need per-shape values."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Sweeping or randomizing rolling resistance, or using assets you cannot edit."

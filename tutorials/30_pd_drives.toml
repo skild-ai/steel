@@ -1,0 +1,56 @@
+# Page text for 30_pd_drives.py. Fields: tutorials/README.md.
+
+id = "pd-drives"
+title = "PD drives"
+about = """\
+Four arms with gravity. Three get a position target of 45° at 0.5 s with different gains: soft \
+and underdamped, soft and damped, stiff and damped. The fourth has only target_kd and follows \
+a velocity target of 2 rad/s from 1 s. By default Steel integrates drives implicitly in the \
+mass matrix, so stiff gains stay stable at large steps."""
+look = [
+  "k_e 50, k_d 1 overshoots to about 61° and rings.",
+  "k_e 400 settles closest to 45°; the soft drives sag under gravity.",
+  "The velocity-driven arm spins continuously.",
+]
+try = [
+  "Set target_ke=5000 at DT = 1/60.",
+  "Add effort_limit=1.0 to the stiff arm.",
+]
+spacing = [0, 0, 0]
+
+[param]
+name = "target_ke / target_kd"
+text = "Joint arguments; Control.joint_target_q and joint_target_qd set the targets each step."
+
+[metric]
+key = "ke50_kd1"
+label = "arm angle"
+unit = "°"
+multi = ["ke50_kd1", "ke50_kd10", "ke400_kd20"]
+
+[concept]
+name = "Implicit drives"
+what = """\
+A PD drive pulls a joint toward a target position with stiffness kₑ and toward a target \
+velocity with damping k_d. By default Steel folds h·k_d + h²·kₑ into the mass matrix, an \
+implicit integration that stays stable for stiff gains at large steps."""
+eq = "H̃ = H + h·k_d + h²·kₑ"
+here = """\
+kₑ 50, k_d 1 overshoots to 61°; kₑ 400, k_d 20 settles at 44.7°. Gravity makes soft drives \
+sag."""
+
+[[concept.consider]]
+term = "Cost"
+text = "None extra: the drive is part of the factorization."
+
+[[concept.consider]]
+term = "Accuracy"
+text = "Only the explicit drive force is clamped to effort_limit; the implicit part is not."
+
+[[concept.consider]]
+term = "Interactions"
+text = "Driven articulations never fall asleep."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Default for robot joints; use drive rows when effort limits must hold exactly."

@@ -1,0 +1,59 @@
+# Page text for 04_friction_combine.py. Fields: tutorials/README.md.
+
+id = "friction-combine"
+title = "Friction combine modes"
+about = """\
+Boxes with μ = 0.1, 0.4 and 0.9 sit on a 25° ramp with μ = 0.4 (tan 25° ≈ 0.47). Each contact \
+needs one coefficient for a pair of shapes, and friction_combine picks how to combine them, \
+with the same modes as PhysX: average (default), min, multiply or max. The same boxes stick or \
+slide depending on the mode."""
+look = [
+  "With average, only the μ = 0.9 box holds (0.65 > 0.47).",
+  "With max, the μ = 0.4 box slides too (max is 0.4 < 0.47), and the μ = 0.9 box holds.",
+  "With min and multiply every box slides.",
+]
+try = [
+  "Set RAMP_MU = 1.0 and compare average and min.",
+  "Use restitution_combine the same way for bounce.",
+]
+spacing = [0, 1.2, 0]
+
+[param]
+name = "friction_combine"
+text = "\"average\", \"min\", \"multiply\" or \"max\" of the two shapes' mu."
+
+[metric]
+key = "mu_0.4"
+label = "slide distance"
+unit = "m"
+multi = ["mu_0.1", "mu_0.4", "mu_0.9"]
+
+[concept]
+name = "Combining material coefficients"
+what = """\
+A contact needs one friction coefficient, but each of its two shapes has one. friction_combine \
+picks the rule: average (default), min, multiply or max, the modes PhysX offers. \
+restitution_combine does the same for bounce."""
+here = """\
+With a ramp μ of 0.4, the μ = 0.9 box holds under average (0.65) and max, but slides under min \
+and multiply (0.36), so the same scene gives three different outcomes."""
+
+[[concept.consider]]
+term = "Cost"
+text = "None measurable: one lookup per contact."
+
+[[concept.consider]]
+term = "Accuracy"
+text = """\
+Average and multiply make a high-friction shape slippery on a low-friction one; max and min \
+let one material decide."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+contact_friction_scale scales each shape's coefficient before combining, so multiply squares a \
+common scale. Patches only form between contacts whose combined coefficients match."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Match the source of your assets: PhysX scenes often author a combine mode per material."

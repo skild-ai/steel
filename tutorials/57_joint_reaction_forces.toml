@@ -1,0 +1,28 @@
+# Page text for 57_joint_reaction_forces.py. Fields: tutorials/README.md.
+
+id = "joint-reaction-forces"
+title = "Joint reaction forces"
+about = """\
+A six-link chain hangs from a hinge and swings. The body_parent_f observable gives the wrench \
+each body's parent applies through its joint, reconstructed from the step's solved motion. At \
+rest the root hinge carries the chain's weight."""
+look = [
+  "The vertical root force swings between about 5 and 8 N around the chain's 6.41 N weight (dashed).",
+]
+try = [
+  "Add a box under the chain and watch the root unload.",
+  "Read the torque about the hinge axis.",
+]
+spacing = [0, 0, 0]
+
+[param]
+name = "solver.observables({\"body_parent_f\"})"
+text = """\
+Linear force [N] then torque [N·m] about the body's center of mass, world frame. Pass \
+observables= to step."""
+
+[metric]
+key = "root_force_z"
+label = "vertical root force"
+unit = "N"
+multi = ["root_force_z", "chain_weight"]

@@ -1,0 +1,56 @@
+# Page text for dr_pushes.py. Fields: tutorials/README.md.
+
+id = "dr-pushes"
+title = "Random pushes"
+about = """\
+Five boxes on the ground get two random horizontal pushes, at 1 s and 2.5 s. Steel's state is \
+joint_q and joint_qd, so a velocity kick is written into state.joint_qd (a free joint's qd is \
+the COM velocity and angular velocity in the world frame). A force push writes a wrench into \
+state.body_f on the input state of every step for 0.1 s. Writing state.body_qd does nothing: \
+Steel recomputes it from joint_qd."""
+look = [
+  "joint_qd kick: each box slides in its own random direction.",
+  "body_f pulse: same directions, same impulse, a little shorter slide.",
+  "body_qd kick: nothing moves.",
+]
+try = [
+  "Push a quadruped's base with a velocity kick at a random time per world.",
+  "Apply a torque instead of a force in body_f to spin the boxes.",
+]
+spacing = [0, 3.4, 0]
+notify_flag = "none (state)"
+update_route = "read every step"
+
+[param]
+name = "state.joint_qd / state.body_f"
+text = """\
+State, not model: no notify needed. body_f is a world-frame (force, torque) wrench at the COM, \
+applied during the step that reads it."""
+
+[metric]
+label = "displacement"
+unit = "m"
+key = "world 4"
+multi = ["world 0", "world 1", "world 2", "world 3", "world 4"]
+
+[concept]
+name = "When Steel sees a randomized value"
+what = """\
+Steel reads this input from the model or state every step, so a write takes effect on the next \
+step. The tutorial still notifies where a flag exists, which keeps sleeping islands and \
+carried kinematics consistent."""
+here = "body_qd kick: nothing moves."
+
+[[concept.consider]]
+term = "Cost"
+text = "None beyond writing the state arrays."
+
+[[concept.consider]]
+term = "Graph capture"
+text = """\
+These flags can be captured in a reset graph. Kinematic-flag changes, sleeping, and shape \
+flags with sparse factors plus restitution run eagerly; captured calls skip some value checks."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Robustness to external disturbances; write state, so no notify is needed."

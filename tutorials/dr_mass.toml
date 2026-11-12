@@ -1,0 +1,70 @@
+# Page text for dr_mass.py. Fields: tutorials/README.md.
+
+id = "dr-mass"
+title = "Randomizing mass"
+about = """\
+Five copies of a drive-held arm in five worlds. At 1 s the script scales each world's \
+body_mass and body_inertia by a sampled factor (and the inverse arrays by its reciprocal), \
+then calls notify_model_changed(BODY_INERTIAL_PROPERTIES). A heavier arm sags further against \
+the same drive stiffness, roughly in proportion to its mass at these small angles. With the \
+default update_mass_matrix_interval=1 Steel rebuilds the mass matrix from body_mass every \
+step, but the notification also refreshes the solver's cached spatial inertias and forces a \
+rebuild, so call it whenever you write these arrays."""
+look = [
+  "All arms are identical for the first second.",
+  "After 1 s the sag angle grows with the sampled mass factor.",
+]
+try = [
+  "Scale only body_mass and leave the inertia alone, as many mass randomizers do.",
+  "Widen the range to x0.2 to x5 and lower KE until the heaviest arm touches its own hinge limit.",
+  "Write the arrays from a Warp kernel instead of NumPy so the randomization stays on the GPU.",
+]
+spacing = [0, 2.0, 0]
+notify_flag = "BODY_INERTIAL_PROPERTIES"
+update_route = "needs notify"
+
+[param]
+name = "solver.notify_model_changed(ModelFlags.BODY_INERTIAL_PROPERTIES)"
+text = """\
+Covers body_mass, body_inv_mass, body_inertia, body_inv_inertia and body_com. Keep each \
+inverse array consistent with its forward array."""
+
+[metric]
+label = "sag below level"
+unit = "deg"
+key = "mass x1.72"
+multi = ["mass x0.52", "mass x0.56", "mass x0.90", "mass x1.46", "mass x1.72"]
+
+[concept]
+name = "When Steel sees a randomized value"
+what = """\
+Notify with the matching flags after changing these model arrays so Steel refreshes all \
+derived data consistently. Some inputs are cached until notification; mass, inertia and drive \
+gains can also be picked up by periodic mass-matrix rebuilds, so their behavior without \
+notification depends on update_mass_matrix_interval."""
+here = "After 1 s the sag angle grows with the sampled mass factor."
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Call only, default solver, six-link chain and four boxes per world, 1024 worlds (1.12 ms per \
+collide + step): BODY_INERTIAL_PROPERTIES 31 µs (17 µs captured). Flags measured one at a \
+time; combined calls and feature validation can cost more. Body-inertial and joint-DOF \
+notifications also request a mass-matrix refresh."""
+
+[[concept.consider]]
+term = "Graph capture"
+text = """\
+These flags can be captured in a reset graph. Kinematic-flag changes, sleeping, and shape \
+flags with sparse factors plus restitution run eagerly; captured calls skip some value checks."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+world_mask limits which worlds lose their warm start; cached data is refreshed for every \
+world."""
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+Payload and link-mass variation; scale inertia with mass unless you want a different shape."""

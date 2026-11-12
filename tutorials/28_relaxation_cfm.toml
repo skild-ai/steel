@@ -1,0 +1,66 @@
+# Page text for 28_relaxation_cfm.py. Fields: tutorials/README.md.
+
+id = "relaxation-cfm"
+title = "Relaxation and CFM"
+about = """\
+relaxation scales every Gauss-Seidel update: each row moves its impulse ω times the step that \
+would satisfy it. ω above 1 over-relaxes and carries corrections further per sweep; below 1 \
+under-relaxes. cfm adds a small constant to every row's effective-mass diagonal. The eight-box \
+stack runs at 6 iterations with ω = 1, 1.4 and 1.8 and with cfm = 0.01; a second scene drops a \
+ball with restitution 0.8 at ω = 1 and 1.8."""
+look = [
+  "Stack: sag falls from 4.4 mm (ω = 1) to 2.2 mm (1.4) and 1.2 mm (1.8).",
+  "cfm 0.01 leaves the sag at 4.4 mm: these rows are not redundant enough to need it.",
+  "Bounce: at ω = 1.8 the second bounce reaches 23 cm instead of 32 cm, and the ball stops sooner.",
+]
+try = [
+  "Try ω = 1.8 on the four-bar loop closure tutorial at 2 iterations.",
+  "Raise cfm to 0.1 and watch the stack soften.",
+]
+spacing = [0, 0.35, 0]
+
+[param]
+name = "relaxation / cfm"
+text = """\
+relaxation defaults to 1.0 and is read every step. cfm defaults to 1e-6 and is fixed at \
+construction; drive rows of drive_mode=\"rows\" use their exact response instead."""
+
+[[metric.charts]]
+scene = "stack"
+key = "sag_mm"
+label = "top-box sag, 6 iterations"
+unit = "mm"
+
+[[metric.charts]]
+scene = "ball"
+key = "height"
+label = "ball height"
+unit = "m"
+
+[concept]
+name = "Successive over-relaxation and constraint force mixing"
+what = """\
+Over-relaxation multiplies each row's Gauss-Seidel correction by ω. On slowly converging \
+problems, such as load running down a stack, it speeds convergence. Coupled friction modes are \
+not scaled. cfm adds a small value to every row's diagonal, which keeps redundant rows from \
+fighting."""
+eq = "λ ← λ + ω · Δλ"
+here = """\
+ω = 1.8 cut the stack's sag from 4.4 to 1.2 mm at 6 iterations, but took 28% off the second \
+bounce of a restitution 0.8 ball (32 → 23 cm). In separate runs ω = 1.6 cut a four-bar's \
+closure gap at 2 iterations from 163 to 52 mm; ω = 1.4 left a 40-object pile with five times \
+the residual kinetic energy of ω = 1; cfm from 1e-6 to 0.01 changed neither scene."""
+
+[[concept.consider]]
+term = "Cost"
+text = "None: the same sweeps with a different step."
+
+[[concept.consider]]
+term = "Accuracy"
+text = "ω > 1 overshoots single contacts, which damps bounces and can leave piles jittering."
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+Raise ω to 1.4–1.8 for stacks and loops at low iteration counts after checking bounces and \
+resting piles; leave cfm at its default unless rows are truly redundant."""
