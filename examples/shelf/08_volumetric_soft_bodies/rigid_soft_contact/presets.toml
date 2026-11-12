@@ -132,7 +132,7 @@ checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
 [steel_xpbd]
 status = "works"
 # 24 substeps: the coupled step (Steel sphere, XPBD grid, proxy collision) costs ~30% more per substep than XPBD
-# alone, so at XPBD's 32 substeps no Steel setting matches XPBD's frame time (best 20.4 vs 15.8 ms; coreweave sweep,
+# alone, so at XPBD's 32 substeps no Steel setting matches XPBD's frame time (best 20.4 vs 15.8 ms; RTX PRO 6000 sweep,
 # 2026-11-04). At 24 it does (15.4 ms), the grid's peak penetration stays 0.2 mm (0.12 at 32) and the sphere rolls
 # off the grid as at 32; at 16-20 it rolls 1.5-3 m shorter. 4 iterations: the single free sphere needs no more.
 sim = { fps = 60, substeps = 24 }

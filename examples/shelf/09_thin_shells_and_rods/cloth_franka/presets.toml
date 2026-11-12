@@ -54,7 +54,7 @@ status = "works"
 sim = { fps = 60, substeps = 10 }
 # Steel only integrates the prescribed arm velocities (no contacts, no gravity; joint limits stay off, the IK
 # targets stay inside them and the arm path matches Featherstone's), so one iteration and one mass-matrix update per frame (update_mass_matrix_interval = substeps, as
-# the Featherstone preset does) give the same arm path; the frame time is VBD's (coreweave sweep, 2026-11-04).
+# the Featherstone preset does) give the same arm path; the frame time is VBD's (RTX PRO 6000 sweep, 2026-11-04).
 # 8 substeps would be faster but change how the cloth folds.
 entries.steel.solver = { solve_mode = "matrix_free", iterations = 1, update_mass_matrix_interval = 10, articulated_contact_response = "immediate" }
 # self-contact (cm scale): particle_self_contact_margin, particle_self_contact_gap

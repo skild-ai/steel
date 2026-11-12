@@ -32,7 +32,7 @@ status = "works"
 sim = { fps = 50, substeps = 4 }
 # loop-closing joints need the "immediate" response. articulation_constraint_max = 64: the landing needs 35 rows,
 # and at the default 32 Steel drops contact rows (5.5 mm mean penetration). 4 substeps x 32 iterations: the fastest
-# setting (coreweave sweep, 2026-11-04) with a loop-closure gap like Kamino's (0.20 mm vs 0.19 mm); at 12-16
+# setting (RTX PRO 6000 sweep, 2026-11-04) with a loop-closure gap like Kamino's (0.20 mm vs 0.19 mm); at 12-16
 # iterations, or 5-6 substeps with 16-24, the landing leaves an out-of-plane tilt that grows until the planar
 # linkage falls on its side. Joint limits are enforced (without them it also falls over);
 # joint_limit_activation_gap = 0.1 rad adds a limit row only near its limit.

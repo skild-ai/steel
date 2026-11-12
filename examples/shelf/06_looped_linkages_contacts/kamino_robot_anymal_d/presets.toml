@@ -30,7 +30,7 @@ status = "untested"
 [steel]
 status = "works"
 sim = { fps = 50, substeps = 5 }
-# 5 substeps x 12 iterations, immediate response: the fastest setting (coreweave sweep, 2026-11-04) whose
+# 5 substeps x 12 iterations, immediate response: the fastest setting (RTX PRO 6000 sweep, 2026-11-04) whose
 # penetration is no worse than Kamino's (peak 3.0 mm vs 5.4 mm); 4 substeps reach 8 mm. The self-colliding ragdoll
 # needs more than 128 contact rows: at articulation_constraint_max 128 rows are dropped, and the default 32 makes
 # immediate (and split) blow up; propagation_colored needs no row budget but is ~30% slower here. Joint limits

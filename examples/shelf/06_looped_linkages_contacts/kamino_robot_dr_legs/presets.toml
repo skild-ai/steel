@@ -29,7 +29,7 @@ status = "untested"
 
 [steel]
 status = "works"
-# 2 substeps (as Kamino) x 32 iterations: the fastest setting (coreweave sweep, 2026-11-04) whose loop-closure gap
+# 2 substeps (as Kamino) x 32 iterations: the fastest setting (RTX PRO 6000 sweep, 2026-11-04) whose loop-closure gap
 # stays within 1.5x Kamino's (0.077 vs 0.060 mm; 24 iterations: 0.10 mm, 50: 0.052 mm at 3.4 ms).
 sim = { fps = 50, substeps = 2 }
 # shape_margin: contact margin of the robot and ground shapes (as in the PADMM preset)

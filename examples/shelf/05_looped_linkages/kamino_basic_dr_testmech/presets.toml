@@ -31,7 +31,7 @@ status = "untested"
 status = "works"
 sim = { fps = 50, substeps = 20 }
 # loop-closing joints need the "immediate" response; the four loop closures need 38 constraint rows, over the
-# default 32. 20 substeps x 4 iterations: the fastest setting (coreweave sweep, 2026-11-04) whose loop-closure gap
+# default 32. 20 substeps x 4 iterations: the fastest setting (RTX PRO 6000 sweep, 2026-11-04) whose loop-closure gap
 # stays under Kamino's (max 0.36 mm vs 0.47 mm); 10 or 15 substeps open the gaps to 0.6-1.7 mm. Joint limits are
 # enforced as in Kamino; joint_limit_activation_gap = 0.1 rad adds a limit row only near its limit, which cuts a
 # quarter of the step time and leaves the motion unchanged.

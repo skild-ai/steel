@@ -30,7 +30,7 @@ status = "untested"
 [steel]
 status = "works"
 sim = { fps = 50, substeps = 4 }
-# loop-closing joints need the "immediate" response. 4 substeps x 12 iterations: the fastest setting (coreweave
+# loop-closing joints need the "immediate" response. 4 substeps x 12 iterations: the fastest setting (RTX PRO 6000
 # sweep, 2026-11-04) whose four-bar loop gap is like Kamino's (0.03 mm vs 0.02 mm); 8 iterations open it to
 # 0.08 mm, 3 substeps to 0.07 mm, and 2 overflow the 32 constraint rows on contact. Joint limits are enforced;
 # joint_limit_activation_gap = 0.1 rad adds a limit row only near its limit.

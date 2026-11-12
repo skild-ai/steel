@@ -51,7 +51,7 @@ checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
 status = "works"
 # Steel walks the robot; implicit MPM moves the sand around it (one-way coupling).
 sim = { fps = 50, substeps = 4 }
-# 4 substeps x 8 iterations, immediate response with 128 rows: the fastest setting (coreweave sweep, 2026-11-04) that
+# 4 substeps x 8 iterations, immediate response with 128 rows: the fastest setting (RTX PRO 6000 sweep, 2026-11-04) that
 # keeps the walk (4 iterations, or 2-3 substeps, fail the forward-walk test in some runs); ~4% slower than MuJoCo
 # (14.1 vs 13.5 ms, MPM's sand step dominates both). propagation_colored is 1-2 ms slower; 64 rows drop contacts.
 # Joint limits are enforced as in MuJoCo (they never engage while walking); joint_limit_activation_gap = 0.1 rad

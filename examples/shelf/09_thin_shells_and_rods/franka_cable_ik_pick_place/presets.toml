@@ -52,7 +52,7 @@ checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
 [steel_vbd]
 status = "works"
 # Steel owns the Franka arm, VBD the cable rod (originally `--rigid-solver steel`).
-# 4 substeps x 12 iterations: the fastest setting (coreweave sweep, 2026-11-04) that places the cable as well as
+# 4 substeps x 12 iterations: the fastest setting (RTX PRO 6000 sweep, 2026-11-04) that places the cable as well as
 # the MuJoCo pairing at 10 substeps (1.19 vs 1.20 mm from the target, peak penetration 1.6 vs 2.3 mm). It also steps
 # the cable with VBD 4 times a frame instead of 10; at the same 10 substeps Steel is ~1 ms slower than MuJoCo
 # (19.1 vs 18.1 ms), and at 3 substeps the peak penetration doubles. Joint limits are enforced;

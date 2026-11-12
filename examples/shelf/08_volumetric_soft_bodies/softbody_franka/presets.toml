@@ -53,7 +53,7 @@ status = "works"
 sim = { fps = 60, substeps = 10 }
 # Steel only integrates the prescribed arm velocities (no contacts, no gravity; joint limits stay off, the IK
 # targets stay inside them and the arm path matches Featherstone's), so one iteration and one mass-matrix update per frame (update_mass_matrix_interval = substeps, as
-# the Featherstone preset does) give the same arm path; the frame time is VBD's (coreweave sweep, 2026-11-04).
+# the Featherstone preset does) give the same arm path; the frame time is VBD's (RTX PRO 6000 sweep, 2026-11-04).
 # Fewer substeps would be faster but change VBD's soft bodies (8: peak penetration 0.07 vs 0.04 mm).
 entries.steel.solver = { solve_mode = "matrix_free", iterations = 1, update_mass_matrix_interval = 10, articulated_contact_response = "immediate" }
 entries.vbd.solver = { iterations = 5, integrate_with_external_rigid_solver = true, particle_self_contact_margin = 0.003, particle_self_contact_gap = 0.002, particle_enable_self_contact = false, particle_vertex_contact_buffer_size = 32, particle_edge_contact_buffer_size = 64 }
