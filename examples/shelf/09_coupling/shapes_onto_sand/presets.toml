@@ -1,0 +1,67 @@
+example = "shapes_onto_sand"
+source = "newton/examples/mpm/example_mpm_twoway_coupling.py @ skild-ai/newton 7565a26b1"
+default = "steel_implicit_mpm"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "80"]
+
+[gallery]
+short = "A dozen rigid shapes dropped onto MPM material with two-way coupling."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "untested"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
+
+[mujoco_implicit_mpm]
+status = "works"
+# MuJoCo rigid bodies and implicit MPM sand, coupled two-way through collider impulses in example.py.
+sim = { fps = 100, substeps = 4 }
+entries.mujoco.solver = { use_mujoco_contacts = false, njmax = 100 }
+# grid_type = "fixed" so the MPM step can be graph-captured.
+entries.implicit_mpm.solver = { grid_type = "fixed", grid_padding = 50, max_active_cell_count = 32768, strain_basis = "P0", max_iterations = 50, critical_fraction = 0.0 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[steel_implicit_mpm]
+status = "works"
+# Steel rigid bodies and implicit MPM sand, coupled two-way through collider impulses in example.py.
+# Steel's hard contacts stack the six boxes into a tower whose impacts fling single grains out at 10-11 m/s
+# (MuJoCo's softer contacts: 4.3 m/s); in 6 of 36 600-frame runs one or two such grains turned non-finite
+# (not a stream race: also with parallel streams off; not the grid edge: also with grid_padding = 125). Capping the
+# sand advection speed at 6.5 m/s, the value boxes_into_sand uses, gave 0 of 36 at no cost (10.9 ms/frame).
+model = { sand_particle_max_velocity = 6.5 }
+# 4 substeps x 12 iterations: 10.9 ms/frame vs MuJoCo's 10.2 (the sand solve dominates); box penetration 1.0 / 0.06 mm
+# peak / mean vs MuJoCo's 56 / 2.1. Fewer iterations (4-8) bring non-finite grains back (3 of 24 runs each) even
+# with the cap; 2 substeps blew the boxes up in 2 of 2 runs and 1 substep leaves them hanging in the air.
+# Immediate contact response measures the same (10.9 ms); the boxes are free bodies.
+sim = { fps = 100, substeps = 4 }
+entries.steel.solver = { solve_mode = "matrix_free", iterations = 12, articulated_contact_response = "propagation_colored" }
+# grid_type = "fixed" so the MPM step can be graph-captured.
+entries.implicit_mpm.solver = { grid_type = "fixed", grid_padding = 50, max_active_cell_count = 32768, strain_basis = "P0", max_iterations = 50, critical_fraction = 0.0 }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"

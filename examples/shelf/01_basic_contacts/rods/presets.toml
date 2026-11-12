@@ -1,0 +1,60 @@
+example = "rods"
+source = "steel-webgpu tools/scenes.py rods() @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode: 300 frames, 5 s, every block stopped; the example's check() asserts the outcome.
+args = ["--num-frames", "300"]
+
+[gallery]
+short = "Tall blocks slide across a grippy floor and tip over."
+title = "Sliding blocks"
+frame = 90
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# Coupled friction with friction_mode = "coulomb_newton" (the cone solved per contact with its normal), not the
+# browser's "bisection_desaxce": de Saxce's normal target mu |v_t| lifts the sliding blocks (centres rise up to
+# 0.18 m), which wander up to 9 cm toward the next lane and slide 0.65 to 0.97 m, also at 16 x 50, where every other
+# mode agrees on 0.17 to 0.59 m, no hop, tipped by frame 11 to 14 (on mu 0.9 a block tips almost at once: mu > hx/hz).
+# 2 substeps x 4 iterations: slides within 6 mm of 4 x 12 and 16 x 50; 1 substep slides 15 mm short and the
+# slowest block turns sideways 2 cm. Point friction (friction_anchor_beta = 0), as coupled modes need.
+# No joints: limits off.
+sim = { fps = 60, substeps = 2 }
+solver = { solve_mode = "matrix_free", iterations = 4, articulated_contact_response = "propagation_colored", friction_mode = "coulomb_newton", friction_anchor_beta = 0.0 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
+
+[steel_off]
+kind = "steel"
+status = "works"
+# the browser's "Coupled friction" toggle off: friction_mode = "fixed_normal", everything else as [steel]
+sim = { fps = 60, substeps = 2 }
+solver = { solve_mode = "matrix_free", iterations = 4, articulated_contact_response = "propagation_colored", friction_mode = "fixed_normal", friction_anchor_beta = 0.0 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"

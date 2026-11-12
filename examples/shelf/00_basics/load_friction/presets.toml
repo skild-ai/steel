@@ -1,0 +1,58 @@
+example = "load_friction"
+source = "steel-webgpu tools/scenes.py load_friction() @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = []
+
+[gallery]
+short = "A hinge whose friction grows with load holds a heavy pendulum."
+title = "Load-dependent friction"
+frame = 90
+
+[xpbd]
+status = "unsupported"
+reason = "the hinges use Steel's steel:joint_friction_load_coefficient joint attribute"
+
+[vbd]
+status = "unsupported"
+reason = "the hinges use Steel's steel:joint_friction_load_coefficient joint attribute"
+
+[mujoco]
+status = "unsupported"
+reason = "the hinges use Steel's steel:joint_friction_load_coefficient joint attribute"
+
+[featherstone]
+status = "unsupported"
+reason = "the hinges use Steel's steel:joint_friction_load_coefficient joint attribute"
+
+[semi_implicit]
+status = "unsupported"
+reason = "the hinges use Steel's steel:joint_friction_load_coefficient joint attribute"
+
+[feather_pgs]
+status = "unsupported"
+reason = "the hinges use Steel's steel:joint_friction_load_coefficient joint attribute"
+
+[steel]
+status = "works"
+# 4 substeps x 1 iteration, immediate response: the gold hinge holds its pendulum at the -0.8 rad release (no drift);
+# the grey one swings to 3.94 rad and back as in a 16 x 32 run, within 0.016 rad (5 mm at the bob) over 6 s
+# (2 substeps: 0.038 rad, 1: 0.081 rad). Iterations change nothing; no joint has limits, so they are off; no contacts,
+# so the immediate response (0.50 ms; 2 substeps 0.25 ms). The port's 4 x 12 colored: 1.62 ms.
+sim = { fps = 60, substeps = 4 }
+solver = { solve_mode = "matrix_free", iterations = 1, articulated_contact_response = "immediate", enable_joint_friction = true, enable_joint_limits = false }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "unsupported"
+reason = "the hinges use Steel's steel:joint_friction_load_coefficient joint attribute"
+
+[implicit_mpm]
+status = "unsupported"
+reason = "the hinges use Steel's steel:joint_friction_load_coefficient joint attribute"
+
+[style3d]
+status = "unsupported"
+reason = "the hinges use Steel's steel:joint_friction_load_coefficient joint attribute"

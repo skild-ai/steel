@@ -1,0 +1,51 @@
+example = "loop_delta_robot"
+source = "common/loop_mechanisms.py, mechanism delta"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode: a 4 s run, the frames in reference.json.
+args = ["--num-frames", "200"]
+
+[gallery]
+short = "Three driven arms swing a level platform in circles on parallelogram forearms."
+title = "Delta robot"
+frame = 75
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# loop-closing joints need the "immediate" response (this Newton's Steel enforces BALL and REVOLUTE closures only there).
+# 2 substeps x 28 iterations: the fastest setting (RTX PRO 6000 sweep, 2026-11-07, mean 0.71 ms per frame) within
+# 0.5 mm of the exact reference on the platform (0.38 mm) and a 0.25 mm loop gap (0.17 mm) with some margin; 1 x 64
+# (0.54 ms) sits on the edge (0.50 mm) and 1 x 48 misses (0.68 mm). The parallelogram rows are nearly redundant, so
+# the gap closes slowly with iterations. Tuned with solve_mode "split", which newton f6fc82a8b removed (it runs
+# "serial"); re-checked there at 0.72 ms.
+sim = { fps = 50, substeps = 2 }
+solver = { solve_mode = "serial", iterations = 28, articulated_contact_response = "immediate" }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

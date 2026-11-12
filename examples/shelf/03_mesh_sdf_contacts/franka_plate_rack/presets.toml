@@ -1,0 +1,45 @@
+example = "franka_plate_rack"
+source = "newton/examples/robot/example_steel_plate_rack.py @ skild-ai/newton 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = []
+
+[gallery]
+short = "A Franka lifts a dinner plate and places it in a wire rack beside two resting plates."
+frame = 600
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+sim = { substeps = 4 }
+# "propagation_colored" misses the rack slot in most runs (12 to 32 iterations); "immediate" places it.
+solver = { solve_mode = "serial", iterations = 12, articulated_contact_response = "immediate" }
+checked = "2026-11-09, newton c42985a6c, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

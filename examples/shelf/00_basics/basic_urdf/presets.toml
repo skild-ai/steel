@@ -1,0 +1,61 @@
+example = "basic_urdf"
+source = "newton/examples/basic/example_basic_urdf.py @ skild-ai/newton 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = []
+
+[gallery]
+short = "A quadruped articulation loaded from URDF."
+
+[xpbd]
+status = "unstable"
+sim = { fps = 100, substeps = 10 }
+model = { default_joint_cfg = { target_ke = 2000.0, target_kd = 1.0 }, default_shape_cfg = { mu = 1.0 } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+note = "check failed: ValueError: Test \"quadruped links are not moving too fast\" failed for the following bodies: [quadruped/base, quadruped/LF_HAA, quadruped/LF_THIGH, quadruped/LF_SHANK, quadruped/RF_HAA, quadruped/RF_THIGH, quadruped/RF_SHANK, quadruped/LH_HAA, quadruped/LH_THIGH, quadruped/LH_SHANK, quadruped/RH_HAA,"
+
+[vbd]
+status = "unstable"
+sim = { fps = 100, substeps = 10 }
+solver = { iterations = 2 }
+model = { default_joint_cfg = { target_ke = 2.0e3, target_kd = 1.0e1 }, default_shape_cfg = { ke = 1.0e5, kd = 1.0e4, mu = 1.0 } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+note = "check failed: ValueError: Test \"quadruped links are not moving too fast\" failed for the following bodies: [quadruped/base, quadruped/LF_HAA, quadruped/LF_THIGH, quadruped/LF_SHANK, quadruped/RF_HAA, quadruped/RF_THIGH, quadruped/RF_SHANK, quadruped/LH_HAA, quadruped/LH_THIGH, quadruped/LH_SHANK, quadruped/RH_HAA,"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 1 substep x 4 iterations, immediate response: fastest setting with peak and mean penetration below XPBD's at 10
+# substeps (0.77/0.13 mm vs 3.19/0.18 mm); 3 iterations raise the mean to XPBD's. The four feet of each quadruped
+# overflow the default 32 articulation rows per world (every world flags constraint_overflow), so 128. The URDF has no
+# finite joint limits, so enable_joint_limits stays off.
+sim = { fps = 100, substeps = 1 }
+model = { default_joint_cfg = { target_ke = 2000.0, target_kd = 1.0 }, default_shape_cfg = { mu = 1.0 } }
+solver = { solve_mode = "matrix_free", iterations = 4, articulated_contact_response = "immediate", articulation_constraint_max = 128 }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "works"
+sim = { fps = 100, substeps = 5 }
+solver = { dynamics_solver = "dvi", sparse_dynamics = false, sparse_jacobian = true, use_collision_detector = true, integrator = "moreau", dvi = { bilateral_solver_type = "LLTBRCM", max_alternating_iterations = 8, use_schur_complement = true } }
+model = { default_joint_cfg = { target_ke = 2000.0, target_kd = 1.0 }, default_shape_cfg = { mu = 1.0 } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

@@ -1,0 +1,50 @@
+example = "d6"
+source = "steel-webgpu tools/scenes.py d6() @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = []
+
+[gallery]
+short = "A driven gantry, a universal joint and a gimbal."
+title = "Six-axis joints"
+frame = 90
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 4 substeps x 1 iteration, immediate response, joint limits on with a 0.1 rad activation gap: the bodies stay within
+# 5.6 mm of a 16 x 32 run over 6 s (2 substeps: 11.5 mm, 1: 19 mm), the gantry settles at its (0.25, -0.2) m, 1 rad
+# targets, the universal joint stops exactly at -0.15 rad and the gimbal at its 1 rad yaw limit. Iterations change
+# nothing here (1 to 12 give the same motion); there are no contacts, so the immediate response costs less than
+# propagation_colored (0.76 vs 1.66 ms) and the activation gap less again (0.70 ms). The port's 4 x 12 colored: 3.29 ms.
+sim = { fps = 60, substeps = 4 }
+solver = { solve_mode = "matrix_free", iterations = 1, articulated_contact_response = "immediate", enable_joint_limits = true, joint_limit_activation_gap = 0.1 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

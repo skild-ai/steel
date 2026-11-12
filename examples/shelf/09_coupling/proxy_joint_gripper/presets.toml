@@ -1,0 +1,62 @@
+example = "proxy_joint_gripper"
+source = "newton/examples/multiphysics/example_proxy_joint_gripper.py @ skild-ai/newton 7565a26b1"
+default = "steel_vbd"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "120"]
+
+[gallery]
+short = "A palm and two cube fingers grip a VBD soft grid."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "untested"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
+
+[mujoco_vbd]
+status = "works"
+sim = { fps = 60, substeps = 6 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0, proxy_relaxation = 1.0, proxy_relaxation_mode = "fixed", proxy_relaxation_min = 0.1, proxy_relaxation_max = 1.0, proxy_joints = true, collide_interval = 1 }
+entries.mujoco.solver = { iterations = 20, disable_contacts = true, use_mujoco_contacts = false }
+# rigid_body_particle_contact_buffer_size and rigid_joint_*_ke depend on --scenario and are set in example.py.
+entries.vbd.solver = { iterations = 30, particle_enable_self_contact = false, particle_enable_tile_solve = false }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[steel_vbd]
+status = "works"
+# 2 substeps x 8 Steel iterations: 11.8 ms/frame vs MuJoCo's 37.0 at 6 (Steel at 6: 36.4). The fingers close to the
+# same 38.7 mm, the soft grid keeps its 128-129 mm extent and does not drift, penetration 0.01 / 0.007 mm vs MuJoCo's
+# 0.02 / 0.010. Odd substep counts cannot be graph-captured; iterations 4-20 measure the same.
+sim = { fps = 60, substeps = 2 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0, proxy_relaxation = 1.0, proxy_relaxation_mode = "fixed", proxy_relaxation_min = 0.1, proxy_relaxation_max = 1.0, proxy_joints = true, collide_interval = 1 }
+# Joint limits on as MuJoCo enforces them (the fingers' 0-55 mm travel); off measures the same speed and result.
+entries.steel.solver = { solve_mode = "matrix_free", iterations = 8, enable_joint_limits = true }
+# rigid_body_particle_contact_buffer_size and rigid_joint_*_ke depend on --scenario and are set in example.py.
+entries.vbd.solver = { iterations = 30, particle_enable_self_contact = false, particle_enable_tile_solve = false }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"

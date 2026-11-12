@@ -1,0 +1,74 @@
+example = "basic_conveyor_forces"
+source = "newton/examples/basic/example_basic_conveyor_forces.py @ skild-ai/newton 7565a26b1"
+default = "steel"
+# model.shape_margin: a small positive collision margin smooths the belt-to-belt seam
+# transitions. VBD's rigid-contact handling needs a larger margin than XPBD to keep
+# bodies on the belts.
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = []
+
+[gallery]
+short = "A multi-belt conveyor circuit moves boxes with a velocity field instead of belt friction."
+frame = 300
+
+[xpbd]
+status = "works"
+sim = { fps = 60, substeps = 2 }
+solver = { iterations = 4 }
+model = { shape_margin = 0.015 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[vbd]
+status = "works"
+sim = { fps = 60, substeps = 2 }
+solver = { iterations = 4, rigid_joint_linear_ke = 1.0e2, rigid_joint_angular_ke = 1.0e2, rigid_body_contact_buffer_size = 64 }
+model = { shape_margin = 0.05, rigid_contact_ke = 1.0e3, rigid_contact_kd = 1.0e0 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[mujoco]
+status = "works"
+sim = { fps = 60, substeps = 2 }
+# impratio: a frictional-to-normal impedance ratio below 1 softens the friction
+# constraints so boxes slip through the tight 180 degree turn instead of
+# wedging against the guide walls.
+solver = { cone = "elliptic", impratio = 0.1, use_mujoco_contacts = false, njmax = 2000, nconmax = 1000 }
+# min_friction: just above mujoco.mjMINMU, below which mujoco_warp warns about NaN-prone contacts.
+model = { shape_margin = 0.015, min_friction = 1.1e-5 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 2 substeps x 2 iterations with baumgarte = 0.5: the fastest setting whose penetration (peak, mean and
+# per-frame max) and box transport match or beat XPBD's; one substep stalls a box, and the default
+# baumgarte of 0.2 leaves the spawn overlap twice as long. enable_joint_limits: without it the parcel
+# hinge spins through its 45 degree limit.
+sim = { fps = 60, substeps = 2 }
+# friction_combine = "min": a frictionless transported body leaves the belt contact frictionless, so only
+# the conveyor drives it (Steel averages the two shapes by default)
+solver = { solve_mode = "matrix_free", iterations = 2, baumgarte = 0.5, enable_joint_limits = true, articulated_contact_response = "propagation_colored", friction_combine = "min" }
+model = { shape_margin = 0.015 }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "works"
+sim = { fps = 60, substeps = 2 }
+solver = { dynamics_solver = "dvi", sparse_dynamics = true, sparse_jacobian = true, dvi = { max_alternating_iterations = 4, bilateral_solve_interval = 4 } }
+model = { shape_margin = 0.015 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

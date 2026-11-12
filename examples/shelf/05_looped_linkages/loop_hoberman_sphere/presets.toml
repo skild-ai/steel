@@ -1,0 +1,124 @@
+example = "loop_hoberman_sphere"
+source = "loop_hoberman_sphere/example.py (sphere, floating, one hub driven)"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode: one full open-close cycle (4 s).
+args = ["--num-frames", "200"]
+
+[gallery]
+short = "A Hoberman sphere of 120 bars and 240 hinges opens and closes from one driven hub."
+title = "Hoberman sphere"
+frame = 50
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "works"
+# The 91 loop hinges are CONNECT equality pairs, +-hinge_half_span along each axis (add_loop_closures_mujoco):
+# SolverMuJoCo makes the same pairs from loop joints, but at MuJoCo's default solimp (0.9-0.95) they leak: the
+# loops open by 2 mm at 4 substeps. "euler", not the default "implicitfast": the implicit integrators fold the
+# drive's kd into the mass matrix after the constraint solve, so the loops are no longer satisfied (they open by
+# centimetres).
+# Explicit Euler integrates the drive's damping with first-order error, and the drive's time constant (kd/ke = 25 ms)
+# is close to the 20 ms frame, so the substep count is set by the drive, not the loops. Scored against
+# ground_truth.py over 1000 frames (RTX PRO 6000, 2026-11-07), solref = 2 dt: 1 substep (1.18 ms) puts the driven angle
+# 1.43 deg off the exact one (past the 1 deg check); 2 substeps: 0.71 deg, shape within 0.67 mm, 2.33 ms mean per
+# frame, the fastest passing setting. 4: 0.37 deg, 4.8 ms; 8: 0.20 deg, 9.4 ms; 16: 0.12 deg, 18.6 ms. The loops close
+# to 0.004 mm at 2 substeps. solimp 0.9999 at 1 substep goes non-finite after 200 frames; 0.99-0.999 opens the loops
+# by 3 mm at 1 substep. Newton's solve converges in one iteration (equality rows only), so iterations and
+# ls_iterations do not change the time.
+sim = { fps = 50, substeps = 2 }
+solver = { integrator = "euler", iterations = 100, ls_iterations = 50, disable_contacts = true }
+model = { hinge_half_span = 0.05, eq_solref = [0.02, 1.0], eq_solimp = [0.999, 0.9999, 0.001, 0.5, 2.0] }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+[mujoco_all]
+kind = "mujoco"
+status = "works"
+# --drive all: 30 PD drives, and "euler" integrates their kd explicitly on bars of ~2e-6 kg m^2, so the substep
+# count is set by that damping, not by the loops. RTX PRO 6000 sweep, 2026-11-07: 36 substeps, mean 46.7 ms per frame;
+# over 1000 frames the worst joint gap is 0.0006 mm, hub radius 0.0006 mm, drive error 1.8 deg, momentum 9e-6.
+# There is a cliff below it: at 34 substeps or fewer the sphere goes unstable as it opens (gaps of 0.1-100 mm,
+# momentum 0.07 and up); 35 passes 500 frames but its momentum starts to grow (1.3e-4 against 9e-6). solimp
+# 0.99-0.999 and solref 0.005-0.01 s are all equal here; 0.9999 goes non-finite after 200 frames.
+check = { args = ["--num-frames", "200", "--drive", "all"] }
+sim = { fps = 50, substeps = 36 }
+solver = { integrator = "euler", iterations = 100, ls_iterations = 50, disable_contacts = true }
+model = { hinge_half_span = 0.05, eq_solref = [0.01, 1.0], eq_solimp = [0.99, 0.999, 0.001, 0.5, 2.0] }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# loop-closing joints need the "immediate" response. 91 revolute closures are 455 rows in one articulation, so
+# articulation_constraint_max is raised past the default (the dense split solve, since removed, could not hold them).
+# 4 substeps x 64 iterations: the fastest setting (RTX PRO 6000 sweep, 2026-11-07, mean 126 ms per frame; 105.5 ms on newton
+# f6fc82a8b) that keeps the
+# sphere on its closed form: worst joint gap 0.07 mm, hub radius within 0.11 mm of a cos(phi/2)/sin(pi/10). There is
+# a cliff below it: at 4 x 48, 3 x 64 or 2 x 128 the loops open by 4-10 mm and the sphere twists out of shape. 8 x 32
+# (187 ms) is the other accurate setting. One sphere is a single articulation solved almost serially, hence the cost
+# (FeatherPGS took about 280 ms on the same sphere).
+sim = { fps = 50, substeps = 4 }
+solver = { solve_mode = "serial", iterations = 64, articulated_contact_response = "immediate", articulation_constraint_max = 584 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+[steel_all]
+kind = "steel"
+status = "works"
+# --drive all: every hub joint driven at once (60 drives on one 1-DOF mechanism). Drive all is not repeatable run to
+# run, and now and then a run opens the loops past 0.5 mm, so settings were judged on many repeats (2026-11-07):
+# 8 x 32 passed 26 of 26 (16 on an RTX PRO 6000, 10 on a local 3090; worst joint gap 0.17 mm), mean 195 ms per
+# frame on the RTX PRO 6000 (166.9 ms on newton f6fc82a8b).
+# Faster settings fail sometimes: 6 x 48 (171 ms) passed 11 of 11 on the RTX PRO 6000 but opened to 1.06 mm in 2 of 5
+# local runs, 8 x 24 (180 ms) to 0.75 mm in 1 of 4 local runs, 5 x 48 and 6 x 32 (~145 ms) to 0.65 mm in 1 of 4 RTX PRO 6000
+# runs. Against ground_truth.py the shape stays within 0.6 mm and the driven angle within 0.2 deg, but the whole
+# sphere drifts as a free body (about 1 cm and 3-4 deg over 20 s), where the exact solution stays put.
+check = { args = ["--num-frames", "200", "--drive", "all"] }
+sim = { fps = 50, substeps = 8 }
+solver = { solve_mode = "serial", iterations = 32, articulated_contact_response = "immediate", articulation_constraint_max = 584 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "works"
+# The same model as Steel (Kamino ignores the tree: every hinge, loop closure or not, is a revolute constraint) and
+# the same implicit PD drive. DVI with no contacts or limits is one direct solve of the bilateral block per step, so
+# there are no iterations to tune; LLTBRCM with parallel_factorization factors the 1200-row block of the one world
+# across the GPU (LLTB, one thread block per world: 21 ms; LLTBRCM without it: 7.4 ms).
+# 1 substep, Baumgarte alpha = 1.0: the fastest passing setting (RTX PRO 6000 sweep, 2026-11-07, mean 2.94 ms per frame
+# over 3 jobs of 500 frames): worst joint gap 0.007 mm, hinge axes 0.27 deg, hub radius within 0.010 mm, drive 1.86
+# deg behind its target. alpha sets the gap, not the cost (0.4: 0.017 mm, 2.95 ms; the default 0.01: 0.31 mm and the
+# drive 4.2 deg behind); a 2nd substep doubles the cost (5.98 ms, 0.005 mm). PADMM is 70-300x slower here: it opens
+# the loops past 0.5 mm at 1 substep (215 ms) and passes at 4 substeps (864 ms) or 2 with alpha 0.1 (908 ms). The axis
+# misalignment creeps up by ~0.1 deg per 1000 frames (0.5 deg after 5000, local 3090) whatever alpha is.
+sim = { fps = 50, substeps = 1 }
+solver = { dynamics_solver = "dvi", sparse_jacobian = true, sparse_dynamics = true, constraints = { alpha = 1.0 }, dvi = { bilateral_solver_type = "LLTBRCM", bilateral_solver_kwargs = { parallel_factorization = true, block_size = 64 } } }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino_all]
+kind = "kamino"
+status = "works"
+# --drive all: every hub driven at once. The same solver as [kamino]; 1 substep, alpha = 0.7: the fastest passing
+# setting (RTX PRO 6000 sweep, 2026-11-07, mean 3.26 ms per frame over 3 jobs of 500 frames): worst joint gap 0.009 mm,
+# hinge axes 0.30 deg, hub radius within 0.014 mm, drive 1.77 deg behind. alpha 0.4 and 1.0 cost the same within
+# noise (3.27, 3.30 ms; gap 0.017, 0.007 mm).
+check = { args = ["--num-frames", "200", "--drive", "all"] }
+sim = { fps = 50, substeps = 1 }
+solver = { dynamics_solver = "dvi", sparse_jacobian = true, sparse_dynamics = true, constraints = { alpha = 0.7 }, dvi = { bilateral_solver_type = "LLTBRCM", bilateral_solver_kwargs = { parallel_factorization = true, block_size = 64 } } }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

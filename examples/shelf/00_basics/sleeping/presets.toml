@@ -1,0 +1,62 @@
+example = "sleeping"
+source = "newton/examples/mujoco/example_mujoco_sleeping.py @ skild-ai/newton 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--stack-count", "2", "--num-frames", "300"]
+
+[gallery]
+short = "Four stacks of ants topple into each other; sleeping islands turn grey."
+frame = 240
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "works"
+sim = { fps = 60, substeps = 5 }
+solver = { enable_sleeping = true, sleep_tolerance = 0.05, iterations = 10, ls_iterations = 10, jacobian = "sparse", njmax = 4096, nconmax = 2048, update_data_interval = 0 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 5 substeps x 10 iterations, propagation_colored, joint limits on: among the swept settings, the only one whose islands
+# reliably fall asleep when MuJoCo's do, with lower penetration and joint-limit overshoot than MuJoCo (60/0.86 mm,
+# 0.10 rad vs 171/2.0 mm, 0.39 rad). With 4 stacks every body is asleep by frame 330 in every run (MuJoCo 300-360);
+# with the check's 2 stacks by frame 150. The colored sweep gives the same result run to run. The immediate response
+# is faster (5x4: 4.0 ms vs 6.2 ms) but its islands settle anywhere from frame 330 to past 630 and vary between runs;
+# 4 colored iterations settle at frame 390 and, with 2 stacks, not within 600 frames; 6 at 450. MuJoCo enforces the
+# ants' joint limits; without them the legs fold 2.9 rad past them. joint_limit_activation_gap allocates a limit row
+# only near its limit (35% faster, same result). The 20 piled ants with limit rows overflow 256 articulation rows per
+# world (rows are dropped and the world never sleeps), so 1024. The 36 boxes of `--scene boxes` need 1542 propagation
+# rows (contact + friction) at once, past the default propagation_constraint_max of 1024 + 512 = 1536: the dropped rows
+# kept every box jittering at up to 0.6 m/s and none ever slept (7.1 ms/frame). 2048 lets them all sleep by frame 41
+# (2.0 ms, penetration peak 0.62 -> 0.18 mm); the ants are unchanged (asleep at frame 314, 4.48 -> 4.44 ms, same
+# penetration).
+# enable_sleeping needs a rigid immediate or propagation_colored response and no warm start, compliance or velocity
+# passes; the thresholds are Steel's defaults.
+sim = { fps = 60, substeps = 5 }
+solver = { solve_mode = "matrix_free", iterations = 10, articulated_contact_response = "propagation_colored", enable_joint_limits = true, joint_limit_activation_gap = 0.1, articulation_constraint_max = 1024, propagation_constraint_max = 2048, enable_sleeping = true, sleep_linear_threshold = 0.05, sleep_angular_threshold = 0.15, sleep_quiet_time = 0.5 }
+checked = "2026-11-05, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

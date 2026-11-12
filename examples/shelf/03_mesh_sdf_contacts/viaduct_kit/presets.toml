@@ -1,0 +1,54 @@
+example = "viaduct_kit"
+source = "steel-webgpu assets/scenes/viaduct_kit (hero_montage export) @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = []
+
+[gallery]
+short = "A robot arm seats the top tier of a toy viaduct onto its pegs."
+title = "Viaduct kit"
+frame = 420
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 4 substeps x 8 iterations, immediate response, body-pair contact reduction: 7.1 ms a frame on an RTX PRO 6000
+# (the port's colored 4 x 16: 73-93 ms, swinging run to run). The tier (124 hulls) seated on the kit (222 hulls) made
+# 680-725 contacts and a dense 94 ms Steel substep; reducing contacts per body pair (Newton's default 0.25 m cells,
+# as the montage was built) leaves ~125, and the tier still seats within 0.3 mm of its pegs, as in a 16 x 32 run;
+# penetration 0.6 mm peak, 0.04 mm mean. 0.06 m cells were slower and deeper (0.8 / 0.29 mm). 2 and 3 substeps drop
+# the tier from the grip on the way; the colored response and 16 iterations seat it too but cost 7.4-9.4 ms.
+# Sleeping stays on as the port had it (not timed off). Joint limits for the fingers, built within 0.1 of a limit; no joint has a
+# finite velocity limit.
+sim = { fps = 60, substeps = 4 }
+collision = { body_pair_reduction = {} }
+solver = { solve_mode = "matrix_free", iterations = 8, articulated_contact_response = "immediate", enable_joint_limits = true, joint_limit_activation_gap = 0.1, enable_joint_velocity_limits = false, enable_sleeping = true, free_body_constraint_max = 8192, articulation_constraint_max = 1024 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

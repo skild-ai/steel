@@ -1,0 +1,51 @@
+example = "drawer_fork"
+source = "steel-webgpu assets/scenes/drawer_fork (hero_montage export) @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = []
+
+[gallery]
+short = "Pull open a drawer, then put a fork in its tray."
+title = "Drawer and fork"
+frame = 420
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 4 substeps x 12 iterations, immediate response: 4.8 ms a frame on an RTX PRO 6000 (the port's 4 x 8 colored:
+# 6.4 ms). One robot and ~150 contacts a step, so the serial sweep beats the colored one. The drawer opens to its
+# 0.48 m stop and the fork lands in its tray within 0.4 mm of a 16 x 32 run; penetration 0.65 mm peak, 0.05 mm mean.
+# 4 x 8 lets the fork slip 8 mm in the grip, 3 and 2 substeps reach 2.7-3.5 mm peaks, body-pair contact reduction
+# shifts the loose cutlery 3.6 mm. Sleeping on: the cutlery and drawer sleep, and without it a frame costs 60% more.
+# Joint limits (the drawer's stop, the fingers), built within 0.1 of a limit; no joint has a finite velocity limit.
+sim = { fps = 60, substeps = 4 }
+solver = { solve_mode = "matrix_free", iterations = 12, articulated_contact_response = "immediate", enable_joint_limits = true, joint_limit_activation_gap = 0.1, enable_joint_velocity_limits = false, enable_sleeping = true, free_body_constraint_max = 8192, articulation_constraint_max = 1024 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

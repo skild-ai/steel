@@ -1,0 +1,54 @@
+example = "basic_joints"
+source = "newton/examples/basic/example_basic_joints.py @ skild-ai/newton 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = []
+
+[gallery]
+short = "Joints of every type built with the ModelBuilder: ball, distance, prismatic, revolute and more."
+
+[xpbd]
+status = "works"
+sim = { fps = 100, substeps = 10 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[vbd]
+status = "works"
+sim = { fps = 100, substeps = 10 }
+solver = { iterations = 2, rigid_joint_linear_ke = 1.0e6, rigid_joint_angular_ke = 1.0e6 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 2 substeps x 4 iterations, immediate response, joint limits on: the slider's +-0.3 m limit is part of the scene
+# (XPBD enforces it); without it the slider drops 0.2 m past the limit onto the ground and the step gets slower
+# (0.44 ms vs 0.30 ms) from the extra contacts. 2 iterations cost the same; odd substeps freeze this example's graph.
+sim = { fps = 100, substeps = 2 }
+solver = { solve_mode = "matrix_free", iterations = 4, articulated_contact_response = "immediate", enable_joint_limits = true }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "works"
+sim = { fps = 100, substeps = 8 }
+solver = { dynamics_solver = "dvi", sparse_dynamics = true, sparse_jacobian = true, dvi = { bilateral_solver_type = "LLTBRCM", max_alternating_iterations = 5, bilateral_solve_interval = 5, inequality_sweeps_per_iteration = 1 } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

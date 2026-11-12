@@ -1,0 +1,116 @@
+# Controls for the tuner's settings. The first entry whose `match` pattern fits a setting's key
+# wins; patterns are shell wildcards on the full key (`sim.substeps`, `solver.dvi.omega`,
+# `entries.mujoco.solver.njmax`). `solver` restricts an entry to solver kinds. Kinds:
+#   int   linear slider, whole numbers        float  linear slider
+#   log   logarithmic slider (min > 0)        enum   segmented buttons over `options`
+# Settings without an entry use Newton's Literal type hints for options, else a range around
+# the current value. Booleans are always switches.
+
+# ---------------------------------------------------------------- timing
+[[control]]
+match = ["sim.substeps", "entries.*.sim.substeps"]
+kind = "int"
+min = 1
+max = 64
+
+[[control]]
+match = ["sim.fps", "entries.*.sim.fps"]
+kind = "int"
+min = 24
+max = 240
+
+[[control]]
+match = ["sim.collide_every", "collision.interval", "*.collide_interval", "*.update_data_interval", "*.update_mass_matrix_interval", "*.bilateral_solve_interval"]
+kind = "int"
+min = 1
+max = 16
+
+# ---------------------------------------------------------------- iterations and counts
+[[control]]
+match = ["*.iterations", "*_iterations", "*.max_iterations", "*.max_alternating_iterations", "*.inequality_sweeps_per_iteration", "*.noslip_iterations"]
+kind = "int"
+min = 1
+max = 64
+
+[[control]]
+match = ["*.nconmax", "*.njmax", "*_max", "*.max_contacts_per_world", "*.max_contacts_per_pair", "*.max_triangle_pairs", "*_buffer_size", "*.max_active_cell_count", "*.dense_max_constraints"]
+kind = "log"
+min = 16
+max = 1000000
+
+# ---------------------------------------------------------------- unit-interval factors
+[[control]]
+match = ["*relaxation*", "*.omega", "*.friction_epsilon", "*.angular_damping", "*.friction_smoothing", "*.critical_fraction", "*.friction_anchor_beta", "*.mass_scale", "*.contact_speculative_scale"]
+kind = "float"
+min = 0.0
+max = 1.0
+
+[[control]]
+match = ["*.mu", "*.mu_*", "*.min_friction", "*.restitution"]
+kind = "float"
+min = 0.0
+max = 2.0
+
+# ---------------------------------------------------------------- stiffness, damping, penalties
+[[control]]
+match = ["*_ke", "*_kd", "*_kf", "*_ka", "*.ke", "*.kd", "*stiffness*", "*.joint_damping", "*.joint_angular_damping", "*.spring_ke", "*.spring_kd"]
+kind = "log"
+min = 0.01
+max = 10000000.0
+
+# ---------------------------------------------------------------- tolerances and regularisation
+[[control]]
+match = ["*tolerance*", "*.regularization", "*.rho", "*.rho_0", "*.gamma", "*.alpha", "*.beta", "*.delta", "*compliance*", "*.cfm", "*.baumgarte", "*.air_drag"]
+kind = "log"
+min = 1e-9
+max = 1000.0
+
+[[control]]
+match = ["*margin*", "*gap*", "*_radius", "*.voxel_size", "*.grid_padding", "*.speculative_contact_gap_max", "*.sleep_tolerance"]
+kind = "log"
+min = 1e-5
+max = 10.0
+
+# ---------------------------------------------------------------- options Newton does not type as Literal
+[[control]]
+match = ["solver.solve_mode", "entries.*.solver.solve_mode"]
+solver = ["steel"]
+kind = "enum"
+options = ["split", "matrix_free"]
+
+[[control]]
+match = ["solver.integrator", "entries.*.solver.integrator"]
+solver = ["mujoco"]
+kind = "enum"
+options = ["euler", "implicit", "implicitfast", "rk4"]
+
+[[control]]
+match = ["solver.cone", "entries.*.solver.cone"]
+solver = ["mujoco"]
+kind = "enum"
+options = ["pyramidal", "elliptic"]
+
+[[control]]
+match = ["solver.solver", "entries.*.solver.solver"]
+solver = ["mujoco"]
+kind = "enum"
+options = ["cg", "newton"]
+
+[[control]]
+match = ["solver.jacobian", "entries.*.solver.jacobian"]
+solver = ["mujoco"]
+kind = "enum"
+options = ["auto", "dense", "sparse"]
+
+# ---------------------------------------------------------------- notes
+# A note sits under a setting's name in the tuner (`short`) and in its tooltip (`text`), for
+# settings whose name says less, or something else, than what they do. Matched like controls.
+[[note]]
+match = ["solver.articulated_contact_response", "entries.*.solver.articulated_contact_response"]
+solver = ["steel"]
+short = "all contacts, free bodies too"
+text = """How contact rows are scheduled under solve_mode = "matrix_free", despite the name.
+immediate: articulated rows in the D-wide path; free bodies in the matrix-free one.
+propagation: every contact row (free/free and free/ground too) on body-space rows, swept serially per world.
+propagation_colored: the same rows solved in graph-colored parallel batches; much faster on
+large free-body stacks (about 8x)."""

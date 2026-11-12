@@ -1,0 +1,64 @@
+example = "franka_cable_ik_pick_place"
+source = "newton/examples/multiphysics/example_franka_cable_ik_pick_place.py @ skild-ai/newton 7565a26b1"
+default = "steel_vbd"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+# Newton's test passes `--rigid-solver steel`; that choice is now the steel_vbd preset.
+args = []
+
+[gallery]
+short = "A Franka FR3 uses GPU IK to pick up a deformable cable and move it."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "untested"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
+
+[mujoco_vbd]
+status = "works"
+# MuJoCo owns the Franka arm, VBD the cable rod; coupled through proxy gripper bodies.
+sim = { fps = 60, substeps = 10 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0 }
+entries.mujoco.solver = { solver = "newton", integrator = "implicitfast", cone = "elliptic", iterations = 100, ls_iterations = 20, use_mujoco_contacts = false }
+entries.vbd.solver = { iterations = 20, rigid_contact_history = false }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[steel_vbd]
+status = "works"
+# Steel owns the Franka arm, VBD the cable rod (originally `--rigid-solver steel`).
+# 4 substeps x 12 iterations: the fastest setting (RTX PRO 6000 sweep, 2026-11-04) that places the cable as well as
+# the MuJoCo pairing at 10 substeps (1.19 vs 1.20 mm from the target, peak penetration 1.6 vs 2.3 mm). It also steps
+# the cable with VBD 4 times a frame instead of 10; at the same 10 substeps Steel is ~1 ms slower than MuJoCo
+# (19.1 vs 18.1 ms), and at 3 substeps the peak penetration doubles. Joint limits are enforced;
+# joint_limit_activation_gap = 0.1 rad adds a limit row only near its limit; at the default 32 rows contacts drop.
+sim = { fps = 60, substeps = 4 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0 }
+entries.steel.solver = { solve_mode = "matrix_free", iterations = 12, enable_joint_limits = true, joint_limit_activation_gap = 0.1, articulation_constraint_max = 64 }
+entries.vbd.solver = { iterations = 20, rigid_contact_history = false }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"

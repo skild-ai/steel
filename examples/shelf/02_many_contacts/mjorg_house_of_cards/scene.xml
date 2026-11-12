@@ -1,0 +1,226 @@
+<!-- Source: google-deepmind/mujoco model/cards/house_of_cards.xml at 220abbbb6442
+     (Apache License 2.0, see LICENSE in this folder).
+
+     Modified: compiled with MuJoCo 3.17 and re-emitted as one flat file; the card textures
+     (assets/) are downscaled to 256 x 256.
+-->
+<mujoco model="House of cards">
+  <compiler angle="radian" meshdir="assets" texturedir="assets"/>
+
+  <option impratio="10" density="1.225" viscosity="1.8e-05" integrator="implicitfast" cone="elliptic" noslip_iterations="2"/>
+
+  <statistic meansize="0.01" extent="0.35" center="0 0 0.105"/>
+
+  <visual>
+    <global azimuth="150" elevation="-15"/>
+    <map stiffness="2000" force="0.003"/>
+    <rgba haze="0.2 0.23 0.28 1"/>
+  </visual>
+
+  <default>
+    <geom friction="0.7" solref="0.005 3" solimp="0.95 0.99 0.0001"/>
+    <default class="card">
+      <geom type="mesh" contype="0" conaffinity="0" mesh="card"/>
+    </default>
+    <default class="collision">
+      <geom size="0.047 0.032 0.00035" type="box" group="3"/>
+    </default>
+  </default>
+
+  <asset>
+    <texture type="cube" colorspace="auto" name="ibl" builtin="gradient" rgb1="0.25 0.3 0.4" rgb2="0.5 0.45 0.4" width="32" height="192"/>
+    <texture type="skybox" colorspace="auto" builtin="gradient" rgb1="0.08 0.1 0.16" rgb2="0.25 0.28 0.33" width="32" height="192"/>
+    <texture type="2d" colorspace="auto" name="grid" builtin="checker" rgb1="0.1 0.2 0.3" rgb2="0.2 0.3 0.4" width="100" height="100"/>
+    <texture type="2d" colorspace="linear" name="ace_of_spades" file="ace_of_spades.png"/>
+    <texture type="2d" colorspace="linear" name="ace_of_hearts" file="ace_of_hearts.png"/>
+    <texture type="2d" colorspace="linear" name="ace_of_clubs" file="ace_of_clubs.png"/>
+    <texture type="2d" colorspace="linear" name="ace_of_diamonds" file="ace_of_diamonds.png"/>
+    <texture type="2d" colorspace="linear" name="king_of_spades" file="king_of_spades.png"/>
+    <texture type="2d" colorspace="linear" name="king_of_hearts" file="king_of_hearts.png"/>
+    <texture type="2d" colorspace="linear" name="king_of_clubs" file="king_of_clubs.png"/>
+    <texture type="2d" colorspace="linear" name="king_of_diamonds" file="king_of_diamonds.png"/>
+    <texture type="2d" colorspace="linear" name="10_of_spades" file="10_of_spades.png"/>
+    <texture type="2d" colorspace="linear" name="10_of_hearts" file="10_of_hearts.png"/>
+    <texture type="2d" colorspace="linear" name="10_of_diamonds" file="10_of_diamonds.png"/>
+    <texture type="2d" colorspace="linear" name="queen_of_spades" file="queen_of_spades.png"/>
+    <texture type="2d" colorspace="linear" name="queen_of_hearts" file="queen_of_hearts.png"/>
+    <texture type="2d" colorspace="linear" name="queen_of_clubs" file="queen_of_clubs.png"/>
+    <texture type="2d" colorspace="linear" name="queen_of_diamonds" file="queen_of_diamonds.png"/>
+    <texture type="2d" colorspace="linear" name="jack_of_spades" file="jack_of_spades.png"/>
+    <texture type="2d" colorspace="linear" name="jack_of_hearts" file="jack_of_hearts.png"/>
+    <texture type="2d" colorspace="linear" name="9_of_spades" file="9_of_spades.png"/>
+    <texture type="2d" colorspace="linear" name="9_of_hearts" file="9_of_hearts.png"/>
+    <texture type="2d" colorspace="linear" name="jack_of_clubs" file="jack_of_clubs.png"/>
+    <texture type="2d" colorspace="linear" name="jack_of_diamonds" file="jack_of_diamonds.png"/>
+    <texture type="2d" colorspace="linear" name="8_of_spades" file="8_of_spades.png"/>
+    <texture type="2d" colorspace="linear" name="8_of_hearts" file="8_of_hearts.png"/>
+    <texture type="2d" colorspace="linear" name="7_of_spades" file="7_of_spades.png"/>
+    <texture type="2d" colorspace="linear" name="black_joker" file="black_joker.png"/>
+    <texture type="2d" colorspace="linear" name="red_joker" file="red_joker.png"/>
+    <material name="grid" texture="grid" texrepeat="8 8" texuniform="true" reflectance="0.06"/>
+    <material name="ace_of_spades" texture="ace_of_spades"/>
+    <material name="ace_of_hearts" texture="ace_of_hearts"/>
+    <material name="ace_of_clubs" texture="ace_of_clubs"/>
+    <material name="ace_of_diamonds" texture="ace_of_diamonds"/>
+    <material name="king_of_spades" texture="king_of_spades"/>
+    <material name="king_of_hearts" texture="king_of_hearts"/>
+    <material name="king_of_clubs" texture="king_of_clubs"/>
+    <material name="king_of_diamonds" texture="king_of_diamonds"/>
+    <material name="10_of_spades" texture="10_of_spades"/>
+    <material name="10_of_hearts" texture="10_of_hearts"/>
+    <material name="10_of_diamonds" texture="10_of_diamonds"/>
+    <material name="queen_of_spades" texture="queen_of_spades"/>
+    <material name="queen_of_hearts" texture="queen_of_hearts"/>
+    <material name="queen_of_clubs" texture="queen_of_clubs"/>
+    <material name="queen_of_diamonds" texture="queen_of_diamonds"/>
+    <material name="jack_of_spades" texture="jack_of_spades"/>
+    <material name="jack_of_hearts" texture="jack_of_hearts"/>
+    <material name="9_of_spades" texture="9_of_spades"/>
+    <material name="9_of_hearts" texture="9_of_hearts"/>
+    <material name="jack_of_clubs" texture="jack_of_clubs"/>
+    <material name="jack_of_diamonds" texture="jack_of_diamonds"/>
+    <material name="8_of_spades" texture="8_of_spades"/>
+    <material name="8_of_hearts" texture="8_of_hearts"/>
+    <material name="7_of_spades" texture="7_of_spades"/>
+    <material name="black_joker" texture="black_joker"/>
+    <material name="red_joker" texture="red_joker"/>
+    <mesh name="card" content_type="model/obj" file="card.obj"/>
+  </asset>
+
+  <worldbody>
+    <geom size="0 0 0.01" type="plane" material="grid"/>
+    <light pos="0 1 1" dir="0 -0.743294 -0.668965" intensity="150000" range="5" cutoff="22" softness="1" diffuse="0.9 0.85 0.75"/>
+    <light castshadow="false" pos="0 -1 1" dir="0 0.743294 -0.668965" intensity="50000" range="5" cutoff="30" softness="1" diffuse="0.5 0.65 0.8"/>
+    <light intensity="3000" type="image" texture="ibl"/>
+    <body name="ace_of_spades" pos="0.0002 -0.11875 0.029" quat="0.843388 0.537298 -0.00145353 0.00228159">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="ace_of_spades" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="ace_of_hearts" pos="-0.0001 -0.09125 0.029" quat="0.84339 -0.537298 -0.00112532 -0.00176639">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="ace_of_hearts" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="ace_of_clubs" pos="0.0003 -0.04875 0.029" quat="0.843391 0.537299 -0.0007971 0.0012512">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="ace_of_clubs" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="ace_of_diamonds" pos="-0.0002 -0.02125 0.029" quat="0.843388 -0.537297 -0.00154731 -0.00242879">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="ace_of_diamonds" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="king_of_spades" pos="0.0001 0.02125 0.029" quat="0.843389 0.537298 -0.00121909 0.00191359">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="king_of_spades" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="king_of_hearts" pos="-0.0003 0.04875 0.029" quat="0.84339 -0.537299 -0.000890876 -0.0013984">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="king_of_hearts" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="king_of_clubs" pos="0.0002 0.09125 0.029" quat="0.84339 0.537299 -0.00103154 0.00161919">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="king_of_clubs" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="king_of_diamonds" pos="-0.0002 0.11875 0.029" quat="0.843389 -0.537298 -0.00135976 -0.00213439">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="king_of_diamonds" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="10_of_spades" pos="-0.0001 -0.07 0.05848" quat="0.706181 0 0 0.708032">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="10_of_spades" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="10_of_hearts" pos="0.0003 0 0.05928" quat="0.708771 0 0 0.705439">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="10_of_hearts" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="10_of_diamonds" pos="-0.0003 0.07 0.05848" quat="0.70581 0 0 0.708401">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="10_of_diamonds" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="queen_of_spades" pos="0.0001 -0.08375 0.08855" quat="0.84339 0.537299 0.000843988 -0.0013248">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="queen_of_spades" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="queen_of_hearts" pos="0.0002 -0.05625 0.08855" quat="0.843388 -0.537298 0.00150042 0.00235519">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="queen_of_hearts" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="queen_of_clubs" pos="-0.0002 -0.01375 0.08855" quat="0.843389 0.537298 0.0011722 -0.00183999">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="queen_of_clubs" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="queen_of_diamonds" pos="0.0001 0.01375 0.08855" quat="0.843389 -0.537298 0.00131287 0.00206079">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="queen_of_diamonds" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="jack_of_spades" pos="-0.0001 0.05625 0.08855" quat="0.843391 0.537299 0.000750212 -0.0011776">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="jack_of_spades" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="jack_of_hearts" pos="0.0003 0.08375 0.08855" quat="0.84339 -0.537299 0.00107843 0.00169279">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="jack_of_hearts" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="9_of_spades" pos="-0.0003 -0.035 0.11803" quat="0.709017 0 0 0.705191">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="9_of_spades" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="9_of_hearts" pos="0.0002 0.035 0.11883" quat="0.705933 0 0 0.708278">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="9_of_hearts" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="jack_of_clubs" pos="-0.0001 -0.04875 0.1481" quat="0.84339 0.537299 0.00103154 -0.00161919">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="jack_of_clubs" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="jack_of_diamonds" pos="-0.0002 -0.02125 0.1481" quat="0.843389 -0.537298 0.00140665 0.00220799">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="jack_of_diamonds" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="8_of_spades" pos="0.0001 0.02125 0.1481" quat="0.843391 0.537299 0.0007971 -0.0012512">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="8_of_spades" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="8_of_hearts" pos="-0.0003 0.04875 0.1481" quat="0.843389 -0.537298 0.0011722 0.00183999">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="8_of_hearts" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="7_of_spades" pos="0.0003 0 0.17758" quat="0.708832 0 0 0.705377">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="7_of_spades" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="black_joker" pos="-0.0001 -0.01375 0.20685" quat="0.843383 0.537294 -0.0023444 0.00367998">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="black_joker" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+    <body name="red_joker" pos="0.0002 0.01375 0.20685" quat="0.843383 -0.537294 -0.0023444 -0.00367998">
+      <joint type="free"/>
+      <geom class="card" quat="1 0 0 0" mass="0.002" material="red_joker" mesh="card"/>
+      <geom class="collision" mass="0"/>
+    </body>
+  </worldbody>
+</mujoco>

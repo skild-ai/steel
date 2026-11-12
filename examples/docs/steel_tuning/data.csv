@@ -1,0 +1,41 @@
+group,example,baseline_solver,baseline,template,tuned
+Basics,basic_pendulum,XPBD,0.592,2.59,0.225
+Basics,basic_dzhanibekov,VBD,0.365,0.956,0.546
+Basics,basic_shapes,XPBD,0.941,3.36,0.876
+Basics,basic_joints,XPBD,0.74,5.91,0.313
+Basics,basic_urdf,XPBD,0.909,7.24,0.444
+Basics,selection_cartpole,MuJoCo,1.717,2.36,0.182
+Basics,sleeping,MuJoCo,17.69,5.09,6.25
+Basics,basic_mimic_joint,XPBD,3.996,16.2,0.935
+Contacts,balance_bird,XPBD,2.18,4.73,0.55
+Contacts,basic_conveyor,XPBD,1.87,29.3,1.57
+Contacts,basic_conveyor_forces,XPBD,2.87,11.55,1.44
+Contacts,newton_cradle,XPBD,2.45,4.54,1.26
+Contacts,domino_spiral,XPBD,4.71,6.45,4.3
+Contacts,vbd_rigid_rigid_contact,VBD,4.31,4.26,1.32
+Contacts,nut_bolt_hydro,MuJoCo,4.47,9.3,1.97
+Contacts,nut_bolt_sdf,MuJoCo,4.78,19.9,6.6
+Contacts,robot_panda_hydro,MuJoCo,9.9,46.3,49.0
+Articulations,controller_operational_space_hybrid_force_motion,MuJoCo,3.057,3.073,0.726
+Articulations,robot_allegro_hand,MuJoCo,3.757,11.48,1.301
+Articulations,robot_anymal_d,MuJoCo,1.134,2.724,0.336
+Articulations,robot_asroballet,MuJoCo (CPU),8.671,41.0,17.9
+Articulations,robot_cartpole,MuJoCo,1.784,2.306,0.148
+Articulations,robot_g1,MuJoCo,2.622,5.565,0.437
+Articulations,robot_policy,MuJoCo,2.031,3.532,1.319
+Articulations,robot_ur10,MuJoCo,2.507,2.705,0.182
+Linkages and soft,kamino_basic_dr_testmech,Kamino,35.0,7.09,3.32
+Linkages and soft,kamino_basic_fourbar,Kamino,3.78,8.98,3.68
+Linkages and soft,kamino_robot_dr_legs,Kamino,39.0,11.18,2.45
+Linkages and soft,kamino_robot_anymal_d,Kamino,134.0,9.16,3.29
+Linkages and soft,franka_cable_ik_pick_place,MuJoCo+VBD,18.09,19.49,8.11
+Coupling,franka_cloth_block,MuJoCo+VBD,15.75,27.43,15.37
+Coupling,franka_shirt_fold_stack,MuJoCo+VBD,65.86,78.31,69.01
+Coupling,kamino_mujoco_admm_solver,Kamino+MuJoCo,7.03,6.65,6.65
+Coupling,mpm_twoway_coupling,MuJoCo+MPM,10.23,11.02,11.18
+Coupling,mujoco_franka_vbd_cable_admm_solver,MuJoCo+XPBD,57.82,79.59,31.71
+Coupling,mujoco_mpm_coupled_solver,MuJoCo+MPM,22.12,22.71,21.25
+Coupling,mujoco_vbd_admm_solver,MuJoCo+VBD,13.24,12.76,9.67
+Coupling,mujoco_vbd_coupled_solver,MuJoCo+VBD,19.94,20.65,16.7
+Coupling,proxy_joint_gripper,MuJoCo+VBD,36.59,36.38,11.88
+Coupling,admm_contact_solver,SemiImplicit+XPBD,9.39,11.98,15.54

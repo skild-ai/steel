@@ -1,0 +1,49 @@
+example = "mjorg_magnetic_door"
+source = "google-deepmind/mujoco model/adhesion/fridge_door.xml (MuJoCo 4.0 tour on mujoco.org)"
+license = "Apache-2.0"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = ["--num-frames", "480"]
+
+[gallery]
+short = "A magnet strip snaps an ajar fridge door shut; a light tug cannot open it, a hard one can, and it swings back and latches."
+title = "Magnetic door (mujoco.org)"
+frame = 150
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# The magnets' MJCF `adhesion` imports as steel:adhesion and their `gap` as the attraction band. A small
+# rigid gap keeps the other shapes' contacts from reaching the magnets, which would pull on them too.
+sim = { fps = 60, substeps = 8 }
+model = { rigid_gap = 0.005 }
+solver = { iterations = 16, enable_joint_limits = true, articulation_constraint_max = 256 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

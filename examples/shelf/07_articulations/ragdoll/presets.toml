@@ -1,0 +1,54 @@
+example = "ragdoll"
+source = "steel-webgpu tools/scenes.py ragdoll() @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode: 300 frames, 5 s, at rest at the foot of the stairs; the example's check() asserts the outcome.
+args = ["--num-frames", "300"]
+
+[gallery]
+short = "A 10-part ragdoll tumbles down a staircase."
+title = "Ragdoll"
+frame = 90
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 2 substeps x 12 iterations with the immediate response (1.20 ms/frame on an RTX PRO 6000, was 12.1 at the port's
+# 4 x 12 propagation_colored): thrown at 2 m/s, the ragdoll lands on the stairs, tumbles to their foot and is at rest
+# (every body < 1 cm/s) by frame ~115, as a 16 x 32 run (~100); penetration peak 2.4-3.1 mm, mean 0.04 mm.
+# 2 x 8 sinks a limb 17 mm on landing. propagation_colored is 4-5x slower here (its self-contacts of the one
+# articulation go to dense rows either way). At 4 substeps the head, on its frictionless ball joint, can keep rolling
+# on the floor for seconds. Joint limits on: the elbows and knees stop at [-2.2, 0] rad.
+# A 2 cm contact gap (Newton's default 10 cm): fewer speculative rows between the limbs; 128 dense rows hold the
+# peak (72 here, up to 95 at 4 substeps; the port's 32 dropped up to 24 rows a step and let limbs sink 39 mm).
+sim = { fps = 60, substeps = 2 }
+solver = { solve_mode = "matrix_free", iterations = 12, articulated_contact_response = "immediate", enable_joint_limits = true, articulation_constraint_max = 128 }
+model = { rigid_gap = 0.02 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

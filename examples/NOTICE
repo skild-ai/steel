@@ -1,0 +1,40 @@
+Steel Shelf
+
+Newton-derived source:
+Copyright (c) 2025-2026 The Newton Developers.
+Original copyright and Apache-2.0 SPDX headers are retained.
+
+The direct source of the 27 Steel WebGPU ports is steel-webgpu, as recorded
+in their headers and presets.toml. "Modified for Steel Shelf" identifies
+subsequent changes; it does not assign original authorship or imply that all
+ports were directly derived from Newton. See THIRD_PARTY.md for provenance.
+
+Bundled Universal Robots model data:
+UR10e: spinning_top, brick_pour, box_turn, toaster, toy_train.
+UR5e: air_hockey.
+Copyright 2018 ROS Industrial Consortium.
+BSD-3-Clause; complete notices, conditions and disclaimers:
+licenses/UR10e-BSD-3-Clause.txt and licenses/UR5e-BSD-3-Clause.txt.
+
+Bundled Kinova Gen3 model data:
+viaduct_kit.
+Copyright (c) 2018, Kinova inc.
+BSD-3-Clause; complete notice: licenses/Kinova-Gen3-BSD-3-Clause.txt.
+
+Bundled Franka model/gripper data:
+The complete newton-assets Franka license, including the Apache-2.0 text and
+appended BSD/Willow Garage terms, is retained in
+licenses/Franka-complete-LICENSE.txt. This covers full Franka exports and
+Franka gripper components where present in other robot scenes.
+
+Pelican bicycle CAD in the separately installed Newton dependency:
+Original CAD created and supplied by liinbor under Apache-2.0.
+
+Original project documentation charts and rendered recordings are Apache-2.0.
+Model notices remain applicable to depicted third-party model content.
+
+Runtime asset licenses are separate from project code and bundled data.
+Complete notices, including the restricted Disney Research terms, are in
+licenses/runtime-assets/. Model files and policies are not bundled here.
+THIRD_PARTY.md and third_party_inventory.json record the component terms,
+pinned sources, file hashes and distribution boundaries.

@@ -1,0 +1,90 @@
+# Looks: palettes and lighting for the OpenGL viewer. `steel` is the default for play and tune.
+#
+#   python -m shelf play basic_pendulum --look newton     # Newton's own look
+#
+# A look recolors the shapes that use Newton's default palette (in palette order, so a scene keeps
+# its color structure), sets the floor, and sets the renderer's sky, ambient fill, light, exposure,
+# roughness and shadow softness. Shapes whose color the example chose keep it. Every key is optional.
+#
+#   palette        eight colors replacing Newton's default palette, in order (blue, cyan, green,
+#                  yellow, red, magenta, orange, teal)
+#   ground         floor color; checker = false turns the checkerboard off
+#   sky_upper      sky at the top of the window; sky_lower the horizon (also the fog color)
+#   ambient_sky    hemispherical fill light from above; ambient_ground the bounce from below
+#   light_color    the sun; exposure the tone-mapping exposure (Newton: 1.6)
+#   roughness      applied to every non-metal shape (Newton: 0.5); shadow_radius softens shadows (Newton: 3)
+#   fog            [start, end] in metres: shapes blend toward sky_lower from start, fully at end
+#                  (Newton: [20, 200], which greys out anything a few tens of metres away)
+#   checker_dark   colour of the dark checker tiles (Newton: the floor colour darkened by 0.7 in linear)
+#   sun_direction  [x, y, z] toward the sun (Newton: [0.2, -0.3, 0.8] for z-up)
+#   spotlight      false lights the whole scene evenly; true (Newton) fades the sun outside a cone
+#                  around the origin
+
+[newton]
+note = "Newton's own look; nothing is changed"
+
+[steel]
+note = "steel-webgpu's studio: pale grey-blue sky, blue-grey checker, warm sun, Newton's own palette"
+# Mirrors packages/three/src/studio.ts in steel-webgpu (avbd-metal's look). three tone-maps the sky as well, so
+# the sky colours are what the browser shows after ACES; exposure and the ambient fill were fitted so that
+# Newton's tone curve displays the same sunlit and shaded tones (scratch fit over Newton's palette and the floor).
+# Bodies keep Newton's palette, which is what exported scenes carry.
+ground = "#EDEDF0"
+checker = true
+checker_dark = "#9EA8B8"
+sky_upper = "#C6CBD2"
+sky_lower = "#DADBDD"
+ambient_sky = [0.264, 0.290, 0.334]
+ambient_ground = [0.176, 0.163, 0.149]
+light_color = [1.0, 0.95, 0.86]
+sun_direction = [-0.4, -0.25, 0.85]
+spotlight = false
+exposure = 1.21
+roughness = 0.45
+shadow_radius = 3.0
+fog = [90, 420]
+
+[studio]
+note = "warm key light, cool fill, matte clay materials, cream floor"
+palette = ["#4D73AD", "#6FB7C9", "#6FA86B", "#F2C14E", "#E66145", "#B36699", "#F08A3E", "#2B998F"]
+ground = "#A39B8F"
+checker = true
+sky_upper = "#6F9CC8"
+sky_lower = "#CFC8BC"
+ambient_sky = [0.55, 0.58, 0.66]
+ambient_ground = [0.34, 0.30, 0.27]
+light_color = [1.0, 0.93, 0.82]
+exposure = 1.05
+roughness = 0.8
+shadow_radius = 5.0
+fog = [80, 600]
+
+[pastel]
+note = "soft, low-contrast colors on a pale floor"
+palette = ["#8FA8D6", "#A3D5E0", "#A8CFA0", "#F5DC8C", "#F0A08C", "#D4A0C8", "#F5B98C", "#8CCBC4"]
+ground = "#BDB7B0"
+checker = true
+sky_upper = "#B4C9DE"
+sky_lower = "#E3DFD9"
+ambient_sky = [0.66, 0.68, 0.74]
+ambient_ground = [0.42, 0.40, 0.38]
+light_color = [1.0, 0.97, 0.92]
+exposure = 1.1
+roughness = 0.9
+shadow_radius = 6.0
+fog = [80, 600]
+
+[paper]
+note = "neutral white studio for figures; plain floor, no checkerboard"
+palette = ["#4D73AD", "#6FB7C9", "#6FA86B", "#F2C14E", "#E66145", "#B36699", "#F08A3E", "#2B998F"]
+ground = "#CFCDC8"
+checker = false
+sky_upper = "#EEEEEE"
+sky_lower = "#D0D0D0"
+ambient_sky = [0.70, 0.70, 0.70]
+ambient_ground = [0.42, 0.42, 0.42]
+light_color = [1.0, 1.0, 1.0]
+exposure = 1.1
+roughness = 0.75
+shadow_radius = 4.0
+fog = [80, 600]

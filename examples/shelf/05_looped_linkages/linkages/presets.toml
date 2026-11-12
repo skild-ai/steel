@@ -1,0 +1,52 @@
+example = "linkages"
+source = "steel-webgpu tools/scenes.py linkages() @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode: 300 frames, 5 s, several swings and crank turns; the example's check() asserts the outcome.
+args = ["--num-frames", "300"]
+
+[gallery]
+short = "Copied joint motion and a closed four-bar linkage."
+title = "Linkages"
+frame = 120
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# The immediate response: this Newton's Steel closes the four-bar's revolute loop only there.
+# 1 substep x 6 iterations (0.18 ms/frame on an RTX PRO 6000, was 1.54 at the port's 4 x 12): the pendulums keep
+# their 0.8 rad swing and 1.037 s period, the copies hold -1 and 0.5 exactly, the crank turns at 2.0 rad/s and the
+# loop stays closed within 0.45 mm, as a 16 x 48 run (0.0 mm); 4 iterations open it to 1 mm.
+# The joints have no finite limits, so limit rows are off. A 2 cm contact gap (Newton's default 10 cm) drops the
+# speculative contacts between the pendulums 8 cm apart, which overflowed the 32 dense rows at the default gap.
+sim = { fps = 60, substeps = 1 }
+solver = { solve_mode = "matrix_free", iterations = 6, articulated_contact_response = "immediate", enable_joint_limits = false }
+model = { rigid_gap = 0.02 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

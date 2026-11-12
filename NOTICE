@@ -6,3 +6,8 @@ in Newton. Newton source files retain their original copyright and SPDX notices.
 The solver is linked from this package, not bundled here. The Apache-2.0 license
 applies to the project code and this documentation, not automatically to
 third-party assets, trademarks, launch footage, or music.
+
+The examples/ collection was migrated from the Steel Shelf project. Its
+component notices and asset inventory are retained in examples/NOTICE,
+examples/THIRD_PARTY.md, examples/third_party_inventory.json and
+examples/licenses/.

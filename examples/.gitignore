@@ -1,0 +1,22 @@
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+build/
+dist/
+
+# Example outputs
+*.usd
+!shelf/**/*.usd
+*.rrd
+*.bin
+!shelf/**/scene.bin
+outputs/
+.shelf_runs/
+/*.png
+
+# videos written by the tuner's Record button
+recordings/
+
+# imgui window positions, written by the viewer at run time
+imgui.ini

@@ -1,0 +1,52 @@
+example = "controller_operational_space_hybrid_force_motion"
+source = "newton/examples/controllers/example_controller_operational_space_hybrid_force_motion.py @ skild-ai/newton 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "600"]
+
+[gallery]
+short = "Operational-space hybrid force and motion control on two robots."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "works"
+sim = { fps = 60, substeps = 4 }
+solver = { nconmax = 400, njmax = 400 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 2 substeps x 2 iterations, immediate response, point friction: fastest setting; both arms settle and hold their
+# tool tips on the tables as with 4 substeps (joint path within 0.02 rad RMS of MuJoCo's). The probe's 22 mm peak
+# and 9.5 mm mean come from the static scene (MuJoCo shows the same), not from the solver. With the default press
+# force of 0 N MuJoCo measures 1.0 N of contact on the Franka tool and Steel 0 N. Joint limits off: the arms stay
+# near their start poses and never reach them (identical result with them on, 10% slower). The substep count must
+# stay even: the controller binds state_0 into its captured graph.
+sim = { fps = 60, substeps = 2 }
+solver = { solve_mode = "matrix_free", iterations = 2, articulated_contact_response = "immediate", articulation_constraint_max = 128, enable_joint_limits = false, friction_anchor_beta = 0.0 }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

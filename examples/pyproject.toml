@@ -1,0 +1,34 @@
+[project]
+name = "steel-shelf"
+version = "0.1.0"
+description = "Curated Newton examples, one folder per physics feature, with a tested solver preset per solver."
+readme = "README.md"
+license = "Apache-2.0 AND BSD-3-Clause"
+license-files = ["LICENSE", "NOTICE", "THIRD_PARTY.md", "third_party_inventory.json", "licenses/*.txt", "licenses/runtime-assets/*.txt"]
+requires-python = ">=3.10"
+dependencies = [
+    # skild-ai/newton, a Newton development fork, until the changes these examples need are in a Newton release.
+    "newton[examples] @ git+https://github.com/skild-ai/newton.git@f6fc82a8b06d036e1e6d02a61d77a2d300476e8d",
+    "tomlkit>=0.13",  # `shelf check` writes results into presets.toml, keeping comments
+]
+
+[project.scripts]
+shelf = "common.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+# Not ready for PyPI as is: the top-level `common` package would collide with other distributions.
+packages = ["common", "shelf"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.hatch.build.targets.sdist]
+# Renders are documentation, not runtime assets.
+exclude = ["/docs/**/*.png", "/docs/**/*.gif", "/docs/**/*.webp"]

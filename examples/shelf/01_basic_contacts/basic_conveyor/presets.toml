@@ -1,0 +1,58 @@
+example = "basic_conveyor"
+source = "newton/examples/basic/example_basic_conveyor.py @ skild-ai/newton 7565a26b1"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py).
+args = ["--num-frames", "100"]
+
+[gallery]
+short = "A baggage-claim conveyor: one rotating belt mesh on a kinematic root carries bags around."
+frame = 300
+
+[xpbd]
+status = "works"
+sim = { fps = 100, substeps = 10 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[vbd]
+status = "works"
+sim = { fps = 100, substeps = 10 }
+solver = { iterations = 1, rigid_body_contact_buffer_size = 512 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# 2 substeps x 3 iterations with baumgarte = 1.0: the fastest setting whose penetration (peak, mean and
+# per-frame max) and bag transport match or beat XPBD's. At baumgarte 0.2 the bags' landing sinks 2.6 mm;
+# odd substep counts lose a substep per frame in this example's captured graph. The immediate response
+# overflows its rows and is 3x slower. The example gives Steel's belt a kinematic free root (see example.py).
+sim = { fps = 100, substeps = 2 }
+# propagation_constraint_max: the bags' belt and rail contacts need up to ~830 rows
+solver = { solve_mode = "matrix_free", iterations = 3, baumgarte = 1.0, articulated_contact_response = "propagation_colored", propagation_constraint_max = 4096 }
+checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+
+[kamino]
+status = "works"
+sim = { fps = 100, substeps = 4 }
+# collision_detector: the full bag set can briefly exceed 256 contacts at segment seams.
+solver = { dynamics_solver = "dvi", sparse_dynamics = true, sparse_jacobian = true, use_collision_detector = true, integrator = "moreau", collision_detector = { max_contacts_per_world = 384, max_contacts_per_pair = 4, max_triangle_pairs = 16384 }, dvi = { max_alternating_iterations = 1, bilateral_solve_interval = 1 } }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

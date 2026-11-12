@@ -1,0 +1,56 @@
+example = "contacts_rj45_plug"
+source = "newton/examples/contacts/example_contacts_rj45_plug.py @ skild-ai/newton 7565a26b1"
+default = "vbd"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode (from Newton's test_examples.py), plus --insert:
+# the scripted gizmo pushes the plug in and pulls it back; test_final asserts the latch deflected and held.
+args = ["--insert", "--num-frames", "240"]
+
+[gallery]
+short = "An RJ45 plug moved into its socket with the translation gizmo."
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "works"
+sim = { fps = 60, substeps = 6 }
+solver = { iterations = 12, rigid_body_contact_buffer_size = 256 }
+checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "unsupported"
+reason = "the cable is a rod of ROD joints, which SolverSteel rejects at construction (NotImplementedError); steel_vbd runs the plug and latch on Steel and the cable on VBD"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"
+
+[steel_vbd]
+status = "works"
+# Steel owns the plug (D6) and the latch (revolute with its spring and limits), VBD the cable rod; plug and latch proxy
+# into VBD for cable contact. The mesh contacts need far more than the default 32 articulation rows; 512 is about
+# twice the measured peak. At 6 iterations the cable drifts off within a 10 s run.
+sim = { fps = 60, substeps = 6 }
+solver = { coupling_mode = "lagged", proxy_iterations = 1, mass_scale = 1.0 }
+entries.steel.solver = { solve_mode = "serial", iterations = 12, enable_joint_limits = true, articulation_constraint_max = 512 }
+entries.vbd.solver = { iterations = 12, rigid_body_contact_buffer_size = 256 }
+checked = "2026-11-11, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"

@@ -1,0 +1,49 @@
+example = "mjorg_sleeping_dominos"
+source = "google-deepmind/mujoco model/sleep/dominos.xml (MuJoCo 4.0 tour on mujoco.org)"
+license = "Apache-2.0"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = ["--num-frames", "900"]
+
+[gallery]
+short = "One tilted domino starts a wave through 96 sleeping dominoes; each row wakes as it arrives."
+title = "Sleeping dominos (mujoco.org)"
+frame = 240
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# MuJoCo's 4.0 sleep flag maps to Steel's island sleeping. The fallen chain needs about 2100 rows; at the
+# default row budget the dropped rows stall the wave or launch dominoes.
+sim = { fps = 60, substeps = 4 }
+model = { rigid_gap = 0.01 }
+solver = { solve_mode = "colored", iterations = 12, articulated_contact_response = "propagation", enable_sleeping = true, free_body_constraint_max = 4096, propagation_constraint_max = 4096 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

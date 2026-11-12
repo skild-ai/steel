@@ -1,0 +1,54 @@
+example = "trebuchet"
+source = "steel-webgpu tools/scenes.py trebuchet() @ ad03e49"
+default = "steel"
+
+[check]
+# Arguments `python -m shelf check` passes in test mode.
+args = []
+
+[gallery]
+short = "A counterweight trebuchet hurls a boulder at a brick wall."
+title = "Trebuchet"
+frame = 240
+
+[xpbd]
+status = "untested"
+
+[vbd]
+status = "untested"
+
+[mujoco]
+status = "untested"
+
+[featherstone]
+status = "untested"
+
+[semi_implicit]
+status = "untested"
+
+[feather_pgs]
+status = "untested"
+
+[steel]
+status = "works"
+# The port's 4 x 12 sized the propagation rows at the default 544 while the wall needs ~1770: up to 1116 contact rows
+# were dropped every step, so the dry-stacked wall slumped and fell apart before the boulder arrived (bricks down
+# 3.5 m by frame 200). 2560 rows hold it (peak 1765, contacts 927).
+# 3 substeps x 16 iterations (4.7-5.0 ms/frame on an RTX PRO 6000; the port's 4 x 12 6.7 with the rows dropped, 5.4
+# with them kept): the wall stands still until the hit (bricks < 3 cm/s), the boulder smashes through and 44 of
+# 76 bricks come down, as 16 x 32 (36-44) and 8 x 16 (37). Fewer sweeps leave the wall nearly whole (2 x 12: 1,
+# 3 x 12: 9, 3 x 14: 22-33, 4 x 8: 15). Penetration: mean 0.18 mm; the 19-21 mm peak is a brick driven into the
+# ground by the 20 m/s boulder in the frames of the hit (every configuration, 16 x 32 included, shows one).
+# Sleeping on: bricks at rest sleep (without it 7.1 ms). The joints have no finite limits, so limit rows are off.
+sim = { fps = 60, substeps = 3 }
+solver = { solve_mode = "matrix_free", iterations = 16, articulated_contact_response = "propagation_colored", enable_joint_limits = false, enable_sleeping = true, propagation_constraint_max = 2560 }
+checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+
+[kamino]
+status = "untested"
+
+[implicit_mpm]
+status = "untested"
+
+[style3d]
+status = "untested"

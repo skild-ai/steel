@@ -1,0 +1,290 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 The Newton Developers
+# SPDX-License-Identifier: Apache-2.0
+# Modified for Steel Shelf: preset-driven execution and shared runner integration.
+
+###########################################################################
+# Example Rigid-VBD ADMM Coupled Solver
+#
+# A rigid ball is attached to the centre of a pinned VBD cloth sheet
+# through a model-level particle-body attachment annotation, while a separate
+# rigid pendulum link carries a VBD rigid payload through a normal model ball
+# joint. SolverCoupledADMM converts both cross-solver couplings into ADMM
+# attachment constraints.
+#
+# This example demonstrates ``SolverCoupledADMM``, an
+# alternative to proxy-body coupling based on linearised ADMM over model
+# joints, model attachment annotations, and collision-detected contacts rather
+# than proxy bodies. See ``docs/plans/2026-04-23-admm-coupling.tex`` for the
+# algorithm.
+#
+# Command: python -m shelf run ball_tied_to_cloth
+#
+###########################################################################
+
+from __future__ import annotations
+
+from collections.abc import Callable
+
+import numpy as np
+import warp as wp
+from newton.solvers.experimental.coupled import SolverCoupled, SolverCoupledADMM
+
+import newton
+import newton.examples
+from newton.solvers import SolverKamino, SolverMuJoCo, SolverSteel
+from common import presets
+
+
+def _register_rigid_solver_custom_attributes(builder: newton.ModelBuilder, rigid_solver: str) -> None:
+    if rigid_solver == "kamino":
+        SolverKamino.register_custom_attributes(builder)
+
+
+def _make_kamino_config(settings: dict[str, object]) -> SolverKamino.Config:
+    # Start from SolverKamino.Config() (not Config.from_model) and apply the preset's
+    # settings; nested tables set fields of the nested configs.
+    config = SolverKamino.Config()
+    for key, value in settings.items():
+        if isinstance(value, dict):
+            for sub_key, sub_value in value.items():
+                setattr(getattr(config, key), sub_key, sub_value)
+        else:
+            setattr(config, key, value)
+    return config
+
+
+def _rigid_solver_entry_args(rigid_solver: str, settings: dict[str, object]):
+    if rigid_solver == "kamino":
+        return "kamino", SolverKamino, {"config": _make_kamino_config(settings)}
+    if rigid_solver == "mujoco":
+        return "mjc", SolverMuJoCo, dict(settings)
+    if rigid_solver == "steel":
+        return "steel", SolverSteel, dict(settings)
+    raise ValueError(f"Unsupported rigid solver '{rigid_solver}'")
+
+
+def _capture_frame_graph(model: newton.Model, simulate: Callable[[], None], *, enabled: bool = True):
+    if not enabled:
+        return None
+
+    with wp.ScopedDevice(model.device):
+        with wp.ScopedCapture() as capture:
+            simulate()
+
+    if capture.graph is None:
+        raise RuntimeError(f"Graph capture failed on device {model.device}")
+    return capture.graph
+
+
+def _launch_frame_graph(model: newton.Model, graph) -> bool:
+    if graph is None:
+        return False
+
+    with wp.ScopedDevice(model.device):
+        wp.capture_launch(graph)
+    return True
+
+
+class Example:
+    def __init__(self, viewer, args):
+        self.preset = presets.load(__file__)
+        self.viewer = viewer
+        self.sim_time = 0.0
+        self.fps = self.preset.fps
+        self.frame_dt = 1.0 / self.fps
+        self.sim_substeps = self.preset.substeps
+        self.sim_dt = self.frame_dt / self.sim_substeps
+        # Presets are named "<rigid>_vbd".
+        self.rigid_solver = self.preset.name.split("_")[0]
+
+        builder = newton.ModelBuilder()
+        _register_rigid_solver_custom_attributes(builder, self.rigid_solver)
+        builder.add_ground_plane()
+
+        dim = 11
+        cloth_z = 2.0
+        particle_start = builder.particle_count
+        cloth_tri_ke = 1.0e3
+        cloth_edge_ke = 0.01
+        builder.add_cloth_grid(
+            pos=wp.vec3(-0.5, -0.5, cloth_z),
+            rot=wp.quat_identity(),
+            vel=wp.vec3(0.0),
+            fix_left=True,
+            fix_right=True,
+            dim_x=dim,
+            dim_y=dim,
+            cell_x=0.1,
+            cell_y=0.1,
+            mass=0.05,
+            tri_ke=cloth_tri_ke,
+            tri_ka=cloth_tri_ke,
+            tri_kd=1.0e-2 * cloth_tri_ke,
+            edge_ke=cloth_edge_ke,
+            edge_kd=1.0e-2 * cloth_edge_ke,
+            particle_radius=0.01,
+        )
+
+        center = dim // 2
+        self.center_particle = particle_start + center * (dim + 1) + center
+
+        ball_radius = 0.08
+        self.ball_body = builder.add_body(
+            xform=wp.transform(p=wp.vec3(0.0, 0.0, cloth_z - ball_radius), q=wp.quat_identity()),
+            mass=0.5,
+            inertia=wp.mat33(np.eye(3) * 5.0e-3),
+        )
+        self.ball_joint = builder.joint_count - 1
+        builder.add_shape_sphere(self.ball_body, radius=ball_radius)
+        builder.add_attachment_particle_body(
+            self.center_particle,
+            self.ball_body,
+            body_point=wp.vec3(0.0, 0.0, ball_radius),
+            stiffness=1.0e3,
+        )
+
+        link_hx = 0.28
+        payload_hx = 0.12
+        anchor = wp.vec3(1.4, 0.0, 2.2)
+
+        self.pendulum_body = builder.add_link(
+            xform=wp.transform(p=anchor + wp.vec3(link_hx, 0.0, 0.0), q=wp.quat_identity()),
+            mass=0.6,
+            inertia=wp.mat33(np.eye(3) * 1.0e-2),
+        )
+        builder.add_shape_box(self.pendulum_body, hx=link_hx, hy=0.045, hz=0.045)
+        self.pendulum_joint = builder.add_joint_revolute(
+            parent=-1,
+            child=self.pendulum_body,
+            axis=wp.vec3(0.0, 1.0, 0.0),
+            target_kd=0.5,
+            parent_xform=wp.transform(p=anchor, q=wp.quat_identity()),
+            child_xform=wp.transform(p=wp.vec3(-link_hx, 0.0, 0.0), q=wp.quat_identity()),
+        )
+        builder.add_articulation([self.pendulum_joint], label="pendulum")
+
+        self.payload_body = builder.add_body(
+            xform=wp.transform(p=anchor + wp.vec3(2.0 * link_hx + payload_hx, 0.0, 0.0), q=wp.quat_identity()),
+            mass=0.35,
+            inertia=wp.mat33(np.eye(3) * 6.0e-3),
+        )
+        self.payload_free_joint = builder.joint_count - 1
+        builder.add_shape_box(self.payload_body, hx=payload_hx, hy=0.09, hz=0.09)
+        builder.add_joint_ball(
+            parent=self.pendulum_body,
+            child=self.payload_body,
+            friction=1.0,
+            parent_xform=wp.transform(p=wp.vec3(link_hx, 0.0, 0.0), q=wp.quat_identity()),
+            child_xform=wp.transform(p=wp.vec3(-payload_hx, 0.0, 0.0), q=wp.quat_identity()),
+            collision_filter_parent=True,
+        )
+
+        builder.color()
+        self.model = builder.finalize()
+        # The ADMM attachment binds the ball to the cloth; ordinary soft contact
+        # on the same pair would push against the attachment.
+        self.model.soft_contact_ke = 0.0
+        self.model.soft_contact_kd = 0.0
+
+        self.build_solver()
+
+        self.state_0 = self.model.state()
+        self.state_1 = self.model.state()
+        self.collision_pipeline = newton.CollisionPipeline(self.model)
+        self.contacts = self.collision_pipeline.contacts()
+        self.control = self.model.control()
+
+        newton.examples.configure_coupled_view(self, args)
+        newton.eval_fk(self.model, self.model.joint_q, self.model.joint_qd, self.state_0)
+
+        self.capture()
+
+    def build_solver(self):
+        """Build the solver and everything bound to its instance; the tuner calls this again to swap it."""
+        rigid_name, rigid_solver, rigid_kwargs = _rigid_solver_entry_args(
+            self.rigid_solver, self.preset.entry(self.rigid_solver).solver
+        )
+        vbd_entry = self.preset.entry("vbd")
+        self.solver = SolverCoupledADMM(
+            model=self.model,
+            entries=[
+                SolverCoupled.Entry(
+                    name=rigid_name,
+                    solver=lambda v: rigid_solver(model=v, **rigid_kwargs),
+                    bodies=[self.ball_body, self.pendulum_body],
+                    joints=[self.ball_joint, self.pendulum_joint],
+                ),
+                SolverCoupled.Entry(
+                    name="vbd",
+                    solver=lambda v: vbd_entry.make_solver(v),
+                    bodies=[self.payload_body],
+                    joints=[self.payload_free_joint],
+                    particles=list(range(self.model.particle_count)),
+                ),
+            ],
+            coupling=SolverCoupledADMM.Config(
+                **self.preset.solver,
+                joint_proximal_destination_entries=(rigid_name,),
+            ),
+        )
+
+    def capture(self):
+        """Graph-capture the per-frame simulate loop on CUDA devices.
+
+        The ADMM loop has no Python-side branching on runtime data — the
+        attachment count and all conditionals are construction-time
+        constants — so the launch sequence is identical every frame.
+        """
+        self.graph = _capture_frame_graph(self.model, self.simulate)
+
+    def simulate(self):
+        for substep in range(self.sim_substeps):
+            self.state_0.clear_forces()
+            newton.examples.apply_coupled_viewer_forces(self, self.state_0)
+            # ADMM builds this example's coupling from joints and
+            # particle-body attachments, so keep state_0/contacts empty here
+            # rather than asking collide() to add redundant constraints.
+            # self.collision_pipeline.collide(self.state_0, self.contacts)
+            self.solver.step(self.state_0, self.state_1, self.control, self.contacts, self.sim_dt)
+            newton.eval_ik(self.model, self.state_1, self.state_1.joint_q, self.state_1.joint_qd)
+            if self.sim_substeps % 2 == 1 and substep == self.sim_substeps - 1:
+                # an odd count under graph capture: copy the last result into state_0 instead of swapping,
+                # so every replay of the captured graph starts from the newest state
+                self.state_0.assign(self.state_1)
+            else:
+                self.state_0, self.state_1 = self.state_1, self.state_0
+
+    def step(self):
+        if not _launch_frame_graph(self.model, self.graph):
+            self.simulate()
+        self.sim_time += self.frame_dt
+
+    def test_final(self):
+        body_q = self.state_0.body_q.numpy()
+        particle_q = self.state_0.particle_q.numpy()
+        z = body_q[self.ball_body, 2]
+        cloth_gap = np.linalg.norm(body_q[self.ball_body, :3] - particle_q[self.center_particle])
+        pendulum_gap = np.linalg.norm(body_q[self.payload_body, :3] - body_q[self.pendulum_body, :3])
+        assert np.all(np.isfinite(body_q))
+        assert np.all(np.isfinite(particle_q))
+        assert 1.0 < z < 2.0, f"rigid ball z={z:.3f}; expected a hanging motion below the cloth plane"
+        assert cloth_gap < 0.5, f"particle-body attachment drifted too far: gap={cloth_gap:.3f}"
+        assert pendulum_gap < 1.0, f"cross-solver pendulum joint drifted too far: gap={pendulum_gap:.3f}"
+
+    def render(self):
+        self.viewer.begin_frame(self.sim_time)
+        newton.examples.log_coupled_view(self, self.contacts)
+        self.viewer.end_frame()
+
+    @staticmethod
+    def create_parser():
+        parser = newton.examples.create_parser()
+        newton.examples.add_coupled_view_args(parser)
+        return parser
+
+
+if __name__ == "__main__":
+    parser = Example.create_parser()
+    viewer, args = newton.examples.init(parser)
+    example = Example(viewer, args)
+    newton.examples.run(example, args)
