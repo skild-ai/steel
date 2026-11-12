@@ -40,31 +40,3 @@ figure.viz .frame{display:grid;gap:10px}
 .capgrid label{display:grid;gap:3px;font-size:13px;color:var(--muted)}
 .capgrid .trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
 .capwarn{margin:0;font-size:12.5px;color:var(--hot);border-left:2px solid var(--hot);padding-left:8px}
-.oi{width:18px;height:18px;fill:none;stroke:var(--muted);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;margin-right:4px;flex:none}
-
-/* reference */
-.reftools{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:8px 0 14px;position:sticky;top:0;background:var(--bg);padding-block:8px;z-index:2;border-bottom:1px solid var(--rule)}
-.reftools input[type=search]{flex:1 1 220px}
-.reftools label{font-size:13.5px;color:var(--muted);display:flex;gap:6px;align-items:center}
-.refcount{font:500 12px var(--mono);color:var(--muted)}
-.refcat{font:600 11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:26px 0 4px}
-.opt{border-top:1px solid var(--rule);padding:12px 0 10px;scroll-margin-top:72px}
-.opt .oh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
-.opt .on{font:600 14.5px var(--mono);color:var(--fg)}
-.opt .od{font:400 13px var(--mono);color:var(--muted);overflow-wrap:anywhere}
-.opt .od b{font-weight:500;color:var(--fg)}
-.opt .ow{margin:6px 0 4px;font-size:14.5px}
-.opt .ow::before{content:"When to change  ";font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--hot)}
-.opt details{font-size:14.5px;color:var(--fg)}
-.opt summary{cursor:pointer;color:var(--muted);font-size:13px;font-family:var(--mono)}
-.opt summary:hover{color:var(--fg)}
-.opt .doc{padding:6px 0 2px;max-width:760px}
-.opt .doc p{margin:0 0 10px}
-.opt .doc ul{margin:0 0 10px}
-.empty{color:var(--muted);font-size:14px;padding:12px 0}
-
-/* faq */
-details.faq{border-top:1px solid var(--rule);padding:10px 0}
-details.faq summary{cursor:pointer;font-weight:600}
-details.faq > div{padding-top:6px}
-.foot{font-size:13.5px;color:var(--muted);border-top:1px solid var(--rule);margin-top:72px;padding-top:16px}

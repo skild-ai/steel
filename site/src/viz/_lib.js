@@ -190,8 +190,13 @@ window.SteelViz = (function () {
       lib.data = data || {};
       (scope || document).querySelectorAll("[data-viz]").forEach((root) => {
         const m = registry[root.dataset.viz];
-        if (!m) return;
-        try { m(root, lib); } catch (e) { root.insertAdjacentHTML("beforeend", `<p class="nogl">This figure failed to load: ${esc(e.message)}</p>`); }
+        // data-viz-state lets scripts/check-figures.mjs tell a mounted figure from a silent failure.
+        if (!m) { root.dataset.vizState = "unregistered"; console.error(`No visual named "${root.dataset.viz}".`); return; }
+        try { m(root, lib); root.dataset.vizState = "mounted"; } catch (e) {
+          root.dataset.vizState = "failed";
+          console.error(e);
+          root.insertAdjacentHTML("beforeend", `<p class="nogl">This figure failed to load: ${esc(e.message)}</p>`);
+        }
       });
     },
   };
