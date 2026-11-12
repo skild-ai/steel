@@ -10,8 +10,10 @@ npm run build     # static site in dist/, then a check of every internal link an
 npm run preview   # serve dist/
 ```
 
-Node 22.23.4 or newer (see `.nvmrc`). Set `STEEL_SITE_BASE=/steel/` to build for a subpath and
-`INSIDE_STEEL_URL` to point the "Inside Steel" link at the hosted post.
+Node 22.23.4 or newer (see `.nvmrc`). Set `STEEL_SITE_BASE=/steel/` to build for a subpath,
+`INSIDE_STEEL_URL` to point the "Inside Steel" link at the hosted post, and `STEEL_ALLOWED_HOSTS` (comma
+separated) to reach `npm run dev -- --host` or `npm run preview -- --host` by a machine name instead of
+localhost or an IP address.
 
 ## Where things are
 
