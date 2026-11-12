@@ -51,6 +51,14 @@
 	.sl-markdown-content a:hover:not(:where(.not-content *)) {
 		color: var(--hot);
 	}
+	.site-title {
+		color: var(--fg);
+		gap: 0.55rem;
+		letter-spacing: -0.01em;
+	}
+	.site-title img {
+		height: 1.6rem;
+	}
 	h1#_top {
 		font-weight: 500;
 		letter-spacing: -0.02em;
@@ -237,7 +245,7 @@
 	.tag.branch { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
 	.tag.main { border-color: var(--static); }
 
-	/* The current page in the sidebar: a panel and an orange rule, as in the Steel pages. */
+	/* The current page in the sidebar: a panel and a green rule, as in the Steel pages. */
 	.sidebar-content a[aria-current='page'],
 	.sidebar-content a[aria-current='page']:hover {
 		background: var(--panel);

@@ -4,13 +4,13 @@ id = "determinism"
 title = "Run-to-run determinism"
 about = """\
 Forty objects poured into a bin twice from identical inputs. Run A is solid and run B is a \
-wireframe in the same place; each body of A turns orange as soon as its pose differs from B, \
+wireframe in the same place; each body of A turns green as soon as its pose differs from B, \
 and the readout shows the largest difference. By default rows are reserved with atomics, so \
 the Gauss-Seidel order can change between runs and the chaotic pile amplifies the difference. \
 With deterministic=RUN_TO_RUN and a deterministic collision pipeline the recorded body poses \
 of the two runs are bitwise identical."""
 look = [
-  "Default: the first bodies turn orange at about 0.3 s and the runs end about 20 cm apart.",
+  "Default: the first bodies turn green at about 0.3 s and the runs end about 20 cm apart.",
   "RUN_TO_RUN: every body stays neutral; the readout shows 0, bitwise identical, for the whole run.",
 ]
 try = [

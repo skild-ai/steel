@@ -149,7 +149,7 @@ check until it is recorded again. [tutorials/README.md](tutorials/README.md) lis
 - Colors and fonts come only from the Steel style tokens in `site/src/styles/steel-tokens.css`, which is
   kept verbatim from the shared Steel style; update it by replacing the whole file. Components use
   `var(--token)` in CSS and `css('--token')` in scripts, never a literal color.
-- Orange (`--hot`, `--hot-fill`, `--series-2`) marks the one thing a figure or section is about; comparisons
+- Green (`--hot`, `--hot-fill`, `--series-2`) marks the one thing a figure or section is about; comparisons
   use `--series-1`, `--series-3` and `--series-4`.
 - Write plainly. State measured numbers with the scene, commit and GPU they come from, and keep claims to
   what the code at the documented commit does.

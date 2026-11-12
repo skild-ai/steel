@@ -129,7 +129,7 @@ export async function mountReplay(root: HTMLElement): Promise<void> {
 		fitBox = new THREE.Box3();
 		let groundZ: number | null = null;
 		variants = [];
-		// Within each scene the last run is the subject (orange); the others are blue, teal and violet.
+		// Within each scene the last run is the subject (green); the others are blue, orange and violet.
 		const compare = [cols[0], cols[2], cols[3]];
 		const sceneSlots: Record<string, number[]> = {};
 		doc.variants.forEach((x, i) => {
@@ -144,7 +144,7 @@ export async function mountReplay(root: HTMLElement): Promise<void> {
 		const diverge = doc.variants.some((x) => x.ghost);
 		doc.variants.forEach((v, k) => {
 			const slot = slotOf(v, k);
-			// With sleep flags, awake bodies are orange so blue-gray can mean asleep.
+			// With sleep flags, awake bodies are green so blue-gray can mean asleep.
 			const col = new THREE.Color(v.awake ? cols[1] : diverge ? cols[0] : colorOf(slot, v.scene));
 			const vroot = new THREE.Group();
 			vroot.position.copy(variantOffset(v, k));
@@ -180,7 +180,7 @@ export async function mountReplay(root: HTMLElement): Promise<void> {
 					(bodyMats[sh.b] ||= []).push([mat, shade.clone()]);
 				}
 			});
-			// Awake-flag runs chart in orange unless their scene compares several runs.
+			// Awake-flag runs chart in green unless their scene compares several runs.
 			const key = v.awake && (sceneSlots[v.scene || ''] || []).length < 2 ? cols[1] : colorOf(slot, v.scene);
 			// Deformables from a coupled solver: a triangle mesh when given, else points.
 			let cloth: Live['cloth'] = null;
@@ -314,7 +314,7 @@ export async function mountReplay(root: HTMLElement): Promise<void> {
 						const d = Math.hypot(A.P![i] - Bv.P![i], A.P![i + 1] - Bv.P![i + 1], A.P![i + 2] - Bv.P![i + 2]) * 1000;
 						identical = identical && same;
 						worst = Math.max(worst, d);
-						// Neutral when identical, orange as the divergence grows from 1 µm to 10 cm.
+						// Neutral when identical, green as the divergence grows from 1 µm to 10 cm.
 						const al = same ? 0 : Math.min(1, Math.max(0.15, (Math.log10(Math.max(d, 1e-3)) + 3) / 5));
 						(V.bodyMats[b] || []).forEach(([m, base]) => m.color.copy(base).lerp(hot, al));
 					}

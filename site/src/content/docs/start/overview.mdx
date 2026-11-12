@@ -10,9 +10,11 @@ import CardGrid from '~/components/CardGrid.astro';
 import InfoCard from '~/components/InfoCard.astro';
 import Term from '~/components/Term.astro';
 
-Steel is a GPU solver for articulated robots and rigid bodies in [Newton](https://github.com/newton-physics/newton). It integrates robots in joint coordinates, solves contacts and joint constraints with a projected Gauss-Seidel sweep that does not assemble the world's constraint matrix, and schedules every world of a batch on its own, so different robots, tasks and scenes can share one batch.
+Steel (Scalable Throughput-optimized Engine for Embodied Learning) is a GPU solver for articulated robots and rigid bodies in [Newton](https://github.com/newton-physics/newton). It integrates robots in joint coordinates, solves contacts and joint constraints with a projected Gauss-Seidel sweep that does not assemble the world's constraint matrix, and schedules every world of a batch on its own, so different robots, tasks and scenes can share one batch.
 
 <p class="chips"><span class="chip"><b>newton.solvers.SolverSteel</b></span><span class="chip">experimental in Newton 1.8</span><span class="chip">documented at skild-ai/newton <b>baffc2a</b></span></p>
+
+The launch post reports Steel at 3.8× PhysX's simulation throughput across 20 single-task benchmarks (geometric mean, each engine at its best batch size; MuJoCo Warp at 2.9×), and 12.0× PhysX's throughput with about 62% less GPU memory on a batch mixing 20 task types at 61,440 environments. [Read the launch post](https://www.skild.ai/blogs/steel).
 
 ## What it is for
 

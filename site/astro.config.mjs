@@ -27,7 +27,8 @@ export default defineConfig({
 		starlight({
 			title: 'Steel',
 			description:
-				'Documentation and tutorials for Steel, the GPU rigid-body and articulation solver in Newton (newton.solvers.SolverSteel).',
+				'Documentation and tutorials for Steel (Scalable Throughput-optimized Engine for Embodied Learning), the GPU rigid-body and articulation solver in Newton (newton.solvers.SolverSteel).',
+			logo: { light: './src/assets/skild-mark-light.svg', dark: './src/assets/skild-mark-dark.svg', alt: 'Skild AI', replacesTitle: false },
 			favicon: '/favicon.svg',
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/skild-ai/steel' }],
 			editLink: { baseUrl: 'https://github.com/skild-ai/steel/edit/main/site/' },
