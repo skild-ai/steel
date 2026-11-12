@@ -19,6 +19,7 @@ Every Newton example runs exactly as it does in Newton, but its solver settings 
 instead of in the code.
 
 This collection was migrated from the Steel Shelf project.
+Contributors: [vishal-2000](https://github.com/vishal-2000), [jaredmejia](https://github.com/jaredmejia), [LuckyIYI](https://github.com/LuckyIYI) and [killian-sk](https://github.com/killian-sk).
 It remains a separate Python project inside `examples/`. Run the commands below from this directory.
 
 ## Setup
