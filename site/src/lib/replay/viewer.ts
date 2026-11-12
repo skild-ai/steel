@@ -180,7 +180,8 @@ export async function mountReplay(root: HTMLElement): Promise<void> {
 					(bodyMats[sh.b] ||= []).push([mat, shade.clone()]);
 				}
 			});
-			const key = v.awake ? cols[1] : colorOf(slot, v.scene);
+			// Awake-flag runs chart in orange unless their scene compares several runs.
+			const key = v.awake && (sceneSlots[v.scene || ''] || []).length < 2 ? cols[1] : colorOf(slot, v.scene);
 			// Deformables from a coupled solver: a triangle mesh when given, else points.
 			let cloth: Live['cloth'] = null;
 			if (v.particles) {

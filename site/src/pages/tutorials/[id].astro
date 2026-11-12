@@ -46,6 +46,15 @@ const description = meta.about.length > 200 ? meta.about.slice(0, meta.about.las
 				</Note>
 			)
 		}
+		{
+			meta.in_review?.map((r: { pr: number; text: string }) => (
+				<Note title="In review" variant="plain">
+					<p>
+						{r.text} <a href={`https://github.com/skild-ai/newton/pull/${r.pr}`}>skild-ai/newton#{r.pr}</a>
+					</p>
+				</Note>
+			))
+		}
 		{meta.timing && rec?.timing && <CostTable spec={meta.timing} timing={rec.timing} />}
 
 		<div class="notes">

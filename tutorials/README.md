@@ -69,5 +69,6 @@ date, because the page would show code that did not produce the replay. Record i
 | `[timing]` | no | A cost table: `group` (a group defined in one of `tools/timing*.py`: `GROUPS` in `timing.py`, `GROUP_NAMES` in the others), `scene` (one sentence), `per = "frame"` to report per frame, `rounds`, and `[timing.notes]` mapping each option label to the result it gives in this tutorial. |
 | `notify_flag`, `update_route` | no | Domain randomization tutorials: the notification flag and when Steel sees the change. |
 | `allow_dropped_rows` | no | `true` when the tutorial drops rows on purpose. |
+| `[[in_review]]` | no | A solver change in review that bears on the page: `pr`, the [skild-ai/newton](https://github.com/skild-ai/newton) pull request number, and `text`, one sentence on what it changes. The page shows it with a link. |
 
 Text is plain: no Markdown. Quote measured numbers with the scene they were measured on.

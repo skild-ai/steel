@@ -33,6 +33,7 @@ OPTIONAL = {
     "notify_flag": str,
     "update_route": str,
     "allow_dropped_rows": bool,
+    "in_review": list,
 }
 
 
@@ -110,6 +111,9 @@ def check_meta(meta):
         for chart in metric.get("charts", [metric]):
             if "label" not in chart or not ("key" in chart or "multi" in chart):
                 yield "every chart needs a label and a key or multi"
+    for entry in meta.get("in_review", []):
+        if not (isinstance(entry.get("pr"), int) and isinstance(entry.get("text"), str)):
+            yield "every in_review entry needs an integer pr and a text"
     concept = meta.get("concept")
     if concept is not None:
         if not {"name", "what", "here", "consider"} <= set(concept):
