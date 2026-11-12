@@ -4,13 +4,13 @@ Newton-derived source:
 Copyright (c) 2025-2026 The Newton Developers.
 Original copyright and Apache-2.0 SPDX headers are retained.
 
-The direct source of the 32 Steel WebGPU ports is steel-webgpu, as recorded
+The direct source of the 27 Steel WebGPU ports is steel-webgpu, as recorded
 in their headers and presets.toml. "Modified for Steel Shelf" identifies
 subsequent changes; it does not assign original authorship or imply that all
 ports were directly derived from Newton. See THIRD_PARTY.md for provenance.
 
 Bundled Universal Robots model data:
-UR10e: cereal, spinning_top, brick_pour, box_turn, toaster, toy_train.
+UR10e: spinning_top, brick_pour, box_turn, toaster, toy_train.
 UR5e: air_hockey.
 Copyright 2018 ROS Industrial Consortium.
 BSD-3-Clause; complete notices, conditions and disclaimers:

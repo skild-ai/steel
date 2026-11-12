@@ -9,10 +9,10 @@ with a solver preset for every solver that can run it.
 cable and soft-body scenes), recorded, and set in as a miniature. The camera passes from room to room
 through the shelves to `jenga`, `franka_shirt_fold_stack` and `crane_wrecking_ball`.*
 
-The shelf holds 98 examples. 54 are Newton's own examples from the pinned Newton revision (see *Setup*), sorted
-by the feature they exercise rather than by solver. 32 are scenes from
+The shelf holds 81 examples. 45 are Newton's own examples from the pinned Newton revision (see *Setup*), sorted
+by the feature they exercise rather than by solver. 27 are scenes from
 [steel-webgpu](https://github.com/skild-ai/steel-webgpu) that Newton has no example for (see *Ported scenes*).
-The other 12 are the shelf's own: four closed-loop mechanisms, `pyramid_drop`, and seven scenes adapted from
+The other 9 are the shelf's own: three closed-loop mechanisms and six scenes adapted from
 MuJoCo's `model/` directory (`mjorg_*`). Newton examples that simulate only cloth, soft bodies, MPM or particles,
 with no rigid or articulated part for Steel, are left out. More examples are being validated with Steel and will be
 added.
@@ -75,13 +75,12 @@ uv run python -m shelf bench robot_cartpole --world-count 4096
 uv run python -m shelf bench robot_g1 --solver kamino --world-count 1024 --frames 500 --json results.jsonl
 ```
 
-Only examples with a `--world-count` argument scale up (20 today); the rest report one world. Every example
+Only examples with a `--world-count` argument scale up (19 today); the rest report one world. Every example
 runs in all three modes.
 
-![The tuner on the pyramid example: a solver setting applied live while the wrecking ball brings the pyramids down](docs/tuner.gif)
+![The tuner's side bar: a solver setting applied live while the scene keeps running](docs/tuner.gif)
 
-*`python -m shelf tune pyramid`: the side bar's Tuner tab, a live change to the XPBD iterations, and the
-wrecking ball arriving.*
+*The side bar's Tuner tab: a live change to the XPBD iterations while the scene keeps running.*
 
 **Tune** (interactive tuner): the viewer with one side bar and two tabs. **Scene** holds Newton's own
 viewer controls (model info, what to draw, example and rendering options, camera). **Tuner** has
@@ -142,8 +141,8 @@ the matching `steel` bar theme), is the default, `studio`, `pastel` and `paper` 
 drop-down to switch live.
 
 ```bash
-uv run python -m shelf play pyramid                 # steel look
-uv run python -m shelf play pyramid --look newton   # as Newton draws it
+uv run python -m shelf play jenga                 # steel look
+uv run python -m shelf play jenga --look newton   # as Newton draws it
 ```
 
 **Previews.** The browser's previews are one frame of each example, rendered headless in the look and
@@ -154,12 +153,12 @@ thumbs` renders them on demand (`--missing`, `--force`, `--jobs N`). What a card
 example's `presets.toml`: a `[gallery]` table with `short`, the one line, and optionally `frame`, the
 frame the preview shows (default 60), and `title`. A file without one gets a warning.
 
-**Ported scenes.** The 34 steel-webgpu scenes that are not Newton examples live on the shelf too, 32 as examples
-of their own and two as options of existing ones, each in the section its feature belongs to, with a `[steel]` preset carrying the browser's settings. The 21 built in
+**Ported scenes.** The 29 steel-webgpu scenes that are not Newton examples live on the shelf too, 27 as examples
+of their own and two as options of existing ones, each in the section its feature belongs to, with a `[steel]` preset carrying the browser's settings. The 18 built in
 steel-webgpu's `tools/scenes.py` are examples on `common/steel_scenes.py`: the builder function moved in as it
 is, the shelf's loop around it; where the browser has a compare toggle, a `[steel_off]` preset is the toggle
 off. Two of them extend existing examples instead: `domino_spiral --num-dominoes 480 --scale 0.28` and
-`sleeping --scene boxes`. The 13 hero-montage scenes (robot tabletop demos such as `toaster` and `cereal`)
+`sleeping --scene boxes`. The 11 hero-montage scenes (robot tabletop demos such as `toaster` and `jenga`)
 come from Newton's `hero_montage` scripts, which the shelf does not have, so each is rebuilt from its
 exported `scene.json` and `scene.bin` (kept next to the example) by `common/exported_scene.py`: bodies,
 convex hulls, joints, filters and the 60 Hz joint-target path are exact; the visual meshes draw when a
@@ -179,11 +178,8 @@ shelf/
     05_looped_linkages/           closed kinematic loops, no contact
     06_looped_linkages_contacts/  closed loops that touch things
     07_articulations/             robots: arms, legs, hands, controllers
-    08_volumetric_soft_bodies/    squishy 3D objects and soft-rigid contact
-    09_thin_shells_and_rods/      cables
-    10_particles/                 a robot on MPM sand
-    11_coupling/                  two solvers in one scene
-    12_sensors/                   contact sensors
+    08_thin_shells_and_rods/      cables
+    09_coupling/                  two solvers in one scene
 ```
 
 Each example folder holds `example.py` and `presets.toml`.
@@ -226,10 +222,10 @@ pin, run `shelf check` on a CUDA GPU from `examples/` and paste the result table
 uv sync
 uv run python -m shelf check <changed examples> --every --dry-run
 # Steel smoke set: robot arms, exported scenes, SDF contact, loops, a coupled preset
-uv run python -m shelf check basic_pendulum pyramid toaster cereal viaduct_kit nut_bolt_sdf \
-    mjorg_house_of_cards ratio_stack basic_conveyor_forces loop_stewart_platform robot_g1 \
+uv run python -m shelf check basic_pendulum jenga toaster viaduct_kit nut_bolt_sdf \
+    mjorg_house_of_cards ratio_stack basic_conveyor_forces loop_delta_robot robot_g1 \
     crane_wrecking_ball --solver steel --dry-run
-uv run python -m shelf check rigid_soft_contact --solver steel_xpbd --dry-run
+uv run python -m shelf check particle_pad_drawer --solver steel_xpbd --dry-run
 ```
 
 Every line should read `works`. A Newton pin change also needs the whole shelf:

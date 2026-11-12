@@ -12,7 +12,7 @@ The package also contains exported robot model data under BSD-3-Clause, so the
 wheel and sdist declare **`Apache-2.0 AND BSD-3-Clause`**. These are the terms of
 distinct components, not a choice of license for every file.
 
-Both distributions include all 13 tracked `scene.json` / `scene.bin` pairs and
+Both distributions include all 11 tracked `scene.json` / `scene.bin` pairs and
 the full notices below. The same model terms apply to both parts of each
 export. They do not vendor optional external visual-mesh files, URDF/USD models,
 policies, installed dependencies, or downloaded asset caches.
@@ -26,11 +26,10 @@ Apache-2.0; the robot-derived content retains these additional notices:
 
 | Exported content | Scenes | Required notice |
 | --- | --- | --- |
-| Universal Robots UR10e | cereal, spinning_top, brick_pour, box_turn, toaster, toy_train | [BSD-3-Clause, Copyright 2018 ROS Industrial Consortium](licenses/UR10e-BSD-3-Clause.txt) |
+| Universal Robots UR10e | spinning_top, brick_pour, box_turn, toaster, toy_train | [BSD-3-Clause, Copyright 2018 ROS Industrial Consortium](licenses/UR10e-BSD-3-Clause.txt) |
 | Universal Robots UR5e | air_hockey | [BSD-3-Clause, Copyright 2018 ROS Industrial Consortium](licenses/UR5e-BSD-3-Clause.txt) |
 | Kinova Gen3 | viaduct_kit | [BSD-3-Clause, Copyright 2018 Kinova inc.](licenses/Kinova-Gen3-BSD-3-Clause.txt) |
 | Franka model and gripper content | beer_pong, jenga, balance_board, drawer_fork; gripper components in other exports where used | [Complete upstream license: Apache-2.0 plus appended BSD/Willow Garage terms](licenses/Franka-complete-LICENSE.txt) |
-| Procedural scene without a robot | lava_fall | [Apache-2.0](LICENSE) |
 
 The UR10e, UR5e and Gen3 identifications were checked against the scene metadata and
 all model link masses in the pinned Menagerie models. The matching
@@ -45,17 +44,17 @@ Newton-derived examples retain their original copyright and Apache-2.0 SPDX
 headers. The pinned Newton dependency is
 [f6fc82a8](https://github.com/skild-ai/newton/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md).
 
-The 32 Steel WebGPU ports (19 builder scenes and 13 exported scenes) identify
+The 27 Steel WebGPU ports (16 builder scenes and 11 exported scenes) identify
 **steel-webgpu as their direct source** in the source header and `presets.toml`.
 The [steel-webgpu LICENSE.md](https://github.com/skild-ai/steel-webgpu/blob/f2f72c1e99aea7192cf2366eb918e630135afcf9/LICENSE.md)
 provides Apache-2.0 code terms and, under *Bundled models*, the UR10e, UR5e and
 Kinova Gen3 notices used above. It lists the Franka model under Apache-2.0; the
 appended BSD/Willow Garage terms are supplemented above.
 
-The 13 `scene.json` / `scene.bin` pairs can be checked against public
+The 11 `scene.json` / `scene.bin` pairs can be checked against public
 [steel-webgpu](https://github.com/skild-ai/steel-webgpu) `assets/scenes/`:
 
-- All 13 `scene.bin` files are byte-identical to
+- All 11 `scene.bin` files are byte-identical to
   [`f2f72c1`](https://github.com/skild-ai/steel-webgpu/tree/f2f72c1e99aea7192cf2366eb918e630135afcf9/assets/scenes)
   (unchanged since the first public commit).
 - Eight `scene.json` files are byte-identical to
@@ -63,15 +62,14 @@ The 13 `scene.json` / `scene.bin` pairs can be checked against public
   air_hockey, balance_board, beer_pong, brick_pour, drawer_fork, spinning_top,
   toy_train and viaduct_kit. The `box_turn` and `toaster` files matched it
   before a collision-filter-only edit (see below).
-- The `cereal`, `jenga` and `lava_fall` JSON were exported from steel-webgpu at
-  a pre-release revision that is not in its public history. They differ from
-  the public files in solver settings, initial state and a few friction values;
-  their binaries match.
+- The `jenga` JSON was exported from steel-webgpu at a pre-release revision
+  that is not in its public history. It differs from the public file in solver
+  settings, initial state and a few friction values; its binary matches.
 
-The 19 builder scenes come from `tools/scenes.py`, whose functions are in
+The 16 builder scenes come from `tools/scenes.py`, whose functions are in
 public steel-webgpu from `58246f3` on. The `@ ad03e49` in their `presets.toml`
 `source` lines names the same pre-release revision. The inventory records the
-public commit and hash for every file, and the audit checks all 26 current files
+public commit and hash for every file, and the audit checks all 22 current files
 and both distributions against those hashes.
 
 Existing copyright headers are preserved. “Modified for Steel Shelf” marks
@@ -224,7 +222,7 @@ exported scenes (toaster's carriage against its bread-guide wires, box_turn's
 wrist against its own hand); their binaries and robot model data are unchanged.
 The inventory retains both the original JSON hash and adapted hash.
 
-The seven `mjorg_*` examples retain MuJoCo XML/model assets under Apache-2.0,
+The six `mjorg_*` examples retain MuJoCo XML/model assets under Apache-2.0,
 including the card mesh and textures for the house of cards. Their per-example
 README files describe the source and transformations, and their LICENSE files are
 included in both distributions. Original linkage reference JSON/NPZ trajectories

@@ -112,14 +112,6 @@
   "~360 rows: immediate 25 vs colored 6.3 ms. Steel ignores model.ke. The chain falls slower than XPBD at every setting (last domino frame 178 vs 139). XPBD's own peak varied 0.48\u20132.49 mm across runs."
  ],
  [
-  "pyramid (1 pyramid)",
-  "XPBD",
-  "1.41 \u2192 5.58 (12.2)",
-  "4.1/0.54 \u2192 3.7/0.41",
-  "2 \u00d7 12, colored, propagation_color_order = \"longest_first\", free-body rows 8192",
-  "Bar not met (~4\u00d7): the colored sweep over ~4,800 rows cannot close it; immediate 8\u00d7 slower. 512 free-body rows: the pyramid explodes."
- ],
- [
   "vbd_rigid_rigid_contact",
   "VBD",
   "4.31 \u2192 1.32 (4.26)",
@@ -168,14 +160,6 @@
   "Clamped finger targets reach the limits; tracking 0.0149 vs 0.0147 only with them on. Hand + cube use 102 rows."
  ],
  [
-  "robot_anymal_c_walk",
-  "MuJoCo",
-  "1.178 \u2192 0.736 (2.787)",
-  "",
-  "2 \u00d7 8, immediate, rows 128, point friction",
-  "Unresolved: drifts 0.35\u20130.94 m sideways under every Steel setting."
- ],
- [
   "robot_anymal_d",
   "MuJoCo",
   "1.134 \u2192 0.336 (2.724)",
@@ -208,14 +192,6 @@
   "Colored falls over at 1 \u00d7 4 and 2 \u00d7 2. Limits at gap inf overflow 128 and it falls. Point friction makes it creep."
  ],
  [
-  "robot_omniwheel",
-  "MuJoCo",
-  "4.435 \u2192 2.015 (19.0, overflow)",
-  "",
-  "3 \u00d7 4, immediate, contact_gap_gate = 0, rows 128",
-  "Not-yet-touching roller contacts made ~300 rows per world per step."
- ],
- [
   "robot_policy",
   "MuJoCo",
   "2.031 \u2192 1.319 (3.532)",
@@ -230,14 +206,6 @@
   "no contacts",
   "2 \u00d7 1, immediate",
   "Tracking 0.102 vs 0.101 rad RMS; limits never engage (on +22%)."
- ],
- [
-  "sensor_contact",
-  "MuJoCo",
-  "0.425 \u2192 0.367 (0.751)",
-  "29.8/0.59 \u2192 9.6/0.37",
-  "2 iterations, immediate, point friction",
-  "Patch friction costs 19% more. 11 rows per world."
  ],
  [
   "kamino_basic_dr_testmech",
@@ -272,36 +240,12 @@
   "Ragdoll: resting pose differs in every configuration. At 32 rows it explodes (~850 mm)."
  ],
  [
-  "rigid_soft_contact",
-  "XPBD",
-  "15.78 \u2192 15.45 (21.15)",
-  "soft 0.12/0.01 both",
-  "24 shared substeps (was 32), Steel 4 iterations",
-  "At XPBD's 32 substeps no Steel setting goes below 20.4 ms; only fewer shared substeps close it, which also changes XPBD's soft step."
- ],
- [
-  "softbody_franka",
-  "Featherstone+VBD",
-  "9.98 \u2192 9.27 (9.19)",
-  "soft 0.04/0.01 both",
-  "Steel 1 iteration, update_mass_matrix_interval = 10",
-  "Arm path identical; VBD sets the cost and the penetration."
- ],
- [
   "franka_cable_ik_pick_place",
   "MuJoCo+VBD",
   "18.09 \u2192 8.11 (19.49)",
   "rigid 2.29/0.20 \u2192 similar",
   "4 \u00d7 12, gap 0.1",
   "Placement 0.116\u20130.119 cm at 4\u201310 substeps. MuJoCo itself at 5 substeps runs 9.70 ms: the baseline's 10 substeps were not needed."
- ],
- [
-  "mpm_anymal",
-  "MuJoCo+MPM",
-  "13.42 \u2192 14.12 (16.10)",
-  "10.4/0.65 \u2192 lower",
-  "immediate, rows 128, 8 iterations, limits + gap",
-  "Bar not met (~5%): MPM dominates the cost. The 0.36 m sideways veer is unchanged by every Steel knob; the sand coupling is one-way, so it is in the robot's own dynamics (also robot_anymal_c_walk)."
  ],
  [
   "franka_cloth_block",

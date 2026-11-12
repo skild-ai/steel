@@ -113,4 +113,4 @@ text = """How contact rows are scheduled under solve_mode = "matrix_free", despi
 immediate: articulated rows in the D-wide path; free bodies in the matrix-free one.
 propagation: every contact row (free/free and free/ground too) on body-space rows, swept serially per world.
 propagation_colored: the same rows solved in graph-colored parallel batches; much faster on
-large free-body stacks (pyramid: about 8x)."""
+large free-body stacks (about 8x)."""

@@ -12,30 +12,23 @@ Contacts,basic_conveyor,XPBD,1.87,29.3,1.57
 Contacts,basic_conveyor_forces,XPBD,2.87,11.55,1.44
 Contacts,newton_cradle,XPBD,2.45,4.54,1.26
 Contacts,domino_spiral,XPBD,4.71,6.45,4.3
-Contacts,pyramid,XPBD,1.41,12.2,5.58
 Contacts,vbd_rigid_rigid_contact,VBD,4.31,4.26,1.32
 Contacts,nut_bolt_hydro,MuJoCo,4.47,9.3,1.97
 Contacts,nut_bolt_sdf,MuJoCo,4.78,19.9,6.6
 Contacts,robot_panda_hydro,MuJoCo,9.9,46.3,49.0
 Articulations,controller_operational_space_hybrid_force_motion,MuJoCo,3.057,3.073,0.726
 Articulations,robot_allegro_hand,MuJoCo,3.757,11.48,1.301
-Articulations,robot_anymal_c_walk,MuJoCo,1.178,2.787,0.736
 Articulations,robot_anymal_d,MuJoCo,1.134,2.724,0.336
 Articulations,robot_asroballet,MuJoCo (CPU),8.671,41.0,17.9
 Articulations,robot_cartpole,MuJoCo,1.784,2.306,0.148
 Articulations,robot_g1,MuJoCo,2.622,5.565,0.437
-Articulations,robot_omniwheel,MuJoCo,4.435,19.0,2.015
 Articulations,robot_policy,MuJoCo,2.031,3.532,1.319
 Articulations,robot_ur10,MuJoCo,2.507,2.705,0.182
-Articulations,sensor_contact,MuJoCo,0.425,0.751,0.367
 Linkages and soft,kamino_basic_dr_testmech,Kamino,35.0,7.09,3.32
 Linkages and soft,kamino_basic_fourbar,Kamino,3.78,8.98,3.68
 Linkages and soft,kamino_robot_dr_legs,Kamino,39.0,11.18,2.45
 Linkages and soft,kamino_robot_anymal_d,Kamino,134.0,9.16,3.29
-Linkages and soft,rigid_soft_contact,XPBD,15.78,21.15,15.45
-Linkages and soft,softbody_franka,Featherstone+VBD,9.98,9.19,9.27
 Linkages and soft,franka_cable_ik_pick_place,MuJoCo+VBD,18.09,19.49,8.11
-Linkages and soft,mpm_anymal,MuJoCo+MPM,13.42,16.1,14.12
 Coupling,franka_cloth_block,MuJoCo+VBD,15.75,27.43,15.37
 Coupling,franka_shirt_fold_stack,MuJoCo+VBD,65.86,78.31,69.01
 Coupling,kamino_mujoco_admm_solver,Kamino+MuJoCo,7.03,6.65,6.65

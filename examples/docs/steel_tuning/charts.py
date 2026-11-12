@@ -22,13 +22,12 @@ rows = json.load(open(Path(__file__).with_name("evidence.json")))[1:]
 GROUPS = {
     "Basics": "basic_pendulum basic_dzhanibekov basic_shapes basic_joints basic_urdf selection_cartpole sleeping "
     "basic_mimic_joint",
-    "Contacts": "balance_bird basic_conveyor basic_conveyor_forces newton_cradle domino_spiral pyramid "
-    "vbd_rigid_rigid_contact nut_bolt_hydro nut_bolt_sdf robot_panda_hydro",
-    "Articulations": "controller_operational_space_hybrid_force_motion robot_allegro_hand robot_anymal_c_walk "
-    "robot_anymal_d robot_asroballet robot_cartpole robot_g1 robot_omniwheel robot_policy robot_ur10 "
-    "sensor_contact",
+    "Contacts": "balance_bird basic_conveyor basic_conveyor_forces newton_cradle domino_spiral vbd_rigid_rigid_contact "
+    "nut_bolt_hydro nut_bolt_sdf robot_panda_hydro",
+    "Articulations": "controller_operational_space_hybrid_force_motion robot_allegro_hand robot_anymal_d "
+    "robot_asroballet robot_cartpole robot_g1 robot_policy robot_ur10",
     "Linkages and soft": "kamino_basic_dr_testmech kamino_basic_fourbar kamino_robot_dr_legs kamino_robot_anymal_d "
-    "rigid_soft_contact softbody_franka franka_cable_ik_pick_place mpm_anymal",
+    "franka_cable_ik_pick_place",
     "Coupling": "franka_cloth_block franka_shirt_fold_stack kamino_mujoco_admm_solver mpm_twoway_coupling "
     "mujoco_franka_vbd_cable_admm_solver mujoco_mpm_coupled_solver mujoco_vbd_admm_solver "
     "mujoco_vbd_coupled_solver proxy_joint_gripper admm_contact_solver",

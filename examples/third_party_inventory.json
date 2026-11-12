@@ -136,42 +136,6 @@
       "source_evidence": "Byte-identical to assets/scenes/brick_pour/scene.json in public steel-webgpu at this commit."
     },
     {
-      "path": "shelf/02_many_contacts/cereal/scene.json",
-      "sha256": "3955f649d96cba7f545c1f49161219f0c17e697cb413b216ae82ece853af595e",
-      "robot": "ur10",
-      "model": "UR10e",
-      "license": "Apache-2.0 AND BSD-3-Clause",
-      "notices": [
-        "licenses/UR10e-BSD-3-Clause.txt",
-        "licenses/Franka-complete-LICENSE.txt"
-      ],
-      "direct_source": "steel-webgpu assets/scenes",
-      "model_evidence": {
-        "xml_source": "https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/universal_robots_ur10e/ur10e.xml",
-        "mass_prefix": [
-          4.0,
-          7.778,
-          12.93,
-          3.87,
-          1.96,
-          1.96,
-          0.202
-        ],
-        "comparison": "All model link masses match the exported body mass prefix within 1e-6; scene metadata independently identifies the same robot family."
-      },
-      "binary_payload": {
-        "path": "shelf/02_many_contacts/cereal/scene.bin",
-        "sha256": "000143a1d50a310222cdd17ae3211ce97738ae8e840c407794428913accea38b",
-        "bytes": 259908,
-        "source_commit": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
-        "source_evidence": "Byte-identical to assets/scenes/cereal/scene.bin in public steel-webgpu at this commit; unchanged since 58246f3.",
-        "source_path": "assets/scenes/cereal/scene.bin"
-      },
-      "source_commit": null,
-      "source_path": "assets/scenes/cereal/scene.json",
-      "source_evidence": "Exported from steel-webgpu at a pre-release revision that is not in its public history; scene.bin matches public steel-webgpu."
-    },
-    {
       "path": "shelf/02_many_contacts/jenga/scene.json",
       "sha256": "b5eec37fa1ec1c65aa5bd6a808146e4843d8c0e83e042646950cf1cf820458ed",
       "robot": "franka",
@@ -191,26 +155,6 @@
       },
       "source_commit": null,
       "source_path": "assets/scenes/jenga/scene.json",
-      "source_evidence": "Exported from steel-webgpu at a pre-release revision that is not in its public history; scene.bin matches public steel-webgpu."
-    },
-    {
-      "path": "shelf/02_many_contacts/lava_fall/scene.json",
-      "sha256": "4e0f88b62a363aa2eb790a9b87e194ad6ce35045eb9a8047fbe24112481dac98",
-      "robot": "none",
-      "model": "procedural geometry",
-      "license": "Apache-2.0",
-      "notices": [],
-      "direct_source": "steel-webgpu assets/scenes",
-      "binary_payload": {
-        "path": "shelf/02_many_contacts/lava_fall/scene.bin",
-        "sha256": "4a942d32e74d7d57d944cb7341d422a7137b39b24eb66a0f0b57efde22315784",
-        "bytes": 228056,
-        "source_commit": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
-        "source_evidence": "Byte-identical to assets/scenes/lava_fall/scene.bin in public steel-webgpu at this commit; unchanged since 58246f3.",
-        "source_path": "assets/scenes/lava_fall/scene.bin"
-      },
-      "source_commit": null,
-      "source_path": "assets/scenes/lava_fall/scene.json",
       "source_evidence": "Exported from steel-webgpu at a pre-release revision that is not in its public history; scene.bin matches public steel-webgpu."
     },
     {
@@ -499,15 +443,6 @@
       "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/manipulation_objects/pad/LICENSE",
       "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
       "notice": "licenses/runtime-assets/manipulation_objects--pad.txt",
-      "notice_sha256": "59899c6091b540582ed617e8eeaac4919dc985ccfc35459ee9752b699be5205b",
-      "distribution": "runtime download; model/policy files not bundled"
-    },
-    {
-      "asset": "manipulation_objects/rubber_duck",
-      "license": "Apache-2.0",
-      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/manipulation_objects/rubber_duck/LICENSE",
-      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
-      "notice": "licenses/runtime-assets/manipulation_objects--rubber_duck.txt",
       "notice_sha256": "59899c6091b540582ed617e8eeaac4919dc985ccfc35459ee9752b699be5205b",
       "distribution": "runtime download; model/policy files not bundled"
     },
@@ -952,18 +887,6 @@
         "line": 96
       }
     ],
-    "shelf/07_articulations/robot_anymal_c_walk/example.py": [
-      {
-        "call": "download_asset",
-        "function": "newton.utils.download_asset",
-        "argument": "'anybotics_anymal_c'",
-        "arguments": [
-          "'anybotics_anymal_c'"
-        ],
-        "keywords": [],
-        "line": 105
-      }
-    ],
     "shelf/07_articulations/robot_anymal_d/example.py": [
       {
         "call": "download_asset",
@@ -1046,29 +969,7 @@
         "line": 79
       }
     ],
-    "shelf/08_volumetric_soft_bodies/softbody_franka/example.py": [
-      {
-        "call": "download_asset",
-        "function": "newton.utils.download_asset",
-        "argument": "'manipulation_objects/rubber_duck'",
-        "arguments": [
-          "'manipulation_objects/rubber_duck'"
-        ],
-        "keywords": [],
-        "line": 92
-      },
-      {
-        "call": "download_asset",
-        "function": "newton.utils.download_asset",
-        "argument": "'franka_emika_panda'",
-        "arguments": [
-          "'franka_emika_panda'"
-        ],
-        "keywords": [],
-        "line": 250
-      }
-    ],
-    "shelf/09_thin_shells_and_rods/franka_cable_ik_pick_place/example.py": [
+    "shelf/08_thin_shells_and_rods/franka_cable_ik_pick_place/example.py": [
       {
         "call": "download_asset",
         "function": "newton.utils.download_asset",
@@ -1080,19 +981,7 @@
         "line": 155
       }
     ],
-    "shelf/10_particles/anymal_on_sand/example.py": [
-      {
-        "call": "download_asset",
-        "function": "newton.utils.download_asset",
-        "argument": "'anybotics_anymal_c'",
-        "arguments": [
-          "'anybotics_anymal_c'"
-        ],
-        "keywords": [],
-        "line": 62
-      }
-    ],
-    "shelf/11_coupling/franka_chain_on_cable/example.py": [
+    "shelf/09_coupling/franka_chain_on_cable/example.py": [
       {
         "call": "download_asset",
         "function": "newton.utils.download_asset",
@@ -1104,7 +993,7 @@
         "line": 280
       }
     ],
-    "shelf/11_coupling/franka_cloth_block/example.py": [
+    "shelf/09_coupling/franka_cloth_block/example.py": [
       {
         "call": "download_asset",
         "function": "newton.utils.download_asset",
@@ -1116,7 +1005,7 @@
         "line": 127
       }
     ],
-    "shelf/11_coupling/franka_shirt_fold_stack/example.py": [
+    "shelf/09_coupling/franka_shirt_fold_stack/example.py": [
       {
         "call": "get_asset",
         "function": "newton.examples.get_asset",
@@ -1137,24 +1026,12 @@
         "keywords": [],
         "line": 180
       }
-    ],
-    "shelf/12_sensors/sensor_contact/example.py": [
-      {
-        "call": "get_asset",
-        "function": "newton.examples.get_asset",
-        "argument": "'sensor_contact_scene.usda'",
-        "arguments": [
-          "'sensor_contact_scene.usda'"
-        ],
-        "keywords": [],
-        "line": 48
-      }
     ]
   },
   "documentation_media": [
     {
       "path": "docs/steel_tuning/frame_time_dark.png",
-      "sha256": "75bb9e558ed25d23bf1d86c7afeb559efe90cb7c567faadaecbbe8834a26fac9",
+      "sha256": "d6f8fd461d22428857edc3c1f72c7e347907c26042e9d256f1b83a4273152a60",
       "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
       "source": "Steel Shelf, migrated into this repository",
       "generation": "docs/steel_tuning/charts.py with evidence.json",
@@ -1162,7 +1039,7 @@
     },
     {
       "path": "docs/steel_tuning/frame_time_light.png",
-      "sha256": "e00bf67e4fa8ace4640b9dfaf93a438930e05278a98f2f8effb1f16f2c4b5cd5",
+      "sha256": "c7fb7e683b41f8f2095a7a2ac1345d48190c81e4545f2ac4249bb7d24a789f80",
       "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
       "source": "Steel Shelf, migrated into this repository",
       "generation": "docs/steel_tuning/charts.py with evidence.json",
@@ -1170,7 +1047,7 @@
     },
     {
       "path": "docs/steel_tuning/summary_dark.png",
-      "sha256": "54ad9cca5ce7a0918f3585c0d2cebadbf3c689d8b3e41ac64189ef3e7f5ef83c",
+      "sha256": "9343c7ca86403497e33bab011dfa67fb5e5b59b81196582ae1531a6d6d9d1ce8",
       "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
       "source": "Steel Shelf, migrated into this repository",
       "generation": "docs/steel_tuning/charts.py with evidence.json",
@@ -1178,7 +1055,7 @@
     },
     {
       "path": "docs/steel_tuning/summary_light.png",
-      "sha256": "c1af9e530dd3a2fc1d0e80116bd312232aa7565ccf8e51e2c78f0c3768089b4b",
+      "sha256": "217b0bbe3f92d1d7761a4df1741cc414fb1f38da39c764d7b240b96cbe00067b",
       "license": "Apache-2.0 for project-authored rendering/chart artwork; retain bundled model notices for depicted model content",
       "source": "Steel Shelf, migrated into this repository",
       "generation": "docs/steel_tuning/charts.py with evidence.json",
@@ -1207,7 +1084,7 @@
     "status": "pre-release steel-webgpu revision; not in the public history",
     "public_json_commit": "58246f3d3c6647edc66dd8518e50f13641418c38",
     "public_binary_commit": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
-    "verification_basis": "Each bundled scene file was hashed against the public steel-webgpu history: 10 JSON exports match 58246f3 (box_turn and toaster before their collision-filter edit), all 13 binaries match f2f72c1, and the cereal, jenga and lava_fall JSON come from the pre-release revision. This audit checks the current SHA-256 hashes and distribution bytes."
+    "verification_basis": "Each bundled scene file was hashed against the public steel-webgpu history: 10 JSON exports match 58246f3 (box_turn and toaster before their collision-filter edit), all 11 binaries match f2f72c1, and the jenga JSON comes from the pre-release revision. This audit checks the current SHA-256 hashes and distribution bytes."
   },
   "newton_test_assets": {
     "license": "Apache-2.0 under the pinned Newton repository license",
@@ -1243,15 +1120,6 @@
     "newton_license_check": "LICENSE.md blob unchanged between c42985a6 and f6fc82a8; newton-assets default remains f8fb7ab."
   },
   "additional_bundled_assets": [
-    {
-      "path": "shelf/01_basic_contacts/mjorg_baseball_bat/scene.xml",
-      "sha256": "0ef8b2b9d956818c063dbe90bb6b5c8ca26ca992c0f093256b1af7068f8fcd3d",
-      "license": "Apache-2.0",
-      "source": "https://github.com/google-deepmind/mujoco/tree/220abbbb6442/model",
-      "notice": "licenses/MuJoCo-models-Apache-2.0.txt",
-      "evidence": "shelf/01_basic_contacts/mjorg_baseball_bat/README.md",
-      "adaptation": "Scene modifications and asset transformations described in the per-example README."
-    },
     {
       "path": "shelf/01_basic_contacts/mjorg_falling_chain/scene.xml",
       "sha256": "03afbf892966c0201c91a0320894fc6858a2c361186d3b78d4ae7b9436a2bc1a",
@@ -1576,14 +1444,6 @@
     {
       "path": "shelf/05_looped_linkages/loop_parallel_gripper/reference.json",
       "sha256": "b3cc053f3b857443d071301b3a8d362182b04a2732afc000e87f08754dad07b1",
-      "license": "Apache-2.0",
-      "source": "Generated by the scripts next to the example",
-      "notice": "LICENSE",
-      "evidence": "Project-generated reference trajectories, with generators retained next to the example."
-    },
-    {
-      "path": "shelf/05_looped_linkages/loop_stewart_platform/reference.json",
-      "sha256": "44c8ba1ebd7774ac3bec202c68ee6afab243eaa4309ebd561d9d456780582c28",
       "license": "Apache-2.0",
       "source": "Generated by the scripts next to the example",
       "notice": "LICENSE",
