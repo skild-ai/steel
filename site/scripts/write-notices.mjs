@@ -3,8 +3,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // Write dist/third-party-notices.txt for the third-party code and fonts the built site ships. Fails when a
-// file in dist/_astro is neither built from site/src nor matched to a component below, or when a shipped
-// component has no license text. usage: node scripts/write-notices.mjs [dist]
+// file in dist/_astro has a name that is neither a site/src module nor a component's pattern below, or when a
+// shipped component has no license text. Names are a tripwire, not a dependency analysis: review the list when
+// client imports change. usage: node scripts/write-notices.mjs [dist]
 import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -51,7 +52,11 @@ for (const c of components) {
 	if (!(c.shipped ?? astroFiles.some((f) => c.files.test(f)))) continue;
 	if (!existsSync(c.license)) throw new Error(`${c.pkg ?? c.name} ships but ${c.license} is missing.`);
 	let text = readFileSync(c.license, 'utf8');
-	if (c.licenseUntil) text = text.slice(0, text.indexOf(c.licenseUntil));
+	if (c.licenseUntil) {
+		const end = text.indexOf(c.licenseUntil);
+		if (end < 0) throw new Error(`${c.license} no longer has "${c.licenseUntil}"; update scripts/write-notices.mjs.`);
+		text = text.slice(0, end);
+	}
 	const title = c.pkg ? `${c.pkg} ${JSON.parse(readFileSync(`node_modules/${c.pkg}/package.json`, 'utf8')).version}` : c.name;
 	sections.push([rule, title, ...(c.note ? [c.note] : []), '', text.trim()].join('\n'));
 }
