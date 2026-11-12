@@ -33,6 +33,7 @@ export default defineConfig({
 			favicon: '/favicon.svg',
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/skild-ai/steel' }],
 			editLink: { baseUrl: 'https://github.com/skild-ai/steel/edit/main/site/' },
+			components: { Footer: './src/components/Footer.astro' },
 			customCss: ['katex/dist/katex.min.css', './src/styles/steel.css'],
 			head: [
 				{ tag: 'link', attrs: { rel: 'preconnect', href: 'https://fonts.googleapis.com' } },
@@ -90,8 +91,8 @@ export default defineConfig({
 			plugins: [
 				starlightLinksValidator({
 					errorOnRelativeLinks: false,
-					// Tutorial pages are generated outside the docs collection; scripts/check-links.mjs checks them.
-					exclude: [`${base}tutorials/`, `${base}tutorials/**`, `${base}inside-steel/`],
+					// Tutorial pages and the notices file are generated outside the docs collection; scripts/check-links.mjs checks them.
+					exclude: [`${base}tutorials/`, `${base}tutorials/**`, `${base}inside-steel/`, `${base}third-party-notices.txt`],
 				}),
 			],
 		}),

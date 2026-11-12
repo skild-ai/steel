@@ -1,0 +1,25 @@
+---
+/** Starlight's footer plus the license, third-party notices and trademark line on every page. */
+import Default from '@astrojs/starlight/components/Footer.astro';
+
+const notices = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/third-party-notices.txt`;
+---
+
+<Default />
+<p class="legal">
+	Steel docs and tutorials are licensed under Apache-2.0. <a href={notices}>Third-party notices</a>. "Skild", "Skild AI"
+	and the Skild logo are trademarks of Skild AI and are not licensed under Apache-2.0.
+</p>
+
+<style>
+	.legal {
+		margin-top: 2rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--rule);
+		font-size: var(--sl-text-xs);
+		color: var(--muted);
+	}
+	.legal a {
+		color: inherit;
+	}
+</style>

@@ -54,3 +54,11 @@ python scripts/gen_changelog.py --repo path/to/newton --upstream upstream/main -
 
 See [CONTRIBUTING.md](../CONTRIBUTING.md#documentation-site-and-tutorials) for how to add pages, demos
 and tutorials.
+
+## License
+
+The site is Apache-2.0. `npm run build` writes `dist/third-party-notices.txt` with the license of each
+third-party package and font the build ships, and fails when a file in `dist/_astro` has no known source;
+add a new dependency to `scripts/write-notices.mjs`. "Skild", "Skild AI" and the Skild logo
+(`src/assets/skild-mark-*.svg`, `public/favicon.svg`) are trademarks of Skild AI and are not licensed under
+Apache-2.0.
