@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """The shelf's side bar: one imgui window on the left, in place of Newton's panel.
 
 In tune mode it has two tabs, Tuner and Scene; in play mode it shows playback and the Scene

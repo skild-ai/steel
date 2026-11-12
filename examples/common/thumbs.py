@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Previews for the example browser: one frame of each example, rendered headless and cached per look.
 
 ``python -m shelf thumbs`` renders them, every example or the ones named (``--missing``: only those

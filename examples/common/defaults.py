@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Every setting a preset's solver accepts, with the value it runs at when the preset leaves it out.
 
 The tuner lists the preset's own settings first and these below them, so any solver setting can be

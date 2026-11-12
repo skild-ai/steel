@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Solver presets: per-example, per-solver settings stored in ``presets.toml``.
 
 Each example folder holds an ``example.py`` and a ``presets.toml``. The TOML has

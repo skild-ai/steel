@@ -1,4 +1,5 @@
 Steel
+Copyright 2026 Skild AI
 
 Steel is developed by Skild AI in collaboration with NVIDIA and is available
 in Newton. Newton source files retain their original copyright and SPDX notices.
@@ -6,6 +7,16 @@ in Newton. Newton source files retain their original copyright and SPDX notices.
 The solver is linked from this package, not bundled here. The Apache-2.0 license
 applies to the project code and this documentation, not automatically to
 third-party assets, trademarks, launch footage, or music.
+
+Launch media:
+assets/launch.mp4 (video footage) and assets/launch-poster.jpg were created by
+Skild AI. Copyright 2026 Skild AI. They are not licensed under Apache-2.0.
+The music in assets/launch.mp4 is not licensed under Apache-2.0, and this
+repository grants no rights to it.
+
+Trademarks:
+Skild, Skild AI and the Skild logo are trademarks of Skild AI and are not
+licensed under Apache-2.0.
 
 The examples/ collection was migrated from the Steel Shelf project. Its
 component notices and asset inventory are retained in examples/NOTICE,

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """The scenes ported from steel-webgpu: a shared base, so each example is just its scene.
 
 steel-webgpu builds 22 feature scenes as Newton ``ModelBuilder`` code (``tools/scenes.py``) and ships 13

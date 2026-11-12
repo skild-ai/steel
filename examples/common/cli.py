@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """``python -m shelf``: list, run and check examples, and build the preset matrix."""
 
 from __future__ import annotations

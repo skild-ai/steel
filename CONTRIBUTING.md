@@ -74,7 +74,8 @@ Everything that ships in the wheel or sdist is declared in
 model files, binary files and asset downloads.
 
 - Keep existing copyright and SPDX headers. An example ported from Newton keeps Newton's header; one ported from
-  elsewhere names its direct source in a header line and in the `source` of its `presets.toml`.
+  elsewhere names its direct source in a header line and in the `source` of its `presets.toml`. New code you
+  write carries the header of its copyright holder, e.g. `Copyright (c) 2026 Skild AI` for Skild AI work.
 - Add only files whose license allows redistribution, and say where each came from. A new bundled file needs
   an inventory entry with its path, SHA-256, license and notice, and the complete notice text under
   `examples/licenses/`. Describe it in [THIRD_PARTY.md](examples/THIRD_PARTY.md).

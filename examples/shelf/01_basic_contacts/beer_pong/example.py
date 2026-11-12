@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2026 The Newton Developers
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
 # SPDX-License-Identifier: Apache-2.0
 # Direct source: steel-webgpu; see presets.toml and THIRD_PARTY.md.
 # Modified for Steel Shelf: preset-driven execution and shared runner integration.

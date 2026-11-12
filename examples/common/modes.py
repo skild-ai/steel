@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """The three ways to run an example: play, throughput and tune.
 
 All three run the example's own ``__main__`` block, so its argument parsing and scene

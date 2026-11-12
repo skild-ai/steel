@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Which control the tuner draws for a setting, and its range or options.
 
 Ranges come from ``common/ranges.toml`` (the first entry whose pattern matches the setting's key,

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """The example browser: every example as a card under its section, with a preview, a one-line
 description and a chip per preset that runs it.
 

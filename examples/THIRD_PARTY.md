@@ -46,9 +46,14 @@ headers. The pinned Newton dependency is
 
 The 27 Steel WebGPU ports (16 builder scenes and 11 exported scenes) identify
 **steel-webgpu as their direct source** in the source header and `presets.toml`.
-The [steel-webgpu LICENSE.md](https://github.com/skild-ai/steel-webgpu/blob/f2f72c1e99aea7192cf2366eb918e630135afcf9/LICENSE.md)
-provides Apache-2.0 code terms and, under *Bundled models*, the UR10e, UR5e and
-Kinova Gen3 notices used above. It lists the Franka model under Apache-2.0; the
+Skild AI wrote both steel-webgpu's scenes and these ports, so the port headers
+read `Copyright (c) 2026 Skild AI`. The
+[steel-webgpu LICENSE.md](https://github.com/skild-ai/steel-webgpu/blob/f2f72c1e99aea7192cf2366eb918e630135afcf9/LICENSE.md)
+carries `Copyright 2026 Skild AI` and `Copyright 2025 The Newton Developers`;
+it is retained in full in
+[licenses/steel-webgpu-LICENSE.txt](licenses/steel-webgpu-LICENSE.txt) and in
+NOTICE. It provides Apache-2.0 code terms and, under *Bundled models*, the
+UR10e, UR5e and Kinova Gen3 notices used above. It lists the Franka model under Apache-2.0; the
 appended BSD/Willow Garage terms are supplemented above.
 
 The 11 `scene.json` / `scene.bin` pairs can be checked against public
@@ -72,8 +77,12 @@ public steel-webgpu from `58246f3` on. The `@ ad03e49` in their `presets.toml`
 public commit and hash for every file, and the audit checks all 22 current files
 and both distributions against those hashes.
 
-Existing copyright headers are preserved. “Modified for Steel Shelf” marks
-only the later adaptation; no copyright holder has been reassigned by this review.
+Newton-derived examples keep their original copyright headers, and “Modified
+for Steel Shelf” marks the later adaptation. The ports, the shelf's own
+examples (`loop_delta_robot`, `loop_hoberman_sphere`, `loop_parallel_gripper`
+and the six `mjorg_*` scenes) and the shared `common/`, `scripts/` and `tests/`
+code were written by Skild AI and carry `Copyright (c) 2026 Skild AI` headers.
+The MuJoCo model files in the `mjorg_*` scenes keep their own notices.
 
 ## Models and policies downloaded at runtime
 
@@ -99,7 +108,6 @@ are pinned below and in the inventory.
 | `franka_emika_panda` | Apache-2.0 AND BSD-3-Clause | [Full notice](licenses/runtime-assets/franka_emika_panda.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/franka_emika_panda/LICENSE) |
 | `manipulation_objects/cup` | Apache-2.0 | [Full notice](licenses/runtime-assets/manipulation_objects--cup.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/manipulation_objects/cup/LICENSE) |
 | `manipulation_objects/pad` | Apache-2.0 | [Full notice](licenses/runtime-assets/manipulation_objects--pad.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/manipulation_objects/pad/LICENSE) |
-| `manipulation_objects/rubber_duck` | Apache-2.0 | [Full notice](licenses/runtime-assets/manipulation_objects--rubber_duck.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/manipulation_objects/rubber_duck/LICENSE) |
 | `style3d` | BSD-3-Clause | [Full notice](licenses/runtime-assets/style3d.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/style3d/LICENSE) |
 | `unitree_g1/rl_policies` | Apache-2.0 | [Full notice](licenses/runtime-assets/unitree_g1--rl_policies.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_g1/rl_policies/LICENSE) |
 | `unitree_g1` | BSD-3-Clause | [Full notice](licenses/runtime-assets/unitree_g1.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_g1/LICENSE) |
@@ -141,10 +149,13 @@ bunny, bear, Crazyflie, RJ45, cloth, cartpole, quadruped, ant/humanoid and the
 procedural tabletop assets. These dependency files are not copied into the
 Steel Shelf wheel or sdist.
 
-The tabletop source notes identify the crane and mug as procedurally generated.
-The [Pelican bicycle note](https://github.com/skild-ai/newton/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/newton/examples/assets/steel_tabletop/pelican_bicycle.md)
-credits original CAD by liinbor under Apache-2.0 and links its permanent source
-tag. The Newton helpers separately load Franka and Menagerie robot models;
+The tabletop assets (crane, mug, bolt, nut, washer, plate rack and plate) were
+created by the Skild AI team; the crane's base is procedural, and its 138
+visual-only detail meshes come from the detailed crane built for the Steel
+launch video scene. The
+[Pelican bicycle note](https://github.com/skild-ai/newton/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/newton/examples/assets/steel_tabletop/pelican_bicycle.md)
+credits original CAD by liinbor (LuckyIYI) of the Skild AI team under
+Apache-2.0 and links its permanent source tag. The Newton helpers separately load Franka and Menagerie robot models;
 those model notices are preserved above rather than inferred from Newton's code license.
 
 ### Newton test and Warp example assets
@@ -198,7 +209,7 @@ its own shipped files, not a relicensing of the Python environment.
 
 `python scripts/check_distribution_licenses.py DIST_DIR` checks the wheel and
 sdist: exact JSON and binary scene bytes, inventory coverage, each complete notice and its
-License-File metadata, robot-model notices, and absence of external assets and
+License-File metadata, robot-model notices, the steel-webgpu notice and port headers, and absence of external assets and
 documentation images. It also rejects the original Apache-only wheel and a
 wheel with the BSD notice removed. This declaration review does not change
 solver behavior or grant rights beyond the stated component licenses.

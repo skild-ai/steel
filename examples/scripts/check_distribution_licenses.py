@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Verify the license declarations and actual contents of wheel and sdist.
 
 Usage: python scripts/check_distribution_licenses.py DIST_DIR
@@ -110,6 +113,12 @@ def check_sources():
     require(len(ports) == 27, ('expected 27 steel-webgpu ports', len(ports)))
     require(all('# Direct source: steel-webgpu;' in p.with_name('example.py').read_text() for p in ports),
             'a steel-webgpu port lacks its direct-source header')
+    source = INVENTORY['steel_webgpu_source']
+    notice = (ROOT / source['notice']).read_bytes()
+    require(hashlib.sha256(notice).hexdigest() == source['notice_sha256'], 'steel-webgpu notice hash differs')
+    require(all(line in notice.decode() for line in source['copyright']), 'steel-webgpu copyright lines missing')
+    require(all(p.with_name('example.py').read_text().startswith(source['port_header'] + '\n') for p in ports),
+            'a steel-webgpu port lacks its copyright header')
     for name in ['nut_bolt_hydro', 'nut_bolt_sdf']:
         path = next(ROOT.glob(f'shelf/**/{name}/example.py'))
         tree = ast.parse(path.read_text())

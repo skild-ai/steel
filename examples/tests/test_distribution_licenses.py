@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI
+# SPDX-License-Identifier: Apache-2.0
+
 """Regression checks for the license audit: call-site signatures and source checks."""
 import copy
 import importlib.util
@@ -53,6 +56,12 @@ class SourceChecks(unittest.TestCase):
     def test_changed_scene_hash_fails(self):
         inventory = copy.deepcopy(audit.INVENTORY)
         inventory['bundled_scenes'][0]['sha256'] = '0' * 64
+        with mock.patch.object(audit, 'INVENTORY', inventory):
+            self.assertRaises(audit.AuditError, audit.check_sources)
+
+    def test_changed_port_header_fails(self):
+        inventory = copy.deepcopy(audit.INVENTORY)
+        inventory['steel_webgpu_source']['port_header'] = '# SPDX-FileCopyrightText: Copyright (c) 2026 Someone'
         with mock.patch.object(audit, 'INVENTORY', inventory):
             self.assertRaises(audit.AuditError, audit.check_sources)
 

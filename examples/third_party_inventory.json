@@ -1086,6 +1086,19 @@
     "public_binary_commit": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
     "verification_basis": "Each bundled scene file was hashed against the public steel-webgpu history: 10 JSON exports match 58246f3 (box_turn and toaster before their collision-filter edit), all 11 binaries match f2f72c1, and the jenga JSON comes from the pre-release revision. This audit checks the current SHA-256 hashes and distribution bytes."
   },
+  "steel_webgpu_source": {
+    "repository": "https://github.com/skild-ai/steel-webgpu",
+    "revision": "f2f72c1e99aea7192cf2366eb918e630135afcf9",
+    "source_license": "https://github.com/skild-ai/steel-webgpu/blob/f2f72c1e99aea7192cf2366eb918e630135afcf9/LICENSE.md",
+    "notice": "licenses/steel-webgpu-LICENSE.txt",
+    "notice_sha256": "c29e1e15a4bb6bbf25406f16c13d0b7e990514a5807b9c89b01ea2d19ecd0d94",
+    "copyright": [
+      "Copyright 2026 Skild AI",
+      "Copyright 2025 The Newton Developers"
+    ],
+    "port_header": "# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI",
+    "authorship": "The steel-webgpu scenes and the 27 ports were written by Skild AI; the notice file is the verbatim pinned source license."
+  },
   "newton_test_assets": {
     "license": "Apache-2.0 under the pinned Newton repository license",
     "source_license": "https://github.com/skild-ai/newton/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md",
