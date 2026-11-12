@@ -54,7 +54,9 @@ This writes the result and a `checked` stamp (date, Newton commit, GPU) into `pr
 ## Checks
 
 CI runs on GitHub-hosted runners with no GPU. For the site it builds `site/`, checks every internal link
-and anchor, and runs `tutorials/tools/check.py`. For the examples it checks that `uv.lock` matches `pyproject.toml`, runs ruff for
+and anchor, loads every page in headless Chromium to check that each figure renders and no table is clipped,
+and runs `tutorials/tools/check.py`. Each push to `main` deploys the site to
+[skild-ai.github.io/steel](https://skild-ai.github.io/steel/). For the examples it checks that `uv.lock` matches `pyproject.toml`, runs ruff for
 syntax errors and undefined names, runs the license audit on the built wheel and sdist, and lists the examples.
 You can run the same checks locally:
 

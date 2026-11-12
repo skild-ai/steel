@@ -8,9 +8,11 @@ npm ci
 npm run dev       # http://localhost:4321, reloads on edits
 npm run build     # static site in dist/, then a check of every internal link and anchor
 npm run preview   # serve dist/
+npm run check-figures   # every page in headless Chromium: figures render, no console errors, no clipped table
 ```
 
-Node 22.23.4 or newer (see `.nvmrc`). Set `STEEL_SITE_BASE=/steel/` to build for a subpath,
+Node 22.23.4 or newer (see `.nvmrc`). `check-figures` needs a Chromium: `npx playwright-core install chromium`,
+or point `STEEL_CHROME` at one. Set `STEEL_SITE_BASE=/steel/` to build for a subpath,
 `INSIDE_STEEL_URL` to point the "Inside Steel" link at the hosted post, and `STEEL_ALLOWED_HOSTS` (comma
 separated) to reach `npm run dev -- --host` or `npm run preview -- --host` by a machine name instead of
 localhost or an IP address.

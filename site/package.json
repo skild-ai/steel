@@ -7,6 +7,7 @@
     "build": "astro build && node scripts/check-links.mjs dist",
     "preview": "astro preview",
     "check-links": "node scripts/check-links.mjs dist",
+    "check-figures": "node scripts/check-figures.mjs dist",
     "astro": "astro"
   },
   "dependencies": {
