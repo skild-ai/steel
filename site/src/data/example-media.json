@@ -431,9 +431,9 @@
    "preset": "steel",
    "speed": 1.0,
    "clip_seconds": 10.0,
-   "preview_start": 2.6,
+   "preview_start": 0.0,
    "preview_seconds": 5.0,
-   "poster": 5.0
+   "poster": 1.05
   },
   "nut_bolt_hydro": {
    "preset": "steel",
