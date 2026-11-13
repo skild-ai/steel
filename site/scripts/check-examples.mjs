@@ -2,8 +2,8 @@
 // SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
 // SPDX-License-Identifier: Apache-2.0
 
-// Check that every example in examples/shelf has a gallery card, a page and media (or a placeholder), and that
-// every media folder and media manifest entry belongs to an example.
+// Check that every example in examples/shelf has a gallery card, a page and built media (or a placeholder), and
+// that every media folder and media manifest entry belongs to an example.
 // usage: node scripts/check-examples.mjs [dist]
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
@@ -22,7 +22,7 @@ for (const e of examples) {
 	const page = join(dist, 'examples', e.name, 'index.html');
 	if (!gallery.includes(`id="${e.name}"`)) errors.push(`${e.name}: no card on the gallery`);
 	if (!existsSync(page)) errors.push(`${e.name}: no page at examples/${e.name}/`);
-	const missing = Object.keys(LIMITS).filter((f) => !existsSync(join(mediaDir, e.name, f)));
+	const missing = Object.keys(LIMITS).filter((f) => !existsSync(join(dist, 'examples', e.name, f)));
 	if (missing.length) {
 		if (!readFileSync(page, 'utf8').includes('No clip yet')) errors.push(`${e.name}: media missing (${missing.join(', ')}) and no placeholder`);
 		warnings.push(`${e.name}: no ${missing.join(', ')}; the card and page show a placeholder`);
@@ -30,8 +30,9 @@ for (const e of examples) {
 		warnings.push(`${e.name}: media show ${manifest[e.name]?.preset ?? 'an unrecorded preset'}, the Steel preset is ${e.featured}`);
 	}
 	for (const [file, limit] of Object.entries(LIMITS)) {
-		const path = join(mediaDir, e.name, file);
+		const path = join(dist, 'examples', e.name, file);
 		if (existsSync(path) && statSync(path).size > limit) errors.push(`${e.name}/${file}: ${statSync(path).size} bytes, over ${limit}`);
+		if (existsSync(join(mediaDir, e.name, file)) && !existsSync(path)) errors.push(`${e.name}/${file}: in public/ but not in ${dist}`);
 	}
 }
 for (const dir of existsSync(mediaDir) ? readdirSync(mediaDir) : []) {

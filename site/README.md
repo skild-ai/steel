@@ -10,12 +10,14 @@ npm run build     # static site in dist/, then a check of every internal link an
 npm run preview   # serve dist/
 npm run check-figures   # every page in headless Chromium: figures render, no console errors, no clipped table
 npm run check-replay    # tutorial replays start from 0 s on load, navigation, slow loads and stalls
+npm run check-clips     # example clips play, keep an early seek, change speed, and play one at a time
 npm run build:pages     # the GitHub Pages build under /steel/, in dist-pages/ so it never replaces dist/
 npm run check-figures:pages
 npm run check-replay:pages
+npm run check-clips:pages
 ```
 
-Node 22.23.4 or newer (see `.nvmrc`). `check-figures` and `check-replay` need a Chromium: `npx playwright-core install chromium`,
+Node 22.23.4 or newer (see `.nvmrc`). `check-figures`, `check-replay` and `check-clips` need a Chromium: `npx playwright-core install chromium`,
 or point `STEEL_CHROME` at one. Set `STEEL_SITE_BASE=/steel/` to build for a subpath,
 `INSIDE_STEEL_URL` to point the "Inside Steel" link at the hosted post, and `STEEL_ALLOWED_HOSTS` (comma
 separated) to reach `npm run dev -- --host` or `npm run preview -- --host` by a machine name instead of

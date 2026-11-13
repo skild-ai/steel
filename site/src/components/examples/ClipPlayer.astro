@@ -32,11 +32,17 @@ const { src, poster, title, rate } = Astro.props;
 		<input type="range" class="scrub" min="0" max="1000" value="0" step="1" aria-label="Time" />
 		<span class="time">0.00 s</span>
 		<div class="speed" role="group" aria-label="Playback speed">
-			<button type="button" class="btn" data-s="0.25">¼×</button><button type="button" class="btn" data-s="0.5">½×</button><button
+			<button type="button" class="btn" data-s="0.25" aria-pressed="false">¼×</button><button
 				type="button"
-				class="btn on"
-				data-s="1">1×</button
-			><button type="button" class="btn" data-s="2">2×</button>
+				class="btn"
+				data-s="0.5"
+				aria-pressed="false">½×</button
+			><button type="button" class="btn on" data-s="1" aria-pressed="true">1×</button><button
+				type="button"
+				class="btn"
+				data-s="2"
+				aria-pressed="false">2×</button
+			>
 		</div>
 		<button type="button" class="btn loop" aria-pressed="true">Loop</button>
 	</div>
@@ -67,10 +73,12 @@ const { src, poster, title, rate } = Astro.props;
 		const rate = Number(root.dataset.rate) || 1;
 		let scrubbing = false;
 		let pausedByScroll = false;
+		// A seek asked for before the metadata loads, as a fraction of the clip; applied once the duration is known.
+		let pendingSeek: number | null = null;
 
 		const show = () => {
 			const d = video.duration || 0;
-			if (!scrubbing && d) scrub.value = String(Math.round((1000 * video.currentTime) / d));
+			if (!scrubbing && pendingSeek === null && d) scrub.value = String(Math.round((1000 * video.currentTime) / d));
 			time.textContent = `${(video.currentTime * rate).toFixed(2)} / ${(d * rate).toFixed(2)} s`;
 		};
 		const toggle = () => (video.paused ? video.play().catch(() => {}) : video.pause());
@@ -89,20 +97,35 @@ const { src, poster, title, rate } = Astro.props;
 		});
 		video.addEventListener('pause', () => (playBtn.textContent = video.ended ? 'Replay' : 'Play'));
 		video.addEventListener('ended', () => (playBtn.textContent = 'Replay'));
+		video.addEventListener('loadedmetadata', () => {
+			if (pendingSeek !== null) video.currentTime = video.duration * pendingSeek;
+			pendingSeek = null;
+		});
 		for (const e of ['timeupdate', 'seeked', 'loadedmetadata', 'durationchange']) video.addEventListener(e, show);
 		video.addEventListener('click', toggle);
 		playBtn.addEventListener('click', toggle);
 		scrub.addEventListener('pointerdown', () => (scrubbing = true));
 		scrub.addEventListener('pointerup', () => (scrubbing = false));
 		scrub.addEventListener('input', () => {
-			if (video.readyState === 0) video.load();
-			video.currentTime = ((video.duration || 0) * Number(scrub.value)) / 1000;
+			const fraction = Number(scrub.value) / 1000;
+			if (video.duration) {
+				video.currentTime = video.duration * fraction;
+				return;
+			}
+			if (pendingSeek === null && video.readyState === 0) {
+				video.preload = 'metadata';
+				video.load();
+			}
+			pendingSeek = fraction;
 		});
 		root.querySelector('.speed')!.addEventListener('click', (e) => {
 			const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-s]');
 			if (!b) return;
 			video.playbackRate = Number(b.dataset.s);
-			root.querySelectorAll('.speed .btn').forEach((x) => x.classList.toggle('on', x === b));
+			root.querySelectorAll('.speed .btn').forEach((x) => {
+				x.classList.toggle('on', x === b);
+				x.setAttribute('aria-pressed', String(x === b));
+			});
 		});
 		loopBtn.addEventListener('click', () => {
 			video.loop = !video.loop;
