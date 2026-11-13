@@ -1,0 +1,51 @@
+---
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+// SPDX-License-Identifier: Apache-2.0
+/** The steps index: every step, what it does, when it passes and the workflows that use it. */
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { inlineHtml, loadWorkflows } from '../../../lib/workflows-data.mjs';
+
+const { steps, workflows } = loadWorkflows();
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const title = (name) => workflows.find((w) => w.name === name).title;
+---
+
+<StarlightPage
+	frontmatter={{ title: 'Steps', description: `The ${steps.length} steps the agent workflows are built from: what each does, when it passes and which workflows use it.` }}
+>
+	<p class="lede">
+		A step is one self-contained procedure: its inputs, the exact commands, when it passes and what it leaves behind. Workflows put steps in order; a
+		step calls tools in the repository and never calls a workflow. Each lives in <code>agents/steps/&lt;name&gt;/README.md</code>.
+	</p>
+	<div class="table-scroll" tabindex="0" role="region" aria-label="Table: Step, Does, Passes when, Used in">
+		<table class="stack">
+			<thead>
+				<tr><th>Step</th><th>Does</th><th>Passes when</th><th>Used in</th></tr>
+			</thead>
+			<tbody>
+				{
+					steps.map((s) => (
+						<tr>
+							<td data-label="Step"><a href={`${base}/workflows/steps/${s.name}/`}>{s.title}</a></td>
+							<td data-label="Does" set:html={inlineHtml(s.summary['Does'])} />
+							<td data-label="Passes when" set:html={inlineHtml(s.summary['Passes when'])} />
+							<td data-label="Used in">
+								{s.usedBy.map((name, i) => (
+									<>
+										{i > 0 && ', '}
+										<a href={`${base}/workflows/${name}/`}>{title(name)}</a>
+									</>
+								))}
+							</td>
+						</tr>
+					))
+				}
+			</tbody>
+		</table>
+	</div>
+</StarlightPage>
+
+<style>
+	.lede { max-width: 76ch; }
+	td { font-size: 14px; }
+</style>

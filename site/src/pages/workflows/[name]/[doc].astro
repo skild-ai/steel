@@ -1,0 +1,30 @@
+---
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+// SPDX-License-Identifier: Apache-2.0
+/** Extra files of a workflow (agents/workflows/<name>/<doc>.md other than README.md), one page each. */
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { loadWorkflows, renderDoc } from '../../../lib/workflows-data.mjs';
+
+export function getStaticPaths() {
+	return loadWorkflows().workflows.flatMap((workflow) =>
+		workflow.extras.map((doc) => ({ params: { name: workflow.name, doc: doc.name }, props: { workflow, doc } })),
+	);
+}
+
+const { workflow, doc } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const html = await renderDoc(doc, base);
+---
+
+<StarlightPage frontmatter={{ title: doc.title, description: `Part of the ${workflow.title} workflow.`, tableOfContents: false }}>
+	<p class="kicker">Part of <a href={`${base}/workflows/${workflow.name}/`}>{workflow.title}</a></p>
+	<div class="readme" set:html={html} />
+	<p class="source">
+		Source: <a href={`https://github.com/skild-ai/steel/blob/main/${doc.path}`}><code>{doc.path}</code></a>
+	</p>
+</StarlightPage>
+
+<style>
+	.readme { max-width: 80ch; }
+	.source { color: var(--muted); font-size: 14px; margin-top: 2rem; overflow-wrap: anywhere; }
+</style>

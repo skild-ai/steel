@@ -4,10 +4,10 @@
 name: Site
 on:
   pull_request:
-    paths: ['site/**', 'tutorials/**', 'examples/shelf/**', 'CHANGELOG.md', '.github/workflows/site.yml']
+    paths: ['site/**', 'tutorials/**', 'examples/shelf/**', 'agents/**', 'CHANGELOG.md', '.github/workflows/site.yml']
   push:
     branches: [main]
-    paths: ['site/**', 'tutorials/**', 'examples/shelf/**', 'CHANGELOG.md', '.github/workflows/site.yml']
+    paths: ['site/**', 'tutorials/**', 'examples/shelf/**', 'agents/**', 'CHANGELOG.md', '.github/workflows/site.yml']
   workflow_dispatch:
 permissions:
   contents: read

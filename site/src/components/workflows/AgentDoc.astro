@@ -1,0 +1,99 @@
+---
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+// SPDX-License-Identifier: Apache-2.0
+/** One workflow or step README as a page: kicker, summary lines, the rendered README and a link to its source. */
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+
+interface Props {
+	title: string;
+	description: string;
+	kicker: string;
+	summary: [string, string][];
+	html: string;
+	source: string;
+	pager?: { prev?: { href: string; label: string }; up: { href: string; label: string }; next?: { href: string; label: string } };
+}
+const { title, description, kicker, summary, html, source, pager } = Astro.props;
+---
+
+<StarlightPage frontmatter={{ title, description, tableOfContents: false }}>
+	<div class="agent-doc">
+		<p class="kicker">{kicker}</p>
+		<dl class="summary not-content">
+			{
+				summary.map(([key, value]) => (
+					<div>
+						<dt>{key}</dt>
+						<dd set:html={value} />
+					</div>
+				))
+			}
+		</dl>
+		<slot name="before" />
+		<div class="readme" set:html={html} />
+		<slot />
+		<p class="source">
+			Source: <a href={`https://github.com/skild-ai/steel/blob/main/${source}`}><code>{source}</code></a>, the copy agents read.
+		</p>
+		{
+			pager && (
+				<nav class="pager not-content" aria-label="Other pages">
+					{pager.prev ? <a href={pager.prev.href}>← {pager.prev.label}</a> : <span />}
+					<a href={pager.up.href}>{pager.up.label}</a>
+					{pager.next ? <a href={pager.next.href}>{pager.next.label} →</a> : <span />}
+				</nav>
+			)
+		}
+	</div>
+</StarlightPage>
+
+<style>
+	.summary {
+		display: grid;
+		gap: 0;
+		margin: 0.75rem 0 1.5rem;
+		border: 1px solid var(--rule);
+		border-left: 3px solid var(--hot-fill);
+		border-radius: 4px;
+		background: var(--panel);
+	}
+	.summary div {
+		display: grid;
+		grid-template-columns: 9rem 1fr;
+		gap: 4px 16px;
+		padding: 8px 14px;
+	}
+	.summary div + div { border-top: 1px solid var(--rule); }
+	.summary dt {
+		margin: 0;
+		font: 500 12px/1.9 var(--mono);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+	.summary dd { margin: 0; overflow-wrap: anywhere; }
+	.readme { max-width: 80ch; }
+	.readme :global(pre) {
+		background: var(--panel);
+		border: 1px solid var(--rule);
+		border-radius: 4px;
+		padding: 10px 14px;
+		overflow-x: auto;
+		font: 13px/1.55 var(--mono);
+	}
+	.readme :global(pre code) { background: none; padding: 0; font-size: inherit; }
+	.source { color: var(--muted); font-size: 14px; margin-top: 2rem; overflow-wrap: anywhere; }
+	.pager {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 8px 16px;
+		margin-top: 1.5rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--rule);
+		font-size: 14px;
+	}
+	@media (max-width: 40rem) {
+		.summary div { grid-template-columns: 1fr; gap: 0; }
+	}
+</style>

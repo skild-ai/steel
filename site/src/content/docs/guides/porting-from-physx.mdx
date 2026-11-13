@@ -57,6 +57,8 @@ What Newton's importer reads from PhysX USD, and where Steel uses it.
 
 ## Migration procedure
 
+The [port-from-physx](/workflows/port-from-physx/) workflow is this procedure written out step by step, with pass criteria for each step and the [failure signatures](/workflows/port-from-physx/lessons/) of earlier ports.
+
 1. **Freeze a baseline.** Pin every version (application, assets, checkpoints, dependencies) and keep the original PhysX setup runnable in its own environment. Record a deterministic trace of observations, actions, targets, torques, body and joint state, contacts, rewards and terminations, keyed by body and joint names.
 2. **Check parity before switching solvers.** If you upgrade the surrounding stack at the same time, first show the upgraded stack with PhysX reproduces the frozen trace: reset state, first observation and action, joint order, asset import, quaternion convention and actuation. Do not attribute differences to Steel until this passes.
 3. **Switch the backend behind one flag.** Same task, same assets. Smoke-test import, reset, zero-action stepping, controls, contacts and any force sensors before running a policy.

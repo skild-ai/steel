@@ -1,0 +1,42 @@
+---
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+// SPDX-License-Identifier: Apache-2.0
+/** One page per step, rendered from agents/steps/<name>/README.md, with the workflows that use it. */
+import AgentDoc from '../../../components/workflows/AgentDoc.astro';
+import { inlineHtml, loadWorkflows, renderDoc } from '../../../lib/workflows-data.mjs';
+
+export function getStaticPaths() {
+	const { steps } = loadWorkflows();
+	return steps.map((step, i) => ({ params: { name: step.name }, props: { step, prev: steps[i - 1] ?? null, next: steps[i + 1] ?? null } }));
+}
+
+const { step, prev, next } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const { workflows } = loadWorkflows();
+const html = await renderDoc(step, base);
+const usedBy = step.usedBy.map((name) => workflows.find((w) => w.name === name));
+const summary = [
+	['Does', inlineHtml(step.summary['Does'])],
+	[
+		'Used in',
+		usedBy.length
+			? usedBy.map((w) => `<a href="${base}/workflows/${w.name}/">${w.title}</a>`).join(', ')
+			: inlineHtml(step.summary['Use in']),
+	],
+	['Passes when', inlineHtml(step.summary['Passes when'])],
+];
+---
+
+<AgentDoc
+	title={step.title}
+	description={step.summary['Does']}
+	kicker="Step"
+	summary={summary}
+	html={html}
+	source={step.path}
+	pager={{
+		prev: prev && { href: `${base}/workflows/steps/${prev.name}/`, label: prev.title },
+		up: { href: `${base}/workflows/steps/`, label: 'All steps' },
+		next: next && { href: `${base}/workflows/steps/${next.name}/`, label: next.title },
+	}}
+/>

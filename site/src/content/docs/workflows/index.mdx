@@ -1,0 +1,41 @@
+---
+title: Agent workflows
+description: Written procedures for tuning, debugging, validating, extending and porting Steel scenes, which any coding agent or person can follow step by step.
+tableOfContents: false
+---
+
+import WorkflowTable from '~/components/workflows/WorkflowTable.astro';
+import Layers from '~/components/workflows/Layers.astro';
+
+The [`agents/`](https://github.com/skild-ai/steel/tree/main/agents) folder of the repository holds the procedures we use to work on Steel scenes: tune a scene, debug an instability, validate a solver change, add an example, port a project from PhysX. Each is plain Markdown with exact commands, pass and fail criteria and the evidence to keep. Any coding agent can follow them, and so can a person; nothing in them depends on one agent product.
+
+## What are you trying to do?
+
+<WorkflowTable />
+
+## How they are built
+
+<Layers />
+
+A workflow puts steps in order and says what to do at each decision point; a step is one procedure you can run on its own; the tools hold all the logic, so a workflow never asks anyone to re-derive a rule in prose. Every README opens with three summary lines (`Goal`, `Use when`, `Done when` for a workflow; `Does`, `Use in`, `Passes when` for a step), and commands run from the repository root unless a step says `cd examples`. Every step is on the [steps page](/workflows/steps/).
+
+## How agents find them
+
+- **`AGENTS.md`.** The repository root's `AGENTS.md` points at `agents/README.md`, the catalog with the table above. Coding agents that read `AGENTS.md` start there; [`examples/AGENTS.md`](https://github.com/skild-ai/steel/blob/main/examples/AGENTS.md) has the rules for changing an example or a preset.
+- **By name.** Point an agent, or yourself, at a workflow's README: "follow `agents/workflows/tune-a-scene/README.md` for `crane_wrecking_ball`".
+- **Adapters (optional).** Some tools discover procedures in skill folders. `python agents/make_adapters.py` writes one pointer per workflow, `.claude/skills/steel-<workflow>/SKILL.md`, holding the workflow's summary as front matter and one link to its README. The README stays the only copy of the procedure; `--check` fails when a pointer is stale, so never edit one by hand.
+
+## What they rest on
+
+- **The tools.** From `examples/`: `uv run python -m shelf trial` runs one example's whole episode with Steel and lists what is wrong in fix order, `shelf autotune` repeats trials until no fix is left and then keeps cheaper settings that stay healthy, `shelf advise` re-reads a recorded trial, and `scripts/render_audit/` renders and grades examples with their Steel presets.
+
+  ```bash
+  cd examples
+  uv run python -m shelf trial crane_wrecking_ball --out outputs/crane_t0
+  uv run python -m shelf autotune crane_wrecking_ball --start defaults --out outputs/crane_tune
+  ```
+
+- **The guides.** The [Steel tuning guide](https://github.com/skild-ai/steel/blob/main/examples/docs/steel_tuning/guide.md) in the repository, with the measurements behind each rule and a validation of `shelf autotune` against hand-tuned presets, and on this site [Tuning](/guides/tuning/), [Troubleshooting](/guides/troubleshooting/) and [Porting from PhysX](/guides/porting-from-physx/).
+- **The examples' own checks.** `shelf check` is the acceptance for a preset; the advisor's health and the render grades are screens in front of it.
+
+To write a new workflow or step, see [Add a workflow](/workflows/contributing/).
