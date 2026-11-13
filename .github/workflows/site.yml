@@ -43,23 +43,23 @@ jobs:
           cache: npm
           cache-dependency-path: site/package-lock.json
       - run: npm ci
-      # Pull requests build the same /steel/ site that main deploys to https://skild-ai.github.io/steel/.
-      - name: Build into dist-pages and check internal links and anchors
-        run: npm run build:pages
+      # Pull requests build the same site that main deploys to https://steel.skild.ai/.
+      - name: Build and check internal links and anchors
+        run: npm run build
         env:
           ASTRO_TELEMETRY_DISABLED: '1'
       - name: Check that every figure renders and no table is clipped
         run: |
           npx playwright-core install --with-deps chromium
-          npm run check-figures:pages
+          npm run check-figures
       - name: Check that tutorial replays start from 0 s on every entry
-        run: npm run check-replay:pages
+        run: npm run check-replay
       - name: Check that example clips play, seek and play one at a time
-        run: npm run check-clips:pages
+        run: npm run check-clips
       - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         with:
-          path: site/dist-pages
+          path: site/dist
   # Needs the repository's Pages source set to "GitHub Actions".
   deploy:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'

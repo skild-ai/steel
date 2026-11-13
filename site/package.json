@@ -8,14 +8,10 @@
     "preview": "astro preview",
     "check-links": "node scripts/check-links.mjs dist",
     "check-figures": "node scripts/check-figures.mjs dist",
-    "build:pages": "export STEEL_SITE_BASE=/steel/ && astro build --outDir dist-pages && node scripts/write-notices.mjs dist-pages && node scripts/check-links.mjs dist-pages && node scripts/check-examples.mjs dist-pages",
-    "check-figures:pages": "STEEL_SITE_BASE=/steel/ node scripts/check-figures.mjs dist-pages",
     "check-replay": "node scripts/check-replay.mjs dist",
-    "check-replay:pages": "STEEL_SITE_BASE=/steel/ node scripts/check-replay.mjs dist-pages",
     "astro": "astro",
     "check-examples": "node scripts/check-examples.mjs dist",
-    "check-clips": "node scripts/check-clips.mjs dist",
-    "check-clips:pages": "STEEL_SITE_BASE=/steel/ node scripts/check-clips.mjs dist-pages"
+    "check-clips": "node scripts/check-clips.mjs dist"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "7.3.8",
