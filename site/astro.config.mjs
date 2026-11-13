@@ -22,7 +22,7 @@ export default defineConfig({
 	vite: { server: { fs: { allow: ['..'] } } },
 	// Host names other than localhost that `npm run dev` / `npm run preview` answer, e.g. STEEL_ALLOWED_HOSTS=myhost.
 	server: { allowedHosts: (process.env.STEEL_ALLOWED_HOSTS ?? '').split(',').filter(Boolean) },
-	site: process.env.STEEL_SITE_URL ?? 'https://skild-ai.github.io',
+	site: process.env.STEEL_SITE_URL ?? 'https://steel.skild.ai',
 	base,
 	trailingSlash: 'always',
 	markdown: {
