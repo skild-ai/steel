@@ -1,6 +1,6 @@
 # Steel
 
-[![Watch the Steel launch video](assets/launch-poster.jpg)](assets/launch.mp4)
+![Steel launch](assets/launch.webp)
 
 Steel is Skild's GPU-accelerated rigid-body physics solver for scalable simulation of manipulation. Skild AI developed Steel in collaboration with NVIDIA. Steel is implemented inside [Newton](https://github.com/newton-physics/newton), the open-source physics engine hosted by the Linux Foundation.
 
