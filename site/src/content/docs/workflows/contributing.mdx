@@ -1,0 +1,45 @@
+---
+title: Add a workflow
+description: How to write a new agent workflow or step for Steel, and how the site and the adapters pick it up.
+---
+
+A workflow belongs in `agents/` when the same multi-step job comes up again and its order matters: what to run first, what to check before going on, when to stop. One-off advice belongs in a guide; logic that can be computed belongs in a tool.
+
+## Write the step first
+
+Most of a new workflow is usually steps that already exist. Look through the [steps](/workflows/steps/) before writing one. A new step is `agents/steps/<verb-noun>/README.md`:
+
+```md
+# Size capacities
+
+> **Does:** sets Steel's constraint-row capacities so no row is ever dropped, with headroom, from measured demand.
+> **Use in:** tune-a-scene, debug-instability, port-from-physx.
+> **Passes when:** every row family reports zero overflowing world-steps and `check_constraint_capacity()` passes on full episodes at the target world count.
+
+**Inputs.** ... **Tools.** ...
+```
+
+then the exact commands, what passes and what fails, and the outputs it leaves. A step runs on its own: it may call tools in the repository, and it never links a workflow. Its `Use in` line lists every workflow that links it.
+
+## Then the workflow
+
+`agents/workflows/<verb-noun>/README.md` opens with `Goal`, `Use when` and `Done when`, lists its inputs, and then numbers its steps, each a relative link to a step's README. Put each decision point where it happens ("`final_healthy: false` → debug-instability"), and end with the deliverables. Supporting material, like port-from-physx's failure signatures, goes in another `.md` file in the same folder; the site gives it a page.
+
+Add one row for it to the "What are you trying to do?" table in `agents/README.md`; the site's [overview](/workflows/) reads that table, and the build fails when a workflow is missing from it.
+
+## Rules
+
+- **Logic goes in tools.** If a step needs a threshold, a rule or a parser, put it in `examples/common/` or `examples/scripts/` with tests, and have the step run it.
+- **Commands are exact.** Paths, flags and file names as they are in the repository, runnable from the root or from `examples/`.
+- **Numbers carry their conditions.** A measured number names the scene and the GPU it was measured on, or links the guide section that does.
+- **Agent-agnostic.** Write for any coding agent and for a person: no instructions that only one agent product understands.
+
+## Check it
+
+```bash
+python agents/make_adapters.py            # regenerate the optional per-tool pointers
+cd examples && uv run --with pytest python -m pytest tests/test_agent_docs.py
+cd ../site && npm run build               # one page per workflow and step, links checked
+```
+
+The tests check that every relative link resolves, that each README opens with its summary lines, that steps never link workflows, that every `Use in` line matches the workflows that link the step, and that the adapters are current. Then open a pull request as [Contributing](/contributing/) describes.

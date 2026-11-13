@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
 # SPDX-License-Identifier: Apache-2.0
 
-"""``python -m shelf``: list, run and check examples, and build the preset matrix."""
+"""``python -m shelf``: list, run and check examples, build the preset matrix, and auto-tune Steel presets."""
 
 from __future__ import annotations
 
@@ -406,6 +406,29 @@ def main(argv: list[str] | None = None) -> None:
 
     sub.add_parser("matrix", help=f"write {MATRIX.name}")
 
+    # Steel tuning advisor (common/advisor, docs/steel_tuning/guide.md); other arguments go to the example.
+    p = sub.add_parser("trial", help="Steel: one full-episode trial under given settings, its facts, fixes and check")
+    p.add_argument("example")
+    p.add_argument("--settings", help='JSON {"sim": {...}, "solver": {...}}; default: the [steel] preset')
+    p.add_argument("--frames", type=int, help="frames to run (default: 10 s, or the check's length up to 20 s)")
+    p.add_argument("--seconds", type=float, help="episode length in seconds")
+    p.add_argument("--no-check", action="store_true", help="skip the example's own check")
+    p.add_argument("--timeout", type=int, default=1500)
+    p.add_argument("--out", required=True)
+    p.add_argument("--attempt", help=argparse.SUPPRESS)  # autotune's id for this run, echoed into trial.json
+    p = sub.add_parser("autotune", help="Steel: trials until no fix is left, then cheaper settings that stay healthy")
+    p.add_argument("example")
+    p.add_argument("--start", default="preset", help="preset | defaults | a JSON settings file")
+    p.add_argument("--max-trials", type=int, default=6, help="stability-fix trials")
+    p.add_argument("--cost-trials", type=int, default=5,
+                   help="cost-phase budget: a run stops at max-trials + cost-trials trials in all (0: no cost phase)")
+    p.add_argument("--seconds", type=float)
+    p.add_argument("--no-check", action="store_true")
+    p.add_argument("--timeout", type=int, default=2400)
+    p.add_argument("--out", required=True)
+    p = sub.add_parser("advise", help="Steel: re-run the stability rules on a recorded trial.json")
+    p.add_argument("path")
+
     p = sub.add_parser("thumbs", help="render the example browser's previews into the cache, one frame per example")
     p.add_argument("examples", nargs="*")
     p.add_argument("--all", action="store_true", help="every example (the default when none is named)")
@@ -424,6 +447,16 @@ def main(argv: list[str] | None = None) -> None:
     args, rest = parser.parse_known_args(argv)
     if args.cmd in ("play", "run", "bench", "tune"):
         cmd_mode(args, rest)
+        return
+    if args.cmd in ("trial", "autotune", "advise"):
+        from common.advisor import loop  # imports the shelf modules above; only the advisor commands need it
+
+        if args.cmd == "advise":
+            if rest:
+                parser.error(f"unrecognized arguments: {' '.join(rest)}")
+            loop.run_advise(args)
+        else:
+            (loop.run_trial if args.cmd == "trial" else loop.run_tune)(args, rest)
         return
     if rest:
         parser.error(f"unrecognized arguments: {' '.join(rest)}")

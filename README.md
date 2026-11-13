@@ -20,6 +20,8 @@ We are actively accepting contributions from you and your agents, and are commit
 
 Start with an example yourself, or point your coding agent at the collection and have it build the environment you need.
 
+To tune a scene, debug an instability, validate a solver change, add an example or port a project from PhysX, follow the [agent workflows](agents/README.md): step-by-step procedures that you or any coding agent can run.
+
 [![Steel examples](examples/docs/teaser.webp)](examples/README.md)
 
 ```bash
@@ -43,6 +45,7 @@ The examples are a separate Python project under `examples/`. They are pinned to
 - [Steel in Newton](https://github.com/newton-physics/newton/tree/main/newton/_src/solvers/steel) — the solver implementation integrated into Newton.
 - [Docs and tutorials](site/README.md) — the documentation site: concepts, guides, the configuration reference and [runnable tutorials](tutorials/README.md), each with a recorded 3D replay. Preview it with `cd site && npm ci && npm run dev`.
 - [Examples](examples/README.md) — runnable scenes and solver presets. The [package configuration](examples/pyproject.toml) records their exact Newton dependency.
+- [Agent workflows](agents/README.md) — procedures for tuning, debugging, validating, extending and porting Steel scenes, for any coding agent or person.
 - [WebGPU implementation](https://github.com/skild-ai/steel-webgpu) — the browser implementation.
 - [Playground](https://www.skild.ai/steel/playground) — interactive demos.
 - [Blog](https://www.skild.ai/blogs/steel) — the launch write-up.

@@ -47,6 +47,8 @@ The site builds one page per tutorial at `/tutorials/<id>/`.
 
 An example is a folder `examples/shelf/<NN_category>/<name>/` with `example.py` and a `presets.toml` that has a `[gallery]` table (`short`, one line) and a table per solver. The rules for presets are in [CONTRIBUTING.md](https://github.com/skild-ai/steel/blob/main/CONTRIBUTING.md#adding-or-changing-a-preset). The site builds a card and a page at `/examples/<name>/` from the folder; until the example has media, both show a placeholder. To add media, record the Steel preset with `uv run shelf play <name>` and **Record** (sim time), then from `site/` run `python scripts/example_media.py <name> <recording.mp4> --preset steel`. It writes the poster, the gallery preview and the page clip under `site/public/examples/<name>/`.
 
+The [add-an-example](/workflows/add-an-example/) workflow takes a new example from a script to a checked Steel preset and a preview. Before a change to Steel or a new Newton pin, the [validate-a-solver-change](/workflows/validate-a-solver-change/) workflow renders and checks every example on both revisions and compares their grades. To add a workflow of your own, see [Add a workflow](/workflows/contributing/).
+
 ## Style
 
 Colors and fonts come only from the Steel style tokens in `site/src/styles/steel-tokens.css`. Use `var(--fg)`, `var(--hot)` and the other tokens; green (`--hot`, `--hot-fill`, `--series-2`) marks the one thing a figure or section is about. Keep sentences plain and measured numbers next to the scene and GPU they were measured on; which Newton build has which feature belongs on the [versions](/start/versions/) page.

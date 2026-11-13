@@ -1,0 +1,1 @@
+{"sim": {"fps": 60, "substeps": 4}, "solver": {}, "model": {"default_shape_cfg": {"mu": 0.0}}}

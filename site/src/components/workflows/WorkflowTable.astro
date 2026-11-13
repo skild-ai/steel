@@ -1,0 +1,29 @@
+---
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+// SPDX-License-Identifier: Apache-2.0
+/** The "What are you trying to do?" table from agents/README.md, with each workflow's exit criterion. */
+import { inlineHtml, loadWorkflows } from '../../lib/workflows-data.mjs';
+
+const { workflows, catalog } = loadWorkflows();
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const rows = catalog.map((r) => ({ ...r, workflow: workflows.find((w) => w.name === r.name) }));
+---
+
+<div class="table-scroll" tabindex="0" role="region" aria-label="Table: You want to, Workflow, Done when">
+	<table class="stack">
+		<thead>
+			<tr><th>You want to</th><th>Workflow</th><th>Done when</th></tr>
+		</thead>
+		<tbody>
+			{
+				rows.map((r) => (
+					<tr>
+						<td data-label="You want to">{r.want}</td>
+						<td data-label="Workflow"><a href={`${base}/workflows/${r.name}/`}>{r.workflow.title}</a></td>
+						<td data-label="Done when" set:html={inlineHtml(r.workflow.summary['Done when'])} />
+					</tr>
+				))
+			}
+		</tbody>
+	</table>
+</div>

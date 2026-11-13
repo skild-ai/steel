@@ -1,0 +1,76 @@
+---
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+// SPDX-License-Identifier: Apache-2.0
+/** One page per agent workflow, rendered from agents/workflows/<name>/README.md, with the steps it uses. */
+import AgentDoc from '../../components/workflows/AgentDoc.astro';
+import { inlineHtml, loadWorkflows, renderDoc } from '../../lib/workflows-data.mjs';
+
+export function getStaticPaths() {
+	const { workflows } = loadWorkflows();
+	return workflows.map((workflow, i) => ({
+		params: { name: workflow.name },
+		props: { workflow, prev: workflows[i - 1] ?? null, next: workflows[i + 1] ?? null },
+	}));
+}
+
+const { workflow, prev, next } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const { steps } = loadWorkflows();
+const used = workflow.steps.map((name) => steps.find((s) => s.name === name));
+const html = await renderDoc(workflow, base);
+const summary = Object.entries(workflow.summary).map(([k, v]) => [k, inlineHtml(v)]);
+---
+
+<AgentDoc
+	title={workflow.title}
+	description={`${workflow.summary['Goal']}`}
+	kicker="Workflow"
+	summary={summary}
+	html={html}
+	source={workflow.path}
+	pager={{
+		prev: prev && { href: `${base}/workflows/${prev.name}/`, label: prev.title },
+		up: { href: `${base}/workflows/`, label: 'All workflows' },
+		next: next && { href: `${base}/workflows/${next.name}/`, label: next.title },
+	}}
+>
+	<p slot="before" class="howto">
+		Any coding agent, or a person, can follow this workflow from <code>{workflow.path}</code>. Tools that discover skill folders also find it as
+		<code>steel-{workflow.name}</code>.
+	</p>
+	{
+		used.length > 0 && (
+			<section>
+				<h2 id="steps-used">Steps it uses</h2>
+				<ul class="steps-used">
+					{used.map((s) => (
+						<li>
+							<a href={`${base}/workflows/steps/${s.name}/`}>{s.title}</a>
+							<span set:html={` ${inlineHtml(s.summary['Does'])}`} />
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+	{
+		workflow.extras.length > 0 && (
+			<section>
+				<h2 id="more">More in this workflow</h2>
+				<ul>
+					{workflow.extras.map((d) => (
+						<li>
+							<a href={`${base}/workflows/${workflow.name}/${d.name}/`}>{d.title}</a>
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+</AgentDoc>
+
+<style>
+	.howto { color: var(--muted); font-size: 14px; max-width: 80ch; }
+	.steps-used { max-width: 80ch; }
+	.steps-used a { font-weight: 500; }
+</style>
