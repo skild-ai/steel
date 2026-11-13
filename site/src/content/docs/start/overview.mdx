@@ -1,18 +1,15 @@
 ---
 title: Overview
-description: What Steel is for, how it compares with Newton's other solvers, and what it supports.
+description: What Steel is for and how it compares with Newton's other articulated-body solvers.
 sidebar:
   order: 1
 ---
 
-import Note from '~/components/Note.astro';
-import CardGrid from '~/components/CardGrid.astro';
-import InfoCard from '~/components/InfoCard.astro';
 import Term from '~/components/Term.astro';
 
 Steel (Scalable Throughput-optimized Engine for Embodied Learning) is a GPU solver for articulated robots and rigid bodies in [Newton](https://github.com/newton-physics/newton). It integrates robots in joint coordinates, solves contacts and joint constraints with a projected Gauss-Seidel sweep that does not assemble the world's constraint matrix, and schedules every world of a batch on its own, so different robots, tasks and scenes can share one batch. Newton is the open-source physics engine hosted by the Linux Foundation.
 
-<p class="chips"><span class="chip"><b>newton.solvers.SolverSteel</b></span><span class="chip">experimental in Newton 1.8</span><span class="chip">documented at skild-ai/newton <b>baffc2a</b></span></p>
+<p class="chips"><span class="chip"><b>newton.solvers.SolverSteel</b></span><span class="chip">experimental in Newton 1.8</span></p>
 
 We benchmark Steel against PhysX and MuJoCo Warp on single-task and mixed-task Isaac Lab workloads in the [launch post](https://www.skild.ai/blogs/steel).
 
@@ -22,55 +19,30 @@ Steel was built for robot learning at scale: thousands of environments per GPU, 
 
 Steel is experimental in Newton 1.8: `SolverSteel`, its constructor options and its `steel:` attributes may change without the normal deprecation period.
 
-## Choosing a solver
+## Newton's articulated-body solvers
 
-Newton ships several solvers. A rough guide for rigid and articulated scenes:
+Newton has several solvers that simulate articulated bodies. From their source and Newton's solver documentation, with Newton's joint types PRISMATIC, REVOLUTE, BALL, FIXED, FREE, DISTANCE, D6 and ROD:
 
-| Solver | Coordinates and contact model | Pick it when |
-|---|---|---|
-| **Steel** | Joint coordinates; hard contacts, limits and couplings as rows of a projected Gauss-Seidel solve; implicit drives | Many worlds of articulated robots with contact, including batches that mix different robots or scenes; reproducible runs (`RUN_TO_RUN`) |
-| **MuJoCo Warp**<br />`SolverMuJoCo` | Joint coordinates; MuJoCo's soft-constraint contact model | You need MuJoCo semantics: its actuators, tendons, equality constraints and `solref`/`solimp`, or parity with an existing MuJoCo model |
-| **XPBD**<br />`SolverXPBD` | Maximal coordinates; position-based constraints, joints included | Scenes with particles, cloth or soft bodies alongside rigid bodies |
-| **Featherstone**<br />`SolverFeatherstone` | Joint coordinates; penalty (spring-damper) contacts | Basic differentiable simulation, or articulated scenes where penalty contact is acceptable |
+| Solver | Coordinates | Contacts and constraints | Joint types | Loop closures |
+|---|---|---|---|---|
+| **Steel**<br />`SolverSteel` | Reduced | Hard contacts with Coulomb friction; matrix-free projected Gauss-Seidel | All but ROD; DISTANCE moves as FREE | BALL, REVOLUTE and FIXED loop joints |
+| **MuJoCo Warp**<br />`SolverMuJoCo` | Reduced | MuJoCo soft constraints (`solref`, `solimp`); CG or Newton solver; pyramidal or elliptic cone | All but DISTANCE and ROD | FIXED, REVOLUTE, BALL and one- or three-axis angular D6 loop joints, as equality constraints |
+| **Featherstone**<br />`SolverFeatherstone` | Reduced | Penalty spring-damper contacts | All but ROD; DISTANCE moves as FREE | No |
+| **Kamino**<br />`SolverKamino` | Maximal | Hard contacts with friction and restitution as a complementarity problem; proximal ADMM by default | PRISMATIC, REVOLUTE, BALL, FIXED, FREE | Yes |
+| **XPBD**<br />`SolverXPBD` | Maximal | Position-based contact and joint constraints | All but ROD | Yes |
+| **Semi-implicit**<br />`SolverSemiImplicit` | Maximal | Penalty spring-damper contacts and joints | All but ROD; DISTANCE moves as FREE | Yes |
+| **VBD**<br />`SolverVBD` | Maximal | Vertex block descent; compliant augmented-Lagrangian contact and joint constraints | All but DISTANCE | Yes |
 
-Steel can also be one entry of Newton's experimental coupled solvers, next to VBD or XPBD for cloth, cables and soft bodies. See [Coupling](/guides/coupling/).
+| Solver | Particles, cloth, soft bodies | Gradients | Devices | Worlds with different structure |
+|---|---|---|---|---|
+| **Steel** | Through coupled solvers | No | CUDA; CPU for the core solve | Yes |
+| **MuJoCo Warp** | Through coupled solvers | No | CUDA (MuJoCo Warp); CPU (MuJoCo C) | No: bodies, joints and equality constraints match across worlds; meshes may differ |
+| **Featherstone** | In the same solver | Basic (diffsim examples) | CPU, CUDA | Yes |
+| **Kamino** | Through coupled solvers | No | CPU, CUDA | Yes |
+| **XPBD** | In the same solver | No | CPU, CUDA | Yes |
+| **Semi-implicit** | In the same solver | Basic (diffsim examples) | CPU, CUDA | Yes |
+| **VBD** | In the same solver | No | CPU, CUDA | Yes |
+
+Newton marks Steel, Kamino and VBD experimental. Steel can be one entry of Newton's experimental coupled solvers, next to VBD or XPBD for cloth, cables and soft bodies; see [Coupling](/guides/coupling/). Model features Steel rejects at construction are listed in the [FAQ](/faq/#what-does-steel-reject-at-construction).
 
 To see what Steel runs, browse the [examples](/examples/): scenes with a clip of each one's Steel preset, its presets for the other solvers and the command that runs it.
-
-## What is supported
-
-<CardGrid>
-
-<InfoCard title="Supported">
-
-- Joints: PRISMATIC, REVOLUTE, BALL, FIXED, D6, and root FREE and DISTANCE joints (a DISTANCE joint moves like a free joint)
-- Implicit PD drives, or drives as solver rows with exact effort limits
-- Joint position and velocity limits, passive springs, dry joint friction
-- Mimic joints, and loop-closing BALL, REVOLUTE and FIXED joints
-- Hard contacts with Coulomb friction, persistent friction patches, restitution, optional torsion
-- Kinematic bodies, heterogeneous worlds, global bodies shared by all worlds
-- CUDA graph capture of `step` and `reset`; run-to-run determinism; island sleeping
-- CPU fallback for the core solve
-
-</InfoCard>
-
-<InfoCard title="Not supported">
-
-- Particles, cloth and soft bodies: construction raises when the model has particles. Couple Steel with VBD or XPBD instead.
-- ROD joints
-- Newton's native routed tendons
-- Gradients: construction raises for `model.requires_grad=True`
-- Mimic couplings across articulations, and loop closures between two dynamic articulations
-- On CPU: contact torsion, contact compliance, joint friction, Nesterov momentum and the non-default friction modes
-- DISTANCE joint limits: `min_distance` and `max_distance` are ignored, also with `enable_joint_limits=True`
-- MJCF `condim`: the importer leaves `steel:condim` at 3; set it after import
-
-</InfoCard>
-
-</CardGrid>
-
-<Note title="In progress" variant="plain">
-
-MuJoCo-style tendons for Steel are in review on the integration branch. Rolling and spin friction for free-body contacts, implicit joint damping and per-body gravity scale are in review upstream. On skild-ai/newton, changes that enforce DISTANCE joint limits ([#23](https://github.com/skild-ai/newton/pull/23)), read MJCF `condim` ([#22](https://github.com/skild-ai/newton/pull/22)), integrate passive joint damping implicitly ([#18](https://github.com/skild-ai/newton/pull/18)) and fix the bisection friction modes ([#26](https://github.com/skild-ai/newton/pull/26)) are in review. See the [changelog](https://github.com/skild-ai/steel) for the current list.
-
-</Note>

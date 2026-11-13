@@ -7,35 +7,35 @@ default = "steel"
 args = []
 
 [gallery]
-short = "A five-ball Newton's cradle on revolute pendulums."
+short = "A five-ball Newton's cradle: one ball swings in, one swings out."
 
 [xpbd]
 status = "works"
 sim = { fps = 60, substeps = 10 }
 solver = { iterations = 10, enable_restitution = true }
 model = { default_shape_cfg = { mu = 0.0 } }
-checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+checked = "2026-11-13, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
 
 [vbd]
 status = "works"
 sim = { fps = 60, substeps = 10 }
 solver = { iterations = 10 }
 model = { default_shape_cfg = { mu = 0.0 } }
-checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+checked = "2026-11-13, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
 
 [mujoco]
 status = "works"
 sim = { fps = 60, substeps = 10 }
 solver = { njmax = 2048, nconmax = 1024, cone = "elliptic" }
 model = { default_shape_cfg = { mu = 2.0e-5 } }
-checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+checked = "2026-11-13, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
 
 [featherstone]
 status = "works"
 sim = { fps = 60, substeps = 20 }
 solver = { angular_damping = 0.0 }
 model = { default_shape_cfg = { mu = 0.0 } }
-checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+checked = "2026-11-13, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
 
 [semi_implicit]
 status = "untested"
@@ -45,23 +45,21 @@ status = "untested"
 
 [steel]
 status = "works"
-# 8 substeps x 16 iterations, immediate response: the fastest setting with XPBD's penetration (0.002 mm
-# peak); fewer substeps or iterations let the balls sink millimetres into each other at impact. The
-# colored response serializes the five balls of one articulation and costs 3x. The balls keep their
-# swing better than XPBD's (first ball still reaches 44.7 degrees after 5 s, XPBD 8.6).
-sim = { fps = 60, substeps = 8 }
+# 16 substeps keep one substep of travel (2.5 mm at 2.4 m/s) to about half the 5 mm clearance, so impacts
+# stay one pair at a time. Each impact is a single contact row, so 4 iterations resolve it.
+sim = { fps = 60, substeps = 16 }
 # contact_friction_gap_max = -inf: the balls are frictionless (mu = 0 as in the other solvers), so no
-# contact needs friction rows
-solver = { solve_mode = "matrix_free", iterations = 16, articulated_contact_response = "immediate", contact_friction_gap_max = -inf }
+# contact needs friction rows. enable_joint_friction applies the hinges' Coulomb friction.
+solver = { solve_mode = "matrix_free", iterations = 4, articulated_contact_response = "immediate", contact_friction_gap_max = -inf, enable_joint_friction = true }
 model = { default_shape_cfg = { mu = 0.0 } }
-checked = "2026-11-04, newton 7565a26b1, NVIDIA GeForce RTX 3090"
+checked = "2026-11-13, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
 
 [kamino]
 status = "works"
 sim = { fps = 60, substeps = 5 }
 solver = { use_collision_detector = true }
 model = { default_shape_cfg = { mu = 0.0 } }
-checked = "2026-10-28, newton 7565a26b1, NVIDIA RTX A6000"
+checked = "2026-11-13, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
 
 [implicit_mpm]
 status = "untested"

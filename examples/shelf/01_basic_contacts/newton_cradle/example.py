@@ -1,14 +1,17 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 The Newton Developers
 # SPDX-License-Identifier: Apache-2.0
-# Modified for Steel Shelf: preset-driven execution and shared runner integration.
+# Modified for Steel Shelf: preset-driven execution and shared runner integration. The balls hang
+# 5 mm apart on rubbing hinges, as in MuJoCo's speculative-contact cradle (model/speculative/newton.xml).
 
 ###########################################################################
 # Example Newton Cradle
 #
 # Builds a five-ball Newton's cradle with revolute-joint pendulums and
-# sphere-sphere contact.
+# sphere-sphere contact. Each impact is one pair of balls: the balls hang
+# a small clearance apart, and the contact gap lets the closing pair touch
+# within one substep instead of overlapping.
 #
-# Command: python -m shelf run newton_cradle
+# Command: python -m shelf run newton_cradle [--lifted-balls 2]
 #
 ###########################################################################
 
@@ -28,6 +31,11 @@ BALL_RADIUS = 0.05
 STRING_LENGTH = 1.0
 INITIAL_ANGLE = math.radians(45.0)
 GRAVITY = -9.81
+# Touching balls make every impact a simultaneous chain of contacts, which a velocity solver shares
+# out over all the balls; a clearance wider than one substep of travel resolves one pair at a time.
+BALL_CLEARANCE = 0.005
+# Coulomb hinge torque [N m]: holds a struck middle ball where it stops and slowly damps the swing.
+HINGE_FRICTION = 0.08
 
 NATIVE_CONTACT_SOLVERS = {"mujoco", "kamino"}
 
@@ -45,20 +53,22 @@ class Example:
         self.sim_dt = self.frame_dt / self.sim_substeps
 
         builder = newton.ModelBuilder(gravity=(0.0, 0.0, GRAVITY))
-        builder.rigid_gap = 0.001
+        builder.rigid_gap = BALL_CLEARANCE
         builder.default_shape_cfg.ke = 1.0e5
         builder.default_shape_cfg.kd = 0.0
         builder.default_shape_cfg.kf = 0.0
         self.preset.apply_model(builder)  # friction coefficient mu
         builder.default_shape_cfg.restitution = 1.0
 
-        total_width = (NUM_BALLS - 1) * 2.0 * BALL_RADIUS
+        self.lifted_balls = args.lifted_balls if args is not None else 1
+        pitch = 2.0 * BALL_RADIUS + BALL_CLEARANCE
+        total_width = (NUM_BALLS - 1) * pitch
         x_start = -0.5 * total_width
         joint_indices = []
 
         for i in range(NUM_BALLS):
-            pivot_x = x_start + i * 2.0 * BALL_RADIUS
-            angle = INITIAL_ANGLE if i == 0 else 0.0
+            pivot_x = x_start + i * pitch
+            angle = INITIAL_ANGLE if i < self.lifted_balls else 0.0
             ball_pos = wp.vec3(
                 pivot_x + STRING_LENGTH * math.sin(angle),
                 0.0,
@@ -100,6 +110,7 @@ class Example:
                 limit_upper=math.pi,
                 limit_ke=0.0,
                 limit_kd=0.0,
+                friction=HINGE_FRICTION,
                 label=f"string_{i}",
             )
             joint_indices.append(joint)
@@ -118,7 +129,7 @@ class Example:
         self.model = builder.finalize()
 
         joint_q = self.model.joint_q.numpy()
-        joint_q[0] = INITIAL_ANGLE
+        joint_q[: self.lifted_balls] = INITIAL_ANGLE
         self.model.joint_q.assign(joint_q)
 
         # Keep model.body_q synchronized before solver construction; VBD reads
@@ -192,6 +203,9 @@ class Example:
     @staticmethod
     def create_parser():
         parser = newton.examples.create_parser()
+        parser.add_argument(
+            "--lifted-balls", type=int, default=1, choices=range(1, NUM_BALLS), help="How many balls start lifted."
+        )
         return parser
 
 

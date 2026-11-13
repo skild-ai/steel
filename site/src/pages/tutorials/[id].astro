@@ -94,14 +94,7 @@ const description = meta.about.length > 200 ? meta.about.slice(0, meta.about.las
 			{
 				rec ? (
 					<>
-						Recorded with <code>SolverSteel</code> on Newton {rec.newton_version}
-						{rec.newton_commit && (
-							<>
-								{' '}
-								(<a href={`https://github.com/skild-ai/newton/commit/${rec.newton_commit}`}>{rec.newton_commit.slice(0, 7)}</a>)
-							</>
-						)}
-						, Warp {rec.warp_version}, {rec.gpu}. Replays read the state back every frame, so they are not a speed benchmark.{' '}
+						Recorded with <code>SolverSteel</code> on Newton {rec.newton_version}, Warp {rec.warp_version}, {rec.gpu}. Replays read the state back every frame, so they are not a speed benchmark.{' '}
 					</>
 				) : null
 			}
