@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+line-length = 100
+[lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+# Tutorial zips pair a sweep with its per-world results, equal in length by construction.
+ignore = ["B905"]
+[lint.isort]
+known-third-party = ["newton", "warp"]
+known-local-folder = ["replay", "source_hash"]

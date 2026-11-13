@@ -1,0 +1,70 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 45_preelimination_mimics.py. Fields: tutorials/README.md.
+
+id = "preelimination-mimics"
+title = "Pre-elimination with mimic rows"
+about = """\
+enable_bilateral_preelimination solves the bilateral rows of each articulation once per step \
+before the sweep, for up to eight rows per articulation. \
+bilateral_preelimination_include_mimics decides whether mimic rows join the loop-closure rows. \
+Here a four-bar (five closure rows) also drives four indicator arms through mimic joints, nine \
+bilateral rows in total, at 2 iterations."""
+look = [
+  "Including the mimics exceeds the eight-row capacity, so Steel disables pre-elimination with a warning and the loop opens by up to 165 mm, as without it.",
+  "include_mimics=False pre-eliminates only the five closure rows: the gap stays under 1.9 mm.",
+]
+try = [
+  "Use two indicator arms (seven rows) and compare both settings.",
+  "Make one indicator mimic the rocker instead, nearly dependent on the closure.",
+]
+spacing = [0, 0, 0]
+
+[param]
+name = "bilateral_preelimination_include_mimics"
+text = """\
+Default True. False keeps mimic rows in the iterative sweep and eliminates only connect \
+(loop-closure) rows."""
+
+[metric]
+key = "gap_mm"
+label = "loop closure gap"
+unit = "mm"
+
+[concept]
+name = "Choosing which bilateral rows to pre-eliminate"
+what = """\
+Pre-elimination factors a small dense block of an articulation's bilateral rows and projects \
+them once per step. Mimic rows can join or stay iterative. Leaving them out keeps the block \
+within the eight-row capacity and avoids a near-singular block when a mimic nearly repeats a \
+closure constraint."""
+here = """\
+Nine rows disabled pre-elimination for the whole solver (gap 165 mm); excluding the mimics \
+restored it (1.9 mm), while the mimic error stayed 0.0° in a separate run."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Pre-eliminating the closure at 2 iterations cost 0.55 ms per step at 1024 worlds, vs 0.47 ms \
+for 12 plain iterations, which leave a 5.5 mm gap in the plain four-bar tutorial."""
+
+[[concept.consider]]
+term = "Failure modes"
+text = "Over capacity, pre-elimination turns off for every articulation, with a warning."
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+Set include_mimics=False when closures and mimics together exceed eight rows, or a mimic \
+nearly duplicates a closure; otherwise keep the default."""
+
+[timing]
+group = "preelim_mimics"
+scene = "Scene: the four-bar with four mimic indicator arms in each world."
+
+[timing.notes]
+"no pre-elimination, iterations=2" = "gap up to 165 mm"
+"no pre-elimination, iterations=12" = "plain four-bar: gap up to 5.5 mm"
+"include_mimics=True, iterations=2 (disabled: 9 rows)" = "gap up to 165 mm"
+"include_mimics=False, iterations=2" = "gap under 1.9 mm"

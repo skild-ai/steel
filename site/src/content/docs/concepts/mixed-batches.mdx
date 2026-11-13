@@ -1,0 +1,19 @@
+---
+title: Mixed batches
+description: How Steel schedules batches that mix robots, tasks and scenes.
+sidebar:
+  order: 4
+---
+
+import Viz from '~/components/Viz.astro';
+import Term from '~/components/Term.astro';
+
+GPU simulators are fastest when every environment is a copy of the same one. Steel treats a mixed batch as a scheduling problem instead. Articulations are grouped by DOF count for the dynamics, and in the serial sweep each world's rows are solved by its own <Term name="warp">warp</Term>, with loops that run over that world's live row count. Worlds never share a row, so a world with two contacts finishes its own rows early while a crowded one keeps going. Several world warps share a thread <Term name="block">block</Term>, whose resources become available for new work once all of its warps finish. Some per-world index buffers are still sized for the world with the most DOFs, so one large world raises the memory of the batch.
+
+- **Heterogeneous worlds.** Worlds can hold different robots and objects: call `ModelBuilder.add_world` once per world with a different builder, or use `begin_world` and `end_world`.
+- **Global bodies.** Articulations in world `-1` are solved with world 0. A kinematic global free body, such as a moving platform, contacts every world. A contact between an articulated body of one world and a dynamic global body cannot be solved and is dropped and flagged; use world geometry or a kinematic body for shared scenery.
+- **Few large worlds.** One warp per world suits thousands of worlds. For a handful of large worlds, the colored propagation sweep exposes more parallelism. On the integration branch it can run as one launch per step when the worlds fit one block per multiprocessor and the model layout and options allow it (for example, no sparse mass factors and a bounded number of articulations per size group).
+
+<Viz name="batch" n={4} title="Routing a mixed batch.">
+Six worlds with different robots. Their dynamics are grouped by joint count; each step, every world is assigned to a small-world kernel or the general sweep from its live row count. Below, the general sweep: each routed world is one warp in a shared thread block and loops over its own rows, so short worlds finish their work early; the block's resources are freed when its last warp finishes. Schematic; bar lengths are proportional to row counts. <span class="tutinline">Tutorial: [Heterogeneous worlds](/tutorials/heterogeneous/) · [Per-world reset](/tutorials/world-reset/)</span>
+</Viz>

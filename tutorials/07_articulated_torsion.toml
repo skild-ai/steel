@@ -1,0 +1,62 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 07_articulated_torsion.py. Fields: tutorials/README.md.
+
+id = "articulated-torsion"
+title = "Torsional friction on articulated bodies"
+about = """\
+A heavy ball on a vertical slider and a vertical hinge spins at 20 rad/s on the ground. On \
+articulated bodies, torsional friction comes from a per-shape effective radius r, the PhysX \
+minTorsionalPatchRadius. The spin row is bounded by r·(μN − sliding), so spin uses whatever \
+Coulomb budget sliding leaves over."""
+look = [
+  "With r = 0 the ball spins forever.",
+  "With r = 1 cm it stops in about half a second, and r = 5 cm stops it five times faster.",
+]
+try = [
+  "Set the ground's μ to 0.2.",
+  "Try contact_torsion_device=False, the host reference path.",
+]
+spacing = [0, 0.5, 0]
+
+[param]
+name = "steel:min_torsional_patch_radius"
+text = """\
+Per shape, in metres. For uniform pressure on a disk of radius R use 2R/3. Prepare the rows on \
+the GPU with contact_torsion_device=True so the step can be captured in a CUDA graph."""
+
+[metric]
+key = "spin"
+label = "spin rate"
+unit = "rad/s"
+
+[concept]
+name = "Torsional friction budget"
+what = """\
+On articulated links, spin friction is one extra row per contact group about the group normal. \
+Its bound shares the Coulomb budget with sliding, r·(μN − sliding), where r is an effective \
+radius per shape (for uniform pressure on a disk of radius R, r = 2R/3)."""
+here = """\
+The hinged ball spinning at 20 rad/s keeps spinning with r = 0, stops in about 0.5 s with r = \
+1 cm, and in about 0.1 s with r = 5 cm."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+One row per contact group; contact_torsion_device=True builds them on the GPU and keeps the \
+step capturable."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+Requires contact_warmstart=False and velocity_iterations=0; hydroelastic contacts are \
+rejected."""
+
+[[concept.consider]]
+term = "Failure modes"
+text = "Spin rows carry no history, so very slow residual spin can creep."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Grippers and screwdrivers where twisting a held object must resist torque."

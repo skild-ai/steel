@@ -1,0 +1,42 @@
+---
+title: Domain randomization
+description: Which model arrays to write, which notification to send, and when Steel sees the change.
+sidebar:
+  order: 3
+---
+
+Randomize by writing the model arrays in place, then notify the solver with the flag for what changed. Arrays are per element, so a per-world randomization writes that world's bodies, shapes and DOFs. `notify_model_changed(flags, world_mask=...)` refreshes cached data for every world; the mask only limits which worlds lose their warm-start impulses.
+
+| Property | Model array | Notify with | When Steel reads it | Tutorial |
+|---|---|---|---|---|
+| Mass, inertia | `body_mass`, `body_inertia` and inverses | `BODY_INERTIAL_PROPERTIES` | Notify by contract. With the default `update_mass_matrix_interval=1` the mass matrix is rebuilt from these arrays every step, so it happens to work without the notification; with a longer interval the old values stay until the next rebuild. | [dr-mass](/tutorials/dr-mass/), [dr-inertia](/tutorials/dr-inertia/) |
+| Center of mass | `body_com` | `BODY_INERTIAL_PROPERTIES` | Cached (body-to-COM transforms): ignored without the notification. | [dr-com](/tutorials/dr-com/) |
+| Friction | `shape_material_mu` | `SHAPE_PROPERTIES` | Copied on notify (scaled by `contact_friction_scale`, combined by `friction_combine`); ignored without it. | [dr-friction](/tutorials/dr-friction/) |
+| Floor friction per world | a per-world floor shape's `shape_material_mu` | `SHAPE_PROPERTIES` | A ground plane in the global world is one shape with one coefficient for every world. Give each world its own floor shape; with the default average combine the other shape's coefficient dilutes the spread. | [dr-terrain-friction](/tutorials/dr-terrain-friction/) |
+| Restitution | `shape_material_restitution` | `SHAPE_PROPERTIES` | Copied on notify; ignored without it. Positive restitution at construction excludes the sparse mass factors; if the solver already uses sparse factors, introducing positive restitution raises and needs a new solver. That check reads the host, so notify outside capture. | [dr-restitution](/tutorials/dr-restitution/) |
+| Spin and rolling friction | `shape_material_mu_torsional`, `_rolling` | `SHAPE_PROPERTIES` | On notify, for free-body contacts with `steel:condim` 4 or 6 (integration branch); a solver built without condim above 3 ignores them. |  |
+| Drive gains | `joint_target_ke`, `joint_target_kd` | `JOINT_DOF_FORCE_PROPERTIES` | Implicit gains are folded into the mass matrix; notify by contract so it is rebuilt with them (with interval 1 the rebuild happens every step anyway). | [dr-drive-gains](/tutorials/dr-drive-gains/) |
+| Effort limits | `joint_effort_limit` | `JOINT_DOF_FORCE_PROPERTIES` (optional) | Read every step. | [dr-effort-limits](/tutorials/dr-effort-limits/) |
+| Joint damping, spring stiffness | `joint_damping`, `joint_stiffness` | `JOINT_DOF_FORCE_PROPERTIES` | Copied on notify; ignored without it. | [dr-joint-damping](/tutorials/dr-joint-damping/) |
+| Armature | `joint_armature` | `JOINT_DOF_INERTIAL_PROPERTIES` | Cached effective armature: ignored without the notification. | [dr-armature](/tutorials/dr-armature/) |
+| Spring rest position | `joint_rest_q` | `JOINT_REFERENCE_POSE_PROPERTIES` | Copied on notify. |  |
+| Joint friction | `joint_friction`, `steel:joint_friction_load_coefficient` | `JOINT_DOF_FORCE_PROPERTIES` | Rows exist only with `enable_joint_friction=True` at construction; values are read every step. The notification wakes sleeping islands and validates values. The load term exists only if some coefficient was positive at construction. | [dr-joint-friction](/tutorials/dr-joint-friction/) |
+| Velocity limits | `joint_velocity_limit` | none needed | Rows exist only with `enable_joint_velocity_limits=True` at construction; values are read every step. | [dr-velocity-limits](/tutorials/dr-velocity-limits/) |
+| Position limits | `joint_limit_lower`, `joint_limit_upper` | none needed | Read every step; enforced only with `enable_joint_limits=True`. |  |
+| Gravity | `model.set_gravity(g, world=w)` | `MODEL_PROPERTIES` with `reuse_kinematics` | Per world; read every step. Without the notification a change lags one step under `reuse_kinematics`. | [dr-gravity](/tutorials/dr-gravity/) |
+| Pushes | `state.joint_qd` (velocity kick) or `state.body_f` (force) | none (state) | A free joint's `joint_qd` is the COM velocity and angular velocity. Write `body_f` on the input state of every step the push lasts. Writes to `state.body_qd` are ignored: Steel recomputes it from `joint_qd`. | [dr-pushes](/tutorials/dr-pushes/) |
+| Adhesion | `steel:adhesion` | none needed | Read every step (integration branch); a solver built with no positive value ignores it. |  |
+| Kinematic flag | `body_flags` | `BODY_PROPERTIES` | Read on the host: notify outside graph capture. A kinematic free body that the solver left out of the response at construction cannot become dynamic later. |  |
+| Collision geometry and offsets | `shape_transform`, `shape_scale`, margin, gap | `SHAPE_PROPERTIES` | Covered by the notification (which also discards friction anchors of the changed bodies), but it changes contact generation and has no tutorial yet. Shape variants use `SHAPE_TYPE_AND_SOURCE` at reset. | not covered |
+
+Several of these also have runnable tutorials, including [dr-per-world-mixed](/tutorials/dr-per-world-mixed/), which randomizes base mass, drive stiffness, foot friction and gravity per world with one combined notification and a `world_mask` partial reset.
+
+### Pitfalls
+
+- **A missing notification is silent.** Center of mass, friction, restitution, joint damping and armature changes are ignored without their notification. Mass, inertia and drive gains appear to work without one at `update_mass_matrix_interval=1`; notify anyway. Log the value the solver uses, not only the array you wrote.
+- **Feature switches are fixed at construction.** `enable_joint_friction`, `enable_joint_velocity_limits`, `enable_joint_limits`, combine modes, `drive_mode` and row capacities cannot be randomized; randomize the values those features read.
+- **Capture.** Joint, DOF, inertial and shape notifications run on the device and can be captured into the reset graph; they read the arrays they were captured with. Body-flag notifications, sleeping and some validity checks read the host and must run outside capture.
+- **Construction-time gates.** Joint-friction load coefficients, adhesion and torsion radii must be positive somewhere, and `steel:condim` must be 4 or 6 somewhere, when the solver is built for their rows to exist. Restitution decides the mass-factor layout at construction. To randomize these later, build the solver with the feature already on.
+- **Independent per-shape materials split friction patches.** A region needs matching friction coefficients, so randomizing each shape separately makes more, smaller regions and more friction rows. Re-measure capacities with randomization on.
+- **One factor at a time.** Validate each randomized property alone against the baseline before combining them; interactions (restitution in particular) are task-dependent.
+- **Reset order.** Write the arrays, notify, then reset the state of the selected worlds; the notification and reset discard warm-start impulses and friction anchors that no longer apply.

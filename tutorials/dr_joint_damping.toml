@@ -1,0 +1,72 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for dr_joint_damping.py. Fields: tutorials/README.md.
+
+id = "dr-joint-damping"
+title = "Randomizing joint damping"
+about = """\
+Five free-swinging pendulums released from 60 degrees. Each world gets a sampled \
+joint_damping, followed by notify_model_changed(JOINT_DOF_FORCE_PROPERTIES). Higher damping \
+makes the swing decay faster. Steel copies joint_damping into its own buffer, so without the \
+notification every pendulum keeps the original (zero) damping and they all swing together."""
+look = [
+  "With notify: five different decay rates.",
+  "Without notify: five identical, undamped swings.",
+]
+try = [
+  "Randomize passive springs: joint_stiffness needs JOINT_DOF_FORCE_PROPERTIES and joint_rest_q needs JOINT_REFERENCE_POSE_PROPERTIES; OR the two flags (or use JOINT_DOF_PROPERTIES) when changing both.",
+  "Index DOFs through model.joint_dof_world_start for robots with many joints per world.",
+]
+spacing = [0, 1.8, 0]
+notify_flag = "JOINT_DOF_FORCE_PROPERTIES"
+update_route = "needs notify"
+
+[param]
+name = "model.joint_damping"
+text = "Passive viscous damping per DOF. JOINT_DOF_PROPERTIES also covers it."
+
+[metric]
+label = "angle"
+unit = "deg"
+key = "damping 0.162"
+multi = [
+  "damping 0.011",
+  "damping 0.057",
+  "damping 0.103",
+  "damping 0.161",
+  "damping 0.162",
+]
+
+[concept]
+name = "When Steel sees a randomized value"
+what = """\
+Steel keeps a solver-side copy of this input, such as its material table, damping buffer, \
+cached body-to-COM transforms or effective armature. Writing the model array changes nothing \
+until notify_model_changed with the matching flag refreshes that copy."""
+here = "Without notify: five identical, undamped swings."
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Call only, default solver, six-link chain and four boxes per world, 1024 worlds (1.12 ms per \
+collide + step): JOINT_DOF_FORCE_PROPERTIES 25 µs (7 µs captured). Flags measured one at a \
+time; combined calls and feature validation can cost more. Body-inertial and joint-DOF \
+notifications also request a mass-matrix refresh."""
+
+[[concept.consider]]
+term = "Graph capture"
+text = """\
+These flags can be captured in a reset graph. Kinematic-flag changes, sleeping, and shape \
+flags with sparse factors plus restitution run eagerly; captured calls skip some value checks."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+world_mask limits which worlds lose their warm start; cached data is refreshed for every \
+world."""
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+Passive joints and motors with uncertain viscous losses; keep damping small on light links."""

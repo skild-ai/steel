@@ -1,0 +1,34 @@
+---
+title: Steel
+description: Steel (Scalable Throughput-optimized Engine for Embodied Learning) is a GPU solver for articulated robots and rigid bodies in Newton. Docs, concepts, reference and runnable tutorials.
+template: splash
+tableOfContents: false
+hero:
+  tagline: Steel (Scalable Throughput-optimized Engine for Embodied Learning) is a GPU solver for articulated robots and rigid bodies in Newton. Robots in joint coordinates, contacts and constraints in a matrix-free projected Gauss-Seidel sweep, and every world of a batch scheduled on its own.
+  actions:
+    - text: Quick start
+      link: start/quick-start/
+      icon: right-arrow
+    - text: Tutorials
+      link: tutorials/
+      variant: minimal
+    - text: Configuration reference
+      link: reference/options/
+      variant: minimal
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+import LegacyRedirect from '~/components/LegacyRedirect.astro';
+
+<CardGrid>
+	<LinkCard title="Start" href="start/overview/" description="What Steel is for, which Newton build has which feature, installation and a first simulation." />
+	<LinkCard title="Tutorials" href="tutorials/" description="One short script per feature, each with a 3D replay of a GPU recording of that exact script." />
+	<LinkCard title="Concepts" href="concepts/step-pipeline/" description="The step pipeline, the matrix-free sweep, friction patches, capacities, sleeping and determinism, with interactive demos." />
+	<LinkCard title="Guides" href="guides/tuning/" description="Tuning, porting from PhysX, domain randomization, observables, coupling and troubleshooting." />
+	<LinkCard title="Reference" href="reference/options/" description="Every constructor option, steel: attribute, model input and method, generated from the solver's source." />
+	<LinkCard title="Changelog" href="changelog/" description="Steel changes in Newton and on the integration branch, newest first." />
+</CardGrid>
+
+Steel lives in [Newton](https://github.com/newton-physics/newton). This site, its tutorials and the [examples](https://github.com/skild-ai/steel/tree/main/examples) are in [skild-ai/steel](https://github.com/skild-ai/steel); contributions are welcome, see [Contributing](/contributing/). Throughput benchmarks are in the [launch post](https://www.skild.ai/blogs/steel).
+
+<LegacyRedirect />

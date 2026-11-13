@@ -1,0 +1,58 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 21_adhesion.py. Fields: tutorials/README.md.
+
+id = "adhesion"
+title = "Adhesion"
+about = """\
+A box under a ceiling. The per-shape steel:adhesion gives every contact point a pull of A \
+newtons while the gap is open by less than the shapes' 4 mm gap. Steel applies the pull to the \
+normal row, so friction cones are unchanged. Below the box's weight it falls; above, it hangs \
+until a downward pull ramps past the total adhesion."""
+look = [
+  "0.5 × weight: the box falls.",
+  "1.5 × weight: it hangs.",
+  "Pulled down from 0.6 s: it pops off when the pull exceeds the adhesion.",
+]
+try = [
+  "Set the ceiling's adhesion to zero after one second to drop the box.",
+  "Tilt the ceiling 30° and watch friction hold the box.",
+]
+spacing = [0, 0.6, 0]
+
+[param]
+name = "steel:adhesion"
+text = """\
+Per shape [N] per contact point; a contact pulls with the sum of its two shapes' values. \
+Experimental."""
+
+[metric]
+key = "drop_mm"
+label = "box drop"
+unit = "mm"
+
+[concept]
+name = "Adhesion"
+what = """\
+steel:adhesion lets a contact pull with up to A newtons while its gap is open. Steel shifts \
+the normal impulse by A·h and solves in the unchanged friction cone, so resting penetration is \
+the same."""
+eq = "λ′ = λ + A·h ≥ 0"
+here = """\
+Below its weight the box falls; at 1.5× weight it hangs; pulled down from 0.6 s it pops off \
+when the pull exceeds the total adhesion."""
+
+[[concept.consider]]
+term = "Accuracy"
+text = "Pull-off grows with contact count: four corner contacts give four times A."
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+Not allowed with sleeping, contact compliance, contact_regularization or torsion; keeps dense \
+mass factors."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Suction cups, magnets and sticky surfaces; write zero to release."

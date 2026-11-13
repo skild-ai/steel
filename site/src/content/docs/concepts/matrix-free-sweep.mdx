@@ -1,0 +1,64 @@
+---
+title: The matrix-free sweep
+description: How Steel runs projected Gauss-Seidel without assembling the Delassus matrix.
+sidebar:
+  order: 3
+---
+
+import SweepDemo from '~/components/demos/SweepDemo.astro';
+import CardGrid from '~/components/CardGrid.astro';
+import InfoCard from '~/components/InfoCard.astro';
+import Viz from '~/components/Viz.astro';
+import Term from '~/components/Term.astro';
+
+Textbook PGS assembles the <Term name="delassus">Delassus matrix</Term> $A = J\tilde H^{-1}J^\top$ and sweeps its rows. Steel's general sweep stores two vectors per row instead, the Jacobian row $J_i$ and its response $Y_i = \tilde H^{-1}J_i^\top$, and keeps the world's velocity $v$ live for the whole solve. A row update reads $J_i\cdot v$, projects, and writes the impulse change back into $v$:
+
+$$
+\delta = -\frac{J_i\cdot v + b_i}{d_i},\qquad \Delta\lambda_i = \Pi_{\mathcal K_i}(\lambda_i + \delta) - \lambda_i,\qquad v \mathrel{+}= Y_i\,\Delta\lambda_i,\qquad d_i = J_i\cdot Y_i + \text{cfm}.
+$$
+
+Because $v = \hat v + Y\lambda$ after every update, $J_i\cdot v + b_i$ equals the dense residual $\text{rhs}_i + \sum_j A_{ij}\lambda_j$. The two are the same iteration; every off-diagonal coupling is applied and none is stored. Each row costs work proportional to the world's DOF count instead of its row count, and memory grows with rows times DOFs instead of rows squared. Newton 1.8 removed the dense Delassus path for this reason (`solve_mode="split"` now runs `"serial"`).
+
+<SweepDemo n={1} />
+
+The toy stacks boxes on the ground in one dimension; contact $k$ sits under box $k$. Its exact impulse is the weight of everything above it times $h$. Each sweep runs from the ground up. Load reaches the ground slowly, and more slowly as the stack grows or as heavy boxes sit on light ones, which is why tall stacks and large mass ratios are iteration-limited. The green and blue curves lie on top of each other: the matrix-free update and the dense update agree to rounding. The orange curve adds Nesterov extrapolation with gradient restart, the idea behind `nesterov_momentum`; the toy shows the mechanism, not Steel's measured rates. The 3D stack is an exploded view of the same plain sweep: each contact's four arrows grow toward the tick that marks its exact load.
+
+On ordinary scalar rows `cfm` only shifts the denominator (drive rows of `drive_mode="rows"`, the coupled friction modes' contact blocks and compliant normal rows leave it out): each update moves $d_i - \text{cfm}$ over $d_i$ of the way, like a `relaxation` below 1, and an unregularized row converges to the same impulse. It changes a converged answer only where a row is regularized: a single resting contact under `contact_regularization` settles deeper by the factor $(J_i\cdot Y_i + \text{cfm})/(J_i\cdot Y_i)$, and `cfm` floors the regularization of `enable_bilateral_preelimination`. Solver documentation of this is in review in [skild-ai/newton#24](https://github.com/skild-ai/newton/pull/24). <span class="tutinline">Tutorial: [Relaxation and CFM](/tutorials/relaxation-cfm/)</span>
+
+## Small worlds
+
+Very small worlds, such as one arm and one object, are solved by specialized kernels that keep the whole problem, including a small dense response matrix, in <Term name="smem">shared memory</Term>. A classification kernel assigns every world each step from its live row counts; anything that does not fit a specialized kernel runs the general sweep, so correctness never depends on a fast path.
+
+## Serial and colored, immediate and propagation
+
+<CardGrid>
+
+<InfoCard title="`solve_mode=&quot;serial&quot;` (default)">
+
+A fused kernel sweeps each world's rows in order, one warp per world, with every iteration in one launch; some configurations use specialized small-world kernels instead. Best for articulated robots and small scenes.
+
+</InfoCard>
+
+<InfoCard title="`solve_mode=&quot;colored&quot;`">
+
+Contacts of a world are colored so no two in a color share a responding body, and each color is solved in parallel. Requires `articulated_contact_response="propagation"`. Best for piles of free bodies.
+
+</InfoCard>
+
+<InfoCard title="`articulated_contact_response=&quot;immediate&quot;` (default)">
+
+Contacts on articulations are dense rows over the articulation's coordinates with response $Y = \tilde H^{-1}J^\top$. Required for loop closures, Nesterov momentum and coupled use.
+
+</InfoCard>
+
+<InfoCard title="`&quot;propagation&quot;`">
+
+Contacts are fixed-size rows at the touched bodies with each body's 6×6 response from the articulated-body factorization; each iteration propagates the impulses through the tree. Which response is faster depends on the model.
+
+</InfoCard>
+
+</CardGrid>
+
+<Viz name="modes" n={3} title="Four ways rows meet the GPU.">
+Step through one world: an arm whose two fingers hold a box, next to a stack of two boxes. Serial and colored change the order rows are swept in; immediate and propagation change how a contact on an articulation reaches the joints. <span class="tutinline">Tutorial: [Solve modes](/tutorials/colored-propagation/) · [Iterations and Nesterov momentum](/tutorials/stack-iterations/)</span>
+</Viz>

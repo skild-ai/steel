@@ -1,0 +1,22 @@
+---
+title: CUDA graphs
+description: Rules for capturing step and reset in CUDA graphs.
+sidebar:
+  order: 10
+---
+
+import Viz from '~/components/Viz.astro';
+import Term from '~/components/Term.astro';
+
+`step` and `reset` can be captured in a <Term name="graph">CUDA graph</Term>, which replays a whole frame with one call instead of one <Term name="launch">kernel launch</Term> per kernel. A few rules follow from capture:
+
+<Viz name="graphs" n={12} title="Eager stepping against a captured graph.">
+Schematic timeline of one frame. <span class="tutinline">Tutorial: [CUDA graph capture](/tutorials/cuda-graph/) · [Mass-matrix update interval](/tutorials/mass-matrix-interval/) · [Changing the model at runtime](/tutorials/runtime-changes/)</span>
+</Viz>
+
+- **Most options are fixed at construction.** Nine options are read every step and may be assigned between steps: `baumgarte`, `relaxation`, `warn_constraint_overflow`, `velocity_drive_mode`, `contact_warmstart_decay`, `restitution_velocity_threshold`, `contact_speculative_scale`, `contact_gap_gate` and `contact_friction_gap_max`. A captured graph keeps the value it was captured with; recapture after a change. `contact_friction_gap_max` can change between finite values, but switching to or from `None` (or `inf`) raises; build a new solver for that.
+- **Arrays are read in place.** Edits to model arrays the solver reads every step (drive targets, loop-closure anchors, joint friction, adhesion) take effect on the next replay. Replacing an array object needs a recapture.
+- **Host reads stay outside capture.** `check_constraint_capacity()`, `constraint_row_watermarks()` and the compliance counts read the device and raise during capture. `snapshot_constraint_status()` copies the status without waiting, for a later `check_constraint_capacity(snapshot=True)`.
+- **Host cadence is baked in.** `update_mass_matrix_interval` should divide the number of steps per captured graph.
+- **Contact torsion** needs `contact_torsion_device=True` to be captured.
+- **Observables** are allocated with `solver.observables(...)` before capture.

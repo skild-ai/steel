@@ -1,0 +1,79 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 39_drive_rows_velocity.py. Fields: tutorials/README.md.
+
+id = "drive-rows-velocity"
+title = "Drive rows in velocity iterations"
+about = """\
+With drive_mode=\"rows\", drives are PGS rows. During velocity-only iterations, \
+velocity_drive_mode=\"freeze\" keeps the drive impulses from the position solve, and \
+\"active\" keeps solving them. fuse_joint_velocity_limits replaces a driven joint's two \
+velocity-limit rows with a clamp of its velocity at the end of each iteration. Scene one: a \
+velocity-driven pusher (1 m/s target, 20 N limit) shoves a 2 kg box that starts 1.5 cm inside \
+it, at 3 iterations with 2 velocity iterations. Scene two: a flywheel whose drive asks for 10 \
+rad/s against a 6 rad/s limit."""
+look = [
+  "Pusher: active reaches 0.866 m/s against 0.857 m/s with freeze, about 1% closer to the target.",
+  "Flywheel: fused and unfused both hold 6.0 rad/s; the fused clamp is about 3% cheaper per step at 1024 worlds.",
+]
+try = [
+  "Raise velocity_iterations to 8.",
+  "Set velocity_limit_activation_fraction=0.9 on the unfused flywheel.",
+]
+spacing = [0, 0.8, 0]
+
+[param]
+name = "velocity_drive_mode / fuse_joint_velocity_limits"
+text = """\
+velocity_drive_mode is \"freeze\" (default) or \"active\" and is read every step. \
+fuse_joint_velocity_limits defaults to True and applies only with drive_mode=\"rows\" and \
+enable_joint_velocity_limits; velocity_limits_fused reports whether it is active."""
+
+[[metric.charts]]
+scene = "pusher"
+key = "pusher_speed"
+label = "pusher speed (target 1 m/s, effort-limited)"
+unit = "m/s"
+
+[[metric.charts]]
+scene = "flywheel"
+key = "omega_max"
+label = "flywheel speed, largest in each frame"
+unit = "rad/s"
+
+[concept]
+name = "Drive rows after the position solve"
+what = """\
+Velocity-only iterations re-solve velocities without the position bias. A frozen drive row \
+keeps the impulse it found with the bias; an active one re-solves against the unbiased \
+velocities. A fused velocity limit clamps the driven joint's velocity once per iteration \
+instead of adding two rows."""
+here = """\
+Active drives tracked 1% closer to the pusher's target (0.866 vs 0.857 m/s; mean 0.854 vs \
+0.850 at 8 velocity iterations, separate run). In other runs (a free arm, an arm pressed into \
+a wall) the two modes gave identical results. The fused clamp gave the same 6 rad/s."""
+
+[[concept.consider]]
+term = "Cost"
+text = "Fused limits: 0.230 vs 0.238 ms per step at 1024 worlds, equal at 1 world."
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+Both options only matter with drive_mode=\"rows\"; velocity_drive_mode only with \
+velocity_iterations > 0."""
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+Keep fused limits on. Choose active when drive rows push through contacts that the velocity \
+iterations change."""
+
+[timing]
+group = "fuse"
+scene = "Scene: the driven flywheel with a velocity limit in each world."
+
+[timing.notes]
+"fuse_joint_velocity_limits=False" = "holds 6.0 rad/s"
+"fuse_joint_velocity_limits=True (default)" = "holds 6.0 rad/s"

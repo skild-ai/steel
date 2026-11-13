@@ -1,0 +1,48 @@
+---
+title: Contributing
+description: How to add a docs page, an interactive demo or a tutorial, and how to preview the site locally.
+---
+
+The site, the tutorials and the examples all live in [skild-ai/steel](https://github.com/skild-ai/steel). Read [CONTRIBUTING.md](https://github.com/skild-ai/steel/blob/main/CONTRIBUTING.md) in the repository for the full rules; this page is the short version.
+
+Contributions are accepted under Apache-2.0, the repository's license. There is no CLA and no sign-off; you keep the copyright in your contribution. The authors are listed in [AUTHORS](https://github.com/skild-ai/steel/blob/main/AUTHORS).
+
+## Preview the site
+
+```bash
+cd site
+npm ci
+npm run dev        # http://localhost:4321, reloads as you edit
+npm run build      # static site in site/dist, then checks every link
+npm run check-figures   # every page in headless Chromium: figures render, no table is clipped
+```
+
+## Add or change a page
+
+Pages are Markdown or MDX files under `site/src/content/docs/`. The folder decides the sidebar group (`start/`, `concepts/`, `guides/`, `reference/`); `sidebar.order` in the frontmatter decides the position. Use MDX when a page needs a component: `<Note>`, `<CardGrid>` and `<InfoCard>`, `<Figure>` for a static figure, `<Viz>` for an interactive figure, `<Term name="warp">warp</Term>` for a term with a concept bubble (definitions in `site/src/viz/terms.js`), or a demo. Math is TeX between `$...$` or `$$...$$`.
+
+## Add an interactive figure
+
+Most figures are visual modules in `site/src/viz/`: one plain script per figure that calls `SteelViz.register("name", (root, lib) => { ... })` and draws only inside `root`. `lib` (from `_lib.js`) has the shared helpers: `lib.frame` for the figure body, `lib.lineChart`, `lib.stepper`, `lib.tabs`, `lib.stage3d` for a three.js orbit stage, `lib.css('--token')` for colors, `lib.onTheme` to redraw when the theme changes, and `lib.data` with the measured series in `series.json`. Place it in a page with
+
+```mdx
+<Viz name="name" n={14} title="Bold first sentence.">Rest of the caption.</Viz>
+```
+
+Larger demos with their own controls can instead be an Astro component in `site/src/components/demos/` with a `<script>` that imports `three` and `site/src/lib/stage3d.ts`. Either way: colors only from tokens, redraw on theme change, and say what the figure simplifies.
+
+## Add a tutorial
+
+A tutorial is a runnable script, a metadata file and a recording, all in `tutorials/`:
+
+1. `tutorials/NN_name.py`: the script. It imports `Recorder` from `replay.py` and records one or more variants.
+2. `tutorials/NN_name.toml`: the page text: `id`, `title`, `about`, what to look at, the key parameter, what to try, the metric to chart and the concept block. [tutorials/README.md](https://github.com/skild-ai/steel/blob/main/tutorials/README.md) lists every field.
+3. Add the id to its group in `tutorials/index.toml`.
+4. Record it on a GPU: `python tutorials/tools/record_all.py --only <id>` writes `tutorials/recordings/<id>.json`.
+5. Check it: `python tutorials/tools/check.py`. The site shows the script exactly as committed, so the check fails when a script changed after it was recorded.
+
+The site builds one page per tutorial at `/tutorials/<id>/`.
+
+## Style
+
+Colors and fonts come only from the Steel style tokens in `site/src/styles/steel-tokens.css`. Use `var(--fg)`, `var(--hot)` and the other tokens; green (`--hot`, `--hot-fill`, `--series-2`) marks the one thing a figure or section is about. Keep sentences plain and measured numbers next to the commit and GPU they were measured on.

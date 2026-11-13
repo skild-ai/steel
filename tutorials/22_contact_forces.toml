@@ -1,0 +1,78 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 22_contact_forces.py. Fields: tutorials/README.md.
+
+id = "table-legs"
+title = "Contact forces and regularization"
+about = """\
+A table with an off-center load stands on four legs. Four leg forces with three equations of \
+balance have many solutions, so rigid PGS returns whichever split its sweep order produces. \
+contact_regularization g relaxes each impulse toward zero with weight g/(1+g), which makes the \
+split unique at the cost of a tiny penetration. The forces come from the contact_f observable."""
+look = [
+  "All variants carry the same total load (about 105 N).",
+  "Converged rigid PGS (48 iterations) stops at a split with one leg nearly unloaded (5.9 N); separate runs at 200 and 800 iterations give the same, so more iterations do not fix it.",
+  "Regularization 0.2 reaches the unique split an elastic table would have (15.7, 23.1, 29.7, 37.3 N) by 48 iterations; 0.02 at 12 iterations is partway there.",
+]
+try = [
+  "Move the load to the table's center.",
+  "Try contact_regularization=0.2.",
+]
+spacing = [0, 0.8, 0]
+
+[param]
+name = "solver.observables({\"contact_f\"}, contacts=...)"
+text = """\
+Allocate once and pass observables= to step. contact_f holds each contact's force [N] on shape \
+0's body, in world frame."""
+
+[metric]
+key = "leg0"
+label = "leg force"
+unit = "N"
+multi = ["leg0", "leg1", "leg2", "leg3"]
+
+[concept]
+name = "Contact regularization"
+what = """\
+Four legs and three equations leave the force split undetermined; rigid PGS returns whichever \
+split its sweep order produces. contact_regularization g relaxes each impulse toward zero with \
+weight g/(1+g), like an implicit spring, which makes the split unique. cfm adds a small value \
+to every row's diagonal for the same reason in redundant rows."""
+here = """\
+Rigid PGS converges to a split with one leg at 5.9 N. Regularization 0.2 converges by 48 \
+iterations to 15.7, 23.1, 29.7 and 37.3 N, the split of a table with elastic legs, unchanged \
+at 800 iterations."""
+
+[[concept.consider]]
+term = "Cost"
+text = "About 5%: 1.64 → 1.73 ms per step in 1024 worlds."
+
+[[concept.consider]]
+term = "Accuracy"
+text = "Resting penetration is about g·a·h²/β for a body under acceleration a."
+
+[[concept.consider]]
+term = "Interactions"
+text = "fixed_normal only; not with adhesion or contact compliance."
+
+[[concept.consider]]
+term = "Convergence"
+text = """\
+Small g approaches the unique split slowly (g = 0.02 reached 14.6 N on the light leg only at \
+200 iterations); g = 0.2 got there in 48."""
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+You read contact forces, for example for force sensing or load estimates, and need a \
+physically plausible, repeatable split."""
+
+[timing]
+group = "regularization"
+scene = "Scene: the 8-box stack in each world, 8 steps of 1/240 s per frame."
+
+[timing.notes]
+"contact_regularization=0" = "arbitrary split, one leg at 5.9 N"
+"contact_regularization=0.02" = "moves toward the unique split"

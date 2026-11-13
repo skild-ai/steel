@@ -1,0 +1,70 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 02_mjcf_import.py. Fields: tutorials/README.md.
+
+id = "mjcf-import"
+title = "MJCF import of Steel attributes"
+about = """\
+The same MJCF scene loaded twice: a box under a ceiling and a ball rolling on the floor. \
+SolverSteel.register_custom_attributes(builder) before add_mjcf makes the importer read a \
+geom's adhesion attribute into steel:adhesion, and MJCF's friction=\"slide torsional rolling\" \
+fills shape_material_mu, _torsional and _rolling. The importer does not read a geom's condim \
+into steel:condim, so the script sets it after import."""
+look = [
+  "Without adhesion the box falls 0.9 m to the floor; with adhesion=\"20\" (4 corner contacts, 80 N against 9.8 N) it hangs.",
+  "With condim 6 set after import, the ball's imported rolling coefficient stops it in 2.0 s; with condim 3 it keeps rolling at 0.68 m/s.",
+]
+try = [
+  "Add adhesion to a <default> class and import a gripper's finger pads.",
+  "Import the same file into SolverMuJoCo and compare the hang.",
+]
+spacing = [0, 1.3, 0]
+
+[param]
+name = "SolverSteel.register_custom_attributes(builder)"
+text = "Call it before add_mjcf or add_usd so the importers fill the steel: attributes."
+
+[[metric.charts]]
+key = "box_drop_mm"
+label = "box drop"
+unit = "mm"
+
+[[metric.charts]]
+key = "ball_speed"
+label = "ball speed"
+unit = "m/s"
+
+[concept]
+name = "Steel attributes in imported assets"
+what = """\
+Steel's per-shape and per-body inputs live in the model's steel namespace. Registering them on \
+the builder before importing lets MJCF and USD files author them: MJCF adhesion, USD \
+physxRigidBody:* damping and velocity limits, physxCollision:minTorsionalPatchRadius and \
+newton:steel:* attributes."""
+here = """\
+The imported adhesion holds the box (0 mm drop vs 900 mm), and the imported rolling \
+coefficient stops the ball once condim 6 is set."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+MJCF condim fills only SolverMuJoCo's mujoco:condim. steel:condim cannot be written in MJCF \
+either: a prefixed XML attribute needs a namespace declaration, and the importer does not read \
+the namespaced form. Set it in Python or through USD newton:steel:condim."""
+
+[[concept.consider]]
+term = "Failure modes"
+text = "Registering after add_mjcf silently drops the attributes."
+
+[[concept.consider]]
+term = "Accuracy"
+text = "The USD route was not recorded here: the recording environment has no USD runtime."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Assets authored for MuJoCo or PhysX should carry their contact behaviour into Steel."
+
+[[in_review]]
+pr = 22
+text = "Reads MJCF condim into steel:condim as well as mujoco:condim (condim 1 imports as 3), so a condim authored on a free body's geom reaches Steel without the fill after import."

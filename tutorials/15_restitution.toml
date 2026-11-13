@@ -1,0 +1,60 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 15_restitution.py. Fields: tutorials/README.md.
+
+id = "restitution"
+title = "Restitution"
+about = """\
+Balls with e = 0, 0.3, 0.6 and 0.9 drop from 1 m onto a ground with e = 0. An impact replaces \
+the contact's position bias with a rebound target of −e times the closing speed. With the \
+default average combine, the ground's 0 halves every coefficient. With \
+restitution_combine=\"max\" each ball keeps its own."""
+look = [
+  "Average: even the e = 0.9 ball bounces only about 20 cm.",
+  "Max: it bounces back to about 80 cm.",
+]
+try = [
+  "Give the ground e = 1 and keep \"average\".",
+  "Set enable_restitution=False to turn bouncing off everywhere.",
+]
+spacing = [0, 0.6, 0]
+
+[param]
+name = "ShapeConfig.restitution"
+text = "Per shape, 0 to 1, default 0. Pairs combine with restitution_combine."
+
+[metric]
+key = "e_0.9"
+label = "height"
+unit = "m"
+multi = ["e_0.0", "e_0.3", "e_0.6", "e_0.9"]
+
+[concept]
+name = "Restitution"
+what = """\
+On impact, a contact's position correction is replaced by a target: the separating velocity \
+must be at least e times the closing velocity at the start of the step. The combined \
+coefficient comes from restitution_combine."""
+eq = "u_after ≥ −e · u_start"
+here = """\
+With the default average, the ground's e = 0 halves the e = 0.9 ball's bounce to about 20 cm; \
+with max it returns to about 80 cm."""
+
+[[concept.consider]]
+term = "Cost"
+text = "No extra rows."
+
+[[concept.consider]]
+term = "Accuracy"
+text = """\
+The target uses the start-of-step velocity, so forces in the step do not enlarge the bounce. \
+Large steps make the impact time less precise."""
+
+[[concept.consider]]
+term = "Interactions"
+text = "contact_compliance rejects positive restitution unless enable_restitution=False."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Balls and dropped parts; leave e = 0 for grasping and stacking."

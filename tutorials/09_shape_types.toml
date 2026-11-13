@@ -1,0 +1,32 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 09_shape_types.py. Fields: tutorials/README.md.
+
+id = "shape-types"
+title = "Shape types"
+about = """\
+One body of each rigid shape type Steel collides: box, sphere, capsule, cylinder, cone, \
+ellipsoid and a convex hull built from a Mesh, dropped into a static triangle-mesh trough. The \
+collision pipeline turns every pair into contact points, and Steel solves them all with the \
+same rows."""
+look = [
+  "Every shape lands in the trough within a second.",
+  "The round shapes roll toward the bottom of the V and are still rocking slowly at 4 s.",
+]
+try = [
+  "Replace the trough with add_ground_plane().",
+  "Load an OBJ with your own mesh reader and pass it to newton.Mesh.",
+]
+spacing = [0, 0, 0]
+
+[param]
+name = "add_shape_*"
+text = """\
+add_shape_box, _sphere, _capsule, _cylinder, _cone, _ellipsoid, _convex_hull and _mesh. Static \
+shapes use body −1."""
+
+[metric]
+key = "max_speed"
+label = "fastest body speed"
+unit = "m/s"

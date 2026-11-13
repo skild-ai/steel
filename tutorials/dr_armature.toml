@@ -1,0 +1,72 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for dr_armature.py. Fields: tutorials/README.md.
+
+id = "dr-armature"
+title = "Randomizing armature"
+about = """\
+Five drive-held arms on vertical hinges. At 1 s the script writes a sampled joint_armature per \
+world, calls notify_model_changed(JOINT_DOF_INERTIAL_PROPERTIES), and steps the drive target \
+to 90 degrees. More armature means more reflected rotor inertia: a slower, more overshooting \
+response. Steel caches the effective armature, so without the notification every arm responds \
+identically."""
+look = [
+  "With notify: the response slows and overshoots more as armature grows.",
+  "Without notify: all five arms move together.",
+]
+try = [
+  "Randomize armature together with drive gains in one notify call (OR the flags).",
+  "Set armature to 0 on a very light link and watch the response get stiff.",
+]
+spacing = [0, 2.0, 0]
+notify_flag = "JOINT_DOF_INERTIAL_PROPERTIES"
+update_route = "needs notify"
+
+[param]
+name = "model.joint_armature"
+text = "Added to the DOF's diagonal of the mass matrix. JOINT_DOF_PROPERTIES also covers it."
+
+[metric]
+label = "angle"
+unit = "deg"
+key = "armature 0.045"
+multi = [
+  "armature 0.011",
+  "armature 0.015",
+  "armature 0.031",
+  "armature 0.039",
+  "armature 0.045",
+]
+
+[concept]
+name = "When Steel sees a randomized value"
+what = """\
+Steel keeps a solver-side copy of this input, such as its material table, damping buffer, \
+cached body-to-COM transforms or effective armature. Writing the model array changes nothing \
+until notify_model_changed with the matching flag refreshes that copy."""
+here = "Without notify: all five arms move together."
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Call only, default solver, six-link chain and four boxes per world, 1024 worlds (1.12 ms per \
+collide + step): JOINT_DOF_INERTIAL_PROPERTIES 36 µs (9 µs captured). Flags measured one at a \
+time; combined calls and feature validation can cost more. Body-inertial and joint-DOF \
+notifications also request a mass-matrix refresh."""
+
+[[concept.consider]]
+term = "Graph capture"
+text = """\
+These flags can be captured in a reset graph. Kinematic-flag changes, sleeping, and shape \
+flags with sparse factors plus restitution run eagerly; captured calls skip some value checks."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+world_mask limits which worlds lose their warm start; cached data is refreshed for every \
+world."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Geared motors whose reflected inertia is uncertain."

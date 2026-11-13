@@ -1,0 +1,65 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 36_springs_damping.py. Fields: tutorials/README.md.
+
+id = "springs-damping"
+title = "Joint springs and damping"
+about = """\
+Four hinged arms without gravity, started at 60° with −1 rad/s. The first is free. The others \
+have a passive spring toward rest_q = 0 (stiffness 6 N·m/rad) with no, light or heavy viscous \
+damping. Springs and damping are applied as explicit joint forces, like SolverFeatherstone, \
+independently of drives and limits."""
+look = [
+  "The free arm keeps turning.",
+  "The undamped spring oscillates forever.",
+  "Light damping rings down, and heavy damping returns to rest without overshoot.",
+]
+try = [
+  "Set stiffness to 600 and see the explicit limit.",
+  "Use target_ke instead for the same spring, applied implicitly.",
+]
+spacing = [0, 0, 0]
+
+[param]
+name = "stiffness / rest_q / damping"
+text = """\
+Joint arguments, applied explicitly: springs stay stable for roughly dt·√(k/m) < 2, and \
+damping while dt·d·λmax(H⁻¹) < 2, where λmax(H⁻¹) is 1/I for one link but much larger for \
+chains of light links. For stiff springs or heavy damping on light links use target_ke and \
+target_kd, which Steel integrates implicitly."""
+
+[metric]
+key = "k6_d0.3"
+label = "joint angle"
+unit = "°"
+multi = ["k0_d0", "k6_d0", "k6_d0.3", "k6_d2"]
+
+[concept]
+name = "Explicit springs and damping"
+what = """\
+Joint stiffness and damping are applied as forces from the step's starting state, like \
+SolverFeatherstone. Explicit forces stay stable only while they are weak relative to the \
+inertia they act on."""
+eq = "τ = k (q_rest − q) − d q̇"
+here = """\
+The undamped spring oscillates at constant amplitude; damping 0.3 rings down; damping 2 \
+returns without overshoot."""
+
+[[concept.consider]]
+term = "Stability"
+text = """\
+Keep h·√(k/m) < 2 and h·d·λmax(H⁻¹) < 2. A six-link chain of 0.1 kg capsules has \
+λmax(H⁻¹) ≈ 4×10⁴, so at 240 Hz damping above about 0.012 diverges; while recording, damping \
+0.05 on it went to NaN within 0.06 s. SolverFeatherstone has the same limit; MuJoCo treats \
+joint damping implicitly."""
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+Soft passive springs. For stiff springs or strong damping on light links use target_ke and \
+target_kd, which Steel integrates implicitly."""
+
+[[in_review]]
+pr = 18
+text = "Integrates passive joint damping implicitly, like the drives, which removes the damping limit above."

@@ -1,0 +1,21 @@
+---
+title: Reduced coordinates
+description: Steel's state is the joint coordinates; what follows for start states, free bodies and cost.
+sidebar:
+  order: 2
+---
+
+import Viz from '~/components/Viz.astro';
+
+Steel's state is the joint coordinates, `State.joint_q` and `State.joint_qd`, as for `SolverFeatherstone`. Tree joints hold exactly, and the diagonal of a contact row's effective mass, $J_i\tilde H^{-1}J_i^\top$, already contains the full articulated inertia behind the contact: a fingertip contact feels the arm, the base and the implicit drives. What is left for the iterative solve is the coupling between contacts and the remaining joint-space rows (limits, drive rows, mimic and loop closures), a regime projected Gauss-Seidel handles well.
+
+<Viz name="reduced" n={2} title="Reduced against maximal coordinates.">
+The same chain with a heavy tip, released from horizontal. Left: the state is the joint angles, so the links keep their length by construction. Right: every link is a free body and each joint is a constraint row solved by Gauss-Seidel at the chosen iteration budget; the heavy tip stretches the chain, most at low iterations. A toy model of the idea, not Steel's code. <span class="tutinline">Tutorial: [Joint types](/tutorials/joint-types/) · [Floating base](/tutorials/floating-base/) · [Mass ratio](/tutorials/mass-ratio/)</span>
+</Viz>
+
+Practical consequences:
+
+- **Write start states to joint coordinates.** A pose written only to `body_q` or a velocity only to `body_qd` is overwritten on the first step. Set `joint_q`/`joint_qd` on the builder before `finalize()`, or compute them with `newton.eval_ik`. After writing joint coordinates into a state yourself, run `newton.eval_fk` before the first collision query so body poses match.
+- **Free bodies need a free joint.** `add_body` adds one. Free-joint `joint_qd` is `(v_com, omega)` in the frame of the joint's parent anchor, the world frame for an identity anchor.
+- **Bodies on no joint** keep their `body_q`, enter contacts with zero velocity, and pass through to the output state.
+- **The cost moves to the front half.** Mass-matrix assembly and factorization grow with a tree's DOF count. Steel groups articulations by size, uses sparse factors that follow the tree when every articulated group shares one topology of at most 64 DOFs and the configuration allows it, and skips the factorization for articulations whose DOFs do not couple. `parallel_tree` and `use_parallel_streams` add parallelism across branches and across size groups.

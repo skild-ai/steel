@@ -1,0 +1,75 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 63_contact_sensors.py. Fields: tutorials/README.md.
+
+id = "contact-sensors"
+title = "Contact sensors"
+about = """\
+Three 4-box towers. newton.sensors.SensorContact reads each base box's contact force from the \
+solver's contact_f observable, split by counterpart so column 0 is the ground. With sleeping \
+on, settled islands skip their contact rows, so their forces read zero; \
+sleep_skip_constraints=False keeps solving them."""
+look = [
+  "Without sleeping the ground carries each 4-box tower: 39.2 N against 39.24 N of weight.",
+  "With sleeping the reading drops to 0 at 0.53 s, when the towers fall asleep.",
+  "sleep_skip_constraints=False keeps 39.3 N while asleep.",
+]
+try = [
+  "Add counterpart_bodies to split the force between the ground and the box above.",
+  "Read total_force_friction on a pushed tower.",
+]
+spacing = [0, 1.2, 0]
+
+[param]
+name = "SensorContact(model, sensing_bodies=..., counterpart_shapes=...)"
+text = """\
+Request its solver_observable_kinds from solver.observables(...), pass them to step, then call \
+sensor.update(state, contacts, observables=...)."""
+
+[metric]
+key = "base_force_n"
+label = "ground force on each tower base"
+unit = "N"
+multi = ["base_force_n", "tower_weight_n"]
+
+[concept]
+name = "Contact sensing and sleeping"
+what = """\
+SensorContact sums the solver's per-contact forces onto chosen bodies or shapes, optionally \
+per counterpart. Sleeping islands normally skip their contact rows to save work, so contact_f, \
+and the sensor, read zero under them; the contact is still there."""
+here = """\
+Sleeping drops the base reading from 39.2 N to 0; keeping the rows restores it. In the timing \
+below the sleeping towers step 5.3x faster, and keeping their rows gives that back."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+One world: 1.48 ms per step awake, 0.28 ms asleep, 1.39 ms asleep with rows kept; 8 worlds: \
+1.75, 0.36 and 1.94 ms."""
+
+[[concept.consider]]
+term = "Failure modes"
+text = """\
+Force thresholds (grasp detection, contact rewards) see a false release when an island sleeps."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+Any wake event restores the rows; contact_f also needs the contacts passed to observables()."""
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+Keep sleep_skip_constraints=True when nothing reads forces on resting objects; set it False, \
+or leave sleeping off, when sensors drive decisions."""
+
+[timing]
+group = "sensors_sleep"
+scene = "Scene: the three 4-box towers in each world, timed after 4 s of settling."
+
+[timing.notes]
+"no sleeping" = "sensor reads 39.2 N"
+"enable_sleeping=True" = "sensor reads 0 while asleep"
+"sleeping, sleep_skip_constraints=False" = "sensor reads 39.3 N"

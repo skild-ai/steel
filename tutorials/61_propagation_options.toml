@@ -1,0 +1,87 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 61_propagation_options.py. Fields: tutorials/README.md.
+
+id = "propagation-options"
+title = "Propagation options"
+about = """\
+A twelve-link chain hung from one end swings down, lands and folds onto itself, so it has \
+ground contacts and contacts between its own links. With the colored sweep and the propagation \
+response, contacts between two links of one articulation stay dense rows by default; \
+propagation_same_articulation_rows moves them to propagation rows. propagation_cached_response \
+applies cached body responses instead of walking the tree each iteration, and \
+propagation_color_order picks the order of the colored batches."""
+look = [
+  "The chain lands the same way in every run; same_articulation_rows turns the 96 dense self-contact rows into propagation rows.",
+  "The 96 dense rows do not fit the default articulation_constraint_max of 32. As propagation rows they do: the last run uses the default capacity and lands like the others. Separate runs that kept them dense at 32 dropped rows, and some went non-finite.",
+  "The divergence comes from which contacts keep their rows: by default that set changes every step, and contacts that penetrated while dropped are pushed out when they return, which adds energy. In 6 runs each it diverged in 1 with this colored propagation solve and in 4 with the default immediate response; with deterministic solver and pipeline order it repeated exactly and stayed finite.",
+]
+try = [
+  "Set propagation_constraint_max=64 and shrink free_body_constraint_max.",
+  "Try propagation_color_order=\"longest_first\".",
+]
+spacing = [0, 0.45, 0]
+
+[param]
+name = "propagation_same_articulation_rows / propagation_cached_response / propagation_color_order"
+text = """\
+Options of articulated_contact_response=\"propagation\"; propagation_constraint_max sizes its \
+rows."""
+
+[metric]
+key = "dense_rows"
+label = "dense rows needed (high water)"
+unit = "rows"
+
+[metric.alt]
+key = "tip_z"
+label = "chain tip height"
+unit = "m"
+
+[concept]
+name = "Propagation rows"
+what = """\
+The propagation response solves each contact as a small row on the touched bodies and pushes \
+its impulse through the tree each iteration. Self-contacts of one articulation normally stay \
+dense rows with their own capacity. Cached responses replace the tree walk with small \
+precomputed matrices, and the color order changes which contacts Gauss-Seidel favours."""
+here = """\
+Moving self-contacts to propagation rows takes 0 dense rows instead of 96, so the default \
+dense capacity of 32 is enough."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+same_articulation_rows was 2× slower in one world and 6× at 1024 worlds (12.9 vs 2.0 ms); \
+cached_response=False was 10% slower in one world; setting propagation_constraint_max=64 \
+together with free_body_constraint_max=8 reduced solver-owned memory from 374 to 254 MB at \
+1024 worlds."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+rotating color order changed nothing here; it targets symmetric grasps on sorted contact \
+streams."""
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+same_articulation_rows when dense capacity overflows; size propagation_constraint_max from \
+row_watermark to save memory."""
+
+[timing]
+group = "propagation"
+scene = "Scene: the folding twelve-link chain in each world."
+
+[timing.notes]
+"serial + immediate" = "reference"
+"colored + propagation (defaults)" = "96 dense rows"
+"propagation_same_articulation_rows=True" = "0 dense rows"
+"propagation_cached_response=False" = "same result"
+"propagation_color_order=\"rotating\"" = "same result"
+"propagation_constraint_max=64, free_body_constraint_max=8" = "fits, less memory"
+
+[[in_review]]
+pr = 21
+text = "Documents in the solver which contacts keep their rows when a capacity overflows, and that a changing kept set can add energy."

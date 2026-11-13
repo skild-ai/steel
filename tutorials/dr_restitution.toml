@@ -1,0 +1,69 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for dr_restitution.py. Fields: tutorials/README.md.
+
+id = "dr-restitution"
+title = "Randomizing restitution"
+about = """\
+Five balls released about 0.94 m above the ground, each with a sampled \
+shape_material_restitution written before the first step and followed by \
+notify_model_changed(SHAPE_PROPERTIES). The shared ground plane has restitution 0, so the \
+solver uses restitution_combine=\"max\" to let each ball's coefficient decide. Higher \
+coefficients bounce higher and for longer. Without the notification Steel keeps the \
+coefficients from construction (0), and no ball bounces."""
+look = [
+  "With notify: bounce height grows with the sampled coefficient.",
+  "Without notify: every ball stops dead.",
+]
+try = [
+  "Use the default \"average\" combine and give the ground a coefficient too.",
+  "Randomize the ground instead by giving each world its own floor shape (see Randomizing terrain friction).",
+]
+spacing = [0, 1.6, 0]
+notify_flag = "SHAPE_PROPERTIES"
+update_route = "needs notify"
+
+[param]
+name = "model.shape_material_restitution"
+text = """\
+Applied per contact with restitution_combine. Restitution is on by default \
+(enable_restitution=True)."""
+
+[metric]
+label = "height"
+unit = "m"
+key = "e 0.88"
+multi = ["e 0.16", "e 0.51", "e 0.59", "e 0.85", "e 0.88"]
+
+[concept]
+name = "When Steel sees a randomized value"
+what = """\
+Steel keeps a solver-side copy of this input, such as its material table, damping buffer, \
+cached body-to-COM transforms or effective armature. Writing the model array changes nothing \
+until notify_model_changed with the matching flag refreshes that copy."""
+here = "Without notify: every ball stops dead."
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Call only, default solver, six-link chain and four boxes per world, 1024 worlds (1.12 ms per \
+collide + step): SHAPE_PROPERTIES 84 µs (15 µs captured). Flags measured one at a time; \
+combined calls and feature validation can cost more. This notification does not request a \
+mass-matrix refresh."""
+
+[[concept.consider]]
+term = "Graph capture"
+text = """\
+These flags can be captured in a reset graph. Kinematic-flag changes, sleeping, and shape \
+flags with sparse factors plus restitution run eagerly; captured calls skip some value checks."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+world_mask limits which worlds lose their warm start; cached data is refreshed for every \
+world."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Throwing, dropping and bouncing tasks."

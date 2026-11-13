@@ -1,0 +1,58 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 41_mimic_gripper.py. Fields: tutorials/README.md.
+
+id = "gripper-grasp"
+title = "Mimic gripper"
+about = """\
+A parallel gripper whose right finger mimics the left (q_R = −q_L, one bilateral row) squeezes \
+a 0.7 kg box with 40 N, lifts it and shakes it at 3 Hz. The chart shows how far the box slips \
+between the fingers. Mimic rows and the finger contacts share articulation_constraint_max, so \
+the script raises it to 128."""
+look = [
+  "μ = 0.6: the box stays within a few millimetres, with patch or point friction.",
+  "μ = 0.15: the box slides out of the fingers as soon as the lift starts.",
+]
+try = ["Squeeze with 20 N.", "Use drive_mode=\"rows\" for the lift drive."]
+spacing = [0, 0.7, 0]
+
+[param]
+name = "set_joint_mimic(follower, leader, coeffs)"
+text = """\
+q_follower = coeffs[0] + coeffs[1]·q_leader, within one articulation. The coefficients are \
+read every step."""
+
+[metric]
+key = "slip_mm"
+label = "box slip in the grasp"
+unit = "mm"
+
+[concept]
+name = "Mimic rows"
+what = """\
+A mimic joint is one bilateral row per coordinate that enforces q_f = a + b·q_l inside the \
+articulation, solved with contacts. Coefficients are read every step, so they can change at \
+runtime."""
+eq = "q_f = a + b · q_l"
+here = """\
+With μ = 0.6 the box stays within a few millimetres through the shake; with μ = 0.15 it slides \
+out of the fingers as the lift starts."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+One row per follower coordinate plus finger contacts: the gripper needs \
+articulation_constraint_max = 128."""
+
+[[concept.consider]]
+term = "Accuracy"
+text = "Rows converge with iterations; pre-elimination solves them more exactly."
+
+[[concept.consider]]
+term = "Interactions"
+text = "Both joints must be in one articulation and not BALL, FREE or DISTANCE."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Parallel grippers and gear trains."

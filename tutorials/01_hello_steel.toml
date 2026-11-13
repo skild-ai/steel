@@ -1,0 +1,64 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 01_hello_steel.py. Fields: tutorials/README.md.
+
+id = "hello-steel"
+title = "Hello Steel"
+about = """\
+The smallest complete Steel program. Build a model with ModelBuilder, construct SolverSteel \
+and a CollisionPipeline, then alternate collide and step. Every body added with add_body gets \
+a free joint, because Steel simulates joint coordinates and only moves bodies that are \
+connected through joints. Tree joints are exact in these coordinates, and default drives are \
+folded into the mass matrix; contacts, limits and other constraints become rows solved with \
+projected Gauss-Seidel (PGS)."""
+look = [
+  "The six shapes fall and collide in the first second.",
+  "The boxes and one sphere come to rest; the other sphere, the capsule and the cylinder keep rolling.",
+]
+try = [
+  "Change DT to 1/60 and SUBSTEPS to 2 and watch the contacts get softer.",
+  "Pass iterations=4 to SolverSteel.",
+  "Add more bodies in a loop and time the step.",
+]
+spacing = [0, 0, 0]
+
+[param]
+name = "SolverSteel(model)"
+text = """\
+All options have defaults: 12 PGS iterations, Baumgarte factor 0.2, patch friction, joint \
+limits off. The script steps at 240 Hz, eight steps per 30 Hz frame."""
+
+[metric]
+key = "max_speed"
+label = "fastest body speed"
+unit = "m/s"
+
+[concept]
+name = "Reduced coordinates and projected Gauss-Seidel"
+what = """\
+Steel stores each articulation as joint coordinates, so tree joints cannot drift apart. Every \
+step builds and factors the joint-space mass matrix, predicts velocities without constraints, \
+then solves contacts, limits and other constraints as rows with projected Gauss-Seidel: each \
+row in turn computes the impulse that fixes its own velocity error, clamps it to its bounds \
+and applies it at once."""
+eq = "λᵢ ← clamp(λᵢ − (Jᵢv + bᵢ) / dᵢ)"
+here = """\
+Six free bodies, each a one-joint articulation, fall and collide; each contact becomes a \
+normal row plus friction rows."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Grows with rows times iterations; the 8-box stack takes 1.0 ms per step at 12 iterations in \
+one world and 1.65 ms in 1024 worlds."""
+
+[[concept.consider]]
+term = "Accuracy"
+text = """\
+PGS stops after a fixed number of sweeps, so redundant or stiff contact sets keep a small \
+residual such as stack sag."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Start from the defaults and change one option at a time, as these tutorials do."

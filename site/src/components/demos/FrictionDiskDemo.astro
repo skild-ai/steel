@@ -1,0 +1,215 @@
+---
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+// SPDX-License-Identifier: Apache-2.0
+/** Demo: where the sliding friction impulse lands on the Coulomb disk, in 2D and as a 3D cone. */
+interface Props {
+	n?: number;
+}
+const { n = 2 } = Astro.props;
+---
+
+<div class="demo not-content" id="demo-disk">
+	<div class="dh">
+		<b><span class="n">Demo {n}</span>Where the sliding impulse lands</b>
+		<span class="seg" role="group" aria-label="View"><button type="button" class="on" id="dk-m2">2D disk</button><button type="button" id="dk-m3">3D cone</button></span>
+	</div>
+	<div class="db">
+		<div class="plot">
+			<svg id="dk-plot" viewBox="-230 -230 460 460" role="img" aria-label="Friction disk with the stick solution, the radial projection and the exact constrained minimizer, and the level set of the objective through the minimizer. Drag the dark point or use the arrow keys."></svg>
+			<div class="stage3d" id="dk-3d" hidden tabindex="0" aria-label="3D friction cone over a contact with the stick solution, radial projection and constrained minimum at the normal impulse. Drag to orbit.">
+				<button type="button" class="reset">Reset view</button>
+			</div>
+			<div class="legend">
+				<span><i style="background:var(--fg)"></i>stick solution (drag it)</span><span><i style="background:var(--muted)"></i>radial projection</span><span><i style="background:var(--hot)"></i>constrained minimum</span>
+			</div>
+		</div>
+		<div class="ctl">
+			<label for="dk-k"><span class="row">Anisotropy of the 2×2 block (eigenvalue ratio) <span class="v" id="dk-k-v"></span></span><input type="range" id="dk-k" min="1" max="12" step="0.1" value="4" /></label>
+			<label for="dk-t"><span class="row">Stiff direction angle <span class="v" id="dk-t-v"></span></span><input type="range" id="dk-t" min="0" max="180" step="1" value="90" /></label>
+			<label for="dk-r"><span class="row">Disk radius μλₙ <span class="v" id="dk-r-v"></span></span><input type="range" id="dk-r" min="0.2" max="1.6" step="0.01" value="1" /></label>
+			<div class="readout" id="dk-read"></div>
+		</div>
+	</div>
+</div>
+
+<script>
+	import { makeStage, col, css, onThemeChange, THREE, boxEdges, line3, sphere3, arrow3, type Stage } from '../../lib/stage3d';
+	import { svgEl as el, byId } from '../../lib/dom';
+
+	const root = document.getElementById('demo-disk')!;
+	const $ = <T extends HTMLElement | SVGElement = HTMLElement>(id: string) => byId<T>(root, id);
+	const DK = { k: $<HTMLInputElement>('dk-k'), t: $<HTMLInputElement>('dk-t'), r: $<HTMLInputElement>('dk-r'), xs: [1.55, 1.05] as number[], drag: false };
+	const S = 100; // px per unit
+	type V2 = number[];
+
+	function diskSolve(kappa: number, theta: number, rho: number, xs: V2) {
+		const c = Math.cos(theta), s = Math.sin(theta);
+		// eigenvectors: e1 = (c, s) with eigenvalue kappa (stiff), e2 = (-s, c) with eigenvalue 1
+		const a = [kappa, 1];
+		const E = [[c, s], [-s, c]];
+		const proj = (x: V2) => [E[0][0] * x[0] + E[0][1] * x[1], E[1][0] * x[0] + E[1][1] * x[1]];
+		const back = (p: V2) => [E[0][0] * p[0] + E[1][0] * p[1], E[0][1] * p[0] + E[1][1] * p[1]];
+		const xsp = proj(xs);
+		const bp = [a[0] * xsp[0], a[1] * xsp[1]];
+		const f = (x: V2) => {
+			const p = proj(x);
+			return 0.5 * (a[0] * p[0] * p[0] + a[1] * p[1] * p[1]) - (bp[0] * p[0] + bp[1] * p[1]);
+		};
+		const nxs = Math.hypot(xs[0], xs[1]);
+		if (nxs <= rho) return { stick: true, xstar: xs, xr: xs, alpha: 0, f, a };
+		const xa = (al: number) => [bp[0] / (a[0] + al), bp[1] / (a[1] + al)];
+		let lo = 0, hi = Math.hypot(bp[0], bp[1]) / rho;
+		for (let i = 0; i < 100; i++) {
+			const mid = 0.5 * (lo + hi);
+			const p = xa(mid);
+			if (Math.hypot(p[0], p[1]) > rho) lo = mid;
+			else hi = mid;
+		}
+		return { stick: false, xstar: back(xa(hi)), xr: [(rho * xs[0]) / nxs, (rho * xs[1]) / nxs], alpha: hi, f, a };
+	}
+	type Sol = ReturnType<typeof diskSolve>;
+
+	function drawDisk() {
+		const kappa = +DK.k.value, theta = (+DK.t.value * Math.PI) / 180, rho = +DK.r.value;
+		$('dk-k-v').textContent = kappa.toFixed(1);
+		$('dk-t-v').textContent = DK.t.value + '°';
+		$('dk-r-v').textContent = rho.toFixed(2);
+		const sol = diskSolve(kappa, theta, rho, DK.xs);
+		const svg = $<SVGSVGElement>('dk-plot');
+		svg.innerHTML = '';
+		const P = (x: V2) => [x[0] * S, -x[1] * S];
+		const fg = css('--fg'), mu = css('--muted'), ac = css('--hot'), rule = css('--rule');
+		svg.appendChild(el('rect', { x: -230, y: -230, width: 460, height: 460, fill: css('--bg') }));
+		for (let g = -2; g <= 2; g++) {
+			svg.appendChild(el('line', { x1: g * S, x2: g * S, y1: -220, y2: 220, stroke: rule, 'stroke-width': g === 0 ? 1.2 : 0.6 }));
+			svg.appendChild(el('line', { y1: g * S, y2: g * S, x1: -220, x2: 220, stroke: rule, 'stroke-width': g === 0 ? 1.2 : 0.6 }));
+		}
+		svg.appendChild(el('text', { x: 214, y: -6, 'text-anchor': 'end', 'font-size': 12, 'font-family': css('--mono'), fill: mu }, 'λt1'));
+		svg.appendChild(el('text', { x: 6, y: -212, 'font-size': 12, 'font-family': css('--mono'), fill: mu }, 'λt2'));
+		svg.appendChild(el('circle', { cx: 0, cy: 0, r: rho * S, fill: css('--hot-soft'), stroke: ac, 'stroke-width': 1.6, 'fill-opacity': 0.6 }));
+		const e1 = [Math.cos(theta), Math.sin(theta)];
+		svg.appendChild(el('line', { x1: -e1[0] * 210, y1: e1[1] * 210, x2: e1[0] * 210, y2: -e1[1] * 210, stroke: mu, 'stroke-width': 0.8, 'stroke-dasharray': '2 4' }));
+		// level sets centered at xs: 0.5 (x-xs)^T A (x-xs) = c
+		const xs = DK.xs;
+		const ell = (c: number, attrs: Record<string, string | number>) => {
+			if (c <= 0) return;
+			const r1 = Math.sqrt((2 * c) / sol.a[0]), r2 = Math.sqrt((2 * c) / sol.a[1]);
+			const ctr = P(xs), ang = (-theta * 180) / Math.PI;
+			svg.appendChild(el('ellipse', { cx: ctr[0], cy: ctr[1], rx: r1 * S, ry: r2 * S, transform: `rotate(${ang} ${ctr[0]} ${ctr[1]})`, fill: 'none', ...attrs }));
+		};
+		const fxs = sol.f(xs);
+		if (!sol.stick) {
+			const cStar = sol.f(sol.xstar) - fxs;
+			ell(cStar * 0.35, { stroke: mu, 'stroke-width': 0.8, 'stroke-dasharray': '3 4' });
+			ell(cStar, { stroke: ac, 'stroke-width': 1.6 });
+			ell(cStar * 2.2, { stroke: mu, 'stroke-width': 0.8, 'stroke-dasharray': '3 4' });
+			const pr = P(sol.xr), ps = P(sol.xstar);
+			svg.appendChild(el('line', { x1: 0, y1: 0, x2: P(xs)[0], y2: P(xs)[1], stroke: mu, 'stroke-width': 0.8, 'stroke-dasharray': '2 3' }));
+			svg.appendChild(el('circle', { cx: pr[0], cy: pr[1], r: 6, fill: css('--bg'), stroke: mu, 'stroke-width': 2 }));
+			svg.appendChild(el('circle', { cx: ps[0], cy: ps[1], r: 6.5, fill: ac }));
+		}
+		const px = P(xs);
+		svg.appendChild(el('circle', { cx: px[0], cy: px[1], r: 11, fill: fg, stroke: css('--bg'), 'stroke-width': 2, style: 'cursor:grab', tabindex: 0, role: 'slider', 'aria-label': 'Stick solution; arrow keys move it' }));
+		const angle = (u: V2, w: V2) => Math.abs((Math.atan2(u[0] * w[1] - u[1] * w[0], u[0] * w[0] + u[1] * w[1]) * 180) / Math.PI);
+		if (sol.stick) {
+			$('dk-read').innerHTML = 'The stick solution lies inside the disk, so the contact <b>sticks</b>: one 2×2 solve, no projection.';
+		} else {
+			$('dk-read').innerHTML =
+				`Contact <b>slides</b>. Constrained minimum is <span class="n">${angle(sol.xr, sol.xstar).toFixed(1)}°</span> away from the radial projection.<br>` +
+				`Objective: radial <span class="n">${sol.f(sol.xr).toFixed(4)}</span>, constrained <span class="n">${sol.f(sol.xstar).toFixed(4)}</span> (lower is the solution)<br>` +
+				`Multiplier α <span class="n">${sol.alpha.toFixed(4)}</span>; with an isotropic block the two points coincide.`;
+		}
+		drawDisk3(sol, rho, theta);
+	}
+
+	const plot = $<SVGSVGElement>('dk-plot');
+	function diskPointer(e: PointerEvent) {
+		const pt = plot.createSVGPoint();
+		pt.x = e.clientX;
+		pt.y = e.clientY;
+		const p = pt.matrixTransform(plot.getScreenCTM()!.inverse());
+		DK.xs = [Math.max(-2.1, Math.min(2.1, p.x / S)), Math.max(-2.1, Math.min(2.1, -p.y / S))];
+		drawDisk();
+	}
+	plot.addEventListener('pointerdown', (e) => {
+		DK.drag = true;
+		plot.setPointerCapture(e.pointerId);
+		diskPointer(e);
+	});
+	plot.addEventListener('pointermove', (e) => DK.drag && diskPointer(e));
+	plot.addEventListener('pointerup', () => (DK.drag = false));
+	plot.addEventListener('pointercancel', () => (DK.drag = false));
+	plot.addEventListener('keydown', (e) => {
+		const d = ({ ArrowLeft: [-0.05, 0], ArrowRight: [0.05, 0], ArrowUp: [0, 0.05], ArrowDown: [0, -0.05] } as Record<string, number[]>)[e.key];
+		if (!d) return;
+		e.preventDefault();
+		DK.xs = [Math.max(-2.1, Math.min(2.1, DK.xs[0] + d[0])), Math.max(-2.1, Math.min(2.1, DK.xs[1] + d[1]))];
+		drawDisk();
+		(plot.querySelector('[role=slider]') as SVGElement | null)?.focus();
+	});
+
+	// Friction cone: the same math as the 2D disk.
+	const DK3: { on: boolean; stage: Stage | null } = { on: false, stage: null };
+	function drawDisk3(sol: Sol, rho: number, theta: number) {
+		if (!DK3.on) return;
+		if (!DK3.stage) DK3.stage = makeStage($('dk-3d'), { target: [0.5, 0.3, 0.55], dist: 10.5, theta: -1.15, phi: 0.5 });
+		const S3 = DK3.stage;
+		if (!S3) return;
+		S3.clear();
+		const G = S3.group;
+		G.add(boxEdges([4.4, 4.4, 0.12], [0, 0, -0.06], col('--static'), col('--floor'), 0.8));
+		G.add(line3([[0, 0, 0], [0, 0, 1.5]], col('--accent')));
+		const cone = new THREE.ConeGeometry(rho, 1, 72, 1, true);
+		cone.rotateX(-Math.PI / 2);
+		cone.translate(0, 0, 0.5);
+		G.add(new THREE.Mesh(cone, new THREE.MeshBasicMaterial({ color: col('--hot-fill'), transparent: true, opacity: 0.12, side: THREE.DoubleSide, depthWrite: false })));
+		const disk = new THREE.CircleGeometry(rho, 72);
+		disk.translate(0, 0, 1);
+		G.add(new THREE.Mesh(disk, new THREE.MeshBasicMaterial({ color: col('--hot-soft'), transparent: true, opacity: 0.6, side: THREE.DoubleSide, depthWrite: false })));
+		const ring: [number, number, number][] = [];
+		for (let i = 0; i <= 96; i++) {
+			const a = (i / 96) * 2 * Math.PI;
+			ring.push([rho * Math.cos(a), rho * Math.sin(a), 1]);
+		}
+		G.add(line3(ring, col('--hot')));
+		const xs = DK.xs;
+		if (!sol.stick) {
+			const cStar = sol.f(sol.xstar) - sol.f(xs);
+			const e1 = [Math.cos(theta), Math.sin(theta)], e2 = [-Math.sin(theta), Math.cos(theta)];
+			const ell = (c: number, color: InstanceType<typeof THREE.Color>, dashed: boolean) => {
+				const r1 = Math.sqrt((2 * c) / sol.a[0]), r2 = Math.sqrt((2 * c) / sol.a[1]);
+				const pts: [number, number, number][] = [];
+				for (let i = 0; i <= 96; i++) {
+					const t = (i / 96) * 2 * Math.PI, u = r1 * Math.cos(t), w = r2 * Math.sin(t);
+					pts.push([xs[0] + u * e1[0] + w * e2[0], xs[1] + u * e1[1] + w * e2[1], 1]);
+				}
+				G.add(line3(pts, color, dashed));
+			};
+			ell(cStar * 0.35, col('--muted'), true);
+			ell(cStar, col('--hot'), false);
+			ell(cStar * 2.2, col('--muted'), true);
+			G.add(line3([[0, 0, 0], [xs[0], xs[1], 1]], col('--muted'), true));
+			G.add(sphere3([sol.xr[0], sol.xr[1], 1], 0.055, col('--muted')));
+			G.add(arrow3([0, 0, 0], [sol.xstar[0], sol.xstar[1], 1], col('--hot'), 0.12));
+			G.add(sphere3([sol.xstar[0], sol.xstar[1], 1], 0.065, col('--hot')));
+		} else {
+			G.add(arrow3([0, 0, 0], [xs[0], xs[1], 1], col('--hot'), 0.12));
+		}
+		G.add(sphere3([xs[0], xs[1], 1], 0.07, col('--fg')));
+		S3.req();
+	}
+	function setMode(m: '2d' | '3d') {
+		DK3.on = m === '3d';
+		$('dk-m2').classList.toggle('on', !DK3.on);
+		$('dk-m3').classList.toggle('on', DK3.on);
+		plot.toggleAttribute('hidden', DK3.on);
+		$('dk-3d').hidden = !DK3.on;
+		drawDisk();
+		DK3.stage?.resize();
+	}
+	$('dk-m2').addEventListener('click', () => setMode('2d'));
+	$('dk-m3').addEventListener('click', () => setMode('3d'));
+	[DK.k, DK.t, DK.r].forEach((x) => x.addEventListener('input', drawDisk));
+	drawDisk();
+	onThemeChange(drawDisk);
+</script>

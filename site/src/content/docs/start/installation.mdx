@@ -1,0 +1,29 @@
+---
+title: Installation
+description: Install Newton with Steel from PyPI or from the integration branch.
+sidebar:
+  order: 3
+---
+
+Steel is part of Newton; there is no separate package. Until the features in the table above are in a Newton release, install Newton from the integration branch:
+
+```python
+pip install "newton[examples] @ git+https://github.com/skild-ai/newton.git@main"
+```
+
+Why the branch: it carries Steel fixes and features days to weeks before they are reviewed into Newton and released, and it is the build these docs describe. Pin a commit rather than `main` for reproducible results:
+
+```python
+pip install "newton[examples] @ git+https://github.com/skild-ai/newton.git@baffc2abb2"
+```
+
+To use only released features, install Newton 1.8.0 from PyPI with `pip install "newton[examples]==1.8.0"`. Newton requires Python 3.10 or newer and `warp-lang` 1.17 or newer; an NVIDIA GPU with CUDA is needed for the fast paths and graph capture. The `examples` extra installs what the bundled examples and viewers need; the solver itself needs only Warp.
+
+From a clone, for development:
+
+```python
+git clone https://github.com/skild-ai/newton.git
+cd newton
+pip install -e ".[examples]"
+python -m newton.examples steel_sleeping
+```

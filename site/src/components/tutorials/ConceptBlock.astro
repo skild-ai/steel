@@ -1,0 +1,50 @@
+---
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+// SPDX-License-Identifier: Apache-2.0
+/** The concept behind a tutorial: what it is, what it does in this scene, and what to weigh before using it. */
+interface Props {
+	concept: { name: string; what: string; eq?: string; here: string; consider: { term: string; text: string }[] };
+}
+const { concept } = Astro.props;
+---
+
+<section class="concept" aria-label={`Concept: ${concept.name}`}>
+	<p class="kicker">Concept</p>
+	<h2 class="cname">{concept.name}</h2>
+	<div class="cgrid">
+		<div>
+			<h3>What it is</h3>
+			<p>{concept.what}</p>
+			{concept.eq && <p class="eq">{concept.eq}</p>}
+			<h3>In this scene</h3>
+			<p>{concept.here}</p>
+		</div>
+		<div>
+			<h3>Considerations</h3>
+			<dl>
+				{
+					concept.consider.map((c) => (
+						<>
+							<dt>{c.term}</dt>
+							<dd>{c.text}</dd>
+						</>
+					))
+				}
+			</dl>
+		</div>
+	</div>
+</section>
+
+<style>
+	.concept { margin-top: 26px; background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; padding: 18px 20px; }
+	.cname { font-family: var(--display); font-weight: 500; letter-spacing: -0.01em; font-size: 21px !important; margin: 0 0 12px !important; }
+	h3 { font: 500 11px/1.4 var(--mono) !important; letter-spacing: 0.08em !important; text-transform: uppercase; color: var(--muted); margin: 0 0 6px !important; }
+	p { margin: 0 0 14px; max-width: 62ch; }
+	.eq { font-family: var(--mono); font-size: 13.5px; color: var(--accent); overflow-x: auto; white-space: nowrap; }
+	.cgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 6px 32px; }
+	@media (max-width: 900px) { .cgrid { grid-template-columns: minmax(0, 1fr); } }
+	dl { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 14px; }
+	dt { font: 500 11.5px/1.65 var(--mono); color: var(--hot); letter-spacing: 0.03em; }
+	dd { margin: 0; font-size: 14.5px; overflow-wrap: anywhere; }
+	@media (max-width: 520px) { dl { grid-template-columns: minmax(0, 1fr); } dd { margin-bottom: 6px; } }
+</style>

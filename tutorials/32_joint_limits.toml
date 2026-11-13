@@ -1,0 +1,52 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 32_joint_limits.py. Fields: tutorials/README.md.
+
+id = "joint-limits"
+title = "Joint limits"
+about = """\
+A pendulum with ±30° limits released at 80°. Steel does not enforce joint limits by default. \
+With enable_joint_limits=True each finite limit becomes a unilateral row that is speculative \
+while open, so the pendulum stops at the bound without overshooting."""
+look = [
+  "Default: the pendulum swings through ±80° and the limits are ignored.",
+  "Enabled: it is pushed back inside and bounces between −30° and 30°.",
+]
+try = [
+  "Start the pendulum inside the limits.",
+  "Raise baumgarte and watch the recovery from 80°.",
+]
+spacing = [0, 0.5, 0]
+
+[param]
+name = "enable_joint_limits"
+text = """\
+Off by default. joint_limit_activation_gap decides how close to a bound a row is created \
+(default: speed-aware)."""
+
+[metric]
+key = "angle_deg"
+label = "joint angle"
+unit = "°"
+
+[concept]
+name = "Joint limit rows"
+what = """\
+With enable_joint_limits, each finite limit becomes a unilateral row that is speculative while \
+open: it lets the joint approach the bound but not cross it in the step. By default rows are \
+made only within 0.05 + 2h|v| of a bound."""
+here = "The pendulum swings to ±80° without limit rows and stays within ±30° with them."
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Rows count against articulation_constraint_max; the speed-aware gate keeps most of them out."""
+
+[[concept.consider]]
+term = "Failure modes"
+text = "Off by default, so imported limits are ignored until you enable them."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Always for robots with hard stops."

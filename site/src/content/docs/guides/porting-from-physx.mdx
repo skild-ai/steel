@@ -1,0 +1,76 @@
+---
+title: Porting from PhysX
+description: Attribute mapping, option equivalents, differences and a migration procedure.
+sidebar:
+  order: 2
+---
+
+import Note from '~/components/Note.astro';
+
+Most PhysX scenes move to Steel through Newton's USD importer without code changes, but a few defaults and conventions differ. Port in small, verifiable steps: prove the old setup still reproduces, switch the solver behind one flag, then compare behavior before you compare speed.
+
+## Attribute mapping
+
+What Newton's importer reads from PhysX USD, and where Steel uses it.
+
+| PhysX USD attribute | Newton / Steel | Notes |
+|---|---|---|
+| `physxRigidBody:angularDamping` | `steel:rigid_body_angular_damping` | Free bodies and floating bases; default 0.05 as in PhysX. |
+| `physxRigidBody:linearDamping` | `steel:rigid_body_linear_damping` | Same bodies; default 0. |
+| `physxRigidBody:maxLinearVelocity` | `steel:rigid_body_max_linear_velocity` | m/s. Enforced as free-body rows, which take free-body capacity. |
+| `physxRigidBody:maxAngularVelocity` | `steel:rigid_body_max_angular_velocity` | Converted from deg/s to rad/s on import. |
+| `physxRigidBody:maxDepenetrationVelocity` | `steel:rigid_body_max_depenetration_velocity` | Bounds the contact correction velocity of free bodies. |
+| `physxRigidBody:disableGravity` | body gravity flag | Steel honors per-body gravity disable. |
+| `physxCollision:contactOffset`, `restOffset` | `ShapeConfig.gap`, `margin` | `gap` = contactOffset − restOffset. The gap decides which speculative contacts Steel sees. |
+| `physxCollision:minTorsionalPatchRadius` | `steel:min_torsional_patch_radius` | Turns on contact torsion. `torsionalPatchRadius` (depth scaling) is not used. |
+| `physxJoint:armature` | `Model.joint_armature` |  |
+| `physxJoint:maxJointVelocity` | `Model.joint_velocity_limit` | Enforced only with `enable_joint_velocity_limits=True`. |
+| `physxJoint:jointFriction` | not read | Author `newton:steel:jointFrictionLoadCoefficient` and set `enable_joint_friction=True`; the rows interact with drives differently from PhysX. |
+| Drive stiffness, damping, max force (`UsdPhysics` drive) | `joint_target_ke`, `joint_target_kd`, `joint_effort_limit` | Check angular gain units after import, and that gains are applied once (see below). |
+| Joint limits | `joint_limit_lower`, `joint_limit_upper` | Imported, but enforced only with `enable_joint_limits=True`. |
+| `physxArticulation:enabledSelfCollisions` | articulation self-collision |  |
+| `physxMaterial:compliantContactStiffness`, `Damping` | shape `ke`, `kd` | Not used by Steel; its contacts are hard. Hydroelastic contacts with `contact_compliance` are the soft-contact route. |
+| Material friction and restitution combine modes | `friction_combine`, `restitution_combine` | Solver options, not read from USD; integration branch only. Newton 1.8 averages. |
+
+## Solver option equivalents
+
+| PhysX | Steel | Notes |
+|---|---|---|
+| Position iteration count | `iterations` | Steel counts sweeps per substep; it does not read the scene's iteration attributes. |
+| Velocity iteration count | `velocity_iterations` | Sweeps without position bias after the position solve. |
+| Simulation frequency, substeps | your `dt` and substep loop | Steel steps whatever `dt` you pass. |
+| Articulation force drives solved with contacts | `drive_mode="rows"`, `row_schedule="phased"` | Rows follow the PhysX articulation drive update and clamp at the effort limit. The default implicit drives are stiffer-stable but do not bound the implicit reaction. |
+| Contact applied at one point | `contact_shared_anchor=True` | Applies rows at the witness midpoint. |
+| Bounce threshold | `restitution_velocity_threshold` | Steel uses the closing speed at the start of the step. |
+| GPU contact and patch buffer sizes | `rigid_contact_max`, row capacities | Separate capacities; each has its own overflow report. |
+| Enhanced determinism | `deterministic=RUN_TO_RUN` + deterministic pipeline | See [Determinism](/concepts/determinism/). |
+
+## What differs
+
+- **Joint limits and velocity limits are off by default.** Turn on `enable_joint_limits` and, if the task relies on them, `enable_joint_velocity_limits`.
+- **The state is joint coordinates.** Resets must write `joint_q`/`joint_qd`; poses written only to body arrays are lost.
+- **Contacts are hard.** Contact stiffness and damping do not apply; penetration is corrected through `baumgarte`, and speculative contacts follow the shape gap.
+- **Implicit drives.** The default drive is integrated in the mass matrix and its reaction can exceed the effort limit under load. Use `drive_mode="rows"` where torque limits matter.
+- **Joint friction** is opt-in and follows a different interaction with drives; the load-proportional term matches PhysX before 5.6.
+- **Ordering and conventions.** Body and joint traversal order can differ from PhysX views; quaternion component order differs between APIs (xyzw in Newton arrays). Compare by name, not by index.
+- **Capacities are fixed per world** and overflow drops rows. Read `check_constraint_capacity()` and watermarks; a run that drops rows is not a valid comparison even if it exits cleanly.
+
+## Migration procedure
+
+1. **Freeze a baseline.** Pin every version (application, assets, checkpoints, dependencies) and keep the original PhysX setup runnable in its own environment. Record a deterministic trace of observations, actions, targets, torques, body and joint state, contacts, rewards and terminations, keyed by body and joint names.
+2. **Check parity before switching solvers.** If you upgrade the surrounding stack at the same time, first show the upgraded stack with PhysX reproduces the frozen trace: reset state, first observation and action, joint order, asset import, quaternion convention and actuation. Do not attribute differences to Steel until this passes.
+3. **Switch the backend behind one flag.** Same task, same assets. Smoke-test import, reset, zero-action stepping, controls, contacts and any force sensors before running a policy.
+4. **Compare deterministic traces without randomization.** Align by name. Audit actuation first: gains applied exactly once, effort limits, drive model. Re-apply external wrenches on every substep if your loop clears forces per substep. Then contacts, materials, limits and capacities.
+5. **Add domain randomization one factor at a time** (below), comparing distributions and per-sample deltas, not just mean return.
+6. **Compare performance last**, on the same GPU, task, trajectory or policy, randomization and timing protocol: warm up, capture CUDA graphs, synchronize around the timer, exclude construction and kernel compilation. Record throughput, memory, retained contacts and row high-water marks, and reject any run that reported dropped rows or contacts.
+7. **Check policy transfer both ways.** Evaluate policies trained on each solver under both solvers (a 2×2 matrix) and report completion and termination reasons alongside reward.
+
+<Note title="Lessons from real ports" variant="plain">
+
+- Upgraded-stack parity failures (reset timing, importer differences, quaternion caches) looked like solver differences until the parity gate caught them.
+- Drive gains applied twice, and external wrenches applied on only the first substep, were the first two solver-switch bugs.
+- Restitution randomization alone changed episode outcomes on one task and not on others; keep restitution choices per task, and test them in isolation.
+- Rare-world row maxima grow with world count. Size capacities at the world count you run, with repeats.
+- Viewer and transform bugs are common during a port; confirm a suspected physics problem from recorded state before debugging the solver.
+
+</Note>

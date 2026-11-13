@@ -1,0 +1,45 @@
+/* SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors */
+/* SPDX-License-Identifier: Apache-2.0 */
+
+/* Styles of the docs visuals in src/viz/ (figures, steppers, concept bubbles). Tokens only. */
+figure.viz .frame{display:grid;gap:10px}
+.vizbar{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
+.vizbar label{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);flex:1 1 180px;min-width:0}
+.vizbar label output{font:500 12px var(--mono);color:var(--fg);min-width:2.6em;order:2}
+.vizbar label input[type=range]{flex:1;min-width:80px;order:1}
+.btn{font:500 13px var(--body);background:var(--bg);color:var(--fg);border:1px solid var(--static);border-radius:4px;padding:4px 10px;cursor:pointer;min-height:32px}
+.btn:hover{border-color:var(--hot)}
+.stepbtns{display:inline-flex;gap:6px}
+.vizsvg{display:block;width:100%;height:auto;overflow:visible}
+.vizrow{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:560px){.vizrow{grid-template-columns:minmax(0,1fr)}.vizside{max-width:220px}}
+.formula{font:500 12.5px/1.5 var(--mono);color:var(--fg);background:var(--panel);border-radius:4px;padding:8px 10px;margin:0;overflow-wrap:anywhere}
+.tutlinks{font-size:14px;color:var(--muted)}
+.tutlinks span,.tutinline{font:500 11px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-right:6px}
+.tutinline{display:block;margin-top:6px;text-transform:none;letter-spacing:0;font:400 13.5px var(--body)}
+.term{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:help;text-decoration:underline dotted;text-decoration-color:var(--hot-fill);text-underline-offset:3px;text-decoration-thickness:1.5px}
+.term:hover,.term[aria-expanded=true]{color:var(--hot)}
+#termpop{position:absolute;z-index:20;background:var(--bg);color:var(--fg);border:1px solid var(--rule);border-radius:6px;box-shadow:var(--sl-shadow-md);padding:12px 14px;font-size:14px;line-height:1.5}
+#termpop.sheet{position:fixed;left:0;right:0;bottom:0;top:auto;border-radius:10px 10px 0 0;padding:14px 16px calc(14px + env(safe-area-inset-bottom, 0px));max-height:70vh;overflow:auto}
+#termpop .tp-h{display:flex;justify-content:space-between;align-items:center;gap:12px;font:500 12px var(--mono);letter-spacing:.07em;text-transform:uppercase}
+#termpop .tp-x{font:400 20px/1 var(--body);background:none;border:0;color:var(--muted);cursor:pointer;min-width:32px;min-height:32px}
+#termpop .tp-svg svg{display:block;width:100%;max-width:300px;height:auto;margin:6px 0}
+#termpop p{margin:0}
+#termpop .tp-box{fill:var(--panel);stroke:var(--rule)}
+#termpop .tp-hot{fill:var(--hot-fill)}
+#termpop .tp-acc{fill:var(--series-1)}
+#termpop .tp-hot-fill{fill:var(--hot-soft);stroke:var(--hot)}
+#termpop .tp-acc-fill{fill:var(--series-1)}
+#termpop .tp-line{stroke:var(--muted);fill:none;stroke-width:1.5}
+#termpop .tp-hot-line{stroke:var(--hot);fill:none;stroke-width:3}
+#termpop .tp-sep{stroke:var(--bg);stroke-width:2}
+#termpop .tp-t{fill:var(--muted);font:11px var(--mono)}
+#termpop .tp-t2{fill:var(--bg);font:11px var(--mono)}
+.capgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.capgrid{grid-template-columns:minmax(0,1fr)}}
+.capgrid fieldset{border:1px solid var(--rule);border-radius:4px;padding:8px 12px 12px;margin:0;display:grid;gap:8px;min-width:0;align-content:start}
+.capbuf{max-width:640px}
+.capgrid legend{font:500 12px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:0 4px}
+.capgrid label{display:grid;gap:3px;font-size:13px;color:var(--muted)}
+.capgrid .trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.capwarn{margin:0;font-size:12.5px;color:var(--hot);border-left:2px solid var(--hot);padding-left:8px}

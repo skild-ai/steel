@@ -1,0 +1,64 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 31_drive_saturation.py. Fields: tutorials/README.md.
+
+id = "drive-saturation"
+title = "Drive saturation"
+about = """\
+An arm with a heavy tip is released 60° below its target and driven by a stiff PD drive \
+limited to 12 N·m, so the drive saturates on the way up. The default augmented drive clamps \
+only its explicit force and leaves the implicit part unbounded. drive_mode=\"rows\" solves the \
+drive as a PGS row, like a PhysX articulation drive, and clamps the whole impulse."""
+look = [
+  "Both reach the target.",
+  "The row drive overshoots less (7.5° vs 9.2°).",
+]
+try = [
+  "Lower effort_limit to 6 N·m: can the arm still lift?",
+  "Add enable_joint_velocity_limits=True with drive rows.",
+]
+spacing = [0, 0.4, 0]
+
+[param]
+name = "drive_mode"
+text = """\
+\"augmented\" (default): implicit drives in the mass matrix. \"rows\": one row per driven DOF, \
+solved with contacts and limits, counted against articulation_constraint_max."""
+
+[metric]
+key = "angle_deg"
+label = "arm angle"
+unit = "°"
+
+[concept]
+name = "Drive rows"
+what = """\
+drive_mode=\"rows\" solves each drive as a PGS row with the PhysX articulation drive update \
+and clamps the accumulated impulse at effort_limit·h. The drive is then solved together with \
+contacts and limits, and its whole reaction respects the limit."""
+here = """\
+Released 60° below target with a 12 N·m limit, drive rows settle within 1° in 1.0 s; the \
+default augmented drive overshoots more and settles in 1.8 s."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+One row per driven DOF, counted against articulation_constraint_max: about +40% per step on a \
+driven 6-link chain (0.34 → 0.47 ms in 1024 worlds)."""
+
+[[concept.consider]]
+term = "Interactions"
+text = "Disables sparse factors; with velocity limits, fuse_joint_velocity_limits applies."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Effort limits matter, as in sim-to-real transfer from PhysX."
+
+[timing]
+group = "drives"
+scene = "Scene: a driven 6-link chain in each world (target_ke 50, joint friction 0.01)."
+
+[timing.notes]
+"drive_mode=\"augmented\"" = "settles in 1.8 s"
+"drive_mode=\"rows\"" = "settles in 1.0 s"

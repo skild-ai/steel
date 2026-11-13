@@ -1,0 +1,21 @@
+---
+title: Determinism
+description: Bitwise run-to-run reproducibility with RUN_TO_RUN.
+sidebar:
+  order: 9
+---
+
+import Viz from '~/components/Viz.astro';
+
+By default rows reserve slots with atomic counters, so the Gauss-Seidel order within a world can differ between runs, and chaotic scenes diverge. With `deterministic=wp.DeterministicMode.RUN_TO_RUN`, joint rows are reserved in articulation order and contacts are sorted by world and row family and given slots in contact-buffer order. Given identical inputs, including identically ordered contacts, repeated runs are bitwise identical on the same GPU model, driver and Warp build, eagerly and under graph replay. Steel fixes the order of its rows rather than making atomics deterministic; the mode adds a per-step contact sort and 24 bytes per contact slot, so measure its cost on your scene.
+
+```python
+pipeline = newton.CollisionPipeline(model, deterministic=True)
+solver = newton.solvers.SolverSteel(model, deterministic=wp.DeterministicMode.RUN_TO_RUN)
+```
+
+<Viz name="det" n={11} title="Two runs from identical inputs.">
+The default row order comes from atomics and the chaotic pour amplifies tiny differences; with RUN_TO_RUN the recorded poses are bitwise identical. <span class="tutinline">Tutorial: [Run-to-run determinism](/tutorials/determinism/)</span>
+</Viz>
+
+Outside the guarantee: `body_parent_f` (it sums contact wrenches with atomics) and coupled solvers. `GPU_TO_GPU` is not supported; passing it raises. `python -m newton.examples steel_determinism_arms` shows the difference.

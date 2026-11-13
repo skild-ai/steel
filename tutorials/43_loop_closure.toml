@@ -1,0 +1,59 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 43_loop_closure.py. Fields: tutorials/README.md.
+
+id = "loop-closure"
+title = "Four-bar loop closure"
+about = """\
+A crank-rocker four-bar built as a three-link chain plus one closing revolute joint outside \
+the articulation tree. The closure becomes five bilateral rows (three point rows, two \
+hinge-axis rows) solved in the same sweep as everything else, so its residual depends on the \
+iteration count. enable_bilateral_preelimination projects the closure rows once per step \
+before the sweep."""
+look = [
+  "2 iterations: the loop opens by up to 16 cm.",
+  "12 iterations: under 6 mm.",
+  "2 iterations with pre-elimination: under 2 mm.",
+]
+try = [
+  "Turn the crank at 30 rad/s.",
+  "Use a BALL closure instead of REVOLUTE.",
+]
+spacing = [0, 0.3, 0]
+
+[param]
+name = "enable_bilateral_preelimination"
+text = """\
+Eliminates mimic and loop rows through a regularized Schur complement before the sweep. Up to \
+eight bilateral rows per articulation."""
+
+[metric]
+key = "gap_mm"
+label = "closure gap"
+unit = "mm"
+
+[concept]
+name = "Loop closures and pre-elimination"
+what = """\
+A joint outside the tree closes a loop with rows: three point rows, plus two axis rows for a \
+revolute or three rotation rows for a weld. Iterating them with everything else leaves a \
+residual. enable_bilateral_preelimination projects them once per step through a regularized \
+Schur complement before the sweep."""
+here = """\
+At 2 iterations the four-bar opens by up to 165 mm; 12 iterations hold it to 5.5 mm and \
+pre-elimination at 2 iterations to 1.9 mm."""
+
+[[concept.consider]]
+term = "Cost"
+text = "A small dense factorization per articulation; up to eight bilateral rows each."
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+Disabled with velocity iterations, a kinematic or world parent, or more than eight rows; \
+incompatible with joint friction."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Linkages that must stay closed at low iteration counts."

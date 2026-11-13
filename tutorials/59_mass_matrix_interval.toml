@@ -1,0 +1,82 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 59_mass_matrix_interval.py. Fields: tutorials/README.md.
+
+id = "mass-matrix-interval"
+title = "Mass-matrix update interval"
+about = """\
+A six-link chain of light capsules (armature 0.001 kg·m²) released at 1.2 rad swings freely \
+for 8 s. Building and factoring the joint-space mass matrix is a large part of each step. \
+update_mass_matrix_interval reuses the factorization for several steps, which saves work but \
+uses stale inertia while the chain changes shape. The chart tracks the chain's energy, armature \
+included, as a share of its starting swing energy. The last run keeps interval 1 at a quarter \
+of the step."""
+look = [
+  "The default gains up to 46% of the swing energy: at 240 Hz this light chain gains energy from the explicit velocity-product forces, whatever the interval.",
+  "Intervals 4 and 16 do not fix that. They gain less early on, then lose 18 to 20% by 8 s: the stale matrix trades the gain for a loss of the same order, and the tips drift apart.",
+  "A quarter of the step (960 Hz) cuts the gain to 11%; the error is first order in the step.",
+]
+try = [
+  "Try it on a slow robot arm, where the matrix changes little.",
+  "Remove the armature and release the chain at 2.0 rad: interval 16 can go to NaN.",
+]
+spacing = [0, 0.6, 0]
+
+[param]
+name = "update_mass_matrix_interval"
+text = """\
+Rebuild every N steps (default 1). Under CUDA graph capture, N should divide the number of \
+captured steps."""
+
+[metric]
+key = "energy_change_pct"
+label = "chain energy change, % of swing energy"
+unit = "%"
+
+[metric.alt]
+key = "tip_x"
+label = "tip x"
+unit = "m"
+
+[concept]
+name = "Mass-matrix update interval"
+what = """\
+Each step builds and factors the joint-space mass matrix, which depends on the pose. \
+update_mass_matrix_interval reuses the factorization for several steps, accepting stale \
+inertia."""
+here = """\
+Over 8 s the default gains up to 46% of the swing energy and intervals 4 and 16 end 18 to 20% \
+below the start, so a longer interval is not more accurate here; 960 Hz steps gain 11%."""
+
+[[concept.consider]]
+term = "Cost"
+text = "On this 6-DOF chain the saving was 4 to 7% per step; larger articulations save more."
+
+[[concept.consider]]
+term = "Stability"
+text = """\
+A stale matrix does not stabilize a chain that gains energy. In separate 8 s CPU runs from \
+2.0 rad, intervals 4 and 16 lost 85 to 96% of the swing energy, and without armature interval 16 \
+went to NaN. For light chains use a smaller step."""
+
+[[concept.consider]]
+term = "Interactions"
+text = "dt changes, reset and notify_model_changed force a refresh."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Large, slowly moving articulations; verify energy and tracking over a full episode first."
+
+[timing]
+group = "interval"
+scene = "Scene: a driven 6-link chain in each world (target_ke 50, joint friction 0.01)."
+
+[timing.notes]
+"update_mass_matrix_interval=1" = "chain above: up to +46% swing energy"
+"update_mass_matrix_interval=4" = "chain above: -18% by 8 s"
+"update_mass_matrix_interval=16" = "chain above: -20% by 8 s"
+
+[[in_review]]
+pr = 19
+text = "Documents in the solver that fast, light chains gain energy from the explicit Coriolis and centrifugal forces of the step, and what reduces it."

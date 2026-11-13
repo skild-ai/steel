@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 53_world_reset.py. Fields: tutorials/README.md.
+
+id = "world-reset"
+title = "Per-world reset"
+about = """\
+Four replicated worlds. At 1.5 s and 3.5 s world 0 is put back to its start pose, and at 2.5 s \
+world 2. solver.reset(state, world_mask) clears the selected worlds' warm-start impulses, \
+friction anchors and capacity flags without touching the other worlds, the pattern an RL \
+environment uses when one episode ends."""
+look = [
+  "Only the reset world jumps back and falls again; the others keep resting.",
+]
+try = ["Reset worlds 1 and 3 together.", "Randomize the reset pose."]
+spacing = [0, 0, 0]
+
+[param]
+name = "solver.reset(state, world_mask)"
+text = """\
+world_mask has world_count + 1 entries; the last selects global entities. Capturable in a CUDA \
+graph."""
+
+[metric]
+key = "world0_top"
+label = "highest body"
+unit = "m"
+multi = ["world0_top", "world1_top", "world2_top", "world3_top"]

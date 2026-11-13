@@ -1,0 +1,42 @@
+---
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+// SPDX-License-Identifier: Apache-2.0
+/** Figure: the two halves of one Steel step, per articulation and per world. */
+import Figure from '../Figure.astro';
+
+interface Props {
+	n?: number;
+}
+const { n = 1 } = Astro.props;
+---
+
+<Figure n={n} title="One step.">
+    <svg class="wide" viewBox="0 0 960 196" role="img" aria-label="Steel step: per articulation, kinematics, mass matrix, factorization and free velocity; per world, constraint rows and the PGS sweep; then integration.">
+      <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="fm"/></marker></defs>
+      <text x="12" y="20" class="cap">PER ARTICULATION · GROUPED BY DOF COUNT</text>
+      <text x="560" y="20" class="cap">PER WORLD · ONE WARP</text>
+      <text x="828" y="20" class="cap">PER DOF</text>
+      <rect x="12" y="36" width="120" height="70" rx="5" class="box"/><text x="72" y="64" text-anchor="middle" class="tb">Kinematics</text><text x="72" y="84" text-anchor="middle" class="tm">FK, inverse dyn.</text>
+      <rect x="148" y="36" width="120" height="70" rx="5" class="box"/><text x="208" y="64" text-anchor="middle" class="tb">Mass matrix</text><text x="208" y="84" text-anchor="middle" class="tm">CRBA + drives</text>
+      <rect x="284" y="36" width="120" height="70" rx="5" class="box"/><text x="344" y="64" text-anchor="middle" class="tb">Factor</text><text x="344" y="84" text-anchor="middle" class="tm">dense / sparse</text>
+      <rect x="420" y="36" width="120" height="70" rx="5" class="box"/><text x="480" y="64" text-anchor="middle" class="tb">Free velocity</text><text x="480" y="84" text-anchor="middle" class="tm">no constraints</text>
+      <rect x="560" y="36" width="120" height="70" rx="5" class="box"/><text x="620" y="64" text-anchor="middle" class="tb">Rows</text><text x="620" y="84" text-anchor="middle" class="tm">J, Y = H⁻¹Jᵀ</text>
+      <rect x="692" y="36" width="120" height="70" rx="5" class="boxa"/><text x="752" y="64" text-anchor="middle" class="ta">PGS sweep</text><text x="752" y="84" text-anchor="middle" class="tm">iterations</text>
+      <rect x="828" y="36" width="120" height="70" rx="5" class="box"/><text x="888" y="64" text-anchor="middle" class="tb">Integrate</text><text x="888" y="84" text-anchor="middle" class="tm">symplectic Euler</text>
+      <line x1="132" y1="71" x2="146" y2="71" class="ln" marker-end="url(#arr)"/>
+      <line x1="268" y1="71" x2="282" y2="71" class="ln" marker-end="url(#arr)"/>
+      <line x1="404" y1="71" x2="418" y2="71" class="ln" marker-end="url(#arr)"/>
+      <line x1="540" y1="71" x2="558" y2="71" class="ln" marker-end="url(#arr)"/>
+      <line x1="680" y1="71" x2="690" y2="71" class="ln" marker-end="url(#arr)"/>
+      <line x1="812" y1="71" x2="826" y2="71" class="ln" marker-end="url(#arr)"/>
+      <text x="12" y="140" class="ts">Tree joints hold by construction; limits, mimic, loops become rows.</text>
+      <text x="12" y="158" class="ts">Free bodies use their closed-form 6×6 inverse inertia instead of a factor.</text>
+      <text x="560" y="140" class="ts">Contacts, limits, drive rows, mimic and loop rows.</text>
+      <text x="560" y="158" class="ts">Serial sweep: all iterations of a world in one launch.</text>
+      <text x="12" y="186" class="tm">default: 12 iterations · no velocity-only pass · CUDA-graph capturable</text>
+    </svg>
+	<Fragment slot="caption">
+		The front half is grouped by articulation size so robots of one size share kernels. The green box is the
+		constraint solve, where most of the options in the reference act.
+	</Fragment>
+</Figure>

@@ -1,0 +1,27 @@
+---
+title: Versions and features
+description: Which Steel features are in Newton 1.8.0, Newton main and the integration branch.
+sidebar:
+  order: 2
+---
+
+Steel reaches users through three builds. New Steel work lands first on [skild-ai/newton](https://github.com/skild-ai/newton) `main`, the integration branch, and moves to Newton through upstream pull requests. Newton releases then ship it.
+
+| Feature | Newton 1.8.0 | Newton main | skild-ai/newton main |
+|---|---|---|---|
+| Serial and colored sweeps, immediate and propagation responses | yes | yes | yes |
+| Friction patches, contact torsion, compliance, restitution | yes | yes | yes |
+| Loop closures (BALL, REVOLUTE, FIXED), mimic joints | yes | yes | yes |
+| Joint friction with load coefficient, drive rows | yes | yes | yes |
+| Sleeping, `RUN_TO_RUN` determinism, `body_parent_f`, `contact_f` | yes | yes | yes |
+| Passive joint springs (`joint_stiffness`) | no | yes | yes |
+| `nesterov_momentum` | no | yes | yes |
+| Speed-aware default for `joint_limit_activation_gap` | no (`inf`) | no (`inf`) | yes (`None`) |
+| Free-body rolling and spin friction (`steel:condim`, `free_rigid_*_friction`) | no | in review | yes |
+| Contact adhesion (`steel:adhesion`) | no | no | yes |
+| `friction_combine`, `restitution_combine` | no | no | yes |
+| `propagation_color_order="rotating"`, body-frame contact matching | no | no | yes |
+| One-launch colored solve for few large worlds (automatic) | no | no | yes |
+| MuJoCo-style tendons | no | no | in review |
+
+The [configuration reference](/reference/options/) marks every option that is not in Newton 1.8.0. The integration branch accepts every option Newton 1.8.0 accepts, with the same names. Its only changed default is `joint_limit_activation_gap`.

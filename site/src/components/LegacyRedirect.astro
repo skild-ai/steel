@@ -1,0 +1,12 @@
+---
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+// SPDX-License-Identifier: Apache-2.0
+/** Sends links into the earlier single-page docs (#capacity, #faq-warmstart, ...) to the matching page. */
+---
+
+<script>
+	import { legacyAnchors } from '../lib/legacy-anchors';
+
+	const target = legacyAnchors[location.hash.slice(1)];
+	if (target) location.replace(new URL(target.replace(/^\//, ''), document.baseURI).href);
+</script>

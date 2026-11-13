@@ -1,0 +1,1256 @@
+{
+ "source": {
+  "commit": "baffc2abb2e101549f8eb797a2adc1645390c566",
+  "file": "newton/_src/solvers/steel/solver_steel.py",
+  "init_line": 2008
+ },
+ "options": [
+  {
+   "name": "solve_mode",
+   "type": "Literal['serial', 'colored']",
+   "default": "'serial'",
+   "units": "",
+   "step": false,
+   "category": "Solve",
+   "doc": "<p>Gauss-Seidel sweep order of the matrix-free solve, which never assembles the Delassus matrix: it recomputes <code>J v</code> every iteration and uses only the diagonal for preconditioning. <code>\"serial\"</code> (default) sweeps each world's rows in order in one fused kernel. <code>\"colored\"</code> colors the propagation contact rows every step so that no two rows of a color share a responding body (a kinematic free body has no response and may be shared) and solves each color as one parallel launch across all worlds; contacts left without a color run last, in the order set by <code>propagation_color_order</code>. <code>\"colored\"</code> covers free bodies as well as articulations and requires <code>articulated_contact_response=\"propagation\"</code>; any other response raises <code>ValueError</code>. On CPU both modes run world-serial portable kernels (<code>\"colored\"</code> sweeps in serial order), and the CUDA-only features listed in the class description raise <code>NotImplementedError</code>.</p><p><b>Deprecated 1.8.</b> <code>\"matrix_free\"</code> maps to <code>\"serial\"</code>, and <code>\"split\"</code>, whose dense Delassus solve was removed, runs <code>\"serial\"</code>; each emits a <code>NewtonDeprecationWarning</code>.</p>",
+   "when": "Use \"colored\" (with the propagation response) for worlds with many free bodies, such as piles and pours. Keep \"serial\" for articulated robots, small scenes and loop closures.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2012
+  },
+  {
+   "name": "iterations",
+   "type": "int",
+   "default": "12",
+   "units": "",
+   "step": false,
+   "category": "Solve",
+   "doc": "<p>Number of projected Gauss-Seidel iterations per step.</p>",
+   "when": "Raise for tall stacks, large mass ratios, loop closures and slipping grasps. Lower only after a full-episode check passes at the lower value.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2013
+  },
+  {
+   "name": "baumgarte",
+   "type": "float",
+   "default": "0.2",
+   "units": "",
+   "step": true,
+   "category": "Stabilization",
+   "doc": "<p>Baumgarte position-correction factor of contact and joint-limit rows, as a fraction of the position error removed per step.</p>",
+   "when": "Up to 0.5 for light bodies pressed into the ground by heavy ones. Higher values launched bodies in testing; prefer velocity_iterations for deep start overlaps.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2014
+  },
+  {
+   "name": "cfm",
+   "type": "float",
+   "default": "1e-06",
+   "units": "",
+   "step": false,
+   "category": "Solve",
+   "doc": "<p>Constraint force mixing added to every row's effective-mass diagonal, which regularizes redundant rows. Drive rows of <code>drive_mode=\"rows\"</code> use their exact unit response instead, and the coupled contact solves of a <code>friction_mode</code> other than <code>\"fixed_normal\"</code> leave it off their contact blocks.</p>",
+   "when": "Rarely changed. On ordinary scalar rows it shifts the diagonal, which damps the sweep like a relaxation below 1 and leaves the converged impulses of unregularized rows unchanged. It deepens the resting penetration of contacts under contact_regularization and floors the pre-elimination regularization; soften contacts with contact_regularization or contact_compliance instead.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2015
+  },
+  {
+   "name": "relaxation",
+   "type": "float",
+   "default": "1.0",
+   "units": "",
+   "step": true,
+   "category": "Solve",
+   "doc": "<p>Successive over-relaxation factor of the PGS sweep.</p>",
+   "when": "Leave at 1. Under-relaxation (about 0.6) helped one momentum-accelerated rope; values above 1 made a heavy impactor sink further.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2016
+  },
+  {
+   "name": "update_mass_matrix_interval",
+   "type": "int",
+   "default": "1",
+   "units": "",
+   "step": false,
+   "category": "Performance",
+   "doc": "<p>Rebuild and refactor the mass matrix every this many calls to <code>step</code>; <code>1</code> rebuilds it every step. Larger values reuse a stale factorization between rebuilds. A change of <code>dt</code>, <code>reset</code> and <code>notify_model_changed</code> still request a refresh of the affected articulations. Under CUDA graph capture the host-side cadence is baked into the graph, so the interval should divide the number of steps captured per graph.</p>",
+   "when": "Above 1 only for slowly moving articulations; it must divide the steps per captured graph. It does not cure energy gain on fast, light chains: on the measured chains the stale matrix lost energy instead.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2017
+  },
+  {
+   "name": "enable_joint_limits",
+   "type": "bool",
+   "default": "False",
+   "units": "",
+   "step": false,
+   "category": "Joints and drives",
+   "doc": "<p>Enforce <code>joint_limit_lower</code> and <code>joint_limit_upper</code> of PRISMATIC, REVOLUTE and D6 DOFs as unilateral rows. When <code>False</code> (the default), no joint-limit rows are created, joint position limits are not enforced, and limits use no <code>articulation_constraint_max</code> capacity. The default matches the Steel reference implementation this solver is ported from.</p>",
+   "when": "Set True whenever the model authors joint limits. Off, limits are not simulated. DISTANCE joint limits are ignored either way at this commit.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2018
+  },
+  {
+   "name": "joint_limit_activation_gap",
+   "type": "float | None",
+   "default": "None",
+   "units": "m or rad",
+   "step": false,
+   "category": "Joints and drives",
+   "doc": "<p>Distance from a finite position limit [m or rad] at which its row is created, when <code>enable_joint_limits</code> is set. <code>inf</code> creates the rows of every finite limit each step; a smaller gap creates a row only when <code>q &lt;= lower + gap</code> or <code>q &gt;= upper - gap</code>. <code>None</code> (the default) uses a speed-aware gap of <code>0.05 + 2 * dt * |v|</code> per DOF, where <code>v</code> is the joint's unconstrained velocity at the end of the step, after drives, gravity and parent motion. Limit rows are speculative and apply no impulse while the joint cannot reach its bound within the step, so the skipped rows are no-ops unless constraint impulses in the solve, such as contacts, accelerate the joint toward the bound by more than the margin in one step. Mimic and connect rows also act inside the solve, so both mimic ends, the tree joints between the two ends of each mimic or loop closure, and every joint below them always have their rows. Joints above a closure's common ancestor carry both ends and stay gated, which can miss a passive limited mount under opposed mimics. With <code>drive_mode=\"rows\"</code> the drives act inside the solve too, so <code>None</code> creates every limit row, as <code>inf</code> does. A bound at or beyond <code>MAXVAL</code>, the builder's unlimited default (<code>+/-1e10</code>), has no row. The constructor warns when the finite limits alone exceed the capacity. The value is validated even when joint limits are disabled.</p>",
+   "when": "A fixed gap such as 0.1 builds limit rows only near a limit and is often faster than the speed-aware default. Keep it above 2 * max|qd| * dt.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [
+    "default in Newton 1.8.0: float('inf')",
+    "default in Newton main: float('inf')"
+   ],
+   "line": 2019
+  },
+  {
+   "name": "enable_joint_velocity_limits",
+   "type": "bool",
+   "default": "False",
+   "units": "",
+   "step": false,
+   "category": "Joints and drives",
+   "doc": "<p>Enforce <code>joint_velocity_limit</code> of PRISMATIC, REVOLUTE and D6 DOFs with one row pair per limited DOF, after scaling articulation velocities that already exceed a limit. A DOF at the builder's default limit (<code>1e6</code>) or above has no rows. The free-body limits of <code>register_custom_attributes</code> are enforced whenever those attributes are registered, independently of this option.</p>",
+   "when": "Set True when the task depends on joint velocity limits.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2020
+  },
+  {
+   "name": "velocity_limit_activation_fraction",
+   "type": "float",
+   "default": "0.0",
+   "units": "",
+   "step": false,
+   "category": "Joints and drives",
+   "doc": "<p>Create the velocity-limit rows of a DOF only when <code>|qd| &gt;= velocity_limit_activation_fraction * limit</code>. <code>0</code> creates them for every limited DOF each step; <code>inf</code> never creates them. The gate samples the velocity before the solve, so a DOF that crosses the threshold during a step is clamped one step later. Must be in <code>[0, 1]</code> or <code>inf</code>.</p>",
+   "when": "Raise toward 1 to skip rows of DOFs far below their limit.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2021
+  },
+  {
+   "name": "enable_joint_friction",
+   "type": "bool",
+   "default": "False",
+   "units": "",
+   "step": false,
+   "category": "Joints and drives",
+   "doc": "<p>Enforce <code>joint_friction</code> [N or N\u00b7m] as dry joint friction (MuJoCo <code>frictionloss</code>). Each PRISMATIC, REVOLUTE, BALL or D6 DOF with positive friction adds one row whose impulse is bounded by <code>joint_friction * dt</code> around a zero-velocity target, so the DOF sticks until the required effort exceeds the friction and then slides against it. A BALL joint's three DOFs are separate boxes about the axes of its angular velocity coordinates. The rows use the articulated response, so coupled inertia, armature, drives, limits and contacts act jointly; their impulses cold-start each step and count against <code>articulation_constraint_max</code>. The coefficients are read and checked on the device every step, also on graph replay, so in-place edits take effect on the next step. An eager step reads a replaced array; a captured graph keeps the array it was captured with, so recapture after replacing it. After editing or replacing the coefficients, call <code>notify_model_changed</code> with <code>JOINT_DOF_PROPERTIES</code> (or the narrower <code>JOINT_DOF_FORCE_PROPERTIES</code>) to wake sleeping islands whose friction changed. Non-finite or negative values, and nonzero friction on other joint types or loop-closing joints, are invalid: such a DOF builds no row, construction and eager notifications raise <code>ValueError</code>, and steps flag the owning world for <code>check_constraint_capacity</code>. Requires CUDA and is not supported with <code>contact_compliance</code> or <code>enable_bilateral_preelimination</code>; those combinations raise <code>NotImplementedError</code>. Enabling it disables the articulation-local, paired factor-coordinate and sparse-diagonal solves and sparse mass factors at construction, even when every coefficient is zero, so enable it only for models that need friction. When <code>False</code>, <code>joint_friction</code> is ignored.</p><p>A positive <code>steel:joint_friction_load_coefficient</code> at construction (see <code>register_custom_attributes</code>) adds load-proportional friction: each step, a DOF's bound grows by its coefficient times the load its joint transmits under that step's free dynamics. The row is solved together with the drives, so it resists a drive up to its bound, whereas PhysX applies the friction before each DOF's drive in every iteration and a stiff drive largely overrides it. With <code>drive_mode=\"augmented\"</code> the implicit drive forces are part of the free dynamics and count toward the load; <code>drive_mode=\"rows\"</code> leaves them out, as PhysX does. The coefficients follow the validity rules and notify contract of <code>joint_friction</code>. A model built with every coefficient zero must keep them zero; to randomize coefficients after construction, make at least one positive beforehand.</p><p><b>Experimental.</b><code>enable_joint_friction</code> and its supported combinations may change without the normal deprecation period.</p>",
+   "when": "Set True for models that author joint friction (MJCF frictionloss). It disables several fast paths, so leave it off otherwise.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2022
+  },
+  {
+   "name": "articulation_constraint_max",
+   "type": "int",
+   "default": "32",
+   "units": "",
+   "step": false,
+   "category": "Capacity and diagnostics",
+   "doc": "<p>Capacity of rows involving articulated bodies (mimic and connect rows, contacts, enabled joint limits, joint velocity limits, joint friction and, with <code>drive_mode=\"rows\"</code>, joint drives) per world. Rows beyond it are dropped and reported, see <code>constraint_overflow</code>.</p>",
+   "when": "Size from row_watermark: about 2x the requested mark while overflowing, then 1.3x a non-overflowing mark. Robots with limits or self-contacts often need more than 32. An overflowing run can gain energy and diverge.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2023
+  },
+  {
+   "name": "free_body_constraint_max",
+   "type": "int",
+   "default": "512",
+   "units": "",
+   "step": false,
+   "category": "Capacity and diagnostics",
+   "doc": "<p>Capacity of free-body rows per world: free-body contact rows and free-body velocity-limit rows. Under the <code>\"propagation\"</code> response free-body contacts use the propagation rows, so it sizes only the velocity-limit rows. Rows beyond it are dropped and reported, see <code>constraint_overflow</code>.</p>",
+   "when": "Size from row_watermark under the immediate response. Very large values stop the immediate kernels from building; move such scenes to colored propagation.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2024
+  },
+  {
+   "name": "propagation_constraint_max",
+   "type": "int | None",
+   "default": "None",
+   "units": "",
+   "step": false,
+   "category": "Capacity and diagnostics",
+   "doc": "<p>Capacity of the propagation row family per world in the <code>\"propagation\"</code> response, which holds every contact row except those between two links of one articulation; these stay dense unless <code>propagation_same_articulation_rows</code> is set. <code>None</code> (default) uses <code>free_body_constraint_max + articulation_constraint_max</code>. Setting it lets <code>free_body_constraint_max</code> shrink to the free-body velocity-limit rows. At least 1; rejected with <code>articulated_contact_response=\"immediate\"</code>.</p>",
+   "when": "Size from row_watermark under the propagation response.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2025
+  },
+  {
+   "name": "warn_constraint_overflow",
+   "type": "bool",
+   "default": "True",
+   "units": "",
+   "step": true,
+   "category": "Capacity and diagnostics",
+   "doc": "<p>Print a device-side warning the first time a world exceeds a row capacity. The warning does not synchronize the host and is compatible with CUDA graph capture. The host contact torsion preparation emits its overflow warning as a <code>NewtonWarning</code> through <code>warnings</code> instead.</p>",
+   "when": "Turn off only when you check constraint_overflow yourself.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2026
+  },
+  {
+   "name": "row_watermark",
+   "type": "bool",
+   "default": "False",
+   "units": "",
+   "step": false,
+   "category": "Capacity and diagnostics",
+   "doc": "<p>Accumulate the high-water marks of the per-world row counts of every row family and of the contact count on the device in every step, including captured ones; read them with <code>constraint_row_watermarks</code>.</p>",
+   "when": "On while tuning. Read constraint_row_watermarks() after a full episode.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2027
+  },
+  {
+   "name": "drive_mode",
+   "type": "Literal['augmented', 'rows']",
+   "default": "'augmented'",
+   "units": "",
+   "step": false,
+   "category": "Joints and drives",
+   "doc": "<p>Joint drive formulation. <code>\"augmented\"</code> integrates drives implicitly in the mass matrix. <code>\"rows\"</code> adds one dense PGS row per driven DOF (positive <code>joint_target_ke</code> or <code>joint_target_kd</code>) whose impulse follows the PhysX articulation force-drive update in every iteration, so drives are solved together with contacts and limits instead of before them. Without contacts or limits and below the effort limit, the converged row reproduces the implicit drive of <code>\"augmented\"</code>. Under effort saturation the two differ: <code>\"augmented\"</code> clamps the explicit drive force before the implicit solve, while the row clamps its accumulated impulse at <code>joint_effort_limit * dt</code>. Drive rows are allocated first in each world, count against <code>articulation_constraint_max</code>, and a drive whose row does not fit is not applied (the world is flagged in <code>constraint_overflow</code>).</p>",
+   "when": "\"rows\" when drive torques must respect the effort limit exactly (torque-limited robots, sim-to-real), or to solve drives together with contacts.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2028
+  },
+  {
+   "name": "fuse_joint_velocity_limits",
+   "type": "bool",
+   "default": "True",
+   "units": "",
+   "step": false,
+   "category": "Joints and drives",
+   "doc": "<p>With <code>drive_mode=\"rows\"</code> and <code>enable_joint_velocity_limits</code>, enforce the velocity limit of each driven DOF with a clamp of its velocity at the end of every iteration (after the contact rows, like the velocity-limit rows it replaces) instead of two velocity-limit rows, and exclude it from the pre-solve velocity scaling. Limited DOFs without a drive row keep their rows. In every other configuration, including <code>velocity_limit_activation_fraction=inf</code>, the option has no effect; <code>velocity_limits_fused</code> reports whether the clamp is active.</p>",
+   "when": "Leave on; set False to keep explicit velocity-limit rows on driven DOFs.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2029
+  },
+  {
+   "name": "enable_bilateral_preelimination",
+   "type": "bool",
+   "default": "False",
+   "units": "",
+   "step": false,
+   "category": "Solve",
+   "doc": "<p>Eliminate the mimic and connect rows of each articulation before the iterative sweep with a Schur complement of the bilateral block <code>S = J_B H^-1 J_B^T</code>: the predicted velocity is projected once and the responses of the other rows are corrected, so closures and mimic couplings depend much less on <code>iterations</code>. The block is factored with a diagonal regularization <code>R</code> of <code>1e-3</code> times each row's diagonal plus a floor of <code>max(cfm, 1e-7)</code>, which keeps nearly dependent closure axes positive definite. The elimination is therefore not exact: a bilateral velocity residual of <code>R (S + R)^-1 (J_B v + b_B)</code> remains after the projection, and the corrected responses of other rows still couple into the bilateral rows by the same factor. The rows stay allocated and in the sweep, which reduces this residual further. If any articulation owns more than eight bilateral rows (a FIXED loop closure, such as a link-break weld, takes six), any loop closure has a kinematic or world parent, or <code>velocity_iterations</code> is positive, elimination is disabled for the whole solver (every articulation keeps iterative rows) with a warning at construction.</p>",
+   "when": "Loop closures or mimic couplings that drift at your iteration budget.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2030
+  },
+  {
+   "name": "bilateral_preelimination_include_mimics",
+   "type": "bool",
+   "default": "True",
+   "units": "",
+   "step": false,
+   "category": "Solve",
+   "doc": "<p>With pre-elimination enabled, also eliminate mimic rows. <code>False</code> eliminates only the connect rows and keeps mimic rows iterative, which avoids a singular block when a mimic row is nearly dependent on a closure.</p>",
+   "when": "Set False if a mimic row is nearly dependent on a closure and the eliminated block becomes singular.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2031
+  },
+  {
+   "name": "parallel_tree",
+   "type": "bool",
+   "default": "False",
+   "units": "",
+   "step": false,
+   "category": "Performance",
+   "doc": "<p>Traverse the independent branches of each articulation tree in parallel (forward kinematics and dynamics, the inverse-dynamics backward pass and state publication), with up to 32 threads per articulation instead of one. Results match the serial traversal up to floating-point summation order. Unbranched articulations, models whose joints are not ordered parent before child, and CPU devices keep the serial traversal. Broad trees can benefit; narrow trees can be slower, so measure the full step before enabling it.</p>",
+   "when": "Broad trees such as hands; time the full step before keeping it.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2032
+  },
+  {
+   "name": "reuse_kinematics",
+   "type": "bool",
+   "default": "False",
+   "units": "",
+   "step": false,
+   "category": "Performance",
+   "doc": "<p>Opt in to carrying the kinematics and inverse-dynamics terms the solver forms when it publishes a step's body state into the next step, instead of re-deriving them from the joint coordinates. The carry runs on CUDA only and stays off with gradients, joint velocity limits, sleeping, the parallel tree, or a FREE or DISTANCE joint that is not the first joint of its articulation; the attribute of the same name reports whether it runs. Off by default: every step then re-derives the kinematics from its input state and publishes through <code>eval_fk</code>, as before. With the carry on, the terms belong to the state object they were published into: <code>reset</code> drops them for the selected worlds, <code>notify_model_changed</code> drops them for joint, body and model property changes, a coupler's input-state notice drops them, and a step whose input state is another object recomputes them; a caller that overwrites or replaces <code>joint_q</code>, <code>joint_qd</code> or <code>body_q</code> of that state outside <code>step</code> must call <code>notify_state_changed</code> (or <code>reset</code> with a world mask) first. The published body poses and velocities then come from the solver's own kinematics and can differ from <code>eval_fk</code>'s in their last bit.</p>",
+   "when": "Time it on your scene; call notify_state_changed after writing state outside step().",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2033
+  },
+  {
+   "name": "use_parallel_streams",
+   "type": "bool",
+   "default": "False",
+   "units": "",
+   "step": false,
+   "category": "Performance",
+   "doc": "<p>Run the factorization, unconstrained solve and response kernels of each articulation-size group on a CUDA stream of its own, so groups of different sizes overlap. Results are unchanged; CPU devices and models with one size group ignore it.</p>",
+   "when": "Models with several articulation sizes, or many independent single-DOF joints on one base.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2034
+  },
+  {
+   "name": "double_buffer",
+   "type": "bool",
+   "default": "False",
+   "units": "",
+   "step": false,
+   "category": "Performance",
+   "doc": "<p>Keep two sets of the grouped mass-matrix and Jacobian buffers and clear the set a step used on a separate CUDA stream, which the step joins before it returns. Results are unchanged; CPU devices and the sparse mass factors ignore it. Steps and graph launches of one solver must be ordered on one stream (or through explicit stream dependencies).</p>",
+   "when": "Time it on your scene; results are unchanged.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2035
+  },
+  {
+   "name": "friction_anchor_beta",
+   "type": "float | None",
+   "default": "None",
+   "units": "",
+   "step": false,
+   "category": "Contacts and friction",
+   "doc": "<p>Position-correction gain of persistent friction patches; <code>0</code> selects point friction. <code>None</code> selects <code>0.2</code>, and point friction when <code>contact_compliance</code> is enabled or <code>friction_mode</code> is not <code>\"fixed_normal\"</code>. With a positive gain, the contacts of a body pair whose normals, contact planes and friction coefficients agree and whose shapes touch form a region. Each region's friction acts at up to two anchors along its principal extent, which share the region's total normal impulse; every contact keeps its own normal row. An anchor carries its tangential displacement across steps, following the pose increments of both bodies, and the tangent rows add <code>friction_anchor_beta * displacement / dt</code>, so a held object does not creep under a static load. Anchors are released when their region is unloaded or slides at the Coulomb limit; history is matched by body pair and geometry, independently of collision contact matching. A one-anchor region has no torsional friction of its own. Call <code>reset</code> after teleporting a body to discard its history.</p>",
+   "when": "Keep the default (anchors) for anything held, carried or pinched. Set 0 (point friction) for scenes where nothing is held; it is cheaper.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2036
+  },
+  {
+   "name": "contact_regularization",
+   "type": "float",
+   "default": "0.0",
+   "units": "",
+   "step": false,
+   "category": "Stabilization",
+   "doc": "<p>Dimensionless regularization <code>g</code> of penetrating contact rows (<code>friction_mode=\"fixed_normal\"</code> only). Each iteration moves a row's impulse toward the rigid solution with weight <code>1 / (1 + g)</code> and toward zero with weight <code>g / (1 + g)</code>, the update of an implicitly integrated contact spring. It makes statically indeterminate normal-force splits unique and damps the sweep, at the cost of a resting penetration: a row at rest settles at <code>baumgarte * phi / dt = -g * d * lambda</code> (<code>d</code> its unsplit inverse effective mass, <code>lambda</code> its impulse), about <code>g * a * dt^2 / baumgarte</code> for a body under acceleration <code>a</code> resting on one row. Propagation rows whose response is split across coupled contact bodies, with split diagonal <code>d_s</code>, take weight <code>w * d_s / (w * d_s + (1 - w) * d)</code> with <code>w = 1 / (1 + g)</code>, which reaches the same rest state. Speculative (positive-gap) rows, rows whose rebound fires and the velocity-only iterations stay rigid. <code>0</code> is the rigid law; at most <code>1e6</code>.</p>",
+   "when": "About 0.01 removes warm-start bursts on deeply wedged contacts and makes indeterminate load splits unique, at a small resting penetration.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2037
+  },
+  {
+   "name": "velocity_iterations",
+   "type": "int",
+   "default": "0",
+   "units": "",
+   "step": false,
+   "category": "Solve",
+   "doc": "<p>Number of velocity-only iterations after the position solve. Positions are integrated from the position solve; these iterations then refine the velocity without the position bias, so stabilization does not add velocity to the bodies. A positive-gap contact whose linearized gap at the end of the step stays open keeps its speculative allowance, and an impacting contact keeps its rebound target.</p>",
+   "when": "Set 2 to 4 when position correction launches bodies (deep start overlaps). Must be 0 with sleeping, compliance, and torsion under propagation.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2038
+  },
+  {
+   "name": "velocity_drive_mode",
+   "type": "Literal['freeze', 'active']",
+   "default": "'freeze'",
+   "units": "",
+   "step": true,
+   "category": "Solve",
+   "doc": "<p>Treatment of PGS joint-drive rows during the velocity-only iterations: <code>\"freeze\"</code> keeps the drive impulses of the position solve, <code>\"active\"</code> keeps solving the drive rows. Implicit (mass-matrix) drives have no rows, so the option has no effect for them.</p>",
+   "when": "Only matters with drive_mode=\"rows\" and velocity_iterations > 0.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2039
+  },
+  {
+   "name": "row_schedule",
+   "type": "Literal['interleaved', 'contact_then_internal', 'phased']",
+   "default": "'interleaved'",
+   "units": "",
+   "step": false,
+   "category": "Solve",
+   "doc": "<p>Row order of the matrix-free sweeps. <code>\"interleaved\"</code> sweeps every row family in each iteration: the dense rows, the free-body contact rows, then the velocity limits. <code>\"contact_then_internal\"</code> runs every iteration of the contact rows first, then every iteration of the internal rows (drive, mimic, connect, joint-limit and joint-friction rows) and the velocity limits. <code>\"phased\"</code> approximates the order PhysX uses for grasping: each iteration solves the internal rows, then the contact rows, then the velocity limits, each in a launch of its own; the propagation responses use this order with <code>\"interleaved\"</code> as well. Contact torsion and contact compliance require <code>\"interleaved\"</code>, and the sparse mass factors are selected only with <code>\"interleaved\"</code>.</p>",
+   "when": "Try \"phased\" for grasps tuned against PhysX. Avoid \"contact_then_internal\" when contacts load a joint limit or drive: the load sinks through at any iteration count. Contact torsion, compliance and the sparse mass factors need \"interleaved\".",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2040
+  },
+  {
+   "name": "friction_mode",
+   "type": "Literal['fixed_normal', 'bisection', 'bisection_desaxce', 'coulomb_newton']",
+   "default": "'fixed_normal'",
+   "units": "",
+   "step": false,
+   "category": "Contacts and friction",
+   "doc": "<p>Experimental Coulomb friction update of the matrix-free solve. <code>\"fixed_normal\"</code> updates both tangent impulses together on the friction disk of the current normal impulse: sticking uses the inverse of their 2x2 block, sliding a bounded scalar solve that keeps isotropic maximum dissipation. <code>\"bisection\"</code> bisects the normal impulse of each contact and re-solves the 2x2 tangent problem at every probe, so normal and friction impulses are updated together. <code>\"bisection_desaxce\"</code> adds the de Saxce maximum-dissipation bias <code>mu * |c_T|</code> to the normal target velocity of free-body contacts (Le Lidec and Carpentier, 2024). <code>\"coulomb_newton\"</code> solves each free-body contact's Coulomb cone exactly with a bracketed scalar Newton iteration on the tangential-force ratio; articulated contacts keep the <code>\"fixed_normal\"</code> update. The other modes replace each contact's normal and friction impulses with their coupled solution, which <code>relaxation</code> does not scale, and use point friction: an omitted <code>friction_anchor_beta</code> selects it with a warning, and friction patches, contact torsion, contact compliance, <code>contact_regularization</code> and <code>articulated_contact_response=\"propagation\"</code> with <code>solve_mode=\"serial\"</code> require <code>\"fixed_normal\"</code>. The free-body and articulated rules above apply to <code>articulated_contact_response=\"immediate\"</code>. <code>solve_mode=\"colored\"</code> solves every contact on a propagation row, articulated ones included, with the free-body update of the selected mode; contacts between two links of one articulation stay on dense rows and keep the articulated update. This option may change without the normal deprecation period.</p>",
+   "when": "Experimental. Leave at \"fixed_normal\"; \"coulomb_newton\" for free bodies near the friction limit. At this commit \"bisection\" and \"bisection_desaxce\" let a box near the friction limit slide; a fix is in review in skild-ai/newton#26.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2041
+  },
+  {
+   "name": "contact_warmstart",
+   "type": "bool",
+   "default": "False",
+   "units": "",
+   "step": false,
+   "category": "Contacts and friction",
+   "doc": "<p>Start each step from the previous step's contact impulses, matched by contact identity through <code>rigid_contact_match_index</code>, so the <code>CollisionPipeline</code> must be created with contact matching enabled. Substeps that reuse a contact set without a collision pass seed each contact from its own previous substep. History carries across one collision pass into the same <code>Contacts</code> buffer when that pass matched against the solved contact set (<code>rigid_contact_match_generation</code>); a different buffer, skipped passes, or a pass after the pipeline wrote another buffer start cold. Carried impulses are scaled by the ratio of the step to the previous one, including under graph replay; tangent impulses are rotated into the current tangent frame and clamped to the current friction cone; other rows start cold. The pipeline's default matching compares world-space contact midpoints, so contacts that two bodies carry together farther than <code>contact_matching_pos_threshold</code> per step can lose their match and start cold; <code>contact_matching_body_frame=True</code> also matches them in their bodies' frames.</p>",
+   "when": "Off by default. Turn on only where a measured scene needs it (for example a house of cards with momentum). Needs contact matching; never for a grasp without anchors.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2042
+  },
+  {
+   "name": "contact_warmstart_decay",
+   "type": "float",
+   "default": "1.0",
+   "units": "",
+   "step": true,
+   "category": "Contacts and friction",
+   "doc": "<p>Non-negative scale applied to the carried impulses.</p>",
+   "when": "Values below 1 weaken the carried impulses of warm start.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2043
+  },
+  {
+   "name": "enable_restitution",
+   "type": "bool",
+   "default": "True",
+   "units": "",
+   "step": false,
+   "category": "Contacts and friction",
+   "doc": "<p>Apply contact restitution, the only restitution switch. The default <code>True</code> leaves the shapes' coefficients in charge; they default to zero, so a model that authors no restitution does not bounce. <code>False</code> turns restitution off for every contact regardless of the coefficients, and lets <code>contact_compliance</code> accept shapes with positive restitution.</p>",
+   "when": "Set False to ignore authored restitution everywhere, or to use contact_compliance with shapes that author restitution.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2044
+  },
+  {
+   "name": "restitution_velocity_threshold",
+   "type": "float",
+   "default": "0.5",
+   "units": "m/s",
+   "step": true,
+   "category": "Contacts and friction",
+   "doc": "<p>Minimum closing speed [m/s] of a contact at the start of the step for a rebound. Contacts bounce with the two shapes' restitution coefficients combined by <code>restitution_combine</code> (<code>restitution</code>, clamped to <code>[0, 1]</code>; zero gives no rebound): an impacting contact replaces its position bias by the rebound target <code>-e * u_start</code>, where <code>u_start</code> is its relative normal velocity at the start of the step, as a lower bound on its separating velocity. The contact must also touch, or be predicted to reach the surface during the step. Slower contacts keep the ordinary contact law, so a resting contact pressed by gravity, a drive or an applied force does not bounce, and this step's forces do not enlarge a rebound. Finite and non-negative.</p>",
+   "when": "Lower to let slower impacts bounce; raise to make slow impacts inelastic.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2045
+  },
+  {
+   "name": "contact_speculative_scale",
+   "type": "float",
+   "default": "1.0",
+   "units": "",
+   "step": true,
+   "category": "Stabilization",
+   "doc": "<p>Fraction of a positive contact gap that the contact may close during the step (<code>rhs = scale * phi / dt</code>). <code>0</code> removes the speculative allowance; penetration correction is unchanged.</p>",
+   "when": "Rarely changed. 1 lets a contact close exactly its gap in one step; 0 removes the speculative allowance.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2046
+  },
+  {
+   "name": "contact_gap_gate",
+   "type": "float | None",
+   "default": "None",
+   "units": "m",
+   "step": true,
+   "category": "Stabilization",
+   "doc": "<p>Contacts of the collision pipeline whose gap [m] exceeds this distance get no rows; <code>0</code> keeps touching contacts only. <code>None</code> (the default) keeps every contact. <code>gap</code> decides which contacts the pipeline reports (also to sensors and other solvers); this gate only decides which of them this solver solves. Finite and non-negative.</p>",
+   "when": "Set 0 where speculative rows never engage (for example many small rollers) to save rows.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2047
+  },
+  {
+   "name": "contact_friction_scale",
+   "type": "float",
+   "default": "1.0",
+   "units": "",
+   "step": false,
+   "category": "Contacts and friction",
+   "doc": "<p>Non-negative factor applied to every shape's friction coefficient (<code>shape_material_mu</code>) in the solver's copy of the materials, refreshed at construction and by <code>notify_model_changed</code> with <code>SHAPE_PROPERTIES</code>. It scales the friction rows, patches and the torsion budget; the model's coefficients are unchanged.</p>",
+   "when": "Sweeps or domain randomization over friction without editing shape materials.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2048
+  },
+  {
+   "name": "contact_friction_position_iterations",
+   "type": "int",
+   "default": "-1",
+   "units": "",
+   "step": false,
+   "category": "Contacts and friction",
+   "doc": "<p>Number of position iterations that solve tangential friction rows. <code>-1</code> (the default) solves them in every position iteration; <code>k &gt;= 0</code> solves them only in the last <code>k</code> position iterations (<code>0</code> never), and holds their impulses at zero before that. Velocity-only iterations always solve friction. Values other than <code>-1</code> reject <code>contact_warmstart</code> and <code>contact_compliance</code>.</p>",
+   "when": "Rarely changed. Solves friction only in the last k position iterations; rejects warm start and compliance.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2049
+  },
+  {
+   "name": "contact_friction_gap_max",
+   "type": "float | None",
+   "default": "None",
+   "units": "m",
+   "step": true,
+   "category": "Contacts and friction",
+   "doc": "<p>Contacts with a gap [m] above this distance get a normal row only. <code>None</code> (the default) gives every contact friction rows; <code>-inf</code> gives none of them friction rows, which saves the rows that zero friction coefficients would keep. A finite negative value keeps friction rows for contacts that penetrate deeper than it. Switching between <code>None</code> (or <code>inf</code>) and a finite or <code>-inf</code> value requires a new solver.</p>",
+   "when": "-inf for a frictionless scene, which saves the friction rows.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2050
+  },
+  {
+   "name": "contact_shared_anchor",
+   "type": "bool",
+   "default": "False",
+   "units": "",
+   "step": false,
+   "category": "Contacts and friction",
+   "doc": "<p>Apply every contact row at the midpoint of the two witness points instead of at each body's own witness point, as PhysX applies a contact at one point. <code>phi</code> still comes from the witness points. Friction patch rows keep their patch anchors, so with patches this moves only the normal rows.</p>",
+   "when": "Match PhysX's single-point contact application.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2051
+  },
+  {
+   "name": "contact_friction_shared_anchor",
+   "type": "bool",
+   "default": "False",
+   "units": "",
+   "step": false,
+   "category": "Contacts and friction",
+   "doc": "<p>Apply the friction rows at the witness midpoint, which removes the tangential force couple of witness points separated along the normal. It has no effect on friction patch rows, which act at their anchors.</p>",
+   "when": "Remove the friction couple of witness points separated along the normal.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2052
+  },
+  {
+   "name": "contact_torsion_device",
+   "type": "bool",
+   "default": "False",
+   "units": "",
+   "step": false,
+   "category": "Contacts and friction",
+   "doc": "<p>Experimental contact torsion is enabled at construction when any shape has a positive <code>steel:min_torsional_patch_radius</code> (see <code>register_custom_attributes</code>). It adds one angular row per contact group of an articulated body, about the group's normal, bounded by <code>r * (mu * N - sliding)</code>: sliding and spin share one Coulomb budget, <code>N</code> is the final solved load of the group's normal rows, and <code>r</code> is the largest radius of the group's shapes (a patch region can span several shape pairs; contacts whose pair has no positive radius get no torsion). With point friction a group is a coplanar cluster of touching contacts of one shape pair; with friction patches it is one patch region, budgeted by its pooled load and undivided friction coefficient. The radius is an effective footprint, not derived from the geometry: for uniform pressure on a disk of radius <code>R</code> it is <code>2 * R / 3</code>. Rows are rebuilt every step and carry no spin history; free-body contacts get none. Supported geometry is sphere, box, capsule, cylinder, cone, ellipsoid, plane and convex mesh. Requires <code>contact_warmstart=False</code>; contacts with hydroelastic stiffness are rejected. Dense torsion rows count against <code>articulation_constraint_max</code> after the world's other dense rows. A world whose groups do not all fit keeps the rows that fit, and a world that dropped dense rows gets no dense torsion rows; both set the world's <code>constraint_overflow</code> entry and warn when <code>warn_constraint_overflow</code> is set, and other worlds step unaffected. <code>contact_torsion_device</code> prepares the torsion rows on the device instead of on the host. The host preparation is the reference implementation; it reads the contacts back every step and cannot be captured in a CUDA graph. The device preparation builds the same groups and rows with preallocated buffers and supports CUDA graph capture of <code>step</code>. Invalid torsion input (contact-buffer overflow, hydroelastic contacts, or a friction-patch load ring that does not match its group) makes an eager step raise before it applies torsion rows. In a captured step the error is deferred: the failing step restores its output motion arrays (<code>joint_q</code>, <code>joint_qd</code>, <code>body_q</code>, <code>body_qd</code>, <code>body_qdd</code>) to the input values, while other outputs, observables and solver history still advance, and <code>check_constraint_capacity</code> raises after the replays. Check before using replay results, discard failed output, fix the cause and <code>reset</code>. The input error is solver-wide: any reset clears it, and a cause that persists latches it again on the next step. Grouping runs serially per world with worst-case quadratic cost in the contacts of a world. No effect without contact torsion. With <code>articulated_contact_response=\"propagation\"</code>, every positive-radius contact on an articulated body that is routed to propagation reserves one more propagation row for torsion (same-articulation contacts stay dense unless <code>propagation_same_articulation_rows</code> is set), so size <code>propagation_constraint_max</code>, or <code>articulation_constraint_max</code> and <code>free_body_constraint_max</code> when it is unset, for it. A group's torsion row takes that row of its last member. The serial sweep solves the torsion rows after the other rows; the colored sweep solves each in its last member's contact unit, after the rows of the group's other members. Both use the same budget, and both solve modes require <code>contact_torsion_device=True</code> and <code>velocity_iterations=0</code>. <code>solve_mode=\"colored\"</code> rejects contact torsion with <code>contact_compliance</code>, whose contacts are hydroelastic. When propagation rows overflow, a group keeps the contacts that received rows and the step does not raise: it sets <code>constraint_overflow</code>, warns when <code>warn_constraint_overflow</code> is set, and <code>check_constraint_capacity</code> raises.</p>",
+   "when": "Set True whenever shapes author steel:min_torsional_patch_radius and you capture CUDA graphs or use the propagation response.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2053
+  },
+  {
+   "name": "contact_compliance",
+   "type": "bool",
+   "default": "False",
+   "units": "",
+   "step": false,
+   "category": "Contacts and friction",
+   "doc": "<p>Experimental: solve contacts that carry a positive <code>rigid_contact_stiffness</code> [N/m] with an implicit unilateral spring-damper law instead of the rigid normal law. The material comes from the contacts (per-shape hydroelastic stiffness, the contact damping [N s/m], zero staying zero, and the friction weight, applied once to the pair friction); contacts with zero stiffness stay rigid. A compliant row's force is <code>max(0, -k phi_next - c u_next)</code>, solved with the residual <code>u + k phi / (dt k + c) + lambda / (dt (dt k + c))</code> in every sweep; the damping term is dropped while the gap is open. Requires point friction (<code>None</code> or <code>0</code> for <code>friction_anchor_beta</code>; <code>None</code> warns), positive <code>iterations</code>, no warm start, no velocity-only iterations, no contact regularization, no shared anchors and zero shape restitution. With <code>solve_mode=\"colored\"</code> the colored sweep solves the compliant rows, without contact torsion; <code>\"propagation\"</code> with <code>solve_mode=\"serial\"</code> rejects it. The contacts must carry the hydroelastic material arrays. The rows are prepared on the device, so <code>step</code> can be captured in a CUDA graph. Invalid input (for example a compliant contact lost to a row capacity, even with <code>warn_constraint_overflow</code> off, or a positive shape restitution) makes an eager step raise. In a captured step the error is deferred: <code>check_constraint_capacity</code> raises after the replays, until <code>reset</code>, and their results are invalid; eager steps do not report it. Contacts the allocator excludes on purpose are counted in <code>compliance_skipped_contact_count</code> and compliant contacts in <code>compliance_contact_count</code>. This option may change without the normal deprecation period.</p>",
+   "when": "Experimental. Soft fingertips or pads modeled with hydroelastic contacts.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2054
+  },
+  {
+   "name": "enable_sleeping",
+   "type": "bool",
+   "default": "False",
+   "units": "",
+   "step": false,
+   "category": "Sleeping",
+   "doc": "<p>Experimental passive-island sleeping. Articulations in contact are joined into islands every step. Static geometry and articulations with no responding degrees of freedom (such as a body welded to the world) support an island without joining it. A fixed-base articulation with responding joints, such as a robot arm, joins the island of everything it touches, so it can connect them into one island; its fixed root supports that island. A supported island whose bodies stay below <code>sleep_linear_threshold</code> and <code>sleep_angular_threshold</code> for <code>sleep_quiet_time</code> falls asleep, and its published state (<code>joint_q</code>, <code>joint_qd</code>, <code>body_q</code>, <code>body_qd</code> and, when requested, <code>body_parent_f</code>) is frozen until a wake event: a nonzero or nonfinite external force (<code>body_f</code>, <code>joint_f</code>), a changed state or gravity, a contact with an awake or moving body, lost support or row capacity, a <code>reset</code> of its world, or <code>notify_model_changed</code> for properties of its joints, DOFs, bodies or shapes (other notifications and changes to static or kinematic owners wake every island). Driven articulations (nonzero drive gains) and articulations with passive springs (nonzero <code>joint_stiffness</code> on a PRISMATIC, REVOLUTE or D6 tree joint) stay awake. Sleeping is configured at construction; rebuild captured graphs to change it. Construction raises <code>ValueError</code> with <code>contact_warmstart</code> or <code>velocity_iterations</code>, or for a model without articulations, and <code>NotImplementedError</code> with <code>articulated_contact_response=\"propagation\"</code> and <code>solve_mode=\"serial\"</code>, and with <code>solve_mode=\"colored\"</code> on CPU, where the colored mode runs the serial propagation sweep; with <code>solve_mode=\"colored\"</code> on CUDA skipped islands are left out of the coloring, the colored sweep and the propagation trees, and, where CUDA conditional graph nodes are supported, a captured step in which every articulation that can sleep sleeps skips the propagation solve. <code>step</code> raises <code>ValueError</code> for a nonpositive or nonfinite <code>dt</code> and when <code>state_in</code> and <code>state_out</code> share arrays. The sleeping options are runtime solver settings with no USD schema.</p>",
+   "when": "Settling scenes with many passive objects. Excludes warm start and velocity iterations. In many worlds, pair it with CollisionPipeline(deterministic=True), or most islands can stay awake; check body_awake.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2055
+  },
+  {
+   "name": "sleep_linear_threshold",
+   "type": "float",
+   "default": "0.05",
+   "units": "m/s",
+   "step": false,
+   "category": "Sleeping",
+   "doc": "<p>Body center-of-mass speed below which a body is quiet [m/s], finite and positive.</p>",
+   "when": "Lower if bodies fall asleep while still creeping.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2056
+  },
+  {
+   "name": "sleep_angular_threshold",
+   "type": "float",
+   "default": "0.15",
+   "units": "rad/s",
+   "step": false,
+   "category": "Sleeping",
+   "doc": "<p>Body angular speed below which a body is quiet [rad/s], finite and positive.</p>",
+   "when": "Lower if slowly spinning bodies fall asleep. Raise (for example to 0.3) if resting stacks stay awake with the default contact order.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2057
+  },
+  {
+   "name": "sleep_quiet_time",
+   "type": "float",
+   "default": "0.5",
+   "units": "s",
+   "step": false,
+   "category": "Sleeping",
+   "doc": "<p>Quiet, supported interval after which an island sleeps [s], finite and positive.</p>",
+   "when": "Raise if islands fall asleep before they settle.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2058
+  },
+  {
+   "name": "sleep_skip_constraints",
+   "type": "bool",
+   "default": "True",
+   "units": "",
+   "step": false,
+   "category": "Sleeping",
+   "doc": "<p>Skip the work of sleeping islands: their contact and joint-limit rows (collision still runs, so wake events are complete), the rebuild of their friction-patch history (carried instead), and their articulated dynamics (kinematics, inverse dynamics, drives, mass matrix and factorization, velocity prediction and integration). <code>False</code> keeps the rows and dynamics of sleeping islands and only freezes their published state.</p>",
+   "when": "Set False when consumers read contact forces of sleeping bodies.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2059
+  },
+  {
+   "name": "articulated_contact_response",
+   "type": "Literal['immediate', 'propagation']",
+   "default": "'immediate'",
+   "units": "",
+   "step": false,
+   "category": "Solve",
+   "doc": "<p>How contacts touching an articulation that is not a free body are solved.</p><ul><li><code>\"immediate\"</code>: dense rows of the articulation's generalized coordinates, <code>Y = H^-1 J^T</code> per row.</li><li><code>\"propagation\"</code>: fixed-size rows of the touched bodies at their centers of mass, with each body's 6x6 response from the articulated-body factorization of its tree. Each iteration solves these rows and then propagates the accumulated body impulses through the trees to the joint velocities. All contacts, including those of free bodies, use these rows, whose capacity per world is <code>propagation_constraint_max</code>, or <code>free_body_constraint_max + articulation_constraint_max</code> when that is <code>None</code>. With <code>solve_mode=\"colored\"</code> each sweep solves the contacts of a world in batches of contacts that share no responding body, one batch after the other.</li></ul><p>The propagation response avoids the per-row <code>H^-1 J^T</code> of contact rows at the cost of tree passes over every articulation in each iteration; which response is faster depends on the model. They keep joint-limit and velocity-limit rows dense, and contacts between two links of the same articulation dense unless <code>propagation_same_articulation_rows</code> is set. The tree factorization is rebuilt every step, independently of <code>update_mass_matrix_interval</code>.</p><p><b>Deprecated 1.8.</b> <code>\"propagation_colored\"</code> maps to <code>solve_mode=\"colored\"</code> with <code>\"propagation\"</code> and emits a <code>NewtonDeprecationWarning</code>.</p>",
+   "when": "\"propagation\" is required by the colored sweep. Keep \"immediate\" for loop-closing joints, Nesterov momentum and coupled solvers.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2060
+  },
+  {
+   "name": "propagation_same_articulation_rows",
+   "type": "bool",
+   "default": "False",
+   "units": "",
+   "step": false,
+   "category": "Propagation response",
+   "doc": "<p>Solve contacts between two links of the same articulation as propagation rows, with the exact cross response of the two links, instead of dense rows. Requires <code>articulated_contact_response=\"propagation\"</code> (either <code>solve_mode</code>).</p>",
+   "when": "Robots with many self-contacts under the propagation response, to move those contacts off the dense rows.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2061
+  },
+  {
+   "name": "propagation_cached_response",
+   "type": "bool",
+   "default": "True",
+   "units": "",
+   "step": false,
+   "category": "Propagation response",
+   "doc": "<p>With <code>articulated_contact_response=\"propagation\"</code> (either <code>solve_mode</code>), replace the per-iteration tree walk by cached responses: the setup extracts, for each contact-active body, its joint-space response <code>R</code> (DOFs x 6) and the 6x6 response blocks between active bodies, from the tree factorization that is fixed for the step, and each iteration applies them as a small matrix-vector product. The result equals the tree walk up to float reassociation. It applies to articulation groups with 0- or 1-DOF joints (optionally under a free root); other groups, and worlds with more cache-eligible active bodies than <code>propagation_cached_response_body_max</code>, keep the tree walk, selected per world on the device. Which is faster depends on the model.</p>",
+   "when": "Leave on; compare both on your model if the propagation sweep dominates.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2062
+  },
+  {
+   "name": "propagation_cached_response_body_max",
+   "type": "int",
+   "default": "8",
+   "units": "",
+   "step": false,
+   "category": "Propagation response",
+   "doc": "<p>Capacity of the cached responses in contact-active bodies of cache-eligible articulations per world; free bodies do not count. At least 1.</p>",
+   "when": "Raise when many contact-active bodies per world fall back to the tree walk.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2063
+  },
+  {
+   "name": "propagation_color_order",
+   "type": "Literal['contact', 'longest_first', 'rotating']",
+   "default": "'contact'",
+   "units": "",
+   "step": false,
+   "category": "Propagation response",
+   "doc": "<p>Order in which <code>solve_mode=\"colored\"</code> colors a world's contacts and runs those left without a batch: <code>\"contact\"</code> (default) by contact index, or <code>\"longest_first\"</code> by row count, longest first, then contact index. A batch takes as long as its longest contact, so <code>\"longest_first\"</code> puts long contacts together, which shortens the sweep where one body carries many contacts with different row counts; on some stacked scenes it converges more slowly at a fixed iteration count. <code>\"rotating\"</code> walks the contact-index order in a different deterministic permutation every step. Gauss-Seidel favours the contacts it solves last, so a fixed order over a sorted contact stream (<code>CollisionPipeline(deterministic=True)</code> or contact matching) can favour the same contacts every step and twist a symmetric grasp; rotating spreads that over the contacts. Equal contact streams and step counts give equal orders; reproducible runs still need <code>deterministic</code> and a deterministic pipeline. It supports fewer than 1,048,583 propagation rows per world. <code>solve_mode=\"serial\"</code> ignores it.</p>",
+   "when": "\"rotating\" spreads Gauss-Seidel bias over a symmetric grasp on a sorted contact stream; \"longest_first\" can shorten sweeps with uneven row counts.",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [
+    "'rotating' not in Newton 1.8.0",
+    "'rotating' not in Newton main"
+   ],
+   "line": 2064
+  },
+  {
+   "name": "friction_combine",
+   "type": "Literal['average', 'min', 'multiply', 'max']",
+   "default": "'average'",
+   "units": "",
+   "step": false,
+   "category": "Contacts and friction",
+   "doc": "<p>How a contact combines its two shapes' friction coefficients: <code>\"average\"</code>, <code>\"min\"</code>, <code>\"multiply\"</code> or <code>\"max\"</code>, as PhysX's material combine modes. It applies to sliding friction (<code>shape_material_mu</code>); the free-body angular rows keep the larger coefficient of the pair under every mode. A contact with one shape keeps that shape's coefficient. Construction-only.</p>",
+   "when": "Match the combine mode of the engine you are porting from (PhysX average, min, multiply or max).",
+   "available": {
+    "Newton 1.8.0": false,
+    "Newton main": false
+   },
+   "differences": [],
+   "line": 2065
+  },
+  {
+   "name": "restitution_combine",
+   "type": "Literal['average', 'min', 'multiply', 'max']",
+   "default": "'average'",
+   "units": "",
+   "step": false,
+   "category": "Contacts and friction",
+   "doc": "<p>How a contact combines its two shapes' restitution coefficients, with the same modes as <code>friction_combine</code>, after each coefficient is clamped to <code>[0, 1]</code>. Construction-only.</p>",
+   "when": "Match the combine mode of the engine you are porting from.",
+   "available": {
+    "Newton 1.8.0": false,
+    "Newton main": false
+   },
+   "differences": [],
+   "line": 2066
+  },
+  {
+   "name": "free_rigid_torsional_friction",
+   "type": "float | None",
+   "default": "None",
+   "units": "m",
+   "step": false,
+   "category": "Contacts and friction",
+   "doc": "<p>Experimental torsional coefficient [m] for every free-body contact, replacing the shapes' <code>steel:condim</code> gate and <code>shape_material_mu_torsional</code> for that coefficient only; <code>None</code> keeps the shape data. Meant for sweeps that cannot edit shape data. Construction-only.</p>",
+   "when": "Sweeps over spin friction of free bodies without editing shapes.",
+   "available": {
+    "Newton 1.8.0": false,
+    "Newton main": false
+   },
+   "differences": [],
+   "line": 2067
+  },
+  {
+   "name": "free_rigid_rolling_friction",
+   "type": "float | None",
+   "default": "None",
+   "units": "m",
+   "step": false,
+   "category": "Contacts and friction",
+   "doc": "<p>Experimental rolling coefficient [m] for every free-body contact, replacing the shapes' <code>steel:condim</code> gate and <code>shape_material_mu_rolling</code> for that coefficient only; <code>None</code> keeps the shape data. Construction-only.</p>",
+   "when": "Sweeps over rolling friction of free bodies without editing shapes.",
+   "available": {
+    "Newton 1.8.0": false,
+    "Newton main": false
+   },
+   "differences": [],
+   "line": 2068
+  },
+  {
+   "name": "deterministic",
+   "type": "wp.DeterministicMode | None",
+   "default": "None",
+   "units": "",
+   "step": false,
+   "category": "Solve",
+   "doc": "<p>Run-to-run determinism of the solve. Pass a <code>DeterministicMode</code>, or <code>None</code> (default) to inherit <code>wp.config.deterministic</code>, which defaults to <code>NOT_GUARANTEED</code>. With <code>RUN_TO_RUN</code> the solver reserves its constraint rows in a fixed order instead of the order in which GPU threads reach the per-world row counters: joint rows in articulation order, contact rows in contact-buffer order within each world. Given identical inputs, including identically ordered contacts, repeated runs are then bitwise identical on the same GPU model, driver and Warp build, eagerly and under CUDA graph replay; combine it with <code>CollisionPipeline(deterministic=True)</code> for a reproducible contact order (see :ref:`Deterministic Contacts`). A world that overflows a row capacity keeps the rows of its earliest contacts and drops the rest, so unchanged inputs drop the same contacts every step; overflowed steps remain flagged in <code>constraint_overflow</code>. The mode adds a per-step sort of the contacts by world and row family and 24 bytes of storage per contact slot. With the <code>\"propagation\"</code> response it also lists each world's contact-active bodies by body index and sums each body's warm-start seed in row order. The seed walks a world's rows serially, so its cost grows with the contact rows in one world; <code>solve_mode=\"colored\"</code> regroups a world's contact rows by color, an order fixed by the contact set. <code>GPU_TO_GPU</code> is not supported: passing it raises <code>ValueError</code>, and an inherited one emits a <code>NewtonWarning</code> and runs <code>RUN_TO_RUN</code>. <code>deterministic</code> reports the mode that runs, after any fallback. <code>BODY_PARENT_F</code> sums contact wrenches with atomics, so it is outside this guarantee. Steel's kernel modules always opt out of Warp's <code>deterministic</code> module option, so a process-wide <code>wp.config.deterministic</code> only selects this mode.</p>",
+   "when": "Set wp.DeterministicMode.RUN_TO_RUN for tests, debugging and data generation that must reproduce bit for bit. Pair it with CollisionPipeline(deterministic=True).",
+   "available": {
+    "Newton 1.8.0": true,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2069
+  },
+  {
+   "name": "nesterov_momentum",
+   "type": "bool",
+   "default": "False",
+   "units": "",
+   "step": false,
+   "category": "Solve",
+   "doc": "<p>Accelerate the matrix-free Gauss-Seidel sweep with Nesterov momentum and O'Donoghue-Candes gradient restart, as in MuJoCo's PGS solver. Each sweep starts from the impulses extrapolated along the previous sweep's change, applied to the velocity through each row's response; momentum restarts when a sweep's correction opposes the extrapolation. Converges in fewer iterations on stacks, mass ratios and long chains; gains appear above a few iterations. The <code>velocity_iterations</code> post-pass runs the same sweep. Every world then runs the general sweep, bypassing the specialized sparse, local and paired-factor solves, and keeps <code>8 * (articulation_constraint_max + free_body_constraint_max)</code> bytes of sweep history per world. Requires <code>solve_mode=\"serial\"</code>, <code>articulated_contact_response=\"immediate\"</code> and <code>row_schedule=\"interleaved\"</code>; other combinations raise <code>ValueError</code>. CUDA only: on CPU it raises <code>NotImplementedError</code>. Construction-only.</p>",
+   "when": "Resting stacks with mass ratios of roughly 100:1 to 1000:1 and long chains, when more iterations alone are too slow. Serial sweep, immediate response, CUDA only.",
+   "available": {
+    "Newton 1.8.0": false,
+    "Newton main": true
+   },
+   "differences": [],
+   "line": 2070
+  }
+ ],
+ "attributes": [
+  {
+   "name": "steel:rigid_body_angular_damping",
+   "frequency": "body",
+   "dtype": "float32",
+   "default": "0.05",
+   "usd": "physxRigidBody:angularDamping",
+   "mjcf": "",
+   "units": "1/s",
+   "doc": "<p>damps the angular velocity of free bodies and floating bases as <code>w *= max(1 - d dt, 0)</code> each step (<code>physxRigidBody:angularDamping</code>, default 0.05, as <code>SolverFeatherstone</code>); joints with a parent body are not damped. Fill the attribute for one value on every body.</p>"
+  },
+  {
+   "name": "steel:rigid_body_linear_damping",
+   "frequency": "body",
+   "dtype": "float32",
+   "default": "0.0",
+   "usd": "physxRigidBody:linearDamping",
+   "mjcf": "",
+   "units": "1/s",
+   "doc": "<p>damps the COM velocity of the same bodies as <code>v *= max(1 - d dt, 0)</code> each step (<code>physxRigidBody:linearDamping</code>, default 0). Keep it nonnegative.</p>"
+  },
+  {
+   "name": "steel:rigid_body_max_linear_velocity",
+   "frequency": "body",
+   "dtype": "float32",
+   "default": "float('inf')",
+   "usd": "physxRigidBody:maxLinearVelocity",
+   "mjcf": "",
+   "units": "m/s",
+   "doc": "<p>bound the velocity of free bodies (<code>physxRigidBody:maxLinearVelocity</code> and <code>physxRigidBody:maxAngularVelocity</code>, default unbounded).</p>"
+  },
+  {
+   "name": "steel:rigid_body_max_angular_velocity",
+   "frequency": "body",
+   "dtype": "float32",
+   "default": "float('inf')",
+   "usd": "physxRigidBody:maxAngularVelocity",
+   "mjcf": "",
+   "units": "rad/s",
+   "doc": "<p>bound the velocity of free bodies (<code>physxRigidBody:maxLinearVelocity</code> and <code>physxRigidBody:maxAngularVelocity</code>, default unbounded).</p>"
+  },
+  {
+   "name": "steel:min_torsional_patch_radius",
+   "frequency": "shape",
+   "dtype": "float32",
+   "default": "0.0",
+   "usd": "physxCollision:minTorsionalPatchRadius",
+   "mjcf": "",
+   "units": "m",
+   "doc": "<p>is the effective spin radius of the shape's contacts (<code>physxCollision:minTorsionalPatchRadius</code>, default 0, no torsion). PhysX also scales a radius with the penetration depth through <code>physxCollision:torsionalPatchRadius</code>; this solver does not.</p>"
+  },
+  {
+   "name": "steel:condim",
+   "frequency": "shape",
+   "dtype": "int32",
+   "default": "3",
+   "usd": "newton:steel:condim",
+   "mjcf": "",
+   "units": "",
+   "doc": "<p>(default 3) borrows MuJoCo's 3/4/6 convention; other values raise <code>ValueError</code>. At 4 a shape contributes <code>shape_material_mu_torsional</code> [m] to a spin row bounded by that coefficient times the normal load; at 6 also <code>shape_material_mu_rolling</code> [m] to a rolling pair. A contact takes the larger coefficient of its two shapes, regardless of the other shape's condim. Only contacts between free bodies, and free bodies on static or kinematic geometry, read it. USD reads it only from an explicitly authored <code>newton:steel:condim</code>; the MJCF importer leaves it to <code>SolverMuJoCo</code>'s <code>mujoco:condim</code>. Under friction patches, contacts share a patch only if their angular coefficients match. A contact with angular rows takes up to 6 free-body rows instead of 3; raise <code>free_body_constraint_max</code> if <code>constraint_overflow</code> reports dropped rows. The solver reads <code>steel:condim</code> at construction and, on a solver built with the rows, at <code>notify_model_changed</code> with <code>SHAPE_PROPERTIES</code>; a solver built without any condim above 3 ignores the attribute and must be rebuilt to gain the rows. A negative or non-finite coefficient that a shape's condim enables raises <code>ValueError</code> at the same points.</p>"
+  },
+  {
+   "name": "steel:adhesion",
+   "frequency": "shape",
+   "dtype": "float32",
+   "default": "0.0",
+   "usd": "newton:steel:adhesion",
+   "mjcf": "adhesion",
+   "units": "N",
+   "doc": "<p>(default 0) is the pull of each contact point of the shape, MuJoCo's geom <code>adhesion</code>, which the MJCF importer reads. A contact pulls with the sum of its two shapes' values while it is within the pair's <code>gap</code>, so a gap makes shapes attract at a distance. The solver applies the pull <code>A dt</code> to the contact's normal row and solves its impulse in the unchanged contact cone, so the net normal impulse can reach <code>-A dt</code>, friction is bounded by <code>mu</code> times the net normal impulse plus <code>A dt</code>, and resting penetration is unchanged. Pull-off grows with the number of contact points of the pair. Within the gap, friction stays bounded by the solved impulse, which is zero until the pull would close the gap within the step (MuJoCo removes friction there). <code>contact_f</code> and <code>body_parent_f</code> report the net force. The solver reads the values every step, so writing zero releases a contact and writing the value engages it again, also between graph replays (a captured step keeps the array it was captured with, so recapture after replacing it); a solver built without a positive value ignores the attribute and must be rebuilt to gain adhesion. Construction and <code>notify_model_changed</code> with <code>SHAPE_PROPERTIES</code> raise <code>ValueError</code> for a negative or non-finite value. Adhesion keeps the dense mass factors and raises <code>NotImplementedError</code> with <code>enable_sleeping</code>, <code>contact_compliance</code>, <code>contact_regularization &gt; 0</code> and contact torsion. <b>Experimental.</b><code>steel:adhesion</code>, its USD name <code>newton:steel:adhesion</code> and its contact law may change without the normal deprecation period.</p>"
+  },
+  {
+   "name": "steel:rigid_body_max_depenetration_velocity",
+   "frequency": "body",
+   "dtype": "float32",
+   "default": "float('inf')",
+   "usd": "physxRigidBody:maxDepenetrationVelocity",
+   "mjcf": "",
+   "units": "m/s",
+   "doc": "<p>bounds the contact correction velocity of free bodies (<code>physxRigidBody:maxDepenetrationVelocity</code>, default unbounded).</p>"
+  },
+  {
+   "name": "steel:joint_friction_load_coefficient",
+   "frequency": "joint_dof",
+   "dtype": "float32",
+   "default": "0.0",
+   "usd": "newton:steel:jointFrictionLoadCoefficient",
+   "mjcf": "",
+   "units": "",
+   "doc": "<p>adds <code>c (|F| + |T|)</code> to the DOF's <code>joint_friction</code> (default 0). <code>F</code> [N] and <code>T</code> [N\u00b7m] are the force and the torque about the child body's center of mass that the joint transmits to its child's subtree under the step's free dynamics: gravity, applied body and joint forces, velocity-dependent terms and the resulting accelerations, before contacts, limits, friction and <code>drive_mode=\"rows\"</code> drives act. <code>T</code> keeps its component about the joint axis, so a joint's own applied effort raises its friction. This is the joint friction law of PhysX articulations before PhysX 5.6, and the sum mixes units as it does there. USD reads it only from an explicitly authored <code>newton:steel:jointFrictionLoadCoefficient</code>, not from <code>physxJoint:jointFriction</code>, because the rows interact with drives differently from PhysX. The earlier spelling <code>newton:steel:joint_friction_load_coefficient</code> is read with a <code>NewtonDeprecationWarning</code> when the current name is not authored. <b>Experimental.</b><code>steel:joint_friction_load_coefficient</code>, its USD name <code>newton:steel:jointFrictionLoadCoefficient</code> and its load law may change without the normal deprecation period.</p>"
+  }
+ ],
+ "inputs": [
+  {
+   "name": "Contacts.rigid_contact_match_generation",
+   "context": "<p>History carries across one collision pass into the same <code>Contacts</code> buffer when that pass matched against the solved contact set (<code>rigid_contact_match_generation</code>); a different buffer, skipped passes, or a pass after the pipeline wrote another buffer start cold.</p>"
+  },
+  {
+   "name": "Contacts.rigid_contact_match_index",
+   "context": "<p>Start each step from the previous step's contact impulses, matched by contact identity through <code>rigid_contact_match_index</code>, so the <code>CollisionPipeline</code> must be created with contact matching enabled.</p>"
+  },
+  {
+   "name": "Contacts.rigid_contact_stiffness",
+   "context": "<p>Experimental: solve contacts that carry a positive <code>rigid_contact_stiffness</code> [N/m] with an implicit unilateral spring-damper law instead of the rigid normal law.</p>"
+  },
+  {
+   "name": "Control.joint_f",
+   "context": "<p>A closure has no joint coordinate, so the limits, drive gains, damping, armature, velocity limit and <code>joint_f</code> of a loop-closing REVOLUTE joint's DOF are ignored.</p>"
+  },
+  {
+   "name": "Model.joint_X_c",
+   "context": "<p>The closure rows read <code>joint_enabled</code>, <code>joint_X_p</code> / <code>joint_X_c</code> and, for a REVOLUTE closure, <code>joint_axis</code> every step, so a closure is released, engaged, re-anchored or re-aimed by editing those arrays in place, also from a kernel between CUDA graph replays.</p>"
+  },
+  {
+   "name": "Model.joint_X_p",
+   "context": "<p>The closure rows read <code>joint_enabled</code>, <code>joint_X_p</code> / <code>joint_X_c</code> and, for a REVOLUTE closure, <code>joint_axis</code> every step, so a closure is released, engaged, re-anchored or re-aimed by editing those arrays in place, also from a kernel between CUDA graph replays.</p>"
+  },
+  {
+   "name": "Model.joint_armature",
+   "context": "<p><code>joint_armature</code> and <code>joint_damping</code> are applied.</p>"
+  },
+  {
+   "name": "Model.joint_axis",
+   "context": "<p>The closure rows read <code>joint_enabled</code>, <code>joint_X_p</code> / <code>joint_X_c</code> and, for a REVOLUTE closure, <code>joint_axis</code> every step, so a closure is released, engaged, re-anchored or re-aimed by editing those arrays in place, also from a kernel between CUDA graph replays.</p>"
+  },
+  {
+   "name": "Model.joint_damping",
+   "context": "<p><code>joint_armature</code> and <code>joint_damping</code> are applied.</p>"
+  },
+  {
+   "name": "Model.joint_effort_limit",
+   "context": "<p>By default (<code>drive_mode=\"augmented\"</code>) they are integrated implicitly by folding <code>dt * kd + dt^2 * ke</code> into the mass matrix; only the explicit drive force is clamped to <code>joint_effort_limit</code>, and the implicit stiffness and damping response is unbounded, so under a large external load the drive reaction can exceed the limit.</p>"
+  },
+  {
+   "name": "Model.joint_enabled",
+   "context": "<p>The closure rows read <code>joint_enabled</code>, <code>joint_X_p</code> / <code>joint_X_c</code> and, for a REVOLUTE closure, <code>joint_axis</code> every step, so a closure is released, engaged, re-anchored or re-aimed by editing those arrays in place, also from a kernel between CUDA graph replays.</p>"
+  },
+  {
+   "name": "Model.joint_friction",
+   "context": "<p>Experimental dry joint friction: with <code>enable_joint_friction=True</code>, <code>joint_friction</code> of PRISMATIC, REVOLUTE, BALL and D6 DOFs bounds one row per DOF.</p>"
+  },
+  {
+   "name": "Model.joint_limit_lower",
+   "context": "<p>Joint limits: with <code>enable_joint_limits=True</code>, every finite <code>joint_limit_lower</code> / <code>joint_limit_upper</code> of a PRISMATIC, REVOLUTE or D6 DOF is a unilateral row.</p>"
+  },
+  {
+   "name": "Model.joint_limit_upper",
+   "context": "<p>Joint limits: with <code>enable_joint_limits=True</code>, every finite <code>joint_limit_lower</code> / <code>joint_limit_upper</code> of a PRISMATIC, REVOLUTE or D6 DOF is a unilateral row.</p>"
+  },
+  {
+   "name": "Model.joint_rest_q",
+   "context": "<p>Passive joint springs: <code>joint_stiffness</code> and <code>joint_rest_q</code> on PRISMATIC, REVOLUTE and D6 DOFs, applied explicitly as <code>stiffness * (rest_q - q)</code> like <code>SolverFeatherstone</code>, independently of drives and joint limits.</p>"
+  },
+  {
+   "name": "Model.joint_stiffness",
+   "context": "<p>Passive joint springs: <code>joint_stiffness</code> and <code>joint_rest_q</code> on PRISMATIC, REVOLUTE and D6 DOFs, applied explicitly as <code>stiffness * (rest_q - q)</code> like <code>SolverFeatherstone</code>, independently of drives and joint limits.</p>"
+  },
+  {
+   "name": "Model.joint_target_kd",
+   "context": "<p>Joint drives: <code>joint_target_ke</code> and <code>joint_target_kd</code> on PRISMATIC, REVOLUTE and D6 DOFs.</p>"
+  },
+  {
+   "name": "Model.joint_target_ke",
+   "context": "<p>Joint drives: <code>joint_target_ke</code> and <code>joint_target_kd</code> on PRISMATIC, REVOLUTE and D6 DOFs.</p>"
+  },
+  {
+   "name": "Model.joint_velocity_limit",
+   "context": "<p>Joint velocity limits (<code>joint_velocity_limit</code>) are enforced as rows when <code>enable_joint_velocity_limits</code> is set.</p>"
+  },
+  {
+   "name": "Model.shape_material_mu",
+   "context": "<p>Non-negative factor applied to every shape's friction coefficient (<code>shape_material_mu</code>) in the solver's copy of the materials, refreshed at construction and by <code>notify_model_changed</code> with <code>SHAPE_PROPERTIES</code>.</p>"
+  },
+  {
+   "name": "Model.shape_material_mu_rolling",
+   "context": "<p>Experimental rolling coefficient [m] for every free-body contact, replacing the shapes' <code>steel:condim</code> gate and <code>shape_material_mu_rolling</code> for that coefficient only;</p>"
+  },
+  {
+   "name": "Model.shape_material_mu_torsional",
+   "context": "<p>Experimental torsional coefficient [m] for every free-body contact, replacing the shapes' <code>steel:condim</code> gate and <code>shape_material_mu_torsional</code> for that coefficient only;</p>"
+  },
+  {
+   "name": "ModelBuilder.ShapeConfig.gap",
+   "context": "<p><code>gap</code> decides which contacts the pipeline reports (also to sensors and other solvers); this gate only decides which of them this solver solves.</p>"
+  },
+  {
+   "name": "ModelBuilder.ShapeConfig.restitution",
+   "context": "<p>Restitution follows the shapes' <code>restitution</code>.</p>"
+  },
+  {
+   "name": "State.body_f",
+   "context": "<p>\u2026solved motion: inverse dynamics with the post-solve joint accelerations (taken from the velocities the dynamics start from, after any velocity-limit prescaling), less gravity, <code>body_f</code>, and the solved impulses divided by <code>dt</code> of the subtree's contact normal, friction and spin rows and its loop-closure\u2026</p>"
+  },
+  {
+   "name": "State.joint_q",
+   "context": "<p>Like <code>SolverFeatherstone</code>, the solver uses <code>joint_q</code> and <code>joint_qd</code> as its state and does not simulate bodies that are not connected through joints.</p>"
+  },
+  {
+   "name": "State.joint_qd",
+   "context": "<p>Like <code>SolverFeatherstone</code>, the solver uses <code>joint_q</code> and <code>joint_qd</code> as its state and does not simulate bodies that are not connected through joints.</p>"
+  }
+ ],
+ "methods": [
+  {
+   "name": "register_custom_attributes",
+   "kind": "classmethod",
+   "doc": "<p>Register the body, shape and joint DOF attributes consumed by Steel in the <code>steel</code> namespace.</p>"
+  },
+  {
+   "name": "velocity_limits_fused",
+   "kind": "property",
+   "doc": "<p>Whether the fused velocity-limit clamp is active: <code>fuse_joint_velocity_limits</code> applies only with drive rows and joint velocity limits.</p>"
+  },
+  {
+   "name": "supported_observables",
+   "kind": "property",
+   "doc": "<p>Return the observables available for this configuration; <code>BODY_AWAKE</code> requires <code>enable_sleeping</code>.</p>"
+  },
+  {
+   "name": "observables",
+   "kind": "method",
+   "doc": "<p>Allocate observable arrays; <code>body_awake</code> starts with the solver's current flags.</p>"
+  },
+  {
+   "name": "notify_model_changed",
+   "kind": "method",
+   "doc": "<p>Refresh cached solver data after model changes.</p>"
+  },
+  {
+   "name": "notify_state_changed",
+   "kind": "method",
+   "doc": "<p>Drop the carried kinematics of the selected worlds after writing <code>state</code> outside <code>step</code>.</p>"
+  },
+  {
+   "name": "reset",
+   "kind": "method",
+   "doc": "<p>Clear solver-owned state of the selected worlds.</p>"
+  },
+  {
+   "name": "step",
+   "kind": "method",
+   "doc": "<p>Advance the simulation by one time step.</p>"
+  },
+  {
+   "name": "constraint_row_watermarks",
+   "kind": "method",
+   "doc": "<p>Return the row high-water marks accumulated since construction (<code>row_watermark</code> only).</p>"
+  },
+  {
+   "name": "compliance_contact_count",
+   "kind": "property",
+   "doc": "<p>Compliant contacts prepared by the last step (<code>contact_compliance</code> only).</p>"
+  },
+  {
+   "name": "compliance_skipped_contact_count",
+   "kind": "property",
+   "doc": "<p>Positive-stiffness contacts the row allocator excluded in the last step (<code>contact_compliance</code> only).</p>"
+  },
+  {
+   "name": "snapshot_constraint_status",
+   "kind": "method",
+   "doc": "<p>Copy the status that <code>check_constraint_capacity</code> reports on the device, without waiting.</p>"
+  },
+  {
+   "name": "check_constraint_capacity",
+   "kind": "method",
+   "doc": "<p>Raise if any world or the global entry lost contacts or rows, or rejected input, since its last reset.</p>"
+  },
+  {
+   "name": "check_joint_friction",
+   "kind": "method",
+   "doc": "<p>Raise if a step read invalid joint friction, or if <code>check_constraint_capacity</code> raises.</p>"
+  },
+  {
+   "name": "validate_contact_compliance",
+   "kind": "method",
+   "doc": "<p>Raise if contact compliance rejected its input, or if <code>check_constraint_capacity</code> raises.</p>"
+  },
+  {
+   "name": "joint_friction_invalid",
+   "kind": "property",
+   "doc": "<p>Per-world device flags, global entry last, for invalid joint friction read by a step.</p>"
+  },
+  {
+   "name": "joint_qd_public_convention",
+   "kind": "property",
+   "doc": "<p><code>True</code>: free-joint <code>joint_qd</code> is <code>(v_com_world, omega_world)</code>, as <code>eval_fk</code> reads it.</p>"
+  }
+ ],
+ "counts": {
+  "options": 59,
+  "documented": 59,
+  "step_options": 9,
+  "attributes": 9,
+  "inputs": 27,
+  "methods": 17
+ }
+}

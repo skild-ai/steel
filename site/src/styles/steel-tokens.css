@@ -1,0 +1,41 @@
+/* SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors */
+/* SPDX-License-Identifier: Apache-2.0 */
+
+/* Steel style tokens. Paste into every Steel page; components use only these. */
+:root{
+  --bg:#ffffff; --fg:#1b2b28; --muted:#5c6670; --rule:#e6e4dd; --panel:#f7f5f1;
+  --accent:#2e3a47; --accent-soft:#eceef0; --hot:#11724c; --hot-fill:#1a8f62; --hot-soft:#e8f6ef;
+  --stage:#e5e8ed; --stage-top:#bcc5d4; --floor:#eef0f3; --floor-alt:#e0e4ea; --static:#73808c; --sleep:#6f8fb3;
+  --series-1:#0f61b3; --series-2:#1f8f73; --series-3:#c25a00; --series-4:#7c3fc4;
+  --display:"Geist","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --body:"Geist","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121212; --fg:#ecebe7; --muted:#a3a9ae; --rule:#2c3137; --panel:#1b222b;
+    --accent:#b5c3cf; --accent-soft:#222b35; --hot:#4cc38a; --hot-fill:#2fb67c; --hot-soft:#10291f;
+    --stage:#2c3640; --stage-top:#1d2125; --floor:#2a3139; --floor-alt:#232a32; --static:#9aa7b2; --sleep:#7fa3cc;
+    --series-1:#4da3ff; --series-2:#3ccf91; --series-3:#ff9a3c; --series-4:#b98cff;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121212; --fg:#ecebe7; --muted:#a3a9ae; --rule:#2c3137; --panel:#1b222b;
+  --accent:#b5c3cf; --accent-soft:#222b35; --hot:#4cc38a; --hot-fill:#2fb67c; --hot-soft:#10291f;
+  --stage:#2c3640; --stage-top:#1d2125; --floor:#2a3139; --floor-alt:#232a32; --static:#9aa7b2; --sleep:#7fa3cc;
+  --series-1:#4da3ff; --series-2:#3ccf91; --series-3:#ff9a3c; --series-4:#b98cff;
+  color-scheme:dark;
+}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);-webkit-font-smoothing:antialiased}
+a{color:var(--fg);text-decoration:underline;text-decoration-color:var(--hot-fill);text-underline-offset:3px;text-decoration-thickness:1.5px}
+a:hover{color:var(--hot)}
+:focus-visible{outline:2px solid var(--hot-fill);outline-offset:2px}
+h1,h2{font-family:var(--display);font-weight:500;letter-spacing:-.02em;text-wrap:balance}
+.kicker,.label,th{font:500 12px/1.4 var(--mono);letter-spacing:.07em;text-transform:uppercase}
+.kicker{color:var(--hot)}
+code,pre{font-family:var(--mono)}
+code{background:var(--panel);padding:.08em .32em;border-radius:3px;font-size:.84em}
+pre{background:var(--panel);border:1px solid var(--rule);border-radius:4px;padding:16px 18px;overflow-x:auto}
+figure .frame{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding-block:20px;overflow-x:auto}
+figcaption{color:var(--muted);font-size:14.5px;line-height:1.55}

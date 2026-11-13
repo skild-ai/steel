@@ -1,0 +1,32 @@
+---
+title: Stabilization, bounces and drives
+description: Position correction, speculative contacts, restitution, implicit drives, limits and loop closures.
+sidebar:
+  order: 6
+---
+
+import Viz from '~/components/Viz.astro';
+
+**Position error** is corrected through velocity only. A penetrating contact adds $\beta\phi/h$ to its target with $\beta$ = `baumgarte` (0.2). A separated contact within its gap adds $s\phi/h$ with $s$ = `contact_speculative_scale` (1), which lets it close exactly the gap in one step and blocks faster approach; these speculative contacts stand in for continuous collision detection at robot speeds. `velocity_iterations` adds sweeps without the position bias, so stabilization does not add velocity to bodies. `contact_regularization` turns penetrating rows into an implicit spring, which makes indeterminate load splits unique at a small resting penetration.
+
+**Restitution** uses the closing speed at the start of the step: an impacting contact faster than `restitution_velocity_threshold` (0.5 m/s) gets the rebound target $u_n \ge -e\,u_\text{start}$. Resting contacts pressed by gravity or a drive never bounce. Shape restitution defaults to zero.
+
+**Drives** are implicit by default (`drive_mode="augmented"`): $h k_d + h^2 k_e$ joins the mass-matrix diagonal, so stiff gains stay stable at ordinary steps. Only the explicit part is clamped to `joint_effort_limit`; the implicit reaction is not, so under a large external load the drive can exceed the limit. `drive_mode="rows"` solves each driven DOF as a row with the PhysX articulation drive update and clamps its impulse at the effort limit times $h$; below saturation and without contacts it converges to the implicit drive.
+
+<Viz name="stab" n={8} title="Stabilization, bounces, drives and limits.">
+One measured Steel run per rule, from the tutorials. <span class="tutinline">Tutorial: [Velocity iterations](/tutorials/velocity-iterations/) · [Depenetration speed limit](/tutorials/depenetration-velocity/) · [Speculative contacts](/tutorials/speculative-contacts/) · [Restitution](/tutorials/restitution/) · [Restitution threshold](/tutorials/restitution-threshold/) · [PD drives](/tutorials/pd-drives/) · [Drive saturation](/tutorials/drive-saturation/) · [Joint limits](/tutorials/joint-limits/) · [Joint velocity limits](/tutorials/velocity-limits/)</span>
+</Viz>
+
+**Soft contact and adhesion.** `contact_compliance` solves hydroelastic contacts as implicit spring-dampers, and the per-shape `steel:adhesion` (integration branch) lets contacts pull within their gap.
+
+<p class="tutlinks">Tutorials [Hydroelastic contact and compliance](/tutorials/hydroelastic-compliance/) · [Adhesion](/tutorials/adhesion/) · [Contact forces and regularization](/tutorials/table-legs/)</p>
+
+**Joint limits are off by default.** With `enable_joint_limits=False` authored limits are not simulated. Turn them on whenever the model authors limits. They cover PRISMATIC, REVOLUTE and D6 DOFs: a DISTANCE joint's `min_distance` and `max_distance` are not enforced even with limits on, and the joint moves like a free joint. A change that enforces them on DISTANCE joints that root their articulation is in review in [skild-ai/newton#23](https://github.com/skild-ai/newton/pull/23); until then, build a tether from a ball joint and a limited slider. <span class="tutinline">Tutorial: [Tethers and distance joints](/tutorials/tether/)</span>
+
+**Loop closures** are bilateral rows in the same sweep: three for BALL, five for REVOLUTE, six for FIXED. They read `joint_enabled`, `joint_X_p`, `joint_X_c` and the hinge axis every step, so a weld can be released or re-anchored mid-run, also between graph replays. `enable_bilateral_preelimination` removes most of their dependence on `iterations`.
+
+<p class="tutlinks">Tutorials [Four-bar loop closure](/tutorials/loop-closure/) · [Weld release](/tutorials/weld-release/) · [Mimic gripper](/tutorials/gripper-grasp/) · [Mimic gears](/tutorials/mimic-gear/) · [Dry joint friction](/tutorials/joint-friction/) · [Load-dependent joint friction](/tutorials/load-joint-friction/) · [Joint springs and damping](/tutorials/springs-damping/) · [Armature](/tutorials/armature/)</p>
+
+Two smaller details: kinematic DOFs are handled inside the factorization with an armature of $10^{10}$, and single-body free objects replace the explicit gyroscopic term with an energy-preserving update over 1 to 32 adaptive microsteps, so spinning, thin objects do not gain energy.
+
+<p class="tutlinks">Tutorials [Gyroscopic stability](/tutorials/gyroscopic/) · [Body damping](/tutorials/body-damping/) · [Body speed limits](/tutorials/body-velocity-limits/)</p>

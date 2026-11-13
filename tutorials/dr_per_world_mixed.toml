@@ -1,0 +1,71 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for dr_per_world_mixed.py. Fields: tutorials/README.md.
+
+id = "dr-per-world-mixed"
+title = "Several randomizations at once"
+about = """\
+Four quadrupeds from Newton's example assets, each in its own world, holding a stance with \
+soft PD drives. At 1 s every world gets a new base mass, leg drive stiffness, foot friction \
+and gravity, and a single notify_model_changed call passes the OR of the four flags. At 3 s \
+only worlds 1 and 3 are re-randomized, as a partial reset would, with world_mask selecting the \
+worlds whose warm start is discarded. Robots with a heavy base and soft legs sink and fold; \
+the others keep standing."""
+look = [
+  "At 1 s: the heaviest, softest robots start to sink.",
+  "At 3 s: only worlds 1 and 3 change; world 1's new draw makes it fold.",
+]
+try = [
+  "Re-randomize a random half of the worlds every second.",
+  "Add armature randomization and its JOINT_DOF_INERTIAL_PROPERTIES flag.",
+]
+spacing = [0, 4.2, 0]
+notify_flag = "BODY_INERTIAL_PROPERTIES | JOINT_DOF_FORCE_PROPERTIES | SHAPE_PROPERTIES | MODEL_PROPERTIES"
+update_route = "needs notify"
+
+[param]
+name = "notify_model_changed(flags, world_mask=mask)"
+text = """\
+mask has world_count + 1 booleans (the last is the global world). It limits which worlds lose \
+their warm start; cached data is refreshed for every world."""
+
+[metric]
+label = "base height"
+unit = "m"
+key = "world 3"
+multi = ["world 0", "world 1", "world 2", "world 3"]
+
+[concept]
+name = "When Steel sees a randomized value"
+what = """\
+Notify with the matching flags after changing these model arrays so Steel refreshes all \
+derived data consistently. Some inputs are cached until notification; mass, inertia and drive \
+gains can also be picked up by periodic mass-matrix rebuilds, so their behavior without \
+notification depends on update_mass_matrix_interval."""
+here = "At 3 s: only worlds 1 and 3 change; world 1's new draw makes it fold."
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Call only, default solver, six-link chain and four boxes per world, 1024 worlds (1.12 ms per \
+collide + step): BODY_INERTIAL_PROPERTIES 31 µs (17 µs captured), JOINT_DOF_FORCE_PROPERTIES \
+25 µs (7 µs captured), SHAPE_PROPERTIES 84 µs (15 µs captured), MODEL_PROPERTIES 5 µs (3 µs \
+captured). Flags measured one at a time; combined calls and feature validation can cost more. \
+Body-inertial and joint-DOF notifications also request a mass-matrix refresh."""
+
+[[concept.consider]]
+term = "Graph capture"
+text = """\
+These flags can be captured in a reset graph. Kinematic-flag changes, sleeping, and shape \
+flags with sparse factors plus restitution run eagerly; captured calls skip some value checks."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+world_mask limits which worlds lose their warm start; cached data is refreshed for every \
+world."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Training batches that randomize several properties per world at reset."

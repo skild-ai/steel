@@ -1,0 +1,161 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Tutorial order. Each group lists its tutorials by id, in page order; numbers follow this order.
+# A tutorial is <script>.py + <script>.toml in this folder and recordings/<id>.json.
+
+[[group]]
+name = "Getting started"
+tutorials = [
+  "hello-steel",
+  "mjcf-import",
+]
+
+[[group]]
+name = "Contact and friction"
+tutorials = [
+  "patch-friction",
+  "friction-combine",
+  "friction-scale",
+  "angular-friction",
+  "articulated-torsion",
+  "friction-mode",
+  "shape-types",
+  "kinematic-bodies",
+  "conveyor-surface-velocity",
+  "friction-iterations",
+  "shared-anchor",
+  "free-angular-defaults",
+]
+
+[[group]]
+name = "Impacts and penetration"
+tutorials = [
+  "restitution",
+  "restitution-threshold",
+  "speculative-contacts",
+  "depenetration-velocity",
+  "velocity-iterations",
+]
+
+[[group]]
+name = "Compliance and adhesion"
+tutorials = [
+  "hydroelastic-compliance",
+  "adhesion",
+  "table-legs",
+]
+
+[[group]]
+name = "Convergence"
+tutorials = [
+  "stack-iterations",
+  "mass-ratio",
+  "substeps",
+  "contact-warmstart",
+  "row-schedule",
+  "relaxation-cfm",
+]
+
+[[group]]
+name = "Joints and drives"
+tutorials = [
+  "joint-types",
+  "pd-drives",
+  "drive-saturation",
+  "joint-limits",
+  "velocity-limits",
+  "joint-friction",
+  "load-joint-friction",
+  "springs-damping",
+  "armature",
+  "limit-activation-gap",
+  "drive-rows-velocity",
+  "tether",
+]
+
+[[group]]
+name = "Mimic joints and loop closures"
+tutorials = [
+  "gripper-grasp",
+  "mimic-gear",
+  "loop-closure",
+  "weld-release",
+  "preelimination-mimics",
+]
+
+[[group]]
+name = "Bodies"
+tutorials = [
+  "floating-base",
+  "gyroscopic",
+  "body-damping",
+  "body-velocity-limits",
+]
+
+[[group]]
+name = "Solver and runtime"
+tutorials = [
+  "sleeping",
+  "determinism",
+  "heterogeneous",
+  "world-reset",
+  "colored-propagation",
+  "cuda-graph",
+  "row-capacity",
+  "joint-reaction-forces",
+  "runtime-changes",
+  "mass-matrix-interval",
+  "performance-options",
+  "propagation-options",
+  "rl-setup",
+  "contact-sensors",
+]
+
+[[group]]
+name = "Coupling"
+tutorials = [
+  "coupling-xpbd",
+]
+
+[[group]]
+name = "Domain randomization"
+tutorials = [
+  "dr-mass",
+  "dr-com",
+  "dr-inertia",
+  "dr-friction",
+  "dr-restitution",
+  "dr-joint-damping",
+  "dr-joint-friction",
+  "dr-armature",
+  "dr-drive-gains",
+  "dr-effort-limits",
+  "dr-velocity-limits",
+  "dr-gravity",
+  "dr-pushes",
+  "dr-terrain-friction",
+  "dr-per-world-mixed",
+]
+
+# Features Steel supports that have no tutorial yet; listed on the tutorials index.
+[[planned]]
+title = "USD import of Steel attributes"
+text = """\
+Reading physxRigidBody:* and newton:steel:* attributes from USD works through add_usd; the \
+recording environment has no USD runtime, so this tutorial is still to be recorded."""
+
+[[planned]]
+title = "MuJoCo equality constraints"
+text = """\
+Enabled MJCF equality constraints that the importer converts to loop joints or mimic rows."""
+
+[[planned]]
+title = "State edits with carried kinematics"
+text = """\
+notify_state_changed after writing joint_q, joint_qd or body_q outside step when \
+reuse_kinematics is on."""
+
+[[planned]]
+title = "CPU device"
+text = "The world-serial portable kernels, and which features stay CUDA only."

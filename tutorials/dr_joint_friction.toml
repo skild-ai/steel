@@ -1,0 +1,72 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for dr_joint_friction.py. Fields: tutorials/README.md.
+
+id = "dr-joint-friction"
+title = "Randomizing joint friction"
+about = """\
+Five pendulums released from 70 degrees with sampled dry joint_friction. Steel solves joint \
+friction as one row per DOF, and these rows exist only when the solver is constructed with \
+enable_joint_friction=True; the values themselves are read every step. With friction on, each \
+pendulum sticks at an angle that grows with its friction. With the default solver the values \
+are ignored and all pendulums swing alike."""
+look = [
+  "enable_joint_friction=True: the pendulums stop at different angles.",
+  "Default: the friction values have no effect.",
+]
+try = [
+  "Re-sample joint_friction mid-swing and notify with JOINT_DOF_FORCE_PROPERTIES.",
+  "Combine joint friction with joint damping.",
+]
+spacing = [0, 1.8, 0]
+notify_flag = "JOINT_DOF_FORCE_PROPERTIES"
+update_route = "construction-only switch, values read every step"
+
+[param]
+name = "SolverSteel(model, enable_joint_friction=True)"
+text = """\
+Experimental and CUDA only. An eager notification validates the new values and raises \
+ValueError for invalid ones."""
+
+[metric]
+label = "angle"
+unit = "deg"
+key = "friction 0.592"
+multi = [
+  "friction 0.206",
+  "friction 0.221",
+  "friction 0.225",
+  "friction 0.323",
+  "friction 0.592",
+]
+
+[concept]
+name = "When Steel sees a randomized value"
+what = """\
+The rows that use this input exist only if the solver was constructed with the feature \
+enabled; the values themselves are read every step. Randomize the values, not whether the \
+feature is on."""
+here = "Default: the friction values have no effect."
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Call only, default solver, six-link chain and four boxes per world, 1024 worlds (1.12 ms per \
+collide + step): JOINT_DOF_FORCE_PROPERTIES 25 µs (7 µs captured). Flags measured one at a \
+time; combined calls and feature validation can cost more. Body-inertial and joint-DOF \
+notifications also request a mass-matrix refresh."""
+
+[[concept.consider]]
+term = "Graph capture"
+text = """\
+These flags can be captured in a reset graph. Kinematic-flag changes, sleeping, and shape \
+flags with sparse factors plus restitution run eagerly; captured calls skip some value checks."""
+
+[[concept.consider]]
+term = "Interactions"
+text = "Turning the feature on later needs a new solver."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Gearboxes and joints that stick; build the solver with enable_joint_friction=True once."

@@ -1,0 +1,78 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 37_armature.py. Fields: tutorials/README.md.
+
+id = "armature"
+title = "Armature"
+about = """\
+Three identical pendulums with armature 0, 0.02 and 0.1 kg·m². Armature adds rotor inertia to \
+a DOF in joint space, as in a geared motor. It slows the joint's response, which also slows \
+the fastest motions of light links. A second scene swings a chain of six light capsules with \
+armature 0, 0.001 and 0.01 kg·m² for 8 s."""
+look = [
+  "Larger armature gives a longer swing period, so the three drift out of phase.",
+  "Chain, energy as a share of its starting swing energy: without armature it rises by up to 197% and then swings erratically; 0.001 kg·m² still gains up to 46%; 0.01 kg·m² stays within 6%.",
+  "The chain has no constraint rows, so iterations change nothing: the energy comes from the explicit velocity-product forces of the step, and shrinks with a smaller time step.",
+]
+try = [
+  "Use armature 1.0.",
+  "Add a stiff drive to a very light link with and without armature.",
+  "Set DT = 1/960 and SUBSTEPS = 32 and watch the chain's energy gain shrink.",
+]
+spacing = [0, 1.3, 0]
+
+[param]
+name = "armature"
+text = "Joint argument [kg·m² or kg]. Added to the joint-space mass matrix diagonal."
+
+[[metric.charts]]
+scene = "pendulums"
+key = "armature_0"
+label = "joint angle"
+unit = "°"
+multi = ["armature_0", "armature_0.02", "armature_0.1"]
+
+[[metric.charts]]
+scene = "chain"
+key = "energy_change_pct"
+label = "energy change of a light 6-link chain, % of swing energy"
+unit = "%"
+
+[concept]
+name = "Armature"
+what = """\
+Armature adds inertia directly to a DOF on the mass-matrix diagonal, the reflected inertia of \
+a geared motor. It slows the joint's response and improves the conditioning of light links; it also changes \
+the model."""
+eq = "H̃ = H + diag(armature)"
+here = """\
+The pendulum period grows from 1.33 s to about 1.65 s at 0.1 kg·m². Over 8 s the light chain \
+gains up to 197% of its swing energy without armature, 46% with 0.001 kg·m² and 6% with 0.01."""
+
+[[concept.consider]]
+term = "Cost"
+text = "None."
+
+[[concept.consider]]
+term = "Stability"
+text = """\
+Fast, light chains gain energy because the step takes Coriolis and centrifugal forces at its \
+start, as SolverFeatherstone and MuJoCo's euler integrator do. In separate runs a free-swinging \
+9-link chain of light capsules reached NaN within 3 s at 200 and 240 Hz; armature 0.001 kg·m² \
+only delayed that to 6 to 8 s, while 0.01 kept it bounded over 30 s. A smaller step also \
+helps: without armature, the 6-link chain at 960 Hz stayed bounded over 30 s."""
+
+[[concept.consider]]
+term = "Accuracy"
+text = "Large armature changes the dynamics; use real motor values where known."
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+Geared joints with known motor inertia. For light chains that gain energy, a smaller step comes \
+first; armature that dominates the links' inertia also works, at the cost of changing the model."""
+
+[[in_review]]
+pr = 19
+text = "Documents in the solver that fast, light chains gain energy from the explicit Coriolis and centrifugal forces of the step, and what reduces it."

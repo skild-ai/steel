@@ -1,0 +1,79 @@
+---
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+// SPDX-License-Identifier: Apache-2.0
+/** Figure: the rows of a box resting on a table, with patch friction (two anchors) or point friction. */
+import Figure from '../Figure.astro';
+
+interface Props {
+	n?: number;
+}
+const { n = 2 } = Astro.props;
+---
+
+<Figure n={n} title="Rows of a box resting on a table." id="fig-patch">
+	<div class="stage3d wide3d" id="pt-3d" tabindex="0" aria-label="3D view of a box resting on a table: four contact normals and the friction rows of patch or point friction. Drag to orbit.">
+		<button type="button" class="reset">Reset view</button>
+	</div>
+	<div class="seg" role="group" aria-label="Friction model" style="margin-top:12px">
+		<button type="button" class="on" id="pt-patch">patch friction (default)</button><button type="button" id="pt-point">point friction</button>
+	</div>
+	<p class="readout" id="pt-read" style="margin-top:10px"></p>
+	<Fragment slot="caption">
+		Blue arrows are the four normal rows, one per contact. With patch friction the region's friction acts at two
+		anchors (green spheres) at the ends of the footprint's long axis, each with two tangent rows; with point
+		friction every contact carries its own tangent pair. Drag to orbit.
+	</Fragment>
+</Figure>
+
+<script>
+	import { makeStage, col, onThemeChange, boxEdges, line3, sphere3, arrow3, type Stage } from '../../lib/stage3d';
+
+	const root = document.getElementById('fig-patch')!;
+	const q = (id: string) => root.querySelector<HTMLElement>(`#${id}`)!;
+	const PT: { mode: 'patch' | 'point'; stage: Stage | null } = { mode: 'patch', stage: null };
+
+	function drawPatch() {
+		if (!PT.stage) PT.stage = makeStage(q('pt-3d'), { target: [0, 0, 0.05], dist: 1.15, theta: -1.05, phi: 0.6 });
+		const S3 = PT.stage;
+		if (!S3) {
+			q('pt-read').textContent = '';
+			return;
+		}
+		S3.clear();
+		const G = S3.group;
+		const hx = 0.2, hy = 0.1, hz = 0.05;
+		G.add(boxEdges([1.0, 0.7, 0.02], [0, 0, -0.01], col('--static'), col('--floor'), 1));
+		G.add(boxEdges([2 * hx, 2 * hy, 2 * hz], [0, 0, hz + 0.002], col('--series-1'), col('--series-1'), 0.25));
+		const corners = [[-hx, -hy], [hx, -hy], [-hx, hy], [hx, hy]];
+		for (const [x, y] of corners) {
+			G.add(sphere3([x, y, 0.002], 0.008, col('--series-1')));
+			G.add(arrow3([x, y, 0.002], [0, 0, 0.16], col('--series-1'), 0.03));
+		}
+		const tangent = (p: [number, number, number]) => {
+			G.add(arrow3(p, [0.09, 0, 0], col('--hot-fill'), 0.022));
+			G.add(arrow3(p, [0, 0.09, 0], col('--hot-fill'), 0.022));
+		};
+		if (PT.mode === 'patch') {
+			G.add(line3([[-hx - 0.06, 0, 0.002], [hx + 0.06, 0, 0.002]], col('--hot'), true));
+			for (const x of [-hx, hx]) {
+				G.add(sphere3([x, 0, 0.002], 0.016, col('--hot-fill')));
+				tangent([x, 0, 0.002]);
+			}
+			q('pt-read').textContent = '4 normal rows + 2 anchors × 2 tangent rows = 8 rows. Each anchor carries its tangential displacement across steps.';
+		} else {
+			for (const [x, y] of corners) tangent([x, y, 0.002]);
+			q('pt-read').textContent = '4 contacts × (1 normal + 2 tangent) = 12 rows. The friction budget moves with the load between corners.';
+		}
+		S3.req();
+	}
+	const setMode = (m: 'patch' | 'point') => {
+		PT.mode = m;
+		q('pt-patch').classList.toggle('on', m === 'patch');
+		q('pt-point').classList.toggle('on', m === 'point');
+		drawPatch();
+	};
+	q('pt-patch').addEventListener('click', () => setMode('patch'));
+	q('pt-point').addEventListener('click', () => setMode('point'));
+	drawPatch();
+	onThemeChange(drawPatch);
+</script>

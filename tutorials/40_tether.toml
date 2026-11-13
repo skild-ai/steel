@@ -1,0 +1,67 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 40_tether.py. Fields: tutorials/README.md.
+
+id = "tether"
+title = "Tethers and distance joints"
+about = """\
+A 0.4 m tether two ways, both started 0.32 m from the anchor. A DISTANCE root joint with \
+max_distance=0.4 is simulated by Steel as a free joint: its distance limits are not enforced, \
+even with enable_joint_limits=True, so the weight falls to the floor. A massless swivel on a \
+ball joint plus a prismatic slider limited to [0, 0.4] m, with enable_joint_limits=True, holds \
+the range. add_joint_distance leaves joint_q at zero, which would put the weight on the anchor, \
+so the script sets the joint's position coordinates to the start offset."""
+look = [
+  "DISTANCE joint: the weight ends 1.0 m from the anchor, on the floor.",
+  "Ball + slider: the weight swings and never exceeds 0.400 m.",
+]
+try = [
+  "Let the slider go slack by starting the weight at 0.2 m.",
+  "Add a second tethered weight hanging from the first.",
+]
+spacing = [0, 0.9, 0]
+
+[param]
+name = "add_joint_ball + add_joint_prismatic(limit_lower=-L, limit_upper=0)"
+text = """\
+A swivel and a slider with a joint limit; give both a small armature, since the swivel is \
+massless."""
+
+[metric]
+key = "distance_m"
+label = "distance from the anchor"
+unit = "m"
+multi = ["distance_m", "limit_m"]
+
+[concept]
+name = "Tethers in reduced coordinates"
+what = """\
+A tether is a one-sided distance limit. Steel accepts DISTANCE joints only as root joints and \
+treats them like free joints, without the distance limit. In reduced coordinates the same \
+constraint is a swivel plus a slider whose joint limit becomes a unilateral row."""
+here = """\
+The DISTANCE weight falls to 1.0 m from the anchor; the swivel-and-slider weight stays at or \
+inside 0.4 m."""
+
+[[concept.consider]]
+term = "Cost"
+text = "Two joints and one limit row per tether."
+
+[[concept.consider]]
+term = "Failure modes"
+text = "A massless swivel needs armature, or its DOFs have no inertia."
+
+[[concept.consider]]
+term = "Interactions"
+text = "Needs enable_joint_limits=True; slack tethers impose nothing."
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+Cables, leashes and safety tethers in Steel. For DISTANCE joints with limits, use SolverXPBD \
+until the change below lands."""
+
+[[in_review]]
+pr = 23
+text = "Enforces min_distance and max_distance with enable_joint_limits=True on DISTANCE joints that root their articulation, and raises for limited DISTANCE joints elsewhere."

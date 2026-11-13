@@ -1,0 +1,68 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 25_substeps.py. Fields: tutorials/README.md.
+
+id = "substeps"
+title = "Substeps vs iterations"
+about = """\
+The same 30 Hz frame is split into 2, 4, 8 or 16 steps, keeping 48 PGS sweeps per frame. \
+Smaller steps make each contact's correction smaller and the problem easier to converge, so a \
+tall stack of ten 8 cm boxes that topples at large steps stands at small ones."""
+look = [
+  "2 and 4 substeps: the stack drifts and falls.",
+  "8 and 16 substeps: it stands, with less sag at 16.",
+]
+try = [
+  "Try 8 substeps × 12 iterations.",
+  "Set contact_warmstart=True at 4 substeps.",
+]
+spacing = [0, 0.3, 0]
+
+[param]
+name = "dt"
+text = """\
+The step size you pass to solver.step. Substeps cost collision and setup per step; iterations \
+cost only sweeps."""
+
+[metric]
+key = "sag_mm"
+label = "top-box sag"
+unit = "mm"
+
+[concept]
+name = "Substeps vs iterations"
+what = """\
+Halving the step halves each correction and the change per step, which helps convergence more \
+than doubling sweeps at a fixed step. Substeps cost more, though: each step repeats collision, \
+mass-matrix work and integration."""
+here = """\
+At 48 sweeps per 30 Hz frame, the 10-box stack collapses at 2×24 and 4×12 and stands at 8×6 \
+and 16×3."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Per 1/30 s frame on the 8-box stack: 2×24 3.6 ms, 4×12 4.2, 8×6 5.4, 16×3 7.6 in one world; \
+5.3, 7.2, 10.0 and 14.8 ms in 1024 worlds."""
+
+[[concept.consider]]
+term = "Failure modes"
+text = "Tall stacks of small boxes at large steps drift sideways until they topple."
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+Substeps for tall stacks and fast contacts; iterations when per-frame cost matters, since they \
+are cheaper per frame (see Cost)."""
+
+[timing]
+group = "substeps"
+scene = "Scene: the 8-box stack in each world; every option simulates the same 1/30 s frame."
+per = "frame"
+
+[timing.notes]
+"2 x 24" = "10-box stack falls"
+"4 x 12" = "10-box stack falls"
+"8 x 6" = "stands, 8.7 mm sag"
+"16 x 3" = "stands, 3.8 mm sag"

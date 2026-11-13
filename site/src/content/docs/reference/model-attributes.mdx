@@ -1,0 +1,12 @@
+---
+title: Model attributes
+description: The per-body, per-shape and per-DOF steel attributes SolverSteel reads, with their USD and MJCF names.
+sidebar:
+  order: 2
+---
+
+import ReferenceTables from '~/components/reference/ReferenceTables.astro';
+
+Per-body, per-shape and per-DOF values Steel reads from the model, in the `steel:` namespace. Register them with `SolverSteel.register_custom_attributes(builder)` before adding bodies; models built without them use the defaults. The importers map the listed USD and MJCF names.
+
+<ReferenceTables table="attributes" />

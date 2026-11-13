@@ -1,0 +1,84 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 56_row_capacity.py. Fields: tutorials/README.md.
+
+id = "row-capacity"
+title = "Row capacity and overflow"
+about = """\
+Constraint rows are stored per world with fixed capacities. row_watermark=True records the \
+most rows each family needed, so you can size free_body_constraint_max and \
+articulation_constraint_max. Rows beyond the capacity are dropped, flagged in \
+solver.constraint_overflow, and reported by check_constraint_capacity()."""
+look = [
+  "The nine boxes need about 310 free-body rows at peak, which the default 512 fits.",
+  "With 200 rows, contacts are dropped as the boxes land and check_constraint_capacity() raises; here the boxes sink only a few millimetres, but in a larger scene objects fall through.",
+]
+try = [
+  "Find the smallest capacity with no overflow.",
+  "Read solver.constraint_overflow in a kernel as an RL termination signal.",
+]
+spacing = [0, 0.6, 0]
+allow_dropped_rows = true  # the undersized capacity drops rows on purpose
+
+[param]
+name = "row_watermark / check_constraint_capacity()"
+text = """\
+Read constraint_row_watermarks() after a representative run and set the capacity with some \
+margin."""
+
+[metric]
+key = "rows_high_water"
+label = "free-body rows needed (high water)"
+unit = "rows"
+
+[metric.alt]
+key = "lowest_z"
+label = "lowest box"
+unit = "m"
+
+[concept]
+name = "Row capacity"
+what = """\
+Rows live in fixed per-world buffers: 32 rows for articulations and 512 for free bodies by \
+default. Rows that do not fit are dropped and the world is flagged in constraint_overflow, \
+which a kernel can read during a captured run."""
+here = """\
+Nine falling boxes need about 310 free-body rows; a capacity of 200 drops contacts as they \
+land."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Memory grows with capacity × worlds: for 1024 eight-box worlds the solver allocates 152 MB at \
+128 rows, 215 MB at the default 512 and 467 MB at 2048; time barely changes."""
+
+[[concept.consider]]
+term = "Failure modes"
+text = """\
+Dropped contacts let objects sink or fall through, sometimes only for a frame. Which contacts \
+keep their rows follows the order of reservation, which by default changes every step; a \
+contact that penetrated while dropped is pushed out when it gets rows back, which adds energy \
+and can make the state diverge. With deterministic=RUN_TO_RUN and \
+CollisionPipeline(deterministic=True) the selection repeats for the same inputs; in a measured \
+folding-chain scene the kept set changed much less between steps and repeated runs matched \
+bitwise. That helps reproduce an overflow but does not fix it."""
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+Size from row_watermark over a representative episode with margin, so that nothing overflows; \
+check check_constraint_capacity in tests."""
+
+[timing]
+group = "capacity"
+scene = "Scene: the 8-box stack in each world, 8 steps of 1/240 s per frame."
+
+[timing.notes]
+"free_body_constraint_max=128" = "drops rows on this stack"
+"free_body_constraint_max=512 (default)" = "fits"
+"free_body_constraint_max=2048" = "fits"
+
+[[in_review]]
+pr = 21
+text = "Documents in the solver which contacts keep their rows when a capacity overflows, and that a changing kept set can add energy."

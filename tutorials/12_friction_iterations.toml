@@ -1,0 +1,89 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 12_friction_iterations.py. Fields: tutorials/README.md.
+
+id = "friction-iterations"
+title = "Fewer friction rows"
+about = """\
+Two options trade friction work for speed. contact_friction_position_iterations solves the \
+tangential rows only in the last k position iterations; contact_friction_gap_max gives \
+contacts whose gap is open wider than a distance a normal row only. The first scene puts boxes \
+on a slope at 90% of the friction limit (12 iterations); the second drops 27 boxes with a 3 cm \
+contact gap, so many reported contacts are still apart."""
+look = [
+  "Slope: friction in all 12 iterations slips 0.95 mm in 3 s; the last 4 only, 4.7 mm; the last 1, 30 mm; none, the boxes slide off.",
+  "Pile: contact_friction_gap_max=0 settles the same (top at 0.250 m) with 488 rows at most instead of 941.",
+]
+try = [
+  "Use a gap_max of -0.001 to drop friction from barely touching contacts too.",
+  "Combine both options on the pile.",
+]
+spacing = [0, 0.8, 0]
+
+[param]
+name = "contact_friction_position_iterations / contact_friction_gap_max"
+text = """\
+-1 (default) solves friction in every position iteration; None (default) gives every contact \
+friction rows."""
+
+[[metric.charts]]
+scene = "slope"
+key = "slip_mm"
+label = "slip on a slope at 90% of the limit"
+unit = "mm"
+
+[[metric.charts]]
+scene = "pile"
+key = "rows_high_water"
+label = "free-body rows needed (high water)"
+unit = "rows"
+
+[metric.charts.alt]
+key = "top_z"
+label = "pile top height"
+unit = "m"
+
+[concept]
+name = "Friction row budget"
+what = """\
+Contacts can carry normal and friction rows even while separated: a closing speculative \
+contact can receive a normal impulse and friction before touching. contact_friction_gap_max=0 \
+removes friction rows at positive separation, saving rows but changing that response. \
+contact_friction_position_iterations lets the normal rows settle first and solves friction \
+only at the end of the sweep."""
+here = """\
+gap_max=0 reduces this pile's peak rows from 941 to 488 while preserving its recorded final \
+top height of 0.250 m. Late friction lets the slope boxes creep."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+On the pile at 1024 worlds: 7.1 ms default, 5.5 ms with friction in the last 4 iterations, 4.5 \
+ms with gap_max=0."""
+
+[[concept.consider]]
+term = "Accuracy"
+text = """\
+Friction solved in few iterations does not converge: slip grows from 0.95 mm to 4.7 and 30 mm."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+Any value other than -1 rejects contact_warmstart and contact_compliance; switching gap_max \
+between None and a finite value needs a new solver."""
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+gap_max for scenes with large contact gaps; late friction only where nothing must hold still \
+near the friction limit."""
+
+[timing]
+group = "friction_iterations"
+scene = "Scene: the 27-box pile with a 3 cm contact gap in each world."
+
+[timing.notes]
+"default" = "941 rows"
+"contact_friction_position_iterations=4" = "slope slip 4.7 mm (separate scene)"
+"contact_friction_gap_max=0" = "488 rows, same pile"

@@ -1,0 +1,53 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 24_mass_ratio.py. Fields: tutorials/README.md.
+
+id = "mass-ratio"
+title = "Mass ratio"
+about = """\
+Four 1 kg boxes under one 20 kg box. Gauss-Seidel passes load down the stack one contact at a \
+time, and the unequal masses slow that transfer, so at a fixed iteration budget the light \
+boxes stay squeezed and the stack sags."""
+look = [
+  "12 iterations: about 6 mm of sag.",
+  "Nesterov momentum halves it; 48 iterations bring it to about 1.4 mm.",
+]
+try = [
+  "Make the top box 100× heavier.",
+  "Put the heavy box at the bottom.",
+]
+spacing = [0, 0.35, 0]
+
+[param]
+name = "iterations"
+text = "Large mass ratios need more iterations, momentum, or substeps."
+
+[metric]
+key = "sag_mm"
+label = "top-box sag"
+unit = "mm"
+
+[concept]
+name = "Mass ratios and conditioning"
+what = """\
+Each Gauss-Seidel row sees only its own effective mass. When neighbours differ greatly in \
+mass, corrections from the heavy side dominate and the light bodies are corrected slowly, so a \
+fixed number of sweeps leaves more error."""
+here = """\
+A 20 kg box on four 1 kg boxes sags 6.3 mm at 12 iterations, 2.5 mm with Nesterov and 1.3 mm \
+at 48."""
+
+[[concept.consider]]
+term = "Cost"
+text = "Iterations cost roughly linearly: 24 iterations take 1.5× the time of 12 in 1024 worlds."
+
+[[concept.consider]]
+term = "Failure modes"
+text = "Very large ratios can let light bodies sink or jitter."
+
+[[concept.consider]]
+term = "Use it when"
+text = """\
+Keep ratios between touching bodies under about 10 where you can; otherwise add momentum, \
+iterations or substeps."""

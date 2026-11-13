@@ -1,0 +1,31 @@
+---
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+// SPDX-License-Identifier: Apache-2.0
+/** A muted panel with a small heading; place two or more inside <CardGrid> for side-by-side comparisons. */
+interface Props {
+	title: string;
+}
+const { title } = Astro.props;
+---
+
+<div class="info-card">
+	<h4 set:html={title} />
+	<slot />
+</div>
+
+<style>
+	.info-card {
+		border-radius: 4px;
+		background: var(--panel);
+		padding: 14px 16px;
+		min-width: 0;
+		font-size: 14.5px;
+	}
+	.info-card :global(p) { color: var(--muted); margin: 0; }
+	.info-card :global(ul) { margin: 6px 0 0; padding-left: 18px; }
+	h4 {
+		margin: 0 0 4px;
+		font: 600 15px/1.4 var(--body);
+		letter-spacing: 0;
+	}
+</style>

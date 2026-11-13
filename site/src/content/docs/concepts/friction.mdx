@@ -1,0 +1,50 @@
+---
+title: Friction
+description: The coupled Coulomb disk solve, friction patches and anchors, torsion, rolling and spin.
+sidebar:
+  order: 5
+---
+
+import FrictionDiskDemo from '~/components/demos/FrictionDiskDemo.astro';
+import PatchFigure from '~/components/demos/PatchFigure.astro';
+import Viz from '~/components/Viz.astro';
+import Term from '~/components/Term.astro';
+
+Steel uses the isotropic <Term name="cone">Coulomb disk</Term>, not a pyramid, and solves both tangent directions of a contact together on their 2×2 block $A_{tt}$ at the contact's current normal impulse. If the unconstrained ("stick") solution lies inside the disk of radius $\rho = \mu\lambda_n$, the contact sticks. If not, scaling it back onto the circle is wrong whenever $A_{tt}$ is anisotropic, which it almost always is for an articulated finger. Steel solves the trust-region problem
+
+$$
+\min_{\|x\|\le\rho}\ \tfrac12 x^\top A_{tt}x - b^\top x \quad\Rightarrow\quad (A_{tt} + \alpha I)\,x = b,\ \ \|x\| = \rho,\ \ \alpha \ge 0,
+$$
+
+with up to eight safeguarded Newton steps on $\alpha$ and a bisection fallback. An impulse that already satisfies the optimality conditions is kept unchanged, so a converged sweep can be exactly stationary.
+
+<FrictionDiskDemo n={2} />
+
+## Friction patches and anchors
+
+A box on a table has four contact points, three rows each, acting on six degrees of freedom. The solver can shift load between corners from step to step without changing the motion, and with per-point friction the friction budget moves with the load, so a held object creeps. By default (`friction_anchor_beta=None`, which selects 0.2) Steel separates the friction budget from how load is distributed:
+
+- Contacts of one body pair form a **region** when their normals agree within about six degrees, their friction coefficients match, their contact planes are close and the shapes touch. Every contact keeps its own normal row, so support and tipping are unchanged.
+- Friction moves to at most two **anchors** at the ends of the region's principal axis, which share the region's pooled normal load.
+- Each anchor carries its tangential displacement across steps, from the SE(3) logarithm of both bodies' pose increments, and its rows add $\beta\,d/h$ so static friction holds position, not just zero velocity.
+- History is matched by body pair and geometry, independently of the collision pipeline's contact matching. An anchor is released when its region unloads, or when it is within 5% of the cone and slipping against it.
+
+<PatchFigure n={5} />
+
+<Viz name="hold" n={6} title="Pushing a box sideways.">
+Turn the push and change its size. Each friction location solves the coupled disk update of the friction demo, after enough Gauss-Seidel sweeps to converge; the dashed circles are each location's friction disk. Below, what Steel measured on a box near its friction limit: point friction creeps, the anchors hold. <span class="tutinline">Tutorial: [Patch friction vs point friction](/tutorials/patch-friction/) · [Friction combine modes](/tutorials/friction-combine/) · [Global friction scale](/tutorials/friction-scale/)</span>
+</Viz>
+
+Set `friction_anchor_beta=0` for point friction: two coupled tangent rows per contact. It is cheaper where nothing is held. Call `reset` after teleporting a body to discard its history.
+
+**Friction modes.** `friction_mode` is experimental, and every mode other than the default uses point friction. `"fixed_normal"` (default) is the disk solve above at the contact's current normal impulse. `"coulomb_newton"` solves each free-body contact's cone exactly, normal and tangent together. Under the immediate response articulated contacts keep the `"fixed_normal"` update; `solve_mode="colored"` puts articulated contacts on propagation rows with the selected mode, except contacts between two links of one articulation, which stay on dense rows with the articulated update. `"bisection"` and `"bisection_desaxce"` search the normal impulse, but at the documented commit each probe scales the stick impulse radially onto the disk, the projection ruled out above for an anisotropic $A_{tt}$. Near the friction limit that converges to a slipping answer, and more iterations do not change it: a box at 97% of its limit slides away under both, while `"fixed_normal"` and `"coulomb_newton"` hold it. A fix is in review in [skild-ai/newton#26](https://github.com/skild-ai/newton/pull/26). Until it lands, use `"fixed_normal"`, or `"coulomb_newton"` for free bodies near the friction limit.
+
+<p class="tutlinks">Tutorials [Friction update modes](/tutorials/friction-mode/) · [Conveyor belts](/tutorials/conveyor-surface-velocity/) · [Kinematic bodies](/tutorials/kinematic-bodies/)</p>
+
+## Torsion, rolling and spin
+
+Spin friction about the normal is opt-in per shape with `steel:min_torsional_patch_radius` $r$, imported from PhysX's `physxCollision:minTorsionalPatchRadius`. Sliding and spin share one Coulomb budget, $|\tau_n| \le r(\mu N - \text{sliding})$. The radius is an effective footprint: $2R/3$ for a uniformly loaded disk of radius $R$. On the integration branch, free-body contacts also take MuJoCo's `condim` convention through `steel:condim`: 4 adds a spin row and 6 adds a rolling pair. The MJCF importer reads a geom's `friction` triple but not its `condim` into `steel:condim`, so set the attribute after import or author `newton:steel:condim` in USD; a change that reads MJCF `condim` is in review in [skild-ai/newton#22](https://github.com/skild-ai/newton/pull/22).
+
+<Viz name="torsion" n={7} title="Spin and rolling friction.">
+At a sphere–plane point contact, sliding friction cannot oppose spin about the contact normal; it changes rolling while the contact slips, but adds no rolling resistance once the ball rolls without slipping. Spin and rolling rows add those resistances. The curves are Steel runs from the tutorials. <span class="tutinline">Tutorial: [Torsional friction on articulated bodies](/tutorials/articulated-torsion/) · [Spin and rolling friction](/tutorials/angular-friction/)</span>
+</Viz>

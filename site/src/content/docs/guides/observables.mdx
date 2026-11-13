@@ -1,0 +1,37 @@
+---
+title: Observables
+description: Joint wrenches, contact forces, awake flags, overflow and watermarks.
+sidebar:
+  order: 4
+---
+
+<p class="tutlinks">Tutorials [Contact forces and regularization](/tutorials/table-legs/) · [Joint reaction forces](/tutorials/joint-reaction-forces/)</p>
+
+Allocate observable arrays once, before capture, and pass them to every step:
+
+```python
+from newton.solvers import SolverSteel
+
+solver = SolverSteel(model, enable_sleeping=True)
+obs = solver.observables(
+    {SolverSteel.ObservableKind.BODY_PARENT_F,
+     SolverSteel.ObservableKind.CONTACT_F,
+     SolverSteel.ObservableKind.BODY_AWAKE},
+    contacts=contacts,
+)
+solver.step(state_0, state_1, control, contacts, dt, observables=obs)
+obs.body_parent_f   # (body_count,) spatial vectors: force [N], torque [N·m], world frame
+obs.contact_f       # per rigid contact row: force on shape 0's body [N]
+obs.body_awake      # (body_count,) bool
+```
+
+| Observable | What it reports | Limits |
+|---|---|---|
+| `body_parent_f` | The wrench the parent applies to each body through its inbound joint, from the step's solved motion: inverse dynamics at the post-solve accelerations, less gravity, `body_f`, and the solved contact, friction, spin and loop-closure impulses of its subtree divided by $h$. Linear force first, torque about the body's center of mass second. | Built from rigid inertia without armature, like MuJoCo. Loop-closure reactions are left out with pre-elimination. Contact wrenches are summed with atomics, so the last bits can vary run to run. Bodies outside every articulation report zero. |
+| `contact_f` | Per live rigid contact row, the force on shape 0's body from the solved normal and friction impulses divided by $h$. | Torque part is zero (torsion is not reported). Dropped rows, rows beyond the contact count and contacts of skipped sleeping islands report zero. |
+| `body_awake` | `True` for awake bodies, `False` for sleeping ones, as of the end of the step that received the container. | Requires `enable_sleeping`. Bodies welded to the world always read `True`. |
+| `constraint_overflow` | Device bool per world plus a global entry: rows, contacts or input lost since the last `reset`. | Read in a kernel, or call `check_constraint_capacity()` outside capture. |
+| `constraint_row_watermarks()` | Per family: retained and requested high-water marks, dropped contact rows, overflow excess, overflowing world-steps; and `contact_high_water`. | Needs `row_watermark=True`; host read outside capture. |
+| `compliance_contact_count` | Compliant contacts prepared in the last step, and `compliance_skipped_contact_count` for those excluded. | `contact_compliance` only; host read outside capture. |
+
+Tendon observables do not exist at this commit; Steel does not simulate tendons yet.

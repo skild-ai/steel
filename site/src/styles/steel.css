@@ -1,0 +1,327 @@
+/* SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors */
+/* SPDX-License-Identifier: Apache-2.0 */
+
+/*
+  Site theme. Colors and fonts come only from steel-tokens.css (the shared Steel style, kept verbatim so it
+  can be replaced as a whole); this file maps them onto Starlight and styles the shared components.
+  Use var(--token) here and in components; never write a literal color.
+*/
+@layer starlight, steel;
+@import './steel-tokens.css' layer(steel);
+
+@layer steel {
+	:root,
+	:root[data-theme='light'],
+	:root[data-theme='dark'],
+	::backdrop {
+		--sl-font: var(--body);
+		--sl-font-mono: var(--mono);
+		--sl-color-white: var(--fg);
+		--sl-color-gray-1: var(--fg);
+		--sl-color-gray-2: var(--fg);
+		--sl-color-gray-3: var(--muted);
+		--sl-color-gray-4: var(--muted);
+		--sl-color-gray-5: var(--rule);
+		--sl-color-gray-6: var(--panel);
+		--sl-color-gray-7: var(--panel);
+		--sl-color-black: var(--bg);
+		--sl-color-accent-low: var(--hot-soft);
+		--sl-color-accent: var(--hot-fill);
+		--sl-color-accent-high: var(--hot);
+		--sl-color-text: var(--fg);
+		--sl-color-text-accent: var(--hot);
+		--sl-color-text-invert: var(--bg);
+		--sl-color-bg: var(--bg);
+		--sl-color-bg-nav: var(--bg);
+		--sl-color-bg-sidebar: var(--bg);
+		--sl-color-bg-inline-code: var(--panel);
+		--sl-color-bg-accent: var(--hot);
+		--sl-color-hairline-light: var(--rule);
+		--sl-color-hairline: var(--rule);
+		--sl-color-hairline-shade: var(--rule);
+		--sl-line-height: 1.65;
+	}
+
+	/* The tokens underline every link; site chrome keeps Starlight's own link styles. */
+	:where(header, nav, .sidebar-pane, starlight-toc, mobile-starlight-toc, .pagination-links, .sl-link-button,
+		.sl-link-card, .card, .right-sidebar, .hero .actions, .expressive-code, .tutorial-card) a {
+		color: revert-layer;
+		text-decoration: revert-layer;
+	}
+	.sl-markdown-content a:not(:where(.not-content *)) {
+		color: var(--fg);
+	}
+	.sl-markdown-content a:hover:not(:where(.not-content *)) {
+		color: var(--hot);
+	}
+	.site-title {
+		color: var(--fg);
+		gap: 0.55rem;
+		letter-spacing: -0.01em;
+	}
+	.site-title img {
+		height: 1.6rem;
+	}
+	h1#_top {
+		font-weight: 500;
+		letter-spacing: -0.02em;
+	}
+	.sl-markdown-content :is(h2, h3, h4) {
+		font-family: var(--display);
+		font-weight: 500;
+		letter-spacing: -0.015em;
+	}
+	/* Tables: cells wrap, the box scrolls sideways with edge shadows when the columns cannot fit. */
+	:is(.table-scroll, .tbl) {
+		overflow-x: auto;
+		max-width: 100%;
+		margin-block: 1rem;
+		scrollbar-width: thin;
+		scrollbar-color: var(--static) transparent;
+		background:
+			linear-gradient(to right, var(--bg) 40%, transparent) left / 2rem 100% no-repeat local,
+			linear-gradient(to left, var(--bg) 40%, transparent) right / 2rem 100% no-repeat local,
+			radial-gradient(farthest-side at 0 50%, color-mix(in srgb, var(--fg) 22%, transparent), transparent) left / 0.75rem 100% no-repeat scroll,
+			radial-gradient(farthest-side at 100% 50%, color-mix(in srgb, var(--fg) 22%, transparent), transparent) right / 0.75rem 100% no-repeat scroll;
+	}
+	:is(.table-scroll, .tbl):focus-visible {
+		outline: 2px solid var(--hot);
+		outline-offset: 2px;
+	}
+	.sl-markdown-content :is(.table-scroll, .tbl) > table {
+		display: table;
+		width: 100%;
+		margin: 0;
+		background: none;
+	}
+	.sl-markdown-content table {
+		font-size: 0.92em;
+		line-height: 1.5;
+	}
+	.sl-markdown-content :is(th, td) {
+		vertical-align: top;
+		overflow-wrap: break-word;
+		background: none;
+	}
+	.sl-markdown-content th {
+		color: var(--muted);
+	}
+	.sl-markdown-content :is(th, td) code {
+		overflow-wrap: break-word;
+	}
+	@media (max-width: 40rem) {
+		.sl-markdown-content table.stack td code {
+			overflow-wrap: anywhere;
+		}
+		/* Phones: a table of three or more columns becomes one block per row, each cell under its column name. */
+		.sl-markdown-content table.stack,
+		.sl-markdown-content table.stack :is(tbody, tr, td) {
+			display: block;
+			width: 100%;
+		}
+		.sl-markdown-content table.stack thead {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			clip-path: inset(50%);
+		}
+		.sl-markdown-content table.stack tr {
+			border-top: 1px solid var(--rule);
+			padding-block: 0.6rem;
+		}
+		.sl-markdown-content table.stack td {
+			border: 0;
+			padding: 0.15rem 0;
+		}
+		.sl-markdown-content table.stack td[data-label]::before {
+			content: attr(data-label);
+			display: block;
+			font: 500 0.7rem/1.5 var(--mono);
+			letter-spacing: 0.07em;
+			text-transform: uppercase;
+			color: var(--muted);
+		}
+		.sl-markdown-content table.stack td[data-label='']::before {
+			display: none;
+		}
+	}
+	.katex-display {
+		overflow-x: auto;
+		overflow-y: hidden;
+		padding-block: 2px;
+	}
+	.kicker {
+		margin: 0 0 6px;
+	}
+
+	/* Figures: full-bleed between rules, mono figure number, muted caption. */
+	figure.steel-figure {
+		margin: 1.5rem 0 1.75rem;
+	}
+	figure.steel-figure figcaption {
+		margin-top: 12px;
+	}
+	figcaption .n,
+	.demo .dh .n {
+		font: 500 12px var(--mono);
+		letter-spacing: 0.07em;
+		text-transform: uppercase;
+		color: var(--fg);
+		margin-right: 8px;
+	}
+	figcaption b {
+		color: var(--fg);
+	}
+	figure svg {
+		display: block;
+		width: 100%;
+		height: auto;
+		font-family: var(--body);
+	}
+	figure .frame > svg.wide {
+		min-width: 640px;
+	}
+	svg .t { fill: var(--fg); font-size: 13px; }
+	svg .tb { fill: var(--fg); font-size: 13.5px; font-weight: 600; }
+	svg .ts { fill: var(--muted); font-size: 11.5px; }
+	svg .tm { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+	svg .ta { fill: var(--hot); font-size: 13px; font-weight: 600; }
+	svg .cap { fill: var(--muted); font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.07em; }
+	svg .box { fill: var(--bg); stroke: var(--static); stroke-width: 1.2; }
+	svg .boxa { fill: var(--hot-soft); stroke: var(--hot); stroke-width: 1.4; }
+	svg .boxp { fill: var(--panel); stroke: var(--rule); stroke-width: 1; }
+	svg .ln { stroke: var(--muted); stroke-width: 1.2; fill: none; }
+	svg .fm { fill: var(--muted); }
+
+	/* Interactive demos: header row, plot + controls, readout. */
+	.demo {
+		border-top: 1px solid var(--rule);
+		border-bottom: 1px solid var(--rule);
+		margin: 1.75rem 0 2rem;
+	}
+	.demo .dh {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 6px 16px;
+		padding: 12px 0;
+		border-bottom: 1px solid var(--rule);
+	}
+	.demo .dh b { font-weight: 600; }
+	.demo .dh > span { font: 500 12px var(--mono); color: var(--muted); }
+	.demo .db {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 20px;
+		padding-block: 18px;
+	}
+	@media (min-width: 72rem) {
+		.demo .db { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 24px; }
+	}
+	.demo .plot { min-width: 0; }
+	.demo .plot svg { display: block; width: 100%; height: auto; touch-action: none; }
+	.ctl { display: grid; gap: 12px; align-content: start; min-width: 0; }
+	.ctl label { display: grid; gap: 3px; font-size: 13.5px; color: var(--muted); }
+	.ctl label .v { font: 500 13px var(--mono); color: var(--fg); }
+	.ctl .row { display: flex; justify-content: space-between; gap: 8px; }
+	.demo input[type='range'] { width: 100%; accent-color: var(--hot); min-height: 28px; }
+	.demo :is(select, input[type='number']) {
+		font: inherit;
+		font-size: 16px;
+		color: var(--fg);
+		background: var(--bg);
+		border: 1px solid var(--static);
+		border-radius: 5px;
+		padding: 5px 8px;
+		min-width: 0;
+		width: 100%;
+	}
+	.seg { display: inline-flex; border: 1px solid var(--static); border-radius: 5px; overflow: hidden; flex-wrap: wrap; }
+	.seg button {
+		font: 500 13px var(--body);
+		background: var(--bg);
+		color: var(--muted);
+		border: 0;
+		padding: 7px 12px;
+		cursor: pointer;
+	}
+	.seg button + button { border-left: 1px solid var(--static); }
+	.seg button.on { background: var(--hot-soft); color: var(--hot); }
+	.readout { font-size: 13.5px; line-height: 1.55; border-top: 1px dashed var(--rule); padding-top: 10px; }
+	.readout .n { font: 500 13px var(--mono); color: var(--fg); font-variant-numeric: tabular-nums; }
+	.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font: 500 12px var(--mono); color: var(--muted); margin-top: 6px; }
+	.legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+
+	/* 3D stages (see src/lib/stage3d.ts). */
+	.stage3d {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 1 / 1;
+		max-width: 100%;
+		background: var(--stage);
+		border-radius: 4px;
+		touch-action: none;
+		overflow: hidden;
+		cursor: grab;
+	}
+	.stage3d.wide3d { aspect-ratio: 16 / 9; }
+	.stage3d canvas { display: block; width: 100%; height: 100%; }
+	.stage3d .reset {
+		font: 500 12px var(--mono);
+		background: var(--bg);
+		color: var(--muted);
+		border: 1px solid var(--rule);
+		border-radius: 4px;
+		padding: 5px 10px;
+		cursor: pointer;
+	}
+	.stage3d .reset { position: absolute; right: 8px; top: 8px; z-index: 1; }
+	.stage3d .reset:hover { color: var(--fg); border-color: var(--hot-fill); }
+	.stage3d .nogl { padding: 24px; color: var(--muted); font-size: 14px; }
+
+	/* Tags used by the reference. */
+	.tag {
+		display: inline-block;
+		font: 500 11px/1.5 var(--mono);
+		border-radius: 3px;
+		padding: 0 6px;
+		border: 1px solid var(--rule);
+		color: var(--muted);
+		white-space: nowrap;
+	}
+	.tag.step { border-color: var(--hot); color: var(--hot); background: var(--hot-soft); }
+	.tag.branch { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+	.tag.main { border-color: var(--static); }
+
+	/* The current page in the sidebar: a panel and a green rule, as in the Steel pages. */
+	.sidebar-content a[aria-current='page'],
+	.sidebar-content a[aria-current='page']:hover {
+		background: var(--panel);
+		color: var(--fg);
+		font-weight: 600;
+		box-shadow: inset 2px 0 0 var(--hot-fill);
+	}
+	/* Bigger tap targets in the sidebar on touch screens. */
+	@media (pointer: coarse) {
+		.sidebar-content a {
+			padding-block: 0.5rem;
+		}
+	}
+	.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+	.chip {
+		font: 500 12px/1.4 var(--mono);
+		border: 1px solid var(--rule);
+		background: var(--bg);
+		border-radius: 999px;
+		padding: 4px 10px;
+		color: var(--muted);
+	}
+	.chip b { color: var(--fg); font-weight: 500; }
+
+	/* Tutorial pages use the full width and no table of contents. */
+	:root:has(.tutorial-page) {
+		--sl-content-width: 68rem;
+	}
+}

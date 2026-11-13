@@ -1,0 +1,70 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 03_patch_friction.py. Fields: tutorials/README.md.
+
+id = "patch-friction"
+title = "Patch friction vs point friction"
+about = """\
+A box rests on a slope at 98% of its friction limit (tan θ = 0.49, μ = 0.5). Point friction \
+gives each of the four contacts its own friction cone, so the load shifts between them and \
+static friction creeps. Patch friction, the default, pools the contacts of a body pair into a \
+region whose friction acts at up to two anchors. The anchors carry their tangential \
+displacement across steps and pull it back, so a held object does not creep."""
+look = [
+  "The point-friction box creeps about 2 mm in 10 s.",
+  "The patch-friction box stays within a micrometre.",
+]
+try = [
+  "Raise the slope to tan θ = 0.51: both boxes must slide.",
+  "Try friction_anchor_beta=0.05 and 0.5.",
+]
+spacing = [0, 0.9, 0]
+
+[param]
+name = "friction_anchor_beta"
+text = """\
+Position gain of the friction anchors. The default None means 0.2; 0 selects point friction, \
+two tangent rows per contact."""
+
+[metric]
+key = "slip_mm"
+label = "slip along the slope"
+unit = "mm"
+
+[concept]
+name = "Friction patches and anchors"
+what = """\
+A patch groups the contacts of one body pair that share a normal, plane and friction \
+coefficient. Its friction acts at up to two anchors that share the pooled normal load and \
+remember how far they have been displaced; the friction rows push that displacement back with \
+gain β. An anchor is released when its patch unloads or slides at the edge of the friction \
+cone."""
+eq = "tangent target = β · displacement / h"
+here = """\
+At 98% of the friction limit, point friction creeps 2.24 mm in 10 s; the patch holds the box \
+to 0.45 µm."""
+
+[[concept.consider]]
+term = "Cost"
+text = """\
+Here patches were cheaper than point friction: 1.0 vs 1.4 ms per step in one world, 1.6 vs 1.8 \
+ms in 1024 worlds, since two anchors replace two rows per contact."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+Contact compliance and friction_mode other than \"fixed_normal\" switch to point friction. \
+Call reset after teleporting a body to drop its anchors."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Default. Point friction (β = 0) suits scenes that need per-contact friction forces."
+
+[timing]
+group = "patch"
+scene = "Scene: the 8-box stack in each world, 8 steps of 1/240 s per frame."
+
+[timing.notes]
+"patch friction (default)" = "slope creep 0.45 µm in 10 s"
+"point friction" = "slope creep 2.24 mm"

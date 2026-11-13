@@ -1,0 +1,65 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 23_iterations_nesterov.py. Fields: tutorials/README.md.
+
+id = "stack-iterations"
+title = "Iterations and Nesterov momentum"
+about = """\
+A stack of eight 10 cm boxes. Each Gauss-Seidel sweep carries load only a short way down the \
+stack, so the bottom of a tall stack converges last and the top sags when there are few \
+iterations. Nesterov momentum with restart speeds up exactly this slow, low-frequency error."""
+look = [
+  "6 iterations: the top sags about 4.6 mm, and 3 mm with Nesterov.",
+  "12 iterations: about 2 mm; with Nesterov about 0.6 mm.",
+]
+try = ["Stack 16 boxes.", "Try iterations=24 without momentum."]
+spacing = [0, 0.35, 0]
+
+[param]
+name = "iterations / nesterov_momentum"
+text = """\
+PGS iterations per step (default 12). nesterov_momentum adds accelerated sweeps with restart \
+(default off)."""
+
+[metric]
+key = "sag_mm"
+label = "top-box sag"
+unit = "mm"
+
+[concept]
+name = "Nesterov momentum"
+what = """\
+Gauss-Seidel removes high-frequency error quickly and low-frequency error slowly; a tall \
+stack's load path is the slow kind. Nesterov momentum starts each sweep from impulses \
+extrapolated along the previous change, and restarts the momentum whenever a sweep's \
+correction opposes the extrapolation (O'Donoghue-Candès restart), as MuJoCo's PGS does."""
+eq = "y = λₖ + βₖ (λₖ − λₖ₋₁),  βₖ = (k−1)/(k+2)"
+here = "Top sag falls from 4.6 to 3.0 mm at 6 iterations and from 2.1 to 0.63 mm at 12."
+
+[[concept.consider]]
+term = "Cost"
+text = """\
++5 to 13% per step (12 iterations, 1024 worlds: 1.65 → 1.88 ms) and 8 bytes per row of history \
+(4.5 MB at 1024 worlds)."""
+
+[[concept.consider]]
+term = "Interactions"
+text = """\
+Requires serial solve, immediate response and interleaved rows; bypasses the specialized \
+sparse and local solves. CUDA only."""
+
+[[concept.consider]]
+term = "Use it when"
+text = "Stacks, mass ratios and long chains at 8+ iterations; gains are small at very low counts."
+
+[timing]
+group = "nesterov"
+scene = "Scene: the 8-box stack in each world, 8 steps of 1/240 s per frame."
+
+[timing.notes]
+"iterations=6" = "sag 4.6 mm"
+"iterations=6 + Nesterov" = "sag 3.0 mm"
+"iterations=12" = "sag 2.1 mm"
+"iterations=12 + Nesterov" = "sag 0.63 mm"
+"iterations=24" = ""

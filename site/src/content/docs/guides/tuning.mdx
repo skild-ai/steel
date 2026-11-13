@@ -1,0 +1,90 @@
+---
+title: Tuning
+description: Get a scene right, then make it fast without breaking it.
+sidebar:
+  order: 1
+---
+
+import Note from '~/components/Note.astro';
+import CardGrid from '~/components/CardGrid.astro';
+import InfoCard from '~/components/InfoCard.astro';
+
+Get a scene right first, then make it fast without breaking it. Most wrong settings look fine for the first second.
+
+## Start here
+
+| Setting | Start with | Why |
+|---|---|---|
+| `row_watermark` | `True` while tuning | Cheap device counters; you cannot size capacities without it. |
+| Row capacities | 1.3–2× the measured mark | Dropped rows often do not show on video. |
+| `enable_joint_limits` | `True` if the model authors limits | The default does not simulate limits at all. |
+| `solve_mode` + response | serial + immediate for robots and small scenes; colored + propagation for piles of free bodies | Loop closures and momentum need immediate. |
+| Substeps × iterations | 12 iterations and the substeps your time step needs | Then trade, below. |
+| `friction_anchor_beta` | default (anchors) if anything is held; 0 otherwise | Anchors hold carried objects; point friction is cheaper. |
+| `contact_warmstart` | `False` | Turn on for resting stacks at low iterations and point-friction grasps; see [the FAQ](/faq/#should-i-turn-on-contact-warm-start) for measurements. |
+| `baumgarte` | 0.2, at most 0.5 | Higher values launched bodies in testing. |
+| CUDA graphs | on | Launch overhead dominates small scenes without them. |
+
+## Checking a setting
+
+1. **Test the settings you ship.** A check that lowers substeps or iterations tests something else.
+2. **Run the whole task.** Instability arrives with the load: an impact, a grasp, a pour, a stack settling.
+3. **Require zero dropped rows.** `check_constraint_capacity()` after the run; any overflowing world-step fails the run.
+4. **Run the task's own check.** Finite state is not success.
+5. **Measure and look.** Penetration, peak speed, joint-limit excess, loop-closure gap, energy gain in passive scenes, resting jitter, grasp slip; then frames across the episode.
+6. **Test at the world count you run.** Rare failures need many worlds; one world passing says little.
+7. **Check that it moves.** A state that stopped advancing passes every metric. Read back the options the solver was built with.
+8. **Compare before blaming the solver.** Run the same metric under another solver; large transients are often the scene's.
+
+## Substeps or iterations
+
+<p class="tutlinks">Tutorials [Substeps vs iterations](/tutorials/substeps/) · [Iterations and Nesterov momentum](/tutorials/stack-iterations/) · [Mass ratio](/tutorials/mass-ratio/) · [Contact warm start](/tutorials/contact-warmstart/)</p>
+
+Two limits look alike ("more substeps fixed it") and want opposite settings.
+
+<CardGrid>
+
+<InfoCard title="Convergence-limited">
+
+A resting stack of increasing masses: the load must travel through every row. What matters is sweeps per frame (substeps × iterations), so spend them as iterations in the fewest substeps. Nesterov momentum lowers the sweeps needed; in one six-cube stack with 3:1 mass steps it halved them.
+
+</InfoCard>
+
+<InfoCard title="Time-step-limited">
+
+Ropes, chains and fast driven mechanisms: more iterations do not help, substeps do. Keep the substeps and lower iterations instead.
+
+</InfoCard>
+
+</CardGrid>
+
+To tell them apart, halve substeps at the same iterations, and halve substeps at twice the iterations. If the second passes, the scene is convergence-limited. One substep's fixed cost is typically worth many iteration sweeps, so the fewest substeps a scene tolerates is usually the fastest setting.
+
+## Recipes
+
+| Case | Do |
+|---|---|
+| Held or carried object slips or twists | Friction anchors on (default). With point friction, turn on warm start and keep contacts matched (`contact_matching_body_frame=True` for carried objects). If it still slips, double `iterations`. Check slip relative to the holding link over the whole hold, at 64 or more worlds. |
+| Heavy body presses light ones into the ground | Double substeps and iterations together and raise `baumgarte` to 0.5. This is a partial fix for ratios above about 1000:1; residual penetration stays above that of position-based solvers. |
+| Resting stack slumps (100:1 to 1000:1) | `nesterov_momentum=True` (serial, immediate, CUDA), then a sweep budget in the fewest substeps. |
+| Loop closure opens or tilts | Double `iterations`, try `enable_bilateral_preelimination`, then substeps. Watch the anchor gap over the episode. |
+| Bursts with warm start on | `contact_warmstart=False`, or keep it with `contact_regularization=0.01`. |
+| Mechanism fights its drives from frame 1 | Shapes of one mechanism overlap at rest. Add collision-filter pairs; no solver setting fixes it. |
+| Thin objects sink into supports | More substeps, or a larger contact gap on the thin support. |
+| Torsion pads on a hand | `contact_torsion_device=True`, warm start off, and size capacities first: a world that dropped dense rows gets no torsion rows. |
+
+## Making it faster
+
+- **Fewer substeps** with more iterations where the scene is convergence-limited.
+- **Point friction** (`friction_anchor_beta=0`) where nothing is held.
+- **A fixed limit gap** (`joint_limit_activation_gap=0.1`) builds limit rows only near limits. Keep it above $2\max|\dot q|\,h$.
+- **Contact buffer near the peak**: size `rigid_contact_max` just above the measured peak contact count; contact bookkeeping runs over the whole buffer.
+- **`contact_gap_gate=0`** where speculative rows never engage.
+- **Colored propagation** for piles of free bodies; serial immediate for articulated scenes.
+- **`parallel_tree`, `use_parallel_streams`, `reuse_kinematics`**: time them on your scene; each helps some models and slows others.
+
+<Note title="Fair comparisons">
+
+A setting may change how Steel solves the physics, never which physics it solves. Do not turn off joint limits, velocity limits, joint friction, springs, restitution, torsion, anchors the scene relies on, or self-collision to win time. Compare solvers at matched time steps, on the same GPU, against a strict bar such as every world of three repeats.
+
+</Note>

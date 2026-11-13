@@ -1,0 +1,59 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Page text for 17_speculative_contacts.py. Fields: tutorials/README.md.
+
+id = "speculative-contacts"
+title = "Speculative contacts"
+about = """\
+A 2 cm ball moving at 40 m/s (17 cm per 240 Hz step) is fired at a 1 cm wall with no gravity. \
+The shape gap decides how far apart the pipeline reports contacts. With a 5 mm gap it never \
+sees the ball near the wall and the ball tunnels through. With a 20 cm gap a speculative row \
+lets the ball close the remaining distance in one step and then blocks it."""
+look = [
+  "5 mm gap: the ball passes through the wall.",
+  "20 cm gap: it stops at the wall face.",
+  "contact_speculative_scale=0 stops it at the gap instead, and contact_gap_gate=0.01 drops the rows, so it tunnels.",
+]
+try = [
+  "Set the speed to 80 m/s with the 20 cm gap.",
+  "Play at 0.1× to see the single step that closes the gap.",
+]
+spacing = [0, 0.6, 0]
+speed = 0.1
+
+[param]
+name = "ShapeConfig.gap"
+text = """\
+Contact detection distance. contact_speculative_scale (default 1) is the fraction of a \
+positive gap a contact may close per step; contact_gap_gate drops contacts farther than a \
+distance."""
+
+[metric]
+key = "x"
+label = "ball x (wall face at 0.595 m)"
+unit = "m"
+
+[concept]
+name = "Speculative contacts"
+what = """\
+A contact reported while its shapes are still apart may close the remaining gap φ in one step \
+but no more. Fast objects are stopped at the surface without smaller steps, provided the shape \
+gap covers one step of travel."""
+eq = "target = s · φ / h  for φ > 0"
+here = """\
+A 40 m/s ball covers 17 cm per step: a 5 mm gap lets it tunnel, a 20 cm gap stops it at the \
+wall. contact_speculative_scale=0 stops it at the gap, and contact_gap_gate=0.01 drops the \
+rows so it tunnels again."""
+
+[[concept.consider]]
+term = "Cost"
+text = "A larger gap reports more contacts and rows; contact_gap_gate trims the far ones."
+
+[[concept.consider]]
+term = "Failure modes"
+text = "A small gap tunnels; a scale below 1 leaves objects hovering."
+
+[[concept.consider]]
+term = "Use it when"
+text = "Thin walls and fast projectiles. Size the gap to the fastest speed times the step."
