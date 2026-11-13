@@ -20,7 +20,9 @@ common/steel_scenes.py the base for scenes ported from steel-webgpu's tools/scen
 common/exported_scene.py  steel-webgpu's exported hero-montage scenes rebuilt from scene.json + scene.bin
 common/loop_linkage.py the base for the closed-loop linkage examples (tree + loop closures, scripted drive, reference check)
 common/loop_mechanisms.py  the closed-loop mechanisms (bodies, joints, cuts, trajectories)
-common/cli.py          `python -m shelf list | play | bench | tune | check`
+common/cli.py          `python -m shelf list | play | bench | tune | check | trial | autotune | advise`
+scripts/render_audit/  render and grade examples with their Steel presets (../agents/steps/render-and-grade)
+common/advisor/        the Steel tuning advisor: episode probe, stability rules, the trial loop (`trial`, `autotune`)
 shelf/<NN_section>/<example>/
     example.py         a Newton example (Example class + __main__ block), reading its preset
     presets.toml       one table per solver
@@ -170,3 +172,20 @@ edit a look in `common/looks.toml` instead.
 `check` runs the example headless (`--viewer null --test`) with the `[check]` arguments, fails it when a Steel
 solver dropped contacts or rows (`SolverSteel.check_constraint_capacity()` after the run), writes `status`,
 `checked` and any failure `note` into `presets.toml`, and regenerates `PRESETS.md`.
+
+## Tuning Steel presets
+
+Read [docs/steel_tuning/guide.md](docs/steel_tuning/guide.md) sections 1-3 before changing a `[steel]` table; the
+step-by-step workflow is [../agents/workflows/tune-a-scene/README.md](../agents/workflows/tune-a-scene/README.md).
+
+```
+python -m shelf trial <example> --out outputs/<example>_t0          # the whole episode at the [steel] preset, plus its check
+python -m shelf autotune <example> --start defaults --out outputs/<example>_tune   # fixes first, then cheaper settings
+python -m shelf advise outputs/<example>_tune/trial3/trial.json     # the stability rules on a recorded trial
+```
+
+- `autotune` is a screen, not acceptance. Copy the settings it ends on into `presets.toml` and run
+  `python -m shelf check <example>`; only `check` sets `status = "works"`.
+- Never turn off physics a scene relies on (limits, friction anchors that hold a grasp, torsion, collision) to win
+  time, and never size a capacity from a run that dropped rows.
+- `uv run --with pytest python -m pytest tests` runs the advisor's tests (the rules need no GPU).

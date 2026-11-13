@@ -131,6 +131,18 @@ uv run python -m shelf check basic_pendulum --presets kamino_tuned.toml --every
 
 To make a tuned preset the shelf's preset, copy its table into `presets.toml` and run `shelf check`.
 
+**Auto-tune (Steel).** `trial` runs an example's whole episode with Steel, records what went wrong (dropped rows,
+lost start states, limits left off, heavy-on-light mass ratios, open loops, grasp slip, warm-start bursts, a failed
+check) and the fix for each, then runs the example's check. `autotune` repeats trials until no fix is left, then
+tries cheaper settings and keeps those that stay healthy. The rules, the measurements behind them and how to verify
+a result are in the [Steel tuning guide](docs/steel_tuning/guide.md); step-by-step procedures built on these
+commands are in [agents/](../agents/README.md).
+
+```bash
+uv run python -m shelf trial crane_wrecking_ball --out outputs/crane_t0
+uv run python -m shelf autotune crane_wrecking_ball --start defaults --out outputs/crane_tune
+```
+
 **Looks.** `play` and `tune` draw the scene with a *look*: the palette for shapes that use Newton's
 default colors, the floor, the sky, the ambient fill, the sun, exposure, roughness, shadow softness and
 the fog range (Newton greys shapes out from 20 m; the shelf's looks start at 80 m so scenes keep their
@@ -168,7 +180,8 @@ and the collision hulls draw otherwise.
 ## Layout
 
 ```
-common/       preset loader and the `python -m shelf` command
+common/       preset loader, the `python -m shelf` command and the Steel tuning advisor (`common/advisor/`)
+scripts/      live-tuning checks and the render audit (`render_audit/`)
 shelf/
     00_basics/                    building, stepping and viewing a scene; selection
     01_basic_contacts/            a few objects touching in simple ways
