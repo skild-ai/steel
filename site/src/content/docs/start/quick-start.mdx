@@ -78,3 +78,15 @@ solver.check_constraint_capacity()  # outside capture
 ```
 
 Both scripts ran at the documented commit on CUDA. Bundled examples run with `python -m newton.examples <name>`: `steel_sleeping` and `steel_determinism_arms` are in Newton 1.8; the integration branch adds `steel_magnetic_door`, `steel_wrecking_ball`, `steel_plate_rack` and `steel_bolt_sweep`.
+
+## Examples
+
+The [examples](/examples/) page has more scenes, each with a preset for Steel and for the other solvers that run it. From a clone of [skild-ai/steel](https://github.com/skild-ai/steel), run one with:
+
+```bash
+cd examples
+uv sync
+uv run shelf play jenga                  # its default preset
+uv run shelf play jenga --solver steel   # a named preset
+uv run shelf play                        # browse them all
+```

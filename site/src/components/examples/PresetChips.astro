@@ -1,0 +1,42 @@
+---
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+// SPDX-License-Identifier: Apache-2.0
+/** One chip per preset that runs: the default in bold, the clip's preset in green, unstable and untested marked. */
+interface Props {
+	presets: { name: string; status: string; isDefault: boolean }[];
+	featured: string | null;
+}
+const { presets, featured } = Astro.props;
+const runs = presets.filter((p) => p.status !== 'unsupported');
+---
+
+<ul class="preset-chips not-content" aria-label="Presets">
+	{
+		runs.map((p) => (
+			<li
+				class:list={['preset-chip', p.status, { featured: p.name === featured, default: p.isDefault }]}
+				title={`${p.name}: ${p.status}${p.isDefault ? ', default' : ''}${p.name === featured ? ', shown in the clip' : ''}`}
+			>
+				{p.name}
+				{p.status !== 'works' && <span class="status">{p.status}</span>}
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	.preset-chips { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; padding: 0; list-style: none; }
+	.preset-chip {
+		margin: 0;
+		padding: 1px 6px;
+		border: 1px solid var(--rule);
+		border-radius: 3px;
+		font: 400 11.5px/1.5 var(--mono);
+		color: var(--muted);
+		overflow-wrap: anywhere;
+	}
+	.preset-chip.default { color: var(--fg); font-weight: 500; }
+	.preset-chip.featured { border-color: var(--hot-fill); background: var(--hot-soft); color: var(--hot); }
+	.status { margin-left: 4px; color: var(--muted); }
+	.unstable .status { color: var(--series-3); }
+</style>

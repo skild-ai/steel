@@ -4,15 +4,16 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/write-notices.mjs dist && node scripts/check-links.mjs dist",
+    "build": "astro build && node scripts/write-notices.mjs dist && node scripts/check-links.mjs dist && node scripts/check-examples.mjs dist",
     "preview": "astro preview",
     "check-links": "node scripts/check-links.mjs dist",
     "check-figures": "node scripts/check-figures.mjs dist",
-    "build:pages": "export STEEL_SITE_BASE=/steel/ && astro build --outDir dist-pages && node scripts/write-notices.mjs dist-pages && node scripts/check-links.mjs dist-pages",
+    "build:pages": "export STEEL_SITE_BASE=/steel/ && astro build --outDir dist-pages && node scripts/write-notices.mjs dist-pages && node scripts/check-links.mjs dist-pages && node scripts/check-examples.mjs dist-pages",
     "check-figures:pages": "STEEL_SITE_BASE=/steel/ node scripts/check-figures.mjs dist-pages",
     "check-replay": "node scripts/check-replay.mjs dist",
     "check-replay:pages": "STEEL_SITE_BASE=/steel/ node scripts/check-replay.mjs dist-pages",
-    "astro": "astro"
+    "astro": "astro",
+    "check-examples": "node scripts/check-examples.mjs dist"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "7.3.8",

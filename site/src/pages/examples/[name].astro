@@ -1,0 +1,228 @@
+---
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+// SPDX-License-Identifier: Apache-2.0
+/** One page per shelf example: its clip, run commands, preset table, code and README. */
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { Code, Tabs, TabItem } from '@astrojs/starlight/components';
+import { createMarkdownProcessor } from '@astrojs/markdown-remark';
+import ClipPlayer from '../../components/examples/ClipPlayer.astro';
+import { exampleFiles, exampleReadme, loadExamples, sourceUrl } from '../../lib/examples-data.mjs';
+import media from '../../data/example-media.json';
+
+export function getStaticPaths() {
+	const { examples } = loadExamples();
+	return examples.map((example, i) => ({
+		params: { name: example.name },
+		props: { example, prev: examples[i - 1] ?? null, next: examples[i + 1] ?? null },
+	}));
+}
+
+const { example, prev, next } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const folder = `${sourceUrl}/${example.path}`;
+const blob = folder.replace('/tree/', '/blob/');
+const files = exampleFiles(example);
+const rate = media.examples[example.name]?.speed ?? 1;
+const commands = [
+	'cd examples',
+	`# the default preset (${example.defaultPreset}), then the others`,
+	`uv run shelf play ${example.name}`,
+	...example.presets
+		.filter((p) => !p.isDefault && p.status !== 'unsupported')
+		.map((p) => `uv run shelf play ${example.name} --solver ${p.name}`),
+	'# change solver settings live',
+	`uv run shelf tune ${example.name}`,
+].join('\n');
+
+let readme = null;
+const readmeText = exampleReadme(example);
+if (readmeText) {
+	const markdown = await createMarkdownProcessor({ syntaxHighlight: false });
+	// Drop the README's own title and point its relative links at the folder on GitHub.
+	const body = readmeText.replace(/^# .*\n+/, '').replace(/\]\((?![a-z]+:|#)([^)]+)\)/gi, `](${folder}/$1)`);
+	readme = (await markdown.render(body)).code;
+}
+const solverLabel = (p) => (p.solver ? p.solver : p.variantOf ? `${p.variantOf} variant` : p.name === 'none' ? 'no solver' : 'coupled');
+---
+
+<StarlightPage frontmatter={{ title: example.title, description: example.short, tableOfContents: false }}>
+	<div class="example-page">
+		<p class="kicker">{example.category.label}</p>
+		<p class="short">{example.short}</p>
+
+		<figure class="clip-figure">
+			{
+				example.media.clip ? (
+					<ClipPlayer
+						src={`${base}/${example.media.clip}`}
+						poster={example.media.poster && `${base}/${example.media.poster}`}
+						title={example.title}
+						rate={rate}
+					/>
+				) : (
+					<div class="placeholder">No clip yet</div>
+				)
+			}
+			{
+				example.featured && (
+					<figcaption>
+						The <code>{example.featured}</code> preset{example.featured === example.defaultPreset ? ' (the default)' : ''}, recorded
+						with Newton <a href={`https://github.com/skild-ai/newton/commit/${media.newton}`}>{media.newton.slice(0, 9)}</a>{` on an ${media.gpu}${rate !== 1 ? `, sped up ${rate}× (the readout shows sim time)` : ''}.`}
+					</figcaption>
+				)
+			}
+		</figure>
+
+		<h2 id="run">Run it</h2>
+		<Code code={commands} lang="sh" />
+		<p>
+			Source: <a href={folder}><code>examples/shelf/{example.path}/</code></a>
+			{example.source && <span class="from"> · ported from <code>{example.source}</code></span>}
+		</p>
+
+		<h2 id="presets">Presets</h2>
+		<div class="table-wrap">
+			<table>
+				<thead>
+					<tr>
+						<th>Preset</th>
+						<th>Solver</th>
+						<th>Status</th>
+						<th>Checked</th>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						example.presets.map((p) => (
+							<tr class:list={{ featured: p.name === example.featured }}>
+								<td>
+									<code>{p.name}</code>
+									{p.isDefault && <span class="tag">default</span>}
+								</td>
+								<td>{solverLabel(p)}</td>
+								<td class:list={['status', p.status]}>{p.status}</td>
+								<td class="checked">{p.status === 'unsupported' ? p.reason : p.checked}</td>
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
+		<p class="note">
+			Solvers with no row are untested on this example. The full settings are in
+			<a href={`${folder}/presets.toml`}><code>presets.toml</code></a>.
+		</p>
+
+		<h2 id="code">Code</h2>
+		<Tabs>
+			{
+				files.map((f) => (
+					<TabItem label={f.name}>
+						<div class="code-fold" data-lines={f.code.split('\n').length}>
+							<Code code={f.code} lang={f.name.endsWith('.py') ? 'python' : 'toml'} title={`examples/shelf/${example.path}/${f.name}`} />
+						</div>
+						<p class="file-link">
+							<a href={`${blob}/${f.name}`}>{f.name} on GitHub</a>
+						</p>
+					</TabItem>
+				))
+			}
+		</Tabs>
+
+		{
+			readme && (
+				<>
+					<h2 id="readme">README</h2>
+					<div class="readme" set:html={readme} />
+				</>
+			)
+		}
+
+		<nav class="pager not-content" aria-label="Other examples">
+			{prev ? <a href={`${base}/examples/${prev.name}/`}>← {prev.title}</a> : <span />}
+			<a href={`${base}/examples/#${example.name}`}>All examples</a>
+			{next ? <a href={`${base}/examples/${next.name}/`}>{next.title} →</a> : <span />}
+		</nav>
+	</div>
+</StarlightPage>
+
+<script>
+	// Long files start folded to their first lines, with a button to show the rest.
+	for (const fold of document.querySelectorAll<HTMLElement>('.code-fold')) {
+		const lines = Number(fold.dataset.lines);
+		if (lines <= 60) continue;
+		fold.classList.add('folded');
+		const button = document.createElement('button');
+		button.type = 'button';
+		button.className = 'fold-toggle';
+		button.textContent = `Show all ${lines} lines`;
+		button.addEventListener('click', () => {
+			const folded = fold.classList.toggle('folded');
+			button.textContent = folded ? `Show all ${lines} lines` : 'Show fewer lines';
+			if (folded) fold.scrollIntoView({ block: 'nearest' });
+		});
+		fold.after(button);
+	}
+</script>
+
+<style>
+	.short { font-size: 1.05rem; max-width: 76ch; }
+	.clip-figure { margin: 1rem 0 0; }
+	.placeholder {
+		aspect-ratio: 16 / 9;
+		background: var(--stage);
+		border: 1px solid var(--rule);
+		border-radius: 4px;
+		display: grid;
+		place-items: center;
+		color: var(--muted);
+		font: 500 12px/1.4 var(--mono);
+		letter-spacing: 0.07em;
+		text-transform: uppercase;
+	}
+	figcaption { margin-top: 6px; }
+	.from { color: var(--muted); overflow-wrap: anywhere; }
+	.table-wrap { overflow-x: auto; }
+	table { width: 100%; border-collapse: collapse; font-size: 14px; }
+	th, td { text-align: left; vertical-align: top; padding: 6px 10px; border-bottom: 1px solid var(--rule); }
+	td.checked { color: var(--muted); font-size: 13px; min-width: 14ch; }
+	tr.featured td:first-child { box-shadow: inset 3px 0 0 var(--hot-fill); }
+	.tag { margin-left: 6px; font: 500 11px/1.4 var(--mono); color: var(--hot); }
+	.status.unstable { color: var(--series-3); }
+	.status.unsupported,
+	.status.untested { color: var(--muted); }
+	.note { color: var(--muted); font-size: 14px; }
+	.readme { max-width: 80ch; }
+	.code-fold.folded { max-height: 34rem; overflow: hidden; position: relative; }
+	.code-fold.folded::after {
+		content: '';
+		position: absolute;
+		inset: auto 0 0;
+		height: 4rem;
+		background: linear-gradient(transparent, var(--bg));
+		pointer-events: none;
+	}
+	:global(.fold-toggle) {
+		margin-top: 8px;
+		font: 500 13px var(--mono);
+		background: var(--bg);
+		color: var(--muted);
+		border: 1px solid var(--rule);
+		border-radius: 4px;
+		padding: 7px 12px;
+		min-height: 36px;
+		cursor: pointer;
+	}
+	:global(.fold-toggle:hover) { color: var(--fg); border-color: var(--hot-fill); }
+	.file-link { font-size: 14px; }
+	.pager {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 8px 16px;
+		margin-top: 2.5rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--rule);
+		font-size: 14px;
+	}
+</style>

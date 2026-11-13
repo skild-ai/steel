@@ -19,6 +19,7 @@ hero:
 
 import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 import LegacyRedirect from '~/components/LegacyRedirect.astro';
+import ExampleStrip from '~/components/examples/ExampleStrip.astro';
 
 <CardGrid>
 	<LinkCard title="Start" href="start/overview/" description="What Steel is for, which Newton build has which feature, installation and a first simulation." />
@@ -28,6 +29,12 @@ import LegacyRedirect from '~/components/LegacyRedirect.astro';
 	<LinkCard title="Reference" href="reference/options/" description="Every constructor option, steel: attribute, model input and method, generated from the solver's source." />
 	<LinkCard title="Changelog" href="changelog/" description="Steel changes in Newton and on the integration branch, newest first." />
 </CardGrid>
+
+## Examples
+
+Scenes from the [examples shelf](/examples/), each run with its Steel preset: manipulation, contact-rich stacks, loop-closing linkages, cloth coupling and many worlds per GPU.
+
+<ExampleStrip names={['franka_shirt_fold_stack', 'jenga', 'box_turn', 'domino_spiral', 'card_house', 'loop_hoberman_sphere', 'robot_panda_hydro', 'basic_urdf']} />
 
 Steel lives in [Newton](https://github.com/newton-physics/newton). This site, its tutorials and the [examples](https://github.com/skild-ai/steel/tree/main/examples) are in [skild-ai/steel](https://github.com/skild-ai/steel); contributions are welcome, see [Contributing](/contributing/). Throughput benchmarks are in the [launch post](https://www.skild.ai/blogs/steel).
 

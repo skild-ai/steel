@@ -11,6 +11,7 @@ import { unified } from '@astrojs/markdown-remark';
 import { remarkBaseLinks } from './src/lib/remark-base-links.mjs';
 import { rehypeTables } from './src/lib/rehype-tables.mjs';
 import { tutorialSidebar } from './src/lib/tutorial-sidebar.mjs';
+import { examplesSidebar } from './src/lib/examples-data.mjs';
 
 // Deploy under a subpath with STEEL_SITE_BASE=/steel/docs; absolute links in content get the prefix.
 const base = process.env.STEEL_SITE_BASE ?? '/';
@@ -78,6 +79,7 @@ export default defineConfig({
 					],
 				},
 				tutorialSidebar(),
+				examplesSidebar(),
 				{ label: 'Concepts', items: [{ autogenerate: { directory: 'concepts' } }] },
 				{ label: 'Guides', items: [{ autogenerate: { directory: 'guides' } }] },
 				{ label: 'Reference', items: [{ autogenerate: { directory: 'reference' } }] },
@@ -94,8 +96,8 @@ export default defineConfig({
 			plugins: [
 				starlightLinksValidator({
 					errorOnRelativeLinks: false,
-					// Tutorial pages and the notices file are generated outside the docs collection; scripts/check-links.mjs checks them.
-					exclude: [`${base}tutorials/`, `${base}tutorials/**`, `${base}inside-steel/`, `${base}third-party-notices.txt`],
+					// Tutorial and example pages and the notices file are generated outside the docs collection; scripts/check-links.mjs checks them.
+					exclude: [`${base}tutorials/`, `${base}tutorials/**`, `${base}examples/`, `${base}examples/**`, `${base}inside-steel/`, `${base}third-party-notices.txt`],
 				}),
 			],
 		}),

@@ -1,0 +1,655 @@
+{
+ "steel": "ca4295d",
+ "newton": "f6fc82a8b06d036e1e6d02a61d77a2d300476e8d",
+ "gpu": "NVIDIA RTX PRO 6000 Blackwell",
+ "examples": {
+  "air_hockey": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 2.3,
+   "preview_seconds": 5.0,
+   "poster": 7.0
+  },
+  "anymal_d_many_worlds": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "balance_bird": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "balance_board": {
+   "preset": "steel",
+   "speed": 2.0,
+   "clip_seconds": 6.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 3.5
+  },
+  "ball_tied_to_cloth": {
+   "preset": "steel_vbd",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "basic_conveyor": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 4.9,
+   "preview_seconds": 5.0,
+   "poster": 3.0
+  },
+  "basic_conveyor_forces": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 1.3,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "basic_dzhanibekov": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 1.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "basic_joints": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.5,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "basic_mimic_joint": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 2.1,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "basic_multi_solver_overlay": {
+   "preset": "xpbd_featherstone_mujoco_kamino_steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 4.8,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "basic_pendulum": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.2,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "basic_shapes": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "basic_urdf": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "beer_pong": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.5,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "body_limits": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 1.5
+  },
+  "bolt_sweep": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 4.8,
+   "preview_seconds": 5.0,
+   "poster": 9.0
+  },
+  "bounce": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "box_turn": {
+   "preset": "steel",
+   "speed": 2.0,
+   "clip_seconds": 6.67,
+   "preview_start": 0.8,
+   "preview_seconds": 5.0,
+   "poster": 3.5
+  },
+  "boxes_chain_cloth_soft": {
+   "preset": "steel_vbd",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "boxes_into_sand": {
+   "preset": "steel_implicit_mpm",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "brick_pour": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 1.1,
+   "preview_seconds": 5.0,
+   "poster": 7.0
+  },
+  "card_house": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 2.0
+  },
+  "contacts_rj45_plug": {
+   "preset": "steel_vbd",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "controller_operational_space_hybrid_force_motion": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "crane_wrecking_ball": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 4.1,
+   "preview_seconds": 5.0,
+   "poster": 9.0
+  },
+  "d6": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 1.5
+  },
+  "domino_spiral": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "drawer_fork": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 1.7,
+   "preview_seconds": 5.0,
+   "poster": 7.0
+  },
+  "drives": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 1.5
+  },
+  "fourbar_split_solvers": {
+   "preset": "kamino_steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "franka_cable_ik_pick_place": {
+   "preset": "steel_vbd",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.9,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "franka_chain_on_cable": {
+   "preset": "steel_xpbd",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.2,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "franka_cloth_block": {
+   "preset": "steel_vbd",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 1.4,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "franka_plate_rack": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 2.9,
+   "preview_seconds": 5.0,
+   "poster": 9.0
+  },
+  "franka_shirt_fold_stack": {
+   "preset": "steel_vbd",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "incline": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "jenga": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.2,
+   "preview_seconds": 5.0,
+   "poster": 7.0
+  },
+  "kinematic": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 2.7,
+   "preview_seconds": 5.0,
+   "poster": 2.0
+  },
+  "linkages": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 2.0
+  },
+  "load_friction": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 3.4,
+   "preview_seconds": 5.0,
+   "poster": 1.5
+  },
+  "loop_delta_robot": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 2.4,
+   "preview_seconds": 5.0,
+   "poster": 1.5
+  },
+  "loop_dr_legs": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "loop_dr_testmech": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 1.4,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "loop_fourbar": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "loop_hoberman_sphere": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 4.4,
+   "preview_seconds": 5.0,
+   "poster": 1.0
+  },
+  "loop_parallel_gripper": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 2.4,
+   "preview_seconds": 5.0,
+   "poster": 1.5
+  },
+  "mjorg_falling_chain": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 1.2
+  },
+  "mjorg_gothic_arch": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 1.0
+  },
+  "mjorg_house_of_cards": {
+   "preset": "steel",
+   "speed": 2.0,
+   "clip_seconds": 10.0,
+   "preview_start": 3.5,
+   "preview_seconds": 5.0,
+   "poster": 1.0
+  },
+  "mjorg_luggage_carousel": {
+   "preset": "steel",
+   "speed": 2.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 2.5
+  },
+  "mjorg_magnetic_door": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 1.4,
+   "preview_seconds": 5.0,
+   "poster": 2.5
+  },
+  "mjorg_sleeping_dominos": {
+   "preset": "steel",
+   "speed": 2.0,
+   "clip_seconds": 7.5,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 2.0
+  },
+  "newton_cradle": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 2.6,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "nut_bolt_hydro": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "nut_bolt_sdf": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "overlap": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 1.5
+  },
+  "particle_pad_drawer": {
+   "preset": "steel_xpbd",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "proxy_joint_gripper": {
+   "preset": "steel_vbd",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 4.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "ragdoll": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 1.5
+  },
+  "ratio_stack": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "robot_allegro_hand": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "robot_anymal_d": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "robot_asroballet": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "robot_cartpole": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 3.3,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "robot_g1": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "robot_panda_hydro": {
+   "preset": "steel",
+   "speed": 2.0,
+   "clip_seconds": 6.0,
+   "preview_start": 0.1,
+   "preview_seconds": 5.0,
+   "poster": 2.5
+  },
+  "robot_policy": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 3.4,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "robot_ur10": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "rods": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 1.5
+  },
+  "selection_cartpole": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 3.7,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "shapes_in_box": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "shapes_onto_sand": {
+   "preset": "steel_implicit_mpm",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "sleeping": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 4.0
+  },
+  "spinning_top": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.7,
+   "preview_seconds": 5.0,
+   "poster": 4.0
+  },
+  "toaster": {
+   "preset": "steel",
+   "speed": 2.0,
+   "clip_seconds": 10.0,
+   "preview_start": 1.6,
+   "preview_seconds": 5.0,
+   "poster": 3.5
+  },
+  "torsion": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 1.4,
+   "preview_seconds": 5.0,
+   "poster": 5.0
+  },
+  "toy_train": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.4,
+   "preview_seconds": 5.0,
+   "poster": 7.0
+  },
+  "trebuchet": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.1,
+   "preview_seconds": 5.0,
+   "poster": 4.0
+  },
+  "vel_limit": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.0,
+   "preview_seconds": 5.0,
+   "poster": 1.5
+  },
+  "viaduct_kit": {
+   "preset": "steel",
+   "speed": 1.0,
+   "clip_seconds": 10.0,
+   "preview_start": 0.5,
+   "preview_seconds": 5.0,
+   "poster": 7.0
+  }
+ }
+}

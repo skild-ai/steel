@@ -1,0 +1,134 @@
+---
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+// SPDX-License-Identifier: Apache-2.0
+/** An example's recorded clip with the tutorial replay's playback bar: play, scrub, speed and loop. */
+import '../../styles/playbar.css';
+
+interface Props {
+	src: string;
+	poster?: string;
+	title: string;
+	/** Sim seconds per second of the recording; the time readout shows sim time. */
+	rate: number;
+}
+const { src, poster, title, rate } = Astro.props;
+---
+
+<div class="clip-player playbar not-content" data-rate={rate}>
+	<video
+		class="screen"
+		src={src}
+		poster={poster}
+		width="640"
+		height="360"
+		muted
+		loop
+		playsinline
+		preload="none"
+		aria-label={`Recorded clip: ${title}. Space or K plays and pauses; the arrow keys step.`}
+		tabindex="0"></video>
+	<div class="bar">
+		<button type="button" class="btn play">Play</button>
+		<input type="range" class="scrub" min="0" max="1000" value="0" step="1" aria-label="Time" />
+		<span class="time">0.00 s</span>
+		<div class="speed" role="group" aria-label="Playback speed">
+			<button type="button" class="btn" data-s="0.25">¼×</button><button type="button" class="btn" data-s="0.5">½×</button><button
+				type="button"
+				class="btn on"
+				data-s="1">1×</button
+			><button type="button" class="btn" data-s="2">2×</button>
+		</div>
+		<button type="button" class="btn loop" aria-pressed="true">Loop</button>
+	</div>
+</div>
+
+<style>
+	.screen {
+		display: block;
+		width: 100%;
+		max-width: 100%;
+		height: auto;
+		aspect-ratio: 16 / 9;
+		background: var(--stage);
+		border: 1px solid var(--rule);
+		border-radius: 4px;
+		cursor: pointer;
+	}
+</style>
+
+<script>
+	// Plays while on screen unless the reader asked for reduced motion; every control also works by keyboard and touch.
+	for (const root of document.querySelectorAll<HTMLElement>('.clip-player')) {
+		const video = root.querySelector('video')!;
+		const playBtn = root.querySelector<HTMLButtonElement>('.play')!;
+		const scrub = root.querySelector<HTMLInputElement>('.scrub')!;
+		const time = root.querySelector<HTMLElement>('.time')!;
+		const loopBtn = root.querySelector<HTMLButtonElement>('.loop')!;
+		const rate = Number(root.dataset.rate) || 1;
+		let scrubbing = false;
+		let pausedByScroll = false;
+
+		const show = () => {
+			const d = video.duration || 0;
+			if (!scrubbing && d) scrub.value = String(Math.round((1000 * video.currentTime) / d));
+			time.textContent = `${(video.currentTime * rate).toFixed(2)} / ${(d * rate).toFixed(2)} s`;
+		};
+		const toggle = () => (video.paused ? video.play().catch(() => {}) : video.pause());
+		const step = (dt: number) => {
+			video.pause();
+			video.currentTime = Math.max(0, Math.min(video.duration || 0, video.currentTime + dt));
+		};
+
+		const tick = () => {
+			show();
+			if (!video.paused) requestAnimationFrame(tick);
+		};
+		video.addEventListener('play', () => {
+			playBtn.textContent = 'Pause';
+			requestAnimationFrame(tick);
+		});
+		video.addEventListener('pause', () => (playBtn.textContent = video.ended ? 'Replay' : 'Play'));
+		video.addEventListener('ended', () => (playBtn.textContent = 'Replay'));
+		for (const e of ['timeupdate', 'seeked', 'loadedmetadata', 'durationchange']) video.addEventListener(e, show);
+		video.addEventListener('click', toggle);
+		playBtn.addEventListener('click', toggle);
+		scrub.addEventListener('pointerdown', () => (scrubbing = true));
+		scrub.addEventListener('pointerup', () => (scrubbing = false));
+		scrub.addEventListener('input', () => {
+			if (video.readyState === 0) video.load();
+			video.currentTime = ((video.duration || 0) * Number(scrub.value)) / 1000;
+		});
+		root.querySelector('.speed')!.addEventListener('click', (e) => {
+			const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-s]');
+			if (!b) return;
+			video.playbackRate = Number(b.dataset.s);
+			root.querySelectorAll('.speed .btn').forEach((x) => x.classList.toggle('on', x === b));
+		});
+		loopBtn.addEventListener('click', () => {
+			video.loop = !video.loop;
+			loopBtn.setAttribute('aria-pressed', String(video.loop));
+		});
+		video.addEventListener('keydown', (e) => {
+			if (e.key === ' ' || e.key === 'k') toggle();
+			else if (e.key === 'ArrowLeft') step(-1 / 30);
+			else if (e.key === 'ArrowRight') step(1 / 30);
+			else return;
+			e.preventDefault();
+		});
+
+		if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			new IntersectionObserver(
+				([entry]) => {
+					if (entry.intersectionRatio >= 0.5) {
+						if (pausedByScroll || video.readyState === 0) video.play().catch(() => {});
+						pausedByScroll = false;
+					} else if (!video.paused) {
+						video.pause();
+						pausedByScroll = true;
+					}
+				},
+				{ threshold: [0, 0.5] },
+			).observe(video);
+		}
+	}
+</script>

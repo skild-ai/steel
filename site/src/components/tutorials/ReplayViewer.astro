@@ -2,6 +2,8 @@
 // SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
 // SPDX-License-Identifier: Apache-2.0
 /** The 3D replay of one tutorial recording: stage, playback bar and metric charts (src/lib/replay/viewer.ts). */
+import '../../styles/playbar.css';
+
 interface Props {
 	src: string;
 	meta: object;
@@ -10,7 +12,7 @@ interface Props {
 const { src, meta, title } = Astro.props;
 ---
 
-<div class="replay not-content" data-src={src} data-meta={JSON.stringify(meta)}>
+<div class="replay playbar not-content" data-src={src} data-meta={JSON.stringify(meta)}>
 	<div class="stage" role="img" aria-label={`3D replay of the recorded tutorial: ${title}. Drag to orbit, scroll or pinch to zoom.`}>
 		<div class="labels"></div>
 		<div class="status" aria-live="polite"></div>
@@ -81,24 +83,6 @@ const { src, meta, title } = Astro.props;
 		.replay .hint { display: none; }
 		.replay .vlabel { font-size: 11px; }
 	}
-	.replay .bar { display: flex; align-items: center; gap: 10px 12px; flex-wrap: wrap; margin-top: 10px; }
-	.replay .btn {
-		font: 500 13px var(--mono);
-		background: var(--bg);
-		color: var(--muted);
-		border: 1px solid var(--rule);
-		border-radius: 4px;
-		padding: 7px 12px;
-		min-height: 36px;
-		cursor: pointer;
-	}
-	.replay .btn:hover { color: var(--fg); border-color: var(--hot-fill); }
-	.replay .play { min-width: 84px; }
-	.replay .scrub { flex: 1; min-width: 140px; accent-color: var(--hot-fill); min-height: 32px; }
-	.replay .time { font: 500 13px var(--mono); font-variant-numeric: tabular-nums; min-width: 118px; color: var(--muted); }
-	.replay .speed { display: flex; gap: 4px; }
-	.replay .speed .btn { padding: 7px 9px; }
-	.replay .speed .btn.on { border-color: var(--hot-fill); color: var(--hot); }
 	.replay .chartwrap { margin-top: 20px; }
 	.replay .chartblock { border-top: 1px solid var(--rule); padding-top: 14px; margin-top: 6px; }
 	.replay .chartblock + .chartblock { margin-top: 22px; }

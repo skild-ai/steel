@@ -1,0 +1,68 @@
+---
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+// SPDX-License-Identifier: Apache-2.0
+/** The examples gallery: every shelf example by category, with its clip, presets and run command. */
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import ExampleCard from '../../components/examples/ExampleCard.astro';
+import { loadExamples } from '../../lib/examples-data.mjs';
+import media from '../../data/example-media.json';
+
+const { examples, categories } = loadExamples();
+const headings = categories.map((c) => ({ depth: 2, slug: c.id, text: c.label }));
+---
+
+<StarlightPage
+	frontmatter={{
+		title: 'Examples',
+		description: `All ${examples.length} examples on the Steel examples shelf, each with a clip of its Steel preset and the command that runs it.`,
+	}}
+	headings={headings}
+>
+	<p class="lede">
+		The examples shelf in <a href="https://github.com/skild-ai/steel/tree/main/examples"><code>examples/</code></a> holds {`${examples.length} examples`}, each with a solver preset for every solver that runs it. Each clip shows the Steel preset, coupled with another
+		solver where the scene has cloth, sand or particles. Hover a card to play its clip (on a phone, the card in the middle of the screen plays); open it for the presets and code.
+	</p>
+	<p class="run">
+		Run one from <code>examples/</code> with <code>uv run shelf play &lt;name&gt;</code> (<code>run</code> is the same command), add
+		<code>--solver &lt;preset&gt;</code> for another preset, or start <code>uv run shelf play</code> with no name to browse them.
+		Setup is in the <a href="https://github.com/skild-ai/steel/tree/main/examples#setup">examples README</a>.
+	</p>
+	<p class="stamp">
+		Clips recorded with Newton <a href={`https://github.com/skild-ai/newton/commit/${media.newton}`}>{media.newton.slice(0, 9)}</a>{` on an ${media.gpu}.`}
+	</p>
+
+	{
+		categories.map((category) => (
+			<section>
+				<h2 id={category.id}>{category.label}</h2>
+				<ul class="example-grid not-content">
+					{examples
+						.filter((e) => e.category.id === category.id)
+						.map((e) => (
+							<ExampleCard example={e} />
+						))}
+				</ul>
+			</section>
+		))
+	}
+</StarlightPage>
+
+<script>
+	import { initClips } from '../../lib/example-clips';
+	initClips();
+</script>
+
+<style>
+	.lede { font-size: 1.05rem; max-width: 76ch; }
+	.run { max-width: 76ch; }
+	.stamp { color: var(--muted); font-size: 14px; }
+	section h2 { font-size: var(--sl-text-2xl); margin-top: 2rem; }
+	.example-grid {
+		list-style: none;
+		margin: 0.75rem 0 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+		gap: 14px;
+	}
+</style>

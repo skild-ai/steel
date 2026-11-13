@@ -1,0 +1,23 @@
+/* SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors */
+/* SPDX-License-Identifier: Apache-2.0 */
+
+/* The playback bar shared by the tutorial replay and the example clip player. */
+.playbar .bar { display: flex; align-items: center; gap: 10px 12px; flex-wrap: wrap; margin-top: 10px; }
+.playbar .btn {
+	font: 500 13px var(--mono);
+	background: var(--bg);
+	color: var(--muted);
+	border: 1px solid var(--rule);
+	border-radius: 4px;
+	padding: 7px 12px;
+	min-height: 36px;
+	cursor: pointer;
+}
+.playbar .btn:hover { color: var(--fg); border-color: var(--hot-fill); }
+.playbar .play { min-width: 84px; }
+.playbar .scrub { flex: 1; min-width: 140px; accent-color: var(--hot-fill); min-height: 32px; }
+.playbar .time { font: 500 13px var(--mono); font-variant-numeric: tabular-nums; min-width: 118px; color: var(--muted); }
+.playbar .speed { display: flex; gap: 4px; }
+.playbar .speed .btn { padding: 7px 9px; }
+.playbar .speed .btn.on { border-color: var(--hot-fill); color: var(--hot); }
+.playbar .btn[aria-pressed='true'] { border-color: var(--hot-fill); color: var(--hot); }
