@@ -138,6 +138,7 @@ def test_a_check_that_exits_nonzero_fails_whatever_it_printed(tmp_path):
     assert scene["check"]["result"] == "FAILED" and scene["grade"] == "unstable"
 
 
+@needs_ffmpeg
 def test_the_launcher_reports_failure_and_leaves_no_stale_metrics(tmp_path):
     run = _run_dir(tmp_path)
     env = dict(os.environ, PYTHON="/bin/false", EXAMPLES=str(tmp_path))
