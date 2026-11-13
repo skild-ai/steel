@@ -1,0 +1,96 @@
+---
+// SPDX-FileCopyrightText: Copyright (c) 2026 Skild AI and the Steel contributors
+// SPDX-License-Identifier: Apache-2.0
+/** One example as a card: lazy poster, title and one line; the full card adds the preview clip, presets and command. */
+import PresetChips from './PresetChips.astro';
+import { sourceUrl } from '../../lib/examples-data.mjs';
+
+interface Props {
+	example: any;
+	compact?: boolean;
+}
+const { example: e, compact = false } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const page = `${base}/examples/${e.name}/`;
+const preview = !compact && e.media.preview ? `${base}/${e.media.preview}` : undefined;
+---
+
+<li class:list={['example-card', { compact }]} id={compact ? undefined : e.name} data-clip-card={preview && ''}>
+	<a class="clip" href={page} data-clip={preview} tabindex="-1" aria-hidden="true">
+		{
+			e.media.poster ? (
+				<img src={`${base}/${e.media.poster}`} alt="" width="640" height="360" loading="lazy" decoding="async" />
+			) : (
+				<span class="placeholder">No clip yet</span>
+			)
+		}
+	</a>
+	<div class="body">
+		<h3><a href={page}>{e.title}</a></h3>
+		<p class="short">{e.short}</p>
+		{
+			!compact && (
+				<>
+					<PresetChips presets={e.presets} featured={e.featured} />
+					<code class="cmd">uv run shelf play {e.name}</code>
+					<a class="src" href={`${sourceUrl}/${e.path}`}>
+						Source
+					</a>
+				</>
+			)
+		}
+	</div>
+</li>
+
+<style>
+	.example-card {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+		margin: 0;
+		border: 1px solid var(--rule);
+		border-radius: 4px;
+		background: var(--bg);
+		overflow: hidden;
+		scroll-margin-top: calc(var(--sl-nav-height, 4rem) + 1rem);
+	}
+	.example-card:hover,
+	.example-card:focus-within { border-color: var(--hot-fill); }
+	.clip {
+		position: relative;
+		display: block;
+		aspect-ratio: 16 / 9;
+		background: var(--stage);
+		overflow: hidden;
+		border-bottom: 1px solid var(--rule);
+	}
+	.clip img,
+	.clip :global(video) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+	.clip :global(video) { opacity: 0; transition: opacity 0.15s; }
+	.clip:global(.is-playing) :global(video) { opacity: 1; }
+	.placeholder {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-items: center;
+		color: var(--muted);
+		font: 500 12px/1.4 var(--mono);
+		letter-spacing: 0.07em;
+		text-transform: uppercase;
+	}
+	.body { display: flex; flex-direction: column; gap: 8px; padding: 10px 12px 12px; flex: 1; }
+	.compact .body { gap: 4px; }
+	h3 { margin: 0; font-size: 1rem; font-weight: 500; line-height: 1.35; }
+	h3 a { color: var(--fg); text-decoration: none; }
+	h3 a:hover { color: var(--hot); }
+	.short { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.45; }
+	.cmd { margin-top: auto; display: block; padding: 4px 8px; font-size: 12px; overflow-wrap: anywhere; }
+	.src { align-self: flex-start; font-size: 13px; }
+</style>

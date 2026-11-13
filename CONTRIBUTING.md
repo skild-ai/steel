@@ -147,6 +147,13 @@ The site shows the committed script next to the replay, so a script changed afte
 check until it is recorded again. The digest skips the file's SPDX header, so adding
 or changing that header does not. [tutorials/README.md](tutorials/README.md) lists every field.
 
+### An example's page
+
+The site builds a gallery card and a page at `/examples/<name>/` for every folder in `examples/shelf/`, from its
+`presets.toml` (`[gallery]` `short` and `title`), `example.py` and README. Until it has media, both show a
+placeholder. Record the Steel preset with `shelf play <name>` and **Record** (sim time), then run
+`python scripts/example_media.py <name> <recording.mp4> --preset steel` from `site/`.
+
 ### Style
 
 - Colors and fonts come only from the Steel style tokens in `site/src/styles/steel-tokens.css`, which is

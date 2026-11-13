@@ -15,6 +15,13 @@ Launch media:
 assets/launch.mp4 and assets/launch-poster.jpg were created by Skild AI.
 Copyright 2026 Skild AI. Licensed under Apache-2.0.
 
+Example media:
+site/public/examples/*/poster.jpg, preview.mp4 and clip.mp4 are recordings of
+the examples in examples/shelf, made by the Steel contributors.
+Copyright 2026 Skild AI and the Steel contributors. Licensed under Apache-2.0.
+The robot models and other assets they show keep their own licenses, listed in
+examples/THIRD_PARTY.md.
+
 Trademarks:
 Skild, Skild AI and the Skild logo are trademarks of Skild AI and are not
 licensed under Apache-2.0. The logo files site/src/assets/skild-mark-*.svg

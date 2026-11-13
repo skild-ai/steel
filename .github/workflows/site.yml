@@ -4,10 +4,10 @@
 name: Site
 on:
   pull_request:
-    paths: ['site/**', 'tutorials/**', 'CHANGELOG.md', '.github/workflows/site.yml']
+    paths: ['site/**', 'tutorials/**', 'examples/shelf/**', 'CHANGELOG.md', '.github/workflows/site.yml']
   push:
     branches: [main]
-    paths: ['site/**', 'tutorials/**', 'CHANGELOG.md', '.github/workflows/site.yml']
+    paths: ['site/**', 'tutorials/**', 'examples/shelf/**', 'CHANGELOG.md', '.github/workflows/site.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -54,6 +54,8 @@ jobs:
           npm run check-figures:pages
       - name: Check that tutorial replays start from 0 s on every entry
         run: npm run check-replay:pages
+      - name: Check that example clips play, seek and play one at a time
+        run: npm run check-clips:pages
       - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         with:
