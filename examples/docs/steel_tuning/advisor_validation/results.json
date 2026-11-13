@@ -1,0 +1,1854 @@
+[
+ {
+  "scene": "bolt_sweep",
+  "group": "held-out (final)",
+  "naive_grade": "failed",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": {
+   "result": "FAILED",
+   "seconds": 3.3,
+   "note": "common.presets.PresetError: shelf/02_many_contacts/bolt_sweep/presets.toml [steel.solver] has no 'iterations'; add it to presets.toml (check exited 1)"
+  },
+  "advisor_check": {
+   "result": "works",
+   "seconds": 14.6,
+   "note": ""
+  },
+  "tuned_check": {
+   "result": "works",
+   "seconds": 17.2,
+   "note": ""
+  },
+  "naive_ms": null,
+  "advisor_ms": 6.2482040375471115,
+  "tuned_ms": 9.324219077825546,
+  "trials_to_healthy": 2,
+  "trials_total": 9,
+  "tune_wall_min": 6.8,
+  "to_healthy_wall_min": 2.1,
+  "fixes": [
+   "missing_iterations",
+   "grasp_anchors"
+  ],
+  "cost_kept": [
+   "colored_propagation",
+   "fewer_iterations"
+  ],
+  "rejected": [
+   "grasp_anchors"
+  ],
+  "advisor_settings": {
+   "sim": {
+    "substeps": 4
+   },
+   "solver": {
+    "iterations": 6,
+    "solve_mode": "colored",
+    "articulated_contact_response": "propagation"
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "colored",
+    "iterations": 12,
+    "articulated_contact_response": "propagation"
+   }
+  }
+ },
+ {
+  "scene": "bounce",
+  "group": "held-out (final)",
+  "naive_grade": "ok",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": {
+   "result": "works",
+   "seconds": 4.1,
+   "note": ""
+  },
+  "advisor_check": {
+   "result": "works",
+   "seconds": 4.2,
+   "note": ""
+  },
+  "tuned_check": {
+   "result": "works",
+   "seconds": 4.2,
+   "note": ""
+  },
+  "naive_ms": 1.075425185263157,
+  "advisor_ms": 0.8252793923020363,
+  "tuned_ms": 1.2416131794452667,
+  "trials_to_healthy": 1,
+  "trials_total": 5,
+  "tune_wall_min": 0.7,
+  "to_healthy_wall_min": 0.2,
+  "fixes": [],
+  "cost_kept": [
+   "point_friction"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 4
+   },
+   "solver": {
+    "friction_anchor_beta": 0.0
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 2,
+    "articulated_contact_response": "propagation_colored"
+   }
+  }
+ },
+ {
+  "scene": "loop_hoberman_sphere",
+  "group": "held-out (final)",
+  "naive_grade": "unstable",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": {
+   "result": "FAILED",
+   "seconds": 12.4,
+   "note": "AssertionError: worst hinge-axis misalignment 40.008 deg (check exited 1)"
+  },
+  "advisor_check": {
+   "result": "works",
+   "seconds": 35.8,
+   "note": ""
+  },
+  "tuned_check": {
+   "result": "works",
+   "seconds": 25.3,
+   "note": ""
+  },
+  "naive_ms": 41.60803835839033,
+  "advisor_ms": 157.4761252850294,
+  "tuned_ms": 106.69958498328924,
+  "trials_to_healthy": 4,
+  "trials_total": 9,
+  "tune_wall_min": 14.0,
+  "to_healthy_wall_min": 5.4,
+  "fixes": [
+   "articulation_capacity",
+   "loop_gap"
+  ],
+  "cost_kept": [
+   "fewer_iterations"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 50,
+    "substeps": 8
+   },
+   "solver": {
+    "articulation_constraint_max": 928,
+    "iterations": 24
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 50,
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "serial",
+    "iterations": 64,
+    "articulated_contact_response": "immediate",
+    "articulation_constraint_max": 584
+   }
+  }
+ },
+ {
+  "scene": "loop_parallel_gripper",
+  "group": "held-out (final)",
+  "naive_grade": "unstable",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": {
+   "result": "FAILED",
+   "seconds": 4.3,
+   "note": "AssertionError: tracked bodies 1.06 mm from the reference (bound 1.0 mm) (check exited 1)"
+  },
+  "advisor_check": {
+   "result": "works",
+   "seconds": 3.9,
+   "note": ""
+  },
+  "tuned_check": {
+   "result": "works",
+   "seconds": 4.1,
+   "note": ""
+  },
+  "naive_ms": 1.1610891669988632,
+  "advisor_ms": 1.138255000114441,
+  "tuned_ms": 1.138409599661827,
+  "trials_to_healthy": 2,
+  "trials_total": 10,
+  "tune_wall_min": 1.3,
+  "to_healthy_wall_min": 0.3,
+  "fixes": [
+   "escalate_substeps"
+  ],
+  "cost_kept": [
+   "fewer_substeps_same_sweeps",
+   "fewer_substeps_same_sweeps"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 50,
+    "substeps": 2
+   },
+   "solver": {
+    "iterations": 48
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 50,
+    "substeps": 2
+   },
+   "solver": {
+    "solve_mode": "serial",
+    "iterations": 48,
+    "articulated_contact_response": "immediate"
+   }
+  }
+ },
+ {
+  "scene": "rods",
+  "group": "held-out (final)",
+  "naive_grade": "ok",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": {
+   "result": "works",
+   "seconds": 4.7,
+   "note": ""
+  },
+  "advisor_check": {
+   "result": "works",
+   "seconds": 4.0,
+   "note": ""
+  },
+  "tuned_check": {
+   "result": "works",
+   "seconds": 4.3,
+   "note": ""
+  },
+  "naive_ms": 2.3610536009073257,
+  "advisor_ms": 0.43769553303718567,
+  "tuned_ms": 0.6410088390111923,
+  "trials_to_healthy": 1,
+  "trials_total": 5,
+  "tune_wall_min": 0.9,
+  "to_healthy_wall_min": 0.3,
+  "fixes": [],
+  "cost_kept": [
+   "fewer_substeps",
+   "fewer_substeps",
+   "fewer_iterations"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 1
+   },
+   "solver": {
+    "iterations": 6
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 2
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 4,
+    "articulated_contact_response": "propagation_colored",
+    "friction_mode": "coulomb_newton",
+    "friction_anchor_beta": 0.0
+   }
+  }
+ },
+ {
+  "scene": "shapes_in_box",
+  "group": "held-out (final)",
+  "naive_grade": "ok",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": {
+   "result": "works",
+   "seconds": 4.6,
+   "note": ""
+  },
+  "advisor_check": {
+   "result": "works",
+   "seconds": 4.1,
+   "note": ""
+  },
+  "tuned_check": {
+   "result": "works",
+   "seconds": 4.2,
+   "note": ""
+  },
+  "naive_ms": 3.058912232518196,
+  "advisor_ms": 0.8227881044149399,
+  "tuned_ms": 1.2297872453927994,
+  "trials_to_healthy": 1,
+  "trials_total": 5,
+  "tune_wall_min": 0.8,
+  "to_healthy_wall_min": 0.2,
+  "fixes": [],
+  "cost_kept": [
+   "fewer_substeps",
+   "fewer_substeps"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 1
+   },
+   "solver": {}
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 2
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 6,
+    "articulated_contact_response": "immediate"
+   }
+  }
+ },
+ {
+  "scene": "beer_pong",
+  "group": "held-out",
+  "naive_grade": "ok",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "works",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 1.9444534555077553,
+  "advisor_ms": 1.0208841413259506,
+  "tuned_ms": 3.1768400222063065,
+  "trials_to_healthy": 2,
+  "trials_total": 7,
+  "tune_wall_min": 1.1,
+  "to_healthy_wall_min": 0.4,
+  "fixes": [
+   "enable_joint_limits"
+  ],
+  "cost_kept": [
+   "fewer_substeps"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 2
+   },
+   "solver": {
+    "enable_joint_limits": true
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 16,
+    "articulated_contact_response": "propagation_colored",
+    "enable_joint_velocity_limits": true,
+    "enable_joint_limits": true,
+    "free_body_constraint_max": 8192,
+    "articulation_constraint_max": 1024,
+    "propagation_constraint_max": 16384
+   }
+  }
+ },
+ {
+  "scene": "crane_wrecking_ball",
+  "group": "held-out",
+  "naive_grade": "failed",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "FAILED",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": null,
+  "advisor_ms": 9.247137233614922,
+  "tuned_ms": 10.975656099617481,
+  "trials_to_healthy": 2,
+  "trials_total": 7,
+  "tune_wall_min": 3.6,
+  "to_healthy_wall_min": 1.0,
+  "fixes": [
+   "missing_iterations"
+  ],
+  "cost_kept": [
+   "colored_propagation"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "substeps": 4
+   },
+   "solver": {
+    "iterations": 12,
+    "solve_mode": "colored",
+    "articulated_contact_response": "propagation"
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "colored",
+    "iterations": 16,
+    "articulated_contact_response": "propagation"
+   }
+  }
+ },
+ {
+  "scene": "mjorg_falling_chain",
+  "group": "held-out",
+  "naive_grade": "ok",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "works",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 1.1544669978320599,
+  "advisor_ms": 0.45397691428661346,
+  "tuned_ms": 0.96924789249897,
+  "trials_to_healthy": 1,
+  "trials_total": 6,
+  "tune_wall_min": 1.0,
+  "to_healthy_wall_min": 0.2,
+  "fixes": [],
+  "cost_kept": [
+   "fewer_substeps",
+   "point_friction"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 50,
+    "substeps": 2
+   },
+   "solver": {
+    "friction_anchor_beta": 0.0
+   },
+   "model": {
+    "rigid_gap": 0.0
+   },
+   "collision": {
+    "speculative_contact_gap_max": 0.2
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 50,
+    "substeps": 3
+   },
+   "collision": {
+    "speculative_contact_gap_max": 0.2
+   },
+   "solver": {
+    "solve_mode": "colored",
+    "iterations": 12,
+    "articulated_contact_response": "propagation"
+   },
+   "model": {
+    "rigid_gap": 0.0
+   }
+  }
+ },
+ {
+  "scene": "nut_bolt_sdf",
+  "group": "held-out",
+  "naive_grade": "ok",
+  "advisor_grade": "suspect (visual)",
+  "tuned_grade": "ok",
+  "naive_check": "works",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 9.981109760701656,
+  "advisor_ms": 1.916905865073204,
+  "tuned_ms": 5.468322895467281,
+  "trials_to_healthy": 1,
+  "trials_total": 7,
+  "tune_wall_min": 2.3,
+  "to_healthy_wall_min": 0.4,
+  "fixes": [],
+  "cost_kept": [
+   "fewer_substeps_same_sweeps",
+   "fewer_substeps",
+   "fewer_iterations",
+   "fewer_iterations"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 120,
+    "substeps": 1
+   },
+   "solver": {
+    "iterations": 6
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 120,
+    "substeps": 3
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 6,
+    "articulated_contact_response": "immediate"
+   }
+  },
+  "visual_note": "the nut screws down faster than under the tuned preset (1 substep vs 3): the under-solved thread friction the preset's own note describes"
+ },
+ {
+  "scene": "air_hockey",
+  "group": "dev (run3)",
+  "naive_grade": "ok",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "works",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 1.597951166331768,
+  "advisor_ms": 0.4048645496368408,
+  "tuned_ms": 2.6232609525322914,
+  "trials_to_healthy": 2,
+  "trials_total": 7,
+  "tune_wall_min": 1.2,
+  "to_healthy_wall_min": 0.4,
+  "fixes": [
+   "enable_joint_limits"
+  ],
+  "cost_kept": [
+   "fewer_substeps",
+   "fewer_substeps",
+   "fewer_iterations"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 1
+   },
+   "solver": {
+    "enable_joint_limits": true,
+    "iterations": 6
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 16,
+    "articulated_contact_response": "propagation_colored",
+    "enable_joint_velocity_limits": true,
+    "enable_joint_limits": true,
+    "enable_sleeping": true,
+    "free_body_constraint_max": 8192,
+    "articulation_constraint_max": 1024,
+    "propagation_constraint_max": 16384
+   }
+  }
+ },
+ {
+  "scene": "anymal_d_many_worlds",
+  "group": "dev (run3)",
+  "naive_grade": "unstable",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "FAILED",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 1.9797738641500473,
+  "advisor_ms": 2.815462648868561,
+  "tuned_ms": 3.9728283882141113,
+  "trials_to_healthy": 2,
+  "trials_total": 7,
+  "tune_wall_min": 1.3,
+  "to_healthy_wall_min": 0.4,
+  "fixes": [
+   "articulation_capacity",
+   "enable_joint_limits"
+  ],
+  "cost_kept": [
+   "point_friction"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 50,
+    "substeps": 4
+   },
+   "solver": {
+    "articulation_constraint_max": 256,
+    "enable_joint_limits": true,
+    "friction_anchor_beta": 0.0
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 50,
+    "substeps": 5
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 12,
+    "articulated_contact_response": "immediate",
+    "enable_joint_limits": true,
+    "joint_limit_activation_gap": 0.1,
+    "articulation_constraint_max": 256
+   }
+  }
+ },
+ {
+  "scene": "brick_pour",
+  "group": "dev (run3)",
+  "naive_grade": "unstable",
+  "advisor_grade": "ok",
+  "tuned_grade": "suspect",
+  "naive_check": "FAILED",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 15.853866934776306,
+  "advisor_ms": 9.271377697587013,
+  "tuned_ms": 17.06053502857685,
+  "trials_to_healthy": 2,
+  "trials_total": 9,
+  "tune_wall_min": 3.9,
+  "to_healthy_wall_min": 0.9,
+  "fixes": [
+   "articulation_capacity",
+   "free_body_capacity",
+   "enable_joint_limits",
+   "grasp_iterations"
+  ],
+  "cost_kept": [
+   "fewer_substeps",
+   "limit_gap",
+   "fewer_iterations"
+  ],
+  "rejected": [
+   "grasp_iterations"
+  ],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 2
+   },
+   "solver": {
+    "articulation_constraint_max": 768,
+    "free_body_constraint_max": 1728,
+    "enable_joint_limits": true,
+    "joint_limit_activation_gap": 0.1,
+    "iterations": 6
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 3
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 10,
+    "articulated_contact_response": "propagation_colored",
+    "enable_joint_velocity_limits": true,
+    "enable_joint_limits": true,
+    "free_body_constraint_max": 8192,
+    "articulation_constraint_max": 1024,
+    "propagation_constraint_max": 16384
+   }
+  }
+ },
+ {
+  "scene": "mjorg_luggage_carousel",
+  "group": "dev (run3)",
+  "naive_grade": "ok",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "works",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 4.8323036171495914,
+  "advisor_ms": 3.4665963612496853,
+  "tuned_ms": 3.7942789494991302,
+  "trials_to_healthy": 1,
+  "trials_total": 7,
+  "tune_wall_min": 2.6,
+  "to_healthy_wall_min": 0.5,
+  "fixes": [],
+  "cost_kept": [
+   "fewer_substeps_same_sweeps"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 2
+   },
+   "solver": {
+    "iterations": 24
+   },
+   "model": {
+    "rigid_gap": 0.02
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "colored",
+    "iterations": 12,
+    "articulated_contact_response": "propagation",
+    "free_body_constraint_max": 4096,
+    "propagation_constraint_max": 4096
+   },
+   "model": {
+    "rigid_gap": 0.02
+   }
+  }
+ },
+ {
+  "scene": "robot_ur10",
+  "group": "dev (run3)",
+  "naive_grade": "ok",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "works",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 0.5431212484836578,
+  "advisor_ms": 0.2815164625644684,
+  "tuned_ms": 0.2766251564025879,
+  "trials_to_healthy": 2,
+  "trials_total": 8,
+  "tune_wall_min": 1.2,
+  "to_healthy_wall_min": 0.3,
+  "fixes": [
+   "enable_joint_limits"
+  ],
+  "cost_kept": [
+   "fewer_substeps"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 50,
+    "substeps": 2
+   },
+   "solver": {
+    "enable_joint_limits": true
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 50,
+    "substeps": 2
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 1,
+    "articulated_contact_response": "immediate",
+    "enable_joint_limits": false
+   }
+  }
+ },
+ {
+  "scene": "spinning_top",
+  "group": "dev (run3)",
+  "naive_grade": "ok",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "works",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 2.0292289555072784,
+  "advisor_ms": 0.3954954445362091,
+  "tuned_ms": 2.6846975088119507,
+  "trials_to_healthy": 2,
+  "trials_total": 6,
+  "tune_wall_min": 1.0,
+  "to_healthy_wall_min": 0.4,
+  "fixes": [
+   "enable_joint_limits"
+  ],
+  "cost_kept": [
+   "fewer_substeps",
+   "fewer_substeps"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 1
+   },
+   "solver": {
+    "enable_joint_limits": true
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 16,
+    "articulated_contact_response": "propagation_colored",
+    "enable_joint_velocity_limits": true,
+    "enable_joint_limits": true,
+    "free_body_constraint_max": 8192,
+    "articulation_constraint_max": 1024,
+    "propagation_constraint_max": 16384
+   }
+  }
+ },
+ {
+  "scene": "balance_board",
+  "group": "dev (run2)",
+  "naive_grade": "unstable",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "FAILED",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 2.7753151953220367,
+  "advisor_ms": 1.8917359411716461,
+  "tuned_ms": 5.235990509390831,
+  "trials_to_healthy": 2,
+  "trials_total": 8,
+  "tune_wall_min": 1.3,
+  "to_healthy_wall_min": 0.4,
+  "fixes": [
+   "articulation_capacity",
+   "enable_joint_limits",
+   "grasp_iterations"
+  ],
+  "cost_kept": [
+   "fewer_substeps"
+  ],
+  "rejected": [
+   "grasp_iterations"
+  ],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 2
+   },
+   "solver": {
+    "articulation_constraint_max": 128,
+    "enable_joint_limits": true
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 8,
+    "articulated_contact_response": "propagation_colored",
+    "enable_joint_velocity_limits": true,
+    "enable_joint_limits": true,
+    "enable_sleeping": true,
+    "free_body_constraint_max": 8192,
+    "articulation_constraint_max": 1024,
+    "propagation_constraint_max": 16384
+   }
+  }
+ },
+ {
+  "scene": "franka_plate_rack",
+  "group": "dev (run2)",
+  "naive_grade": "failed",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "FAILED",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": null,
+  "advisor_ms": 4.178911447525024,
+  "tuned_ms": 5.424404516816139,
+  "trials_to_healthy": 2,
+  "trials_total": 7,
+  "tune_wall_min": 2.5,
+  "to_healthy_wall_min": 0.5,
+  "fixes": [
+   "missing_iterations"
+  ],
+  "cost_kept": [
+   "fewer_iterations"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "substeps": 4
+   },
+   "solver": {
+    "iterations": 6,
+    "solve_mode": "serial",
+    "articulated_contact_response": "immediate"
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "serial",
+    "iterations": 12,
+    "articulated_contact_response": "immediate"
+   }
+  }
+ },
+ {
+  "scene": "jenga",
+  "group": "dev (run2)",
+  "naive_grade": "ok",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "works",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 13.758000917732716,
+  "advisor_ms": 3.3913878723978996,
+  "tuned_ms": 5.260709673166275,
+  "trials_to_healthy": 2,
+  "trials_total": 9,
+  "tune_wall_min": 2.1,
+  "to_healthy_wall_min": 0.6,
+  "fixes": [
+   "enable_joint_limits"
+  ],
+  "cost_kept": [
+   "colored_propagation",
+   "fewer_substeps_same_sweeps",
+   "fewer_substeps_same_sweeps"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 1
+   },
+   "solver": {
+    "enable_joint_limits": true,
+    "solve_mode": "colored",
+    "articulated_contact_response": "propagation",
+    "iterations": 48
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 8,
+    "articulated_contact_response": "propagation_colored",
+    "enable_joint_velocity_limits": true,
+    "enable_joint_limits": true,
+    "enable_sleeping": true,
+    "free_body_constraint_max": 8192,
+    "articulation_constraint_max": 1024,
+    "propagation_constraint_max": 16384
+   }
+  }
+ },
+ {
+  "scene": "mjorg_gothic_arch",
+  "group": "dev (run2)",
+  "naive_grade": "unstable",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "FAILED",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 14.587415382266045,
+  "advisor_ms": 59.449318796396255,
+  "tuned_ms": 42.250560596585274,
+  "trials_to_healthy": 5,
+  "trials_total": 10,
+  "tune_wall_min": 12.8,
+  "to_healthy_wall_min": 4.9,
+  "fixes": [
+   "free_body_capacity",
+   "escalate_substeps"
+  ],
+  "cost_kept": [
+   "fewer_iterations"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 32
+   },
+   "solver": {
+    "free_body_constraint_max": 1184,
+    "iterations": 6
+   },
+   "model": {
+    "rigid_gap": 0.02
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 32
+   },
+   "solver": {
+    "solve_mode": "colored",
+    "iterations": 12,
+    "articulated_contact_response": "propagation",
+    "free_body_constraint_max": 4096,
+    "propagation_constraint_max": 4096
+   },
+   "model": {
+    "rigid_gap": 0.02
+   }
+  }
+ },
+ {
+  "scene": "mjorg_sleeping_dominos",
+  "group": "dev (run2)",
+  "naive_grade": "unstable",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "FAILED",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 14.340800000354648,
+  "advisor_ms": 2.2717269603163004,
+  "tuned_ms": 3.440554952248931,
+  "trials_to_healthy": 2,
+  "trials_total": 8,
+  "tune_wall_min": 3.2,
+  "to_healthy_wall_min": 1.8,
+  "fixes": [
+   "free_body_capacity"
+  ],
+  "cost_kept": [
+   "colored_propagation",
+   "fewer_substeps"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 2
+   },
+   "solver": {
+    "free_body_constraint_max": 1920,
+    "solve_mode": "colored",
+    "articulated_contact_response": "propagation"
+   },
+   "model": {
+    "rigid_gap": 0.01
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "colored",
+    "iterations": 12,
+    "articulated_contact_response": "propagation",
+    "enable_sleeping": true,
+    "free_body_constraint_max": 4096,
+    "propagation_constraint_max": 4096
+   },
+   "model": {
+    "rigid_gap": 0.01
+   }
+  }
+ },
+ {
+  "scene": "robot_g1",
+  "group": "dev (run2)",
+  "naive_grade": "unstable",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "FAILED",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 2.5622639805078506,
+  "advisor_ms": 0.7156394422054291,
+  "tuned_ms": 0.5321856588125229,
+  "trials_to_healthy": 2,
+  "trials_total": 7,
+  "tune_wall_min": 1.5,
+  "to_healthy_wall_min": 0.5,
+  "fixes": [
+   "articulation_capacity",
+   "enable_joint_limits"
+  ],
+  "cost_kept": [
+   "fewer_substeps",
+   "fewer_substeps",
+   "fewer_iterations"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 1
+   },
+   "solver": {
+    "articulation_constraint_max": 768,
+    "enable_joint_limits": true,
+    "iterations": 6
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 1
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 2,
+    "articulated_contact_response": "immediate",
+    "articulation_constraint_max": 128,
+    "enable_joint_limits": false
+   }
+  }
+ },
+ {
+  "scene": "basic_urdf",
+  "group": "dev (run1)",
+  "naive_grade": "unstable",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "FAILED",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 2.322855405509472,
+  "advisor_ms": 0.48663094639778137,
+  "tuned_ms": 0.4963437095284462,
+  "trials_to_healthy": 2,
+  "trials_total": 6,
+  "tune_wall_min": 1.1,
+  "to_healthy_wall_min": 0.4,
+  "fixes": [
+   "articulation_capacity"
+  ],
+  "cost_kept": [
+   "fewer_substeps",
+   "fewer_substeps",
+   "point_friction"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 100,
+    "substeps": 1
+   },
+   "solver": {
+    "articulation_constraint_max": 96,
+    "friction_anchor_beta": 0.0
+   },
+   "model": {
+    "default_joint_cfg": {
+     "target_ke": 2000.0,
+     "target_kd": 1.0
+    },
+    "default_shape_cfg": {
+     "mu": 1.0
+    }
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 100,
+    "substeps": 1
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 4,
+    "articulated_contact_response": "immediate",
+    "articulation_constraint_max": 128
+   },
+   "model": {
+    "default_joint_cfg": {
+     "target_ke": 2000.0,
+     "target_kd": 1.0
+    },
+    "default_shape_cfg": {
+     "mu": 1.0
+    }
+   }
+  }
+ },
+ {
+  "scene": "domino_spiral",
+  "group": "dev (run1)",
+  "naive_grade": "ok",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "works",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 10.647308081388474,
+  "advisor_ms": 1.7571039497852325,
+  "tuned_ms": 4.082595929503441,
+  "trials_to_healthy": 1,
+  "trials_total": 7,
+  "tune_wall_min": 1.3,
+  "to_healthy_wall_min": 0.3,
+  "fixes": [],
+  "cost_kept": [
+   "colored_propagation",
+   "point_friction",
+   "fewer_iterations"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "colored",
+    "articulated_contact_response": "propagation",
+    "friction_anchor_beta": 0.0,
+    "iterations": 6
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 6
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 16,
+    "articulated_contact_response": "propagation_colored",
+    "propagation_constraint_max": 12288
+   }
+  }
+ },
+ {
+  "scene": "drawer_fork",
+  "group": "dev (run1)",
+  "naive_grade": "unstable",
+  "advisor_grade": "suspect",
+  "tuned_grade": "ok",
+  "naive_check": "FAILED",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 3.0876081436872482,
+  "advisor_ms": 2.12937593460083,
+  "tuned_ms": 4.552993923425674,
+  "trials_to_healthy": 2,
+  "trials_total": 8,
+  "tune_wall_min": 1.5,
+  "to_healthy_wall_min": 0.5,
+  "fixes": [
+   "articulation_capacity",
+   "enable_joint_limits"
+  ],
+  "cost_kept": [
+   "fewer_substeps",
+   "fewer_iterations"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 2
+   },
+   "solver": {
+    "articulation_constraint_max": 800,
+    "enable_joint_limits": true,
+    "iterations": 6
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 8,
+    "articulated_contact_response": "propagation_colored",
+    "enable_joint_velocity_limits": true,
+    "enable_joint_limits": true,
+    "enable_sleeping": true,
+    "free_body_constraint_max": 8192,
+    "articulation_constraint_max": 1024,
+    "propagation_constraint_max": 16384
+   }
+  }
+ },
+ {
+  "scene": "loop_fourbar",
+  "group": "dev (run1)",
+  "naive_grade": "unstable",
+  "advisor_grade": "suspect (visual)",
+  "tuned_grade": "ok",
+  "naive_check": "FAILED",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 1.7273729899898171,
+  "advisor_ms": 1.3048260007053614,
+  "tuned_ms": 3.1835970003157854,
+  "trials_to_healthy": 2,
+  "trials_total": 9,
+  "tune_wall_min": 1.4,
+  "to_healthy_wall_min": 0.3,
+  "fixes": [
+   "articulation_capacity",
+   "enable_joint_limits"
+  ],
+  "cost_kept": [
+   "fewer_substeps_same_sweeps",
+   "limit_gap"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 50,
+    "substeps": 2
+   },
+   "solver": {
+    "articulation_constraint_max": 96,
+    "enable_joint_limits": true,
+    "iterations": 24,
+    "joint_limit_activation_gap": 0.1
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 50,
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 32,
+    "articulated_contact_response": "immediate",
+    "enable_joint_limits": true,
+    "joint_limit_activation_gap": 0.1,
+    "articulation_constraint_max": 64
+   }
+  },
+  "visual_note": "the four-bar folds flat by t=0.9 s; under the tuned preset it stays square to ~1 s and lands tilted: a fidelity difference no metric caught (2 x 24 vs the preset's 4 x 32)"
+ },
+ {
+  "scene": "mjorg_house_of_cards",
+  "group": "dev (run1)",
+  "naive_grade": "unstable",
+  "advisor_grade": "unstable",
+  "tuned_grade": "suspect",
+  "naive_check": "FAILED",
+  "advisor_check": "FAILED",
+  "tuned_check": "works",
+  "naive_ms": 11.179830878973007,
+  "advisor_ms": 159.54358875751495,
+  "tuned_ms": 71.01555913686752,
+  "trials_to_healthy": null,
+  "trials_total": 6,
+  "tune_wall_min": 15.0,
+  "to_healthy_wall_min": null,
+  "fixes": [
+   "free_body_capacity",
+   "escalate_substeps",
+   "escalate_iterations"
+  ],
+  "cost_kept": [],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 32
+   },
+   "solver": {
+    "free_body_constraint_max": 2720,
+    "iterations": 24
+   },
+   "model": {
+    "rigid_gap": 0.002
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 8
+   },
+   "solver": {
+    "solve_mode": "serial",
+    "iterations": 32,
+    "articulated_contact_response": "immediate",
+    "nesterov_momentum": true,
+    "contact_warmstart": true,
+    "free_body_constraint_max": 4096
+   },
+   "model": {
+    "rigid_gap": 0.002
+   }
+  }
+ },
+ {
+  "scene": "newton_cradle",
+  "group": "dev (run1)",
+  "naive_grade": "ok",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "works",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 0.7211137562990189,
+  "advisor_ms": 0.2703666687011719,
+  "tuned_ms": 1.3696718961000443,
+  "trials_to_healthy": 2,
+  "trials_total": 8,
+  "tune_wall_min": 1.1,
+  "to_healthy_wall_min": 0.3,
+  "fixes": [
+   "enable_joint_limits"
+  ],
+  "cost_kept": [
+   "fewer_substeps",
+   "point_friction"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 2
+   },
+   "solver": {
+    "enable_joint_limits": true,
+    "friction_anchor_beta": 0.0
+   },
+   "model": {
+    "default_shape_cfg": {
+     "mu": 0.0
+    }
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 8
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 16,
+    "articulated_contact_response": "immediate",
+    "contact_friction_gap_max": -Infinity
+   },
+   "model": {
+    "default_shape_cfg": {
+     "mu": 0.0
+    }
+   }
+  }
+ },
+ {
+  "scene": "robot_allegro_hand",
+  "group": "dev (run1)",
+  "naive_grade": "unstable",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "FAILED",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 2.7845483273267746,
+  "advisor_ms": 1.4383085072040558,
+  "tuned_ms": 1.220082864165306,
+  "trials_to_healthy": 2,
+  "trials_total": 9,
+  "tune_wall_min": 4.4,
+  "to_healthy_wall_min": 1.1,
+  "fixes": [
+   "articulation_capacity",
+   "enable_joint_limits",
+   "grasp_iterations"
+  ],
+  "cost_kept": [
+   "fewer_substeps",
+   "fewer_iterations"
+  ],
+  "rejected": [
+   "grasp_iterations"
+  ],
+  "advisor_settings": {
+   "sim": {
+    "fps": 50,
+    "substeps": 2
+   },
+   "solver": {
+    "articulation_constraint_max": 160,
+    "enable_joint_limits": true,
+    "iterations": 6
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 50,
+    "substeps": 2
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 2,
+    "articulated_contact_response": "immediate",
+    "articulation_constraint_max": 128,
+    "enable_joint_limits": true
+   }
+  }
+ },
+ {
+  "scene": "robot_anymal_d",
+  "group": "dev (run1)",
+  "naive_grade": "unstable",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "FAILED",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 1.7180368304252625,
+  "advisor_ms": 0.3687990829348564,
+  "tuned_ms": 0.3716787323355675,
+  "trials_to_healthy": 2,
+  "trials_total": 7,
+  "tune_wall_min": 1.2,
+  "to_healthy_wall_min": 0.4,
+  "fixes": [
+   "articulation_capacity",
+   "enable_joint_limits"
+  ],
+  "cost_kept": [
+   "fewer_substeps",
+   "fewer_substeps",
+   "point_friction",
+   "fewer_iterations"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 50,
+    "substeps": 1
+   },
+   "solver": {
+    "articulation_constraint_max": 96,
+    "enable_joint_limits": true,
+    "friction_anchor_beta": 0.0,
+    "iterations": 6
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 50,
+    "substeps": 1
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 4,
+    "articulated_contact_response": "immediate",
+    "articulation_constraint_max": 128,
+    "enable_joint_limits": false
+   }
+  }
+ },
+ {
+  "scene": "toy_train",
+  "group": "dev (run1)",
+  "naive_grade": "unstable",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "FAILED",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 2.2730752825737,
+  "advisor_ms": 0.5102641880512238,
+  "tuned_ms": 2.8781993314623833,
+  "trials_to_healthy": 2,
+  "trials_total": 7,
+  "tune_wall_min": 1.1,
+  "to_healthy_wall_min": 0.4,
+  "fixes": [
+   "articulation_capacity",
+   "enable_joint_limits"
+  ],
+  "cost_kept": [
+   "fewer_substeps",
+   "fewer_substeps",
+   "fewer_iterations"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 1
+   },
+   "solver": {
+    "articulation_constraint_max": 160,
+    "enable_joint_limits": true,
+    "iterations": 6
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 16,
+    "articulated_contact_response": "propagation_colored",
+    "enable_joint_velocity_limits": true,
+    "enable_joint_limits": true,
+    "free_body_constraint_max": 8192,
+    "articulation_constraint_max": 1024,
+    "propagation_constraint_max": 16384
+   }
+  }
+ },
+ {
+  "scene": "linkages",
+  "group": "rule source",
+  "naive_grade": "unstable",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "FAILED",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 1.2483783066272736,
+  "advisor_ms": 0.21563516929745674,
+  "tuned_ms": 1.2633539736270905,
+  "trials_to_healthy": 2,
+  "trials_total": 6,
+  "tune_wall_min": 0.9,
+  "to_healthy_wall_min": 0.3,
+  "fixes": [
+   "articulation_capacity"
+  ],
+  "cost_kept": [
+   "fewer_substeps",
+   "fewer_substeps",
+   "point_friction",
+   "fewer_iterations"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 1
+   },
+   "solver": {
+    "articulation_constraint_max": 96,
+    "friction_anchor_beta": 0.0,
+    "iterations": 6
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 12,
+    "articulated_contact_response": "immediate",
+    "enable_joint_limits": true,
+    "articulation_constraint_max": 64
+   }
+  }
+ },
+ {
+  "scene": "overlap",
+  "group": "rule source",
+  "naive_grade": "unstable",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "FAILED",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 9.225144051015377,
+  "advisor_ms": 2.814612351357937,
+  "tuned_ms": 5.76719269156456,
+  "trials_to_healthy": 2,
+  "trials_total": 8,
+  "tune_wall_min": 1.7,
+  "to_healthy_wall_min": 0.6,
+  "fixes": [
+   "free_body_capacity"
+  ],
+  "cost_kept": [
+   "colored_propagation",
+   "fewer_substeps"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 2
+   },
+   "solver": {
+    "free_body_constraint_max": 2048,
+    "solve_mode": "colored",
+    "articulated_contact_response": "propagation"
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 12,
+    "articulated_contact_response": "propagation_colored",
+    "enable_joint_limits": true,
+    "velocity_iterations": 4,
+    "propagation_constraint_max": 1344
+   }
+  }
+ },
+ {
+  "scene": "ratio_stack",
+  "group": "rule source",
+  "naive_grade": "unstable",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "FAILED",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": 2.4043740704655647,
+  "advisor_ms": 3.3609140664339066,
+  "tuned_ms": 5.93499094247818,
+  "trials_to_healthy": 3,
+  "trials_total": 9,
+  "tune_wall_min": 1.7,
+  "to_healthy_wall_min": 0.6,
+  "fixes": [
+   "mass_ratio_stack"
+  ],
+  "cost_kept": [
+   "fewer_substeps_same_sweeps"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 2
+   },
+   "solver": {
+    "nesterov_momentum": true,
+    "solve_mode": "serial",
+    "articulated_contact_response": "immediate",
+    "iterations": 48
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 8
+   },
+   "solver": {
+    "solve_mode": "serial",
+    "iterations": 16,
+    "articulated_contact_response": "immediate",
+    "enable_joint_limits": true,
+    "nesterov_momentum": true
+   }
+  }
+ },
+ {
+  "scene": "torsion",
+  "group": "rule source",
+  "naive_grade": "failed",
+  "advisor_grade": "ok",
+  "tuned_grade": "ok",
+  "naive_check": "FAILED",
+  "advisor_check": "works",
+  "tuned_check": "works",
+  "naive_ms": null,
+  "advisor_ms": 2.8807837516069412,
+  "tuned_ms": 4.278926178812981,
+  "trials_to_healthy": 3,
+  "trials_total": 9,
+  "tune_wall_min": 1.4,
+  "to_healthy_wall_min": 0.4,
+  "fixes": [
+   "construction_contact_torsion_device",
+   "articulation_capacity",
+   "enable_joint_limits"
+  ],
+  "cost_kept": [
+   "fewer_substeps_same_sweeps"
+  ],
+  "rejected": [],
+  "advisor_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 2
+   },
+   "solver": {
+    "contact_torsion_device": true,
+    "articulation_constraint_max": 224,
+    "enable_joint_limits": true,
+    "iterations": 24
+   }
+  },
+  "tuned_settings": {
+   "sim": {
+    "fps": 60,
+    "substeps": 4
+   },
+   "solver": {
+    "solve_mode": "matrix_free",
+    "iterations": 12,
+    "articulated_contact_response": "propagation_colored",
+    "enable_joint_limits": true,
+    "contact_torsion_device": true,
+    "articulation_constraint_max": 64
+   }
+  }
+ }
+]

@@ -30,5 +30,5 @@ packages = ["common", "shelf"]
 line-length = 120
 
 [tool.hatch.build.targets.sdist]
-# Renders are documentation, not runtime assets.
-exclude = ["/docs/**/*.png", "/docs/**/*.gif", "/docs/**/*.webp"]
+# Renders and the advisor's validation records are documentation, not runtime assets.
+exclude = ["/docs/**/*.png", "/docs/**/*.gif", "/docs/**/*.webp", "/docs/steel_tuning/advisor_validation"]

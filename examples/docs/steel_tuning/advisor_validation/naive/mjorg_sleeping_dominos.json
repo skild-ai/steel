@@ -1,0 +1,1 @@
+{"sim": {"fps": 60, "substeps": 4}, "solver": {}, "model": {"rigid_gap": 0.01}}
