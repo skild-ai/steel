@@ -34,4 +34,4 @@ obs.body_awake      # (body_count,) bool
 | `constraint_row_watermarks()` | Per family: retained and requested high-water marks, dropped contact rows, overflow excess, overflowing world-steps; and `contact_high_water`. | Needs `row_watermark=True`; host read outside capture. |
 | `compliance_contact_count` | Compliant contacts prepared in the last step, and `compliance_skipped_contact_count` for those excluded. | `contact_compliance` only; host read outside capture. |
 
-Tendon observables do not exist at this commit; Steel does not simulate tendons yet.
+Steel does not simulate tendons, so it reports no tendon observables.
