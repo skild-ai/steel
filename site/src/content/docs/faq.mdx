@@ -11,6 +11,18 @@ It is `newton.solvers.SolverSteel` in Newton, Apache-2.0. New work lands on the 
 
 Experimental support is coming soon: a differentiable Steel step is in progress. Today, construction raises for models with `requires_grad=True`.
 
+### What does Steel reject at construction?
+
+`SolverSteel` raises for:
+
+- particles, cloth and soft bodies; couple Steel with VBD or XPBD instead ([Coupling](/guides/coupling/))
+- ROD joints, and disabled joints in an articulation tree
+- `model.requires_grad=True`
+- mimic relationships across articulations or on BALL, FREE and DISTANCE joints, loop-closing joints other than BALL, REVOLUTE and FIXED, and loop closures between two dynamic articulations
+- on CPU, the CUDA-only features listed under [Does Steel run on CPU?](#does-steel-run-on-cpu)
+
+Steel does not simulate tendons, and it ignores DISTANCE joint limits (`min_distance`, `max_distance`), also with `enable_joint_limits=True`. The MJCF importer leaves `steel:condim` at 3; set it after import.
+
 ### Why are my joint limits ignored?
 
 `enable_joint_limits` defaults to `False`. Set it to `True`.
@@ -37,7 +49,7 @@ The core solve runs on CPU with world-serial portable kernels; `"colored"` sweep
 
 **Turn it on** for resting stacks at a tight iteration budget, and for grasps held with point friction (`friction_anchor_beta=0`). **Leave it off** for heavy-on-light stacks (use `nesterov_momentum` instead), for settling piles where resting jitter matters, and for anything carried fast unless contact matching keeps up.
 
-Measured with [`warmstart_experiment.py`](https://github.com/skild-ai/steel/blob/main/site/scripts/experiments/warmstart_experiment.py) at the documented commit, on one RTX PRO 6000 Blackwell, 60 fps. Both arms use the same contact matching, so only the warm start differs:
+Measured with [`warmstart_experiment.py`](https://github.com/skild-ai/steel/blob/main/site/scripts/experiments/warmstart_experiment.py) on one RTX PRO 6000 Blackwell, 60 fps. Both arms use the same contact matching, so only the warm start differs:
 
 | Scene (worlds) | Setting | Warm start off | Warm start on |
 |---|---|---|---|

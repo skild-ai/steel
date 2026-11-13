@@ -67,7 +67,7 @@ const solverLabel = (p) => (p.solver ? p.solver : p.variantOf ? `${p.variantOf} 
 				example.featured && (
 					<figcaption>
 						The <code>{example.featured}</code> preset{example.featured === example.defaultPreset ? ' (the default)' : ''}, recorded
-						with Newton <a href={`https://github.com/skild-ai/newton/commit/${media.newton}`}>{media.newton.slice(0, 9)}</a>{` on an ${media.gpu}${rate !== 1 ? `, sped up ${rate}× (the readout shows sim time)` : ''}.`}
+						{`on an ${media.gpu}${rate !== 1 ? `, sped up ${rate}× (the readout shows sim time)` : ''}.`}
 					</figcaption>
 				)
 			}

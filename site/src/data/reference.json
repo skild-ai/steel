@@ -109,7 +109,7 @@
    "step": false,
    "category": "Joints and drives",
    "doc": "<p>Enforce <code>joint_limit_lower</code> and <code>joint_limit_upper</code> of PRISMATIC, REVOLUTE and D6 DOFs as unilateral rows. When <code>False</code> (the default), no joint-limit rows are created, joint position limits are not enforced, and limits use no <code>articulation_constraint_max</code> capacity. The default matches the Steel reference implementation this solver is ported from.</p>",
-   "when": "Set True whenever the model authors joint limits. Off, limits are not simulated. DISTANCE joint limits are ignored either way at this commit.",
+   "when": "Set True whenever the model authors joint limits. Off, limits are not simulated. DISTANCE joint limits are ignored either way.",
    "available": {
     "Newton 1.8.0": true,
     "Newton main": true
@@ -480,7 +480,7 @@
    "step": false,
    "category": "Contacts and friction",
    "doc": "<p>Experimental Coulomb friction update of the matrix-free solve. <code>\"fixed_normal\"</code> updates both tangent impulses together on the friction disk of the current normal impulse: sticking uses the inverse of their 2x2 block, sliding a bounded scalar solve that keeps isotropic maximum dissipation. <code>\"bisection\"</code> bisects the normal impulse of each contact and re-solves the 2x2 tangent problem at every probe, so normal and friction impulses are updated together. <code>\"bisection_desaxce\"</code> adds the de Saxce maximum-dissipation bias <code>mu * |c_T|</code> to the normal target velocity of free-body contacts (Le Lidec and Carpentier, 2024). <code>\"coulomb_newton\"</code> solves each free-body contact's Coulomb cone exactly with a bracketed scalar Newton iteration on the tangential-force ratio; articulated contacts keep the <code>\"fixed_normal\"</code> update. The other modes replace each contact's normal and friction impulses with their coupled solution, which <code>relaxation</code> does not scale, and use point friction: an omitted <code>friction_anchor_beta</code> selects it with a warning, and friction patches, contact torsion, contact compliance, <code>contact_regularization</code> and <code>articulated_contact_response=\"propagation\"</code> with <code>solve_mode=\"serial\"</code> require <code>\"fixed_normal\"</code>. The free-body and articulated rules above apply to <code>articulated_contact_response=\"immediate\"</code>. <code>solve_mode=\"colored\"</code> solves every contact on a propagation row, articulated ones included, with the free-body update of the selected mode; contacts between two links of one articulation stay on dense rows and keep the articulated update. This option may change without the normal deprecation period.</p>",
-   "when": "Experimental. Leave at \"fixed_normal\"; \"coulomb_newton\" for free bodies near the friction limit. At this commit \"bisection\" and \"bisection_desaxce\" let a box near the friction limit slide; a fix is in review in skild-ai/newton#26.",
+   "when": "Experimental. Leave at \"fixed_normal\"; \"coulomb_newton\" for free bodies near the friction limit. \"bisection\" and \"bisection_desaxce\" let a box near the friction limit slide; a fix is in review in skild-ai/newton#26.",
    "available": {
     "Newton 1.8.0": true,
     "Newton main": true

@@ -5,8 +5,8 @@
 export const legacyAnchors: Record<string, string> = {
 	"overview": "/start/overview/",
 	"what": "/start/overview/#what-it-is-for",
-	"choose": "/start/overview/#choosing-a-solver",
-	"scope": "/start/overview/#what-is-supported",
+	"choose": "/start/overview/#newtons-articulated-body-solvers",
+	"scope": "/faq/#what-does-steel-reject-at-construction",
 	"versions": "/start/versions/",
 	"install": "/start/installation/",
 	"quickstart": "/start/quick-start/",

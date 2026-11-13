@@ -25,7 +25,7 @@ Work top to bottom: an earlier row makes later numbers meaningless.
 | Bodies launched after a hard contact | `baumgarte` too high, or warm start on wedged contacts | `baumgarte` ≤ 0.5; `velocity_iterations`; warm start off. |
 | Light bodies pressed into the ground by a heavy one | Mass ratio above about 1000:1 | See the recipe in [Tuning](/guides/tuning/#recipes). |
 | Frozen scene with odd substeps under a graph | The captured state swap ends on the other buffer | Use an even substep count when swapping states inside a graph. |
-| `NotImplementedError` at construction | Particles, gradients, a CUDA-only feature on CPU, or an unsupported joint layout | See [What is supported](/start/overview/#what-is-supported). |
+| `NotImplementedError` at construction | Particles, gradients, a CUDA-only feature on CPU, or an unsupported joint layout | See [What does Steel reject at construction?](/faq/#what-does-steel-reject-at-construction). |
 | `Loop-closing joints are not supported with articulated_contact_response=...` | Loop closures under propagation | Immediate response, serial sweep. |
 | `nesterov_momentum requires solve_mode='serial' ...` | Momentum outside the serial immediate sweep | Serial, immediate, `row_schedule="interleaved"`. |
 | Contact torsion construction error | Torsion radii authored without device preparation | `contact_torsion_device=True`, and `velocity_iterations=0` under propagation. |

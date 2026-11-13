@@ -94,7 +94,7 @@ WHEN = {
     "friction_anchor_beta": "Keep the default (anchors) for anything held, carried or pinched. Set 0 (point "
                             "friction) for scenes where nothing is held; it is cheaper.",
     "friction_mode": "Experimental. Leave at \"fixed_normal\"; \"coulomb_newton\" for free bodies near the friction "
-                     "limit. At this commit \"bisection\" and \"bisection_desaxce\" let a box near the friction "
+                     "limit. \"bisection\" and \"bisection_desaxce\" let a box near the friction "
                      "limit slide; a fix is in review in skild-ai/newton#26.",
     "friction_combine": "Match the combine mode of the engine you are porting from (PhysX average, min, multiply "
                         "or max).",
@@ -117,7 +117,7 @@ WHEN = {
     "free_rigid_torsional_friction": "Sweeps over spin friction of free bodies without editing shapes.",
     "free_rigid_rolling_friction": "Sweeps over rolling friction of free bodies without editing shapes.",
     "enable_joint_limits": "Set True whenever the model authors joint limits. Off, limits are not simulated. "
-                           "DISTANCE joint limits are ignored either way at this commit.",
+                           "DISTANCE joint limits are ignored either way.",
     "joint_limit_activation_gap": "A fixed gap such as 0.1 builds limit rows only near a limit and is often faster "
                                   "than the speed-aware default. Keep it above 2 * max|qd| * dt.",
     "enable_joint_velocity_limits": "Set True when the task depends on joint velocity limits.",

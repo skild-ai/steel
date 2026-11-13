@@ -161,8 +161,8 @@ placeholder. Record the Steel preset with `shelf play <name>` and **Record** (si
   `var(--token)` in CSS and `css('--token')` in scripts, never a literal color.
 - Green (`--hot`, `--hot-fill`, `--series-2`) marks the one thing a figure or section is about; comparisons
   use `--series-1`, `--series-3` and `--series-4`.
-- Write plainly. State measured numbers with the scene, commit and GPU they come from, and keep claims to
-  what the code at the documented commit does.
+- Write plainly. State measured numbers with the scene and GPU they come from, and keep claims to what the
+  code does. Which Newton build has which feature belongs on the versions page, not in page prose.
 - Check new pages at phone width (390 px): no sideways scrolling of the page, controls large enough to tap.
 
 ### What is public
