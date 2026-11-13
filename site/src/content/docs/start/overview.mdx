@@ -26,12 +26,12 @@ Newton has several solvers that simulate articulated bodies. From their source a
 | Solver | Coordinates | Contacts and constraints | Joint types | Loop closures |
 |---|---|---|---|---|
 | **Steel**<br />`SolverSteel` | Reduced | Hard contacts with Coulomb friction; matrix-free projected Gauss-Seidel | All but ROD; DISTANCE moves as FREE | BALL, REVOLUTE and FIXED loop joints |
-| **MuJoCo Warp**<br />`SolverMuJoCo` | Reduced | MuJoCo soft constraints (`solref`, `solimp`); CG or Newton solver; pyramidal or elliptic cone | All but DISTANCE and ROD | Loop joints become CONNECT or WELD equality constraints |
+| **MuJoCo Warp**<br />`SolverMuJoCo` | Reduced | MuJoCo soft constraints (`solref`, `solimp`); CG or Newton solver; pyramidal or elliptic cone | All but DISTANCE and ROD | FIXED, REVOLUTE, BALL and one- or three-axis angular D6 loop joints, as equality constraints |
 | **Featherstone**<br />`SolverFeatherstone` | Reduced | Penalty spring-damper contacts | All but ROD; DISTANCE moves as FREE | No |
 | **Kamino**<br />`SolverKamino` | Maximal | Hard contacts with friction and restitution as a complementarity problem; proximal ADMM by default | PRISMATIC, REVOLUTE, BALL, FIXED, FREE | Yes |
 | **XPBD**<br />`SolverXPBD` | Maximal | Position-based contact and joint constraints | All but ROD | Yes |
 | **Semi-implicit**<br />`SolverSemiImplicit` | Maximal | Penalty spring-damper contacts and joints | All but ROD; DISTANCE moves as FREE | Yes |
-| **VBD**<br />`SolverVBD` | Maximal | Augmented-Lagrangian contact and joint rows (AVBD) | All but DISTANCE | Yes |
+| **VBD**<br />`SolverVBD` | Maximal | Vertex block descent; compliant augmented-Lagrangian contact and joint constraints | All but DISTANCE | Yes |
 
 | Solver | Particles, cloth, soft bodies | Gradients | Devices | Worlds with different structure |
 |---|---|---|---|---|

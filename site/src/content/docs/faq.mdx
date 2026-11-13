@@ -21,7 +21,7 @@ Experimental support is coming soon: a differentiable Steel step is in progress.
 - mimic relationships across articulations or on BALL, FREE and DISTANCE joints, loop-closing joints other than BALL, REVOLUTE and FIXED, and loop closures between two dynamic articulations
 - on CPU, the CUDA-only features listed under [Does Steel run on CPU?](#does-steel-run-on-cpu)
 
-Steel does not simulate tendons, and it ignores DISTANCE joint limits (`min_distance`, `max_distance`), also with `enable_joint_limits=True`. The MJCF importer leaves `steel:condim` at 3; set it after import.
+Steel does not simulate tendons, and it ignores DISTANCE joint limits (`min_distance`, `max_distance`), also with `enable_joint_limits=True`. The MJCF importer does not read a geom's `condim` into `steel:condim`, which stays 3; set it after import.
 
 ### Why are my joint limits ignored?
 
