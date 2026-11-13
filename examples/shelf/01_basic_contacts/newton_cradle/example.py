@@ -203,7 +203,9 @@ class Example:
     @staticmethod
     def create_parser():
         parser = newton.examples.create_parser()
-        parser.add_argument("--lifted-balls", type=int, default=1, help="How many balls start lifted.")
+        parser.add_argument(
+            "--lifted-balls", type=int, default=1, choices=range(1, NUM_BALLS), help="How many balls start lifted."
+        )
         return parser
 
 

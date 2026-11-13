@@ -45,9 +45,8 @@ status = "untested"
 
 [steel]
 status = "works"
-# 16 substeps keep one substep of travel (2.5 mm at 2.4 m/s) under half the 5 mm clearance, so impacts
-# stay one pair at a time with up to four balls lifted; 12 drift into touching pairs within 10 s with three.
-# Each impact is a single contact row, so 4 iterations resolve it.
+# 16 substeps keep one substep of travel (2.5 mm at 2.4 m/s) to about half the 5 mm clearance, so impacts
+# stay one pair at a time. Each impact is a single contact row, so 4 iterations resolve it.
 sim = { fps = 60, substeps = 16 }
 # contact_friction_gap_max = -inf: the balls are frictionless (mu = 0 as in the other solvers), so no
 # contact needs friction rows. enable_joint_friction applies the hinges' Coulomb friction.
