@@ -78,11 +78,6 @@ CONSTRUCTION_FIXES = (
         "Contact torsion with the propagation response needs velocity_iterations=0.",
     ),
     (
-        r"nesterov_momentum requires solve_mode='serial'",
-        {"solver.solve_mode": "serial", "solver.articulated_contact_response": "immediate"},
-        "Nesterov momentum runs only in the serial immediate sweep.",
-    ),
-    (
         r"solve_mode='colored' requires articulated_contact_response='propagation'|colored.*requires.*propagation",
         {"solver.articulated_contact_response": "propagation"},
         "The colored sweep colors propagation rows; it needs the propagation response.",
@@ -115,6 +110,12 @@ def recommend_stability(facts: dict) -> dict:
     if err and _kernel_build_fix(err, facts.get("settings") or {}, actions):
         return _out(actions, flags)
     if err and _missing_setting_fix(err, facts.get("solver_defaults") or {}, actions):
+        return _out(actions, flags)
+    if err and "nesterov_momentum requires solve_mode='serial'" in err:
+        flags.append(
+            ("critical", "This Newton build restricts momentum to the serial sweep. "
+             "Use the shelf's pinned Newton to enable it on the requested solver path.")
+        )
         return _out(actions, flags)
     if err and _construction_fix(err, actions):
         return _out(actions, flags)  # nothing else ran
@@ -297,7 +298,6 @@ def cost_candidates(facts: dict, settings: dict) -> list[dict]:
     if (
         (model.get("free_bodies_world0") or 0) >= c["pile_free_bodies"]
         and not loops
-        and not kw.get("nesterov_momentum")
         and kw.get("articulated_contact_response") in (None, "immediate")
     ):
         colored = {"solver.solve_mode": "colored", "solver.articulated_contact_response": "propagation"}
@@ -883,17 +883,11 @@ def _rule_mass_ratio(facts: dict, ep: dict, kw: dict, settings: dict, actions: l
             )
         )
         return
-    # A resting heavy-on-light stack: momentum on the serial immediate sweep, unless the scene is a pile that the
-    # colored sweep serves better, where the fix is more sweeps.
+    # Changing momentum leaves the sweep owner and its row schedule in place.
     has_momentum = "nesterov_momentum" in (facts.get("solver_params") or ["nesterov_momentum"])
     pile = ((facts.get("model") or {}).get("free_bodies_world0") or 0) >= c["pile_free_bodies"]
-    colored = kw.get("articulated_contact_response") == "propagation"
-    new = {
-        "solver.nesterov_momentum": True,
-        "solver.solve_mode": "serial",
-        "solver.articulated_contact_response": "immediate",
-    }
-    if kw.get("nesterov_momentum") or not has_momentum or pile or colored:
+    new = {"solver.nesterov_momentum": True}
+    if kw.get("nesterov_momentum") or not has_momentum or pile:
         # Momentum on (or not in this Newton): spend more sweeps, as iterations while they last.
         new = (
             {"solver.iterations": min(2 * its, c["iterations_max"])}
@@ -908,9 +902,9 @@ def _rule_mass_ratio(facts: dict, ep: dict, kw: dict, settings: dict, actions: l
             "extrapolates the impulses between sweeps and carries the load down the stack in fewer iterations.",
             [
                 "Six cubes, each 3x the one below (~270:1): 8 substeps x 16 iterations stands with momentum (10/12 one-minute "
-                "repeats) and topples without (top cube ends 0.35 m vs 0.85 m). On an impact scene momentum cost 5-29x."
+                "repeats) and topples without (top cube ends 0.35 m vs 0.85 m). Impact scenes also need a full-trajectory check."
             ],
-            "serial immediate sweep; momentum itself is cheap on small stacks",
+            "measure frame time at equal sweep counts on the selected solver",
             "the stack stands for the whole check",
             "warn",
         )

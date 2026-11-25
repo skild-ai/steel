@@ -3,6 +3,8 @@
 How to pick settings for Newton's Steel solver (`newton.solvers.SolverSteel`) so a scene is correct first and
 fast second, and how to check that it is. Every number here was measured; section 11 says on what.
 
+The shelf now uses Nesterov momentum by default on CUDA. Set `solver.nesterov_momentum=false` to compare plain sweeps on the same solver path. The historical calibration measurements below name the build they used.
+
 The guide has two halves:
 
 - **Sections 1-5: getting a scene right.** A fast decision procedure (symptom, likely cause, setting to try, how
@@ -14,7 +16,7 @@ The guide has two halves:
 **Which Newton.** Steel is in Newton's `newton.solvers`. Two builds are in use and they spell two options
 differently:
 
-| Option | skild-ai/newton `f6fc82a8b` (the examples' pin; these numbers come from it) | upstream Newton main (2026-11) |
+| Option | skild-ai/newton `f6fc82a8b` (historical calibration build) | upstream Newton main (2026-11) |
 |---|---|---|
 | sweep order | `solve_mode="serial"` (default) or `"colored"` | `solve_mode="matrix_free"` (default) |
 | colored propagation | `solve_mode="colored"` + `articulated_contact_response="propagation"` | `articulated_contact_response="propagation_colored"` |
@@ -123,7 +125,7 @@ Work top to bottom: an earlier row makes the later rows' numbers meaningless.
 |---|---|---|---|---|
 | The solver will not build: `Loop-closing joints are not supported with articulated_contact_response=...` | loop joints under propagation | `articulated_contact_response="immediate"`, serial | builds | serial |
 | `contact torsion ... requires contact_torsion_device=True`, or `Contact torsion graph capture requires contact_torsion_device=True` | shapes author `steel:min_torsional_patch_radius` | `contact_torsion_device=True` (and `velocity_iterations=0` with propagation) | builds; torsion rows fit (section 4.8) | small |
-| `nesterov_momentum requires solve_mode='serial' ...` | momentum outside the serial immediate sweep | serial + immediate | builds | see 6.4 |
+| `nesterov_momentum requires solve_mode='serial' ...` | historical Newton build | use the shelf's pinned Newton | requested sweep builds | see 6.4 |
 | `SolverSteel has no argument(s) [...]` | option renamed or removed in your Newton | drop it, find its replacement | builds | - |
 | Kernels fail to build with very large capacities under immediate | more rows than one world's immediate kernels hold | colored propagation, size `propagation_constraint_max` | builds, no overflow | often faster on piles |
 | `check_constraint_capacity()` raises; "overflow ... dropped rows" warning; `*_overflow_world_steps > 0` | row capacity too small | size from the requested mark (section 4.1) | rerun: zero overflowing world-steps | +0-22% (dropped rows now solved) |
@@ -429,7 +431,7 @@ never which physics it solves.
 |---|---|
 | sizing capacities that overflowed | +0-22% (the rows are now solved) |
 | heavy impactor: 2x substeps x 2x iterations + baumgarte 0.5 | 2.6-2.8x |
-| `nesterov_momentum` | +7-16% per sweep (legged +15%, contact D6 +7.1%), and it bypasses the sparse mass, sparse-diagonal, local and paired-factor fast paths; off is bit-identical |
+| `nesterov_momentum` | +7-16% per sweep (legged +15%, contact D6 +7.1%), on the historical build, which bypassed several specialized paths; the current CUDA solver retains the selected path |
 | `contact_regularization=0.01` | ~0.015 mm extra resting penetration at 60 Hz x 3 |
 
 ---
@@ -450,7 +452,7 @@ can change between steps; everything else is fixed at construction. Two limits a
 | Option | Default | What it does | Tune when |
 |---|---|---|---|
 | `solve_mode` | `"serial"` | Gauss-Seidel order: one fused per-world kernel, or per-step colouring of propagation rows | colored for piles (requires propagation) |
-| `articulated_contact_response` | `"immediate"` | dense `H^-1 J^T` rows, or 6-wide body rows through the articulated-body factorization | propagation for colored; immediate for loops, momentum |
+| `articulated_contact_response` | `"immediate"` | dense `H^-1 J^T` rows, or 6-wide body rows through the articulated-body factorization | propagation for colored; immediate for loops |
 | `iterations` | 12 | sweeps per substep | convergence-limited scenes, loops, grasps |
 | `baumgarte` | 0.2 | position correction of contact and limit rows | up to 0.5 for sinking under heavy loads |
 | `relaxation` | 1.0 | SOR factor | 0.6 helped a momentum rope; above 1 hurt a heavy impactor |
@@ -468,7 +470,7 @@ can change between steps; everything else is fixed at construction. Two limits a
 | `enable_restitution` | `True` | restitution targets above `restitution_velocity_threshold` (0.5 m/s) | |
 | `contact_torsion_device` | `False` | device torsion rows (graph capture) | on whenever torsion radii are authored |
 | `propagation_color_order` | `"contact"` | colour order | leave it; time another order on the scene |
-| `nesterov_momentum` | `False` | Nesterov extrapolation of impulses between sweeps, with gradient restart | resting stacks, large mass ratios, long chains (serial immediate, CUDA) |
+| `nesterov_momentum` | on for CUDA | Nesterov extrapolation of impulses between sweeps, with gradient restart | resting stacks, large mass ratios, long chains on CUDA |
 | `contact_gap_gate` | `None` | drops rows of contacts beyond this gap | 0 for speculative rows that never engage |
 | `contact_friction_gap_max` | `None` | friction rows only within this gap | `-inf` for a frictionless scene (at construction; see above) |
 | `enable_sleeping` | `False` | island sleeping | settling scenes (excludes warm start) |
@@ -478,9 +480,7 @@ can change between steps; everything else is fixed at construction. Two limits a
 
 **Nesterov momentum.** Each sweep after the first extrapolates impulses by `(k-1)/(k+2)` along the previous
 sweep's change; it restarts when the last correction opposes the extrapolation and when friction rows switch on
-(ss:16699). Velocity-limit rows are not extrapolated; contact and position-limit rows are. It requires
-`solve_mode="serial"`, `articulated_contact_response="immediate"`, `row_schedule="interleaved"` and CUDA
-(ss:2843-2850). Measure convergence on the scene before lowering iterations because of it: a better-converged
+(ss:16699). Velocity-limit rows are not extrapolated; contact and position-limit rows are. CUDA supports momentum on the selected serial, colored, immediate or propagation sweep, including phased and fused solves. Measure convergence on the scene before lowering iterations because of it: a better-converged
 solve also changes contact forces, so recheck force-sensitive tasks.
 
 ---

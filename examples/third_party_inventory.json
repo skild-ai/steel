@@ -2,8 +2,8 @@
   "review_date": "2026-11-11",
   "scope": "Steel Shelf tracked source, documentation media, built wheel and sdist, and the runtime asset references at this revision. Dependencies and user-supplied optional files are not vendored.",
   "package_license_expression": "Apache-2.0 AND BSD-3-Clause",
-  "newton_revision": "f6fc82a8b06d036e1e6d02a61d77a2d300476e8d",
-  "newton_assets_default_revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+  "newton_revision": "affc7629a1f5ef59d1f32b2998a945921205cbcf",
+  "newton_assets_default_revision": "ac1f172b6f53915f9b81aa9ccd765ae792cc264c",
   "bundled_scenes": [
     {
       "path": "shelf/01_basic_contacts/air_hockey/scene.json",
@@ -359,8 +359,8 @@
     {
       "asset": "anybotics_anymal_c/rl_policies",
       "license": "Apache-2.0",
-      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/anybotics_anymal_c/rl_policies/LICENSE",
-      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "source": "https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/anybotics_anymal_c/rl_policies/LICENSE",
+      "revision": "ac1f172b6f53915f9b81aa9ccd765ae792cc264c",
       "notice": "licenses/runtime-assets/anybotics_anymal_c--rl_policies.txt",
       "notice_sha256": "59899c6091b540582ed617e8eeaac4919dc985ccfc35459ee9752b699be5205b",
       "distribution": "runtime download; model/policy files not bundled"
@@ -368,8 +368,8 @@
     {
       "asset": "anybotics_anymal_c",
       "license": "BSD-3-Clause",
-      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/anybotics_anymal_c/LICENSE",
-      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "source": "https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/anybotics_anymal_c/LICENSE",
+      "revision": "ac1f172b6f53915f9b81aa9ccd765ae792cc264c",
       "notice": "licenses/runtime-assets/anybotics_anymal_c.txt",
       "notice_sha256": "cef384faae108293b03b5e16a00bc3db8212d44575f69df6296438a3f901700b",
       "distribution": "runtime download; model/policy files not bundled"
@@ -377,8 +377,8 @@
     {
       "asset": "anybotics_anymal_d",
       "license": "BSD-3-Clause",
-      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/anybotics_anymal_d/LICENSE",
-      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "source": "https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/anybotics_anymal_d/LICENSE",
+      "revision": "ac1f172b6f53915f9b81aa9ccd765ae792cc264c",
       "notice": "licenses/runtime-assets/anybotics_anymal_d.txt",
       "notice_sha256": "03ac7cbf98d56b4a3d51866d7d3607ec7d476e22e34f6993eca47b7605707ec5",
       "distribution": "runtime download; model/policy files not bundled"
@@ -386,8 +386,8 @@
     {
       "asset": "asroballet/rl_policies",
       "license": "Apache-2.0",
-      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/asroballet/rl_policies/LICENSE",
-      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "source": "https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/asroballet/rl_policies/LICENSE",
+      "revision": "ac1f172b6f53915f9b81aa9ccd765ae792cc264c",
       "notice": "licenses/runtime-assets/asroballet--rl_policies.txt",
       "notice_sha256": "2191d05c6ee7c145480916b745bd020484adb61653be943c43cff10bc22927a1",
       "distribution": "runtime download; model/policy files not bundled"
@@ -395,8 +395,8 @@
     {
       "asset": "asroballet",
       "license": "MIT",
-      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/asroballet/LICENSE",
-      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "source": "https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/asroballet/LICENSE",
+      "revision": "ac1f172b6f53915f9b81aa9ccd765ae792cc264c",
       "notice": "licenses/runtime-assets/asroballet.txt",
       "notice_sha256": "3377cbc7be45fafafeebeb1b60db66bbdfee433dc5fe1e8d9c715f48157ab695",
       "distribution": "runtime download; model/policy files not bundled"
@@ -413,8 +413,8 @@
     {
       "asset": "disneyresearch/dr_testmech",
       "license": "LicenseRef-Disney-Research",
-      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/disneyresearch/dr_testmech/LICENSE",
-      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "source": "https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/disneyresearch/dr_testmech/LICENSE",
+      "revision": "ac1f172b6f53915f9b81aa9ccd765ae792cc264c",
       "notice": "licenses/runtime-assets/disneyresearch--dr_testmech.txt",
       "notice_sha256": "57ffc5bf65dbfebd1a97f4fa35ea990f452c0afc96ba624e23276ce42b8d5c88",
       "distribution": "runtime download; model/policy files not bundled"
@@ -422,8 +422,8 @@
     {
       "asset": "franka_emika_panda",
       "license": "Apache-2.0 AND BSD-3-Clause",
-      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/franka_emika_panda/LICENSE",
-      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "source": "https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/franka_emika_panda/LICENSE",
+      "revision": "ac1f172b6f53915f9b81aa9ccd765ae792cc264c",
       "notice": "licenses/runtime-assets/franka_emika_panda.txt",
       "notice_sha256": "4b25434e6ec2012e28a484f1d7924a0fd1a8bf232c2be2d50d584d299d04d6d6",
       "distribution": "runtime download; model/policy files not bundled"
@@ -431,8 +431,8 @@
     {
       "asset": "manipulation_objects/cup",
       "license": "Apache-2.0",
-      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/manipulation_objects/cup/LICENSE",
-      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "source": "https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/manipulation_objects/cup/LICENSE",
+      "revision": "ac1f172b6f53915f9b81aa9ccd765ae792cc264c",
       "notice": "licenses/runtime-assets/manipulation_objects--cup.txt",
       "notice_sha256": "59899c6091b540582ed617e8eeaac4919dc985ccfc35459ee9752b699be5205b",
       "distribution": "runtime download; model/policy files not bundled"
@@ -440,8 +440,8 @@
     {
       "asset": "manipulation_objects/pad",
       "license": "Apache-2.0",
-      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/manipulation_objects/pad/LICENSE",
-      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "source": "https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/manipulation_objects/pad/LICENSE",
+      "revision": "ac1f172b6f53915f9b81aa9ccd765ae792cc264c",
       "notice": "licenses/runtime-assets/manipulation_objects--pad.txt",
       "notice_sha256": "59899c6091b540582ed617e8eeaac4919dc985ccfc35459ee9752b699be5205b",
       "distribution": "runtime download; model/policy files not bundled"
@@ -449,8 +449,8 @@
     {
       "asset": "style3d",
       "license": "BSD-3-Clause",
-      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/style3d/LICENSE",
-      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "source": "https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/style3d/LICENSE",
+      "revision": "ac1f172b6f53915f9b81aa9ccd765ae792cc264c",
       "notice": "licenses/runtime-assets/style3d.txt",
       "notice_sha256": "242b355d8ef9113595354d39f6ca9348f1a6d912874a0460c1387eba16b65225",
       "distribution": "runtime download; model/policy files not bundled"
@@ -458,8 +458,8 @@
     {
       "asset": "unitree_g1/rl_policies",
       "license": "Apache-2.0",
-      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_g1/rl_policies/LICENSE",
-      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "source": "https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/unitree_g1/rl_policies/LICENSE",
+      "revision": "ac1f172b6f53915f9b81aa9ccd765ae792cc264c",
       "notice": "licenses/runtime-assets/unitree_g1--rl_policies.txt",
       "notice_sha256": "59899c6091b540582ed617e8eeaac4919dc985ccfc35459ee9752b699be5205b",
       "distribution": "runtime download; model/policy files not bundled"
@@ -467,8 +467,8 @@
     {
       "asset": "unitree_g1",
       "license": "BSD-3-Clause",
-      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_g1/LICENSE",
-      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "source": "https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/unitree_g1/LICENSE",
+      "revision": "ac1f172b6f53915f9b81aa9ccd765ae792cc264c",
       "notice": "licenses/runtime-assets/unitree_g1.txt",
       "notice_sha256": "84aac59fd3246e3ddc49d1387644e8fcf43b0def4f0b9fe687f372e90446df2d",
       "distribution": "runtime download; model/policy files not bundled"
@@ -476,8 +476,8 @@
     {
       "asset": "unitree_go2/rl_policies",
       "license": "Apache-2.0",
-      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_go2/rl_policies/LICENSE",
-      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "source": "https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/unitree_go2/rl_policies/LICENSE",
+      "revision": "ac1f172b6f53915f9b81aa9ccd765ae792cc264c",
       "notice": "licenses/runtime-assets/unitree_go2--rl_policies.txt",
       "notice_sha256": "59899c6091b540582ed617e8eeaac4919dc985ccfc35459ee9752b699be5205b",
       "distribution": "runtime download; model/policy files not bundled"
@@ -485,8 +485,8 @@
     {
       "asset": "unitree_go2",
       "license": "BSD-3-Clause",
-      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_go2/LICENSE",
-      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "source": "https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/unitree_go2/LICENSE",
+      "revision": "ac1f172b6f53915f9b81aa9ccd765ae792cc264c",
       "notice": "licenses/runtime-assets/unitree_go2.txt",
       "notice_sha256": "84aac59fd3246e3ddc49d1387644e8fcf43b0def4f0b9fe687f372e90446df2d",
       "distribution": "runtime download; model/policy files not bundled"
@@ -494,8 +494,8 @@
     {
       "asset": "universal_robots_ur10",
       "license": "BSD-3-Clause",
-      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/universal_robots_ur10/LICENSE",
-      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "source": "https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/universal_robots_ur10/LICENSE",
+      "revision": "ac1f172b6f53915f9b81aa9ccd765ae792cc264c",
       "notice": "licenses/runtime-assets/universal_robots_ur10.txt",
       "notice_sha256": "e12d2dd2a5029d997cf4b55384420a7ad65adcff3c0e867fcdf510c59c755451",
       "distribution": "runtime download; model/policy files not bundled"
@@ -503,8 +503,8 @@
     {
       "asset": "wonik_allegro",
       "license": "BSD-2-Clause",
-      "source": "https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/wonik_allegro/LICENSE",
-      "revision": "f8fb7abcbeba2318814a74f3eeb02780ad7925d6",
+      "source": "https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/wonik_allegro/LICENSE",
+      "revision": "ac1f172b6f53915f9b81aa9ccd765ae792cc264c",
       "notice": "licenses/runtime-assets/wonik_allegro.txt",
       "notice_sha256": "37766593733254c83007eac1e810cae21ecefb1f7e1e8af7e5183aef58c3774b",
       "distribution": "runtime download; model/policy files not bundled"
@@ -530,7 +530,7 @@
   ],
   "builtin_newton_assets": {
     "license": "Apache-2.0 as distributed under the pinned Newton repository license",
-    "source_license": "https://github.com/skild-ai/newton/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md",
+    "source_license": "https://github.com/skild-ai/newton/blob/affc7629a1f5ef59d1f32b2998a945921205cbcf/LICENSE.md",
     "distribution": "dependency assets; not copied into Steel Shelf wheel or sdist",
     "files": [
       {
@@ -1101,7 +1101,7 @@
   },
   "newton_test_assets": {
     "license": "Apache-2.0 under the pinned Newton repository license",
-    "source_license": "https://github.com/skild-ai/newton/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md",
+    "source_license": "https://github.com/skild-ai/newton/blob/affc7629a1f5ef59d1f32b2998a945921205cbcf/LICENSE.md",
     "source_helper": "newton/tests/__init__.py:get_kamino_basics_asset",
     "distribution": "separately installed dependency; not copied into Steel Shelf wheel or sdist",
     "files": [

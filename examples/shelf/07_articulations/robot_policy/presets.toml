@@ -46,7 +46,7 @@ sim = { fps = 200, substeps = 1 }
 model = { ground_gap = 0.0001 }
 check = { args = ["--num-frames", "800"] }
 solver = { solve_mode = "matrix_free", iterations = 4, articulated_contact_response = "immediate", articulation_constraint_max = 128, enable_joint_limits = true, joint_limit_activation_gap = 0.1, friction_anchor_beta = 0.0 }
-checked = "2026-11-19, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+checked = "2026-11-25, newton affc7629a, NVIDIA RTX PRO 6000 Blackwell Server Edition"
 
 [kamino]
 status = "untested"

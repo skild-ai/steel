@@ -170,10 +170,6 @@ def test_construction_errors_map_to_fixes():
         },
         "NotImplementedError: contact torsion with articulated_contact_response='propagation' requires "
         "contact_torsion_device=True": {"solver.contact_torsion_device": True},
-        "ValueError: nesterov_momentum requires solve_mode='serial', articulated_contact_response='immediate'": {
-            "solver.solve_mode": "serial",
-            "solver.articulated_contact_response": "immediate",
-        },
         "PresetError: x [steel.solver]: SolverSteel has no argument(s) ['enable_torsional_rolling_friction']; valid": {
             "solver.enable_torsional_rolling_friction": None
         },
@@ -181,6 +177,13 @@ def test_construction_errors_map_to_fixes():
     for err, settings in cases.items():
         advice = recommend_stability({"build_error": err, "settings": {}})
         assert advice["actions"][0]["settings"] == settings, err
+
+
+def test_legacy_momentum_error_preserves_the_requested_sweep():
+    err = "ValueError: nesterov_momentum requires solve_mode='serial', articulated_contact_response='immediate'"
+    advice = recommend_stability({"build_error": err, "settings": {}})
+    assert advice["actions"] == []
+    assert "pinned Newton" in str(advice["flags"])
 
 
 def test_unknown_construction_error_is_reported_not_guessed():
@@ -267,11 +270,7 @@ def test_resting_stack_that_fails_its_check_gets_momentum_then_sweeps():
     check = {"ok": False, "note": "cube 1 fell"}
     advice = recommend_stability(_facts(ep, check=check))
     a = next(a for a in advice["actions"] if a["id"] == "mass_ratio_stack")
-    assert a["settings"] == {
-        "solver.nesterov_momentum": True,
-        "solver.solve_mode": "serial",
-        "solver.articulated_contact_response": "immediate",
-    }
+    assert a["settings"] == {"solver.nesterov_momentum": True}
     advice = recommend_stability(_facts(ep, kw={"nesterov_momentum": True}, check=check))
     assert next(a for a in advice["actions"] if a["id"] == "mass_ratio_stack")["settings"] == {"solver.iterations": 24}
     advice = recommend_stability(_facts(ep, kw={"nesterov_momentum": True, "iterations": 48}, check=check))

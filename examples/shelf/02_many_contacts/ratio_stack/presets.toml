@@ -3,8 +3,8 @@ source = "steel-webgpu tools/scenes.py ratio_stack() @ ad03e49"
 default = "steel"
 
 [check]
-# Arguments `python -m shelf check` passes in test mode: 10 s, long enough for an unstable tower to topple.
-args = ["--num-frames", "600"]
+# A slowly tipping tower can stand for over a minute. Exercise three minutes of support.
+args = ["--num-frames", "10800"]
 
 [gallery]
 short = "Six cubes, each three times heavier than the one below."
@@ -30,11 +30,13 @@ status = "untested"
 
 [steel]
 status = "works"
-# the browser's settings: its export defaults (joint limits on) plus the scene's own, momentum among them;
-# nesterov_momentum requires the serial solve with immediate articulated contact response
+# Contact insertion order changes the finite-sweep support distribution in this top-heavy stack.
+# Sort the same contact stream in both settings. A Baumgarte gain of 0.3 corrects settling error
+# at each contact. The original 0.2 gain allowed the bottom box to creep sideways and tip.
 sim = { fps = 60, substeps = 8 }
-solver = { solve_mode = "serial", iterations = 16, articulated_contact_response = "immediate", enable_joint_limits = true, nesterov_momentum = true }
-checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+collision = { deterministic = true }
+solver = { solve_mode = "serial", iterations = 16, articulated_contact_response = "immediate", enable_joint_limits = true, baumgarte = 0.3 }
+checked = "2026-11-25, newton affc7629a, NVIDIA RTX PRO 6000 Blackwell Server Edition"
 
 [kamino]
 status = "untested"

@@ -27,5 +27,5 @@ Work top to bottom: an earlier row makes later numbers meaningless. To work thro
 | Frozen scene with odd substeps under a graph | The captured state swap ends on the other buffer | Use an even substep count when swapping states inside a graph. |
 | `NotImplementedError` at construction | Particles, gradients, a CUDA-only feature on CPU, or an unsupported joint layout | See [What does Steel reject at construction?](/faq/#what-does-steel-reject-at-construction). |
 | `Loop-closing joints are not supported with articulated_contact_response=...` | Loop closures under propagation | Immediate response, serial sweep. |
-| `nesterov_momentum requires solve_mode='serial' ...` | Momentum outside the serial immediate sweep | Serial, immediate, `row_schedule="interleaved"`. |
+| `nesterov_momentum requires solve_mode='serial' ...` | Older Newton build with serial-only momentum | Use the shelf’s pinned Newton to keep the selected sweep. |
 | Contact torsion construction error | Torsion radii authored without device preparation | `contact_torsion_device=True`, and `velocity_iterations=0` under propagation. |

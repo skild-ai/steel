@@ -72,22 +72,17 @@ status = "works"
 # (FeatherPGS took about 280 ms on the same sphere).
 sim = { fps = 50, substeps = 4 }
 solver = { solve_mode = "serial", iterations = 64, articulated_contact_response = "immediate", articulation_constraint_max = 584 }
-checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+checked = "2026-11-25, newton affc7629a, NVIDIA RTX PRO 6000 Blackwell Server Edition"
 [steel_all]
 kind = "steel"
 status = "works"
-# --drive all: every hub joint driven at once (60 drives on one 1-DOF mechanism). Drive all is not repeatable run to
-# run, and now and then a run opens the loops past 0.5 mm, so settings were judged on many repeats (2026-11-07):
-# 8 x 32 passed 26 of 26 (16 on an RTX PRO 6000, 10 on a local 3090; worst joint gap 0.17 mm), mean 195 ms per
-# frame on the RTX PRO 6000 (166.9 ms on newton f6fc82a8b).
-# Faster settings fail sometimes: 6 x 48 (171 ms) passed 11 of 11 on the RTX PRO 6000 but opened to 1.06 mm in 2 of 5
-# local runs, 8 x 24 (180 ms) to 0.75 mm in 1 of 4 local runs, 5 x 48 and 6 x 32 (~145 ms) to 0.65 mm in 1 of 4 RTX PRO 6000
-# runs. Against ground_truth.py the shape stays within 0.6 mm and the driven angle within 0.2 deg, but the whole
-# sphere drifts as a free body (about 1 cm and 3-4 deg over 20 s), where the exact solution stays put.
+# Sixty actuators drive a mechanism with one degree of freedom. Stable CONNECT row order holds
+# the 91 cut joints closed at 8 substeps x 10 sweeps. Across six two-cycle runs per setting,
+# peak gap was 0.070 mm with CUDA momentum and 0.041 mm with explicit opt-out.
 check = { args = ["--num-frames", "200", "--drive", "all"] }
 sim = { fps = 50, substeps = 8 }
-solver = { solve_mode = "serial", iterations = 32, articulated_contact_response = "immediate", articulation_constraint_max = 584 }
-checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+solver = { solve_mode = "serial", iterations = 10, articulated_contact_response = "immediate", articulation_constraint_max = 584 }
+checked = "2026-11-25, newton affc7629a, NVIDIA RTX PRO 6000 Blackwell Server Edition"
 
 [kamino]
 status = "works"
