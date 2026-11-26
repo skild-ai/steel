@@ -42,7 +42,7 @@ original mesh or URDF is absent.
 
 Newton-derived examples retain their original copyright and Apache-2.0 SPDX
 headers. The pinned Newton dependency is
-[affc7629](https://github.com/skild-ai/newton/blob/affc7629a1f5ef59d1f32b2998a945921205cbcf/LICENSE.md).
+[5e112521](https://github.com/skild-ai/newton/blob/5e112521dd61512b864883ef8c5787b60eaf754d/LICENSE.md).
 
 The 27 Steel WebGPU ports (16 builder scenes and 11 exported scenes) identify
 **steel-webgpu as their direct source** in the source header and `presets.toml`.
@@ -142,7 +142,7 @@ by these examples, not unrelated IsaacGymEnvs assets.
 `newton.examples.get_asset()` resolves files inside the pinned Newton
 installation, not inside this project's packages. The dependency distributes
 its built-in example assets under its
-[Apache-2.0 repository license](https://github.com/skild-ai/newton/blob/affc7629a1f5ef59d1f32b2998a945921205cbcf/LICENSE.md).
+[Apache-2.0 repository license](https://github.com/skild-ai/newton/blob/5e112521dd61512b864883ef8c5787b60eaf754d/LICENSE.md).
 All 31 files in that asset directory are enumerated by path and Git blob ID
 in the inventory, and the Shelf call sites are listed separately. This includes
 bunny, bear, Crazyflie, RJ45, cloth, cartpole, quadruped, ant/humanoid and the
@@ -153,7 +153,7 @@ The tabletop assets (crane, mug, bolt, nut, washer, plate rack and plate) were
 created by the Skild AI team; the crane's base is procedural, and its 138
 visual-only detail meshes come from the detailed crane built for the Steel
 launch video scene. The
-[Pelican bicycle note](https://github.com/skild-ai/newton/blob/affc7629a1f5ef59d1f32b2998a945921205cbcf/newton/examples/assets/steel_tabletop/pelican_bicycle.md)
+[Pelican bicycle note](https://github.com/skild-ai/newton/blob/5e112521dd61512b864883ef8c5787b60eaf754d/newton/examples/assets/steel_tabletop/pelican_bicycle.md)
 credits original CAD by liinbor (LuckyIYI) of the Skild AI team under
 Apache-2.0 and links its permanent source tag. The Newton helpers separately load Franka and Menagerie robot models;
 those model notices are preserved above rather than inferred from Newton's code license.

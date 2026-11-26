@@ -8,7 +8,7 @@ license-files = ["LICENSE", "NOTICE", "THIRD_PARTY.md", "third_party_inventory.j
 requires-python = ">=3.11"
 dependencies = [
     # skild-ai/newton, a Newton development fork, until the changes these examples need are in a Newton release.
-    "newton[examples] @ git+https://github.com/skild-ai/newton.git@affc7629a1f5ef59d1f32b2998a945921205cbcf",
+    "newton[examples] @ git+https://github.com/skild-ai/newton.git@5e112521dd61512b864883ef8c5787b60eaf754d",
     "tomlkit>=0.13",  # `shelf check` writes results into presets.toml, keeping comments
 ]
 

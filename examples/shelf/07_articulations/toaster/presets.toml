@@ -42,7 +42,7 @@ sim = { fps = 60, substeps = 4 }
 # At 4 substeps and 10 sweeps, both CUDA momentum settings insert the slice and latch the carriage
 # at -88.2 mm. The inserted slice ends within 0.7 mm of the previous 16-sweep result.
 solver = { solve_mode = "matrix_free", iterations = 10, articulated_contact_response = "immediate", enable_joint_limits = true, joint_limit_activation_gap = 0.1, enable_joint_velocity_limits = false, contact_torsion_device = true, friction_anchor_beta = 0.2, enable_sleeping = true, free_body_constraint_max = 8192, articulation_constraint_max = 1024 }
-checked = "2026-11-25, newton affc7629a, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+checked = "2026-11-26, newton 5e112521d, NVIDIA RTX PRO 6000 Blackwell Server Edition"
 
 [kamino]
 status = "untested"

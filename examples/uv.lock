@@ -1066,7 +1066,7 @@ wheels = [
 [[package]]
 name = "newton"
 version = "1.9.0.dev0"
-source = { git = "https://github.com/skild-ai/newton.git?rev=affc7629a1f5ef59d1f32b2998a945921205cbcf#affc7629a1f5ef59d1f32b2998a945921205cbcf" }
+source = { git = "https://github.com/skild-ai/newton.git?rev=5e112521dd61512b864883ef8c5787b60eaf754d#5e112521dd61512b864883ef8c5787b60eaf754d" }
 dependencies = [
     { name = "warp-lang" },
 ]
@@ -1843,7 +1843,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "newton", extras = ["examples"], git = "https://github.com/skild-ai/newton.git?rev=affc7629a1f5ef59d1f32b2998a945921205cbcf" },
+    { name = "newton", extras = ["examples"], git = "https://github.com/skild-ai/newton.git?rev=5e112521dd61512b864883ef8c5787b60eaf754d" },
     { name = "tomlkit", specifier = ">=0.13" },
 ]
 

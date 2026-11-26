@@ -37,7 +37,7 @@ status = "works"
 sim = { fps = 60, substeps = 8 }
 model = { rigid_gap = 0.002 }
 solver = { solve_mode = "serial", iterations = 32, articulated_contact_response = "immediate", contact_warmstart = true, free_body_constraint_max = 4096 }
-checked = "2026-11-25, newton affc7629a, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+checked = "2026-11-26, newton 5e112521d, NVIDIA RTX PRO 6000 Blackwell Server Edition"
 
 [kamino]
 status = "untested"

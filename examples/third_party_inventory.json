@@ -2,7 +2,7 @@
   "review_date": "2026-11-11",
   "scope": "Steel Shelf tracked source, documentation media, built wheel and sdist, and the runtime asset references at this revision. Dependencies and user-supplied optional files are not vendored.",
   "package_license_expression": "Apache-2.0 AND BSD-3-Clause",
-  "newton_revision": "affc7629a1f5ef59d1f32b2998a945921205cbcf",
+  "newton_revision": "5e112521dd61512b864883ef8c5787b60eaf754d",
   "newton_assets_default_revision": "ac1f172b6f53915f9b81aa9ccd765ae792cc264c",
   "bundled_scenes": [
     {
@@ -530,7 +530,7 @@
   ],
   "builtin_newton_assets": {
     "license": "Apache-2.0 as distributed under the pinned Newton repository license",
-    "source_license": "https://github.com/skild-ai/newton/blob/affc7629a1f5ef59d1f32b2998a945921205cbcf/LICENSE.md",
+    "source_license": "https://github.com/skild-ai/newton/blob/5e112521dd61512b864883ef8c5787b60eaf754d/LICENSE.md",
     "distribution": "dependency assets; not copied into Steel Shelf wheel or sdist",
     "files": [
       {
@@ -1101,7 +1101,7 @@
   },
   "newton_test_assets": {
     "license": "Apache-2.0 under the pinned Newton repository license",
-    "source_license": "https://github.com/skild-ai/newton/blob/affc7629a1f5ef59d1f32b2998a945921205cbcf/LICENSE.md",
+    "source_license": "https://github.com/skild-ai/newton/blob/5e112521dd61512b864883ef8c5787b60eaf754d/LICENSE.md",
     "source_helper": "newton/tests/__init__.py:get_kamino_basics_asset",
     "distribution": "separately installed dependency; not copied into Steel Shelf wheel or sdist",
     "files": [

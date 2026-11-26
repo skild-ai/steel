@@ -34,7 +34,7 @@ sim = { substeps = 4 }
 # At 4 substeps and 10 sweeps, both CUDA settings hold the counterweight through the strike
 # and bring down all six upper floors.
 solver = { solve_mode = "colored", iterations = 10, articulated_contact_response = "propagation" }
-checked = "2026-11-25, newton affc7629a, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+checked = "2026-11-26, newton 5e112521d, NVIDIA RTX PRO 6000 Blackwell Server Edition"
 
 [kamino]
 status = "untested"

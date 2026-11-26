@@ -72,7 +72,7 @@ status = "works"
 # (FeatherPGS took about 280 ms on the same sphere).
 sim = { fps = 50, substeps = 4 }
 solver = { solve_mode = "serial", iterations = 64, articulated_contact_response = "immediate", articulation_constraint_max = 584 }
-checked = "2026-11-25, newton affc7629a, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+checked = "2026-11-26, newton 5e112521d, NVIDIA RTX PRO 6000 Blackwell Server Edition"
 [steel_all]
 kind = "steel"
 status = "works"
@@ -82,7 +82,7 @@ status = "works"
 check = { args = ["--num-frames", "200", "--drive", "all"] }
 sim = { fps = 50, substeps = 8 }
 solver = { solve_mode = "serial", iterations = 10, articulated_contact_response = "immediate", articulation_constraint_max = 584 }
-checked = "2026-11-25, newton affc7629a, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+checked = "2026-11-26, newton 5e112521d, NVIDIA RTX PRO 6000 Blackwell Server Edition"
 
 [kamino]
 status = "works"
