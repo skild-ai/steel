@@ -62,6 +62,17 @@ Ropes, chains and fast driven mechanisms: more iterations do not help, substeps 
 
 To tell them apart, halve substeps at the same iterations, and halve substeps at twice the iterations. If the second passes, the scene is convergence-limited. One substep's fixed cost is typically worth many iteration sweeps, so the fewest substeps a scene tolerates is usually the fastest setting.
 
+### CUDA momentum at 10 sweeps
+
+These videos pair the former settings on the left with the 10-sweep CUDA default on the right. Both sides ran Steel `59856a7` and Newton `5e112521d` on an NVIDIA RTX PRO 6000 Blackwell with the same substeps, solver path and camera. Playback follows simulation time. Both runs passed each example’s final checks.
+
+| Watch the comparison | Former sweeps (off) | New sweeps (on) | What to watch |
+|---|---:|---:|---|
+| [Magnetic Door](/examples/mjorg_magnetic_door/#cuda-momentum) | 16 | 10 | The latch holds through the light pull. The hard pull opens the door to 135°, then it closes and latches again. |
+| [Crane Wrecking Ball](/examples/crane_wrecking_ball/#cuda-momentum) | 16 | 10 | The ball brings down all six tracked floors in both runs. The debris lands in different places. |
+| [Toaster](/examples/toaster/#cuda-momentum) | 16 | 10 | The arm inserts the second slice and presses the lever. Both slices stay down after release. |
+| [All-drive Hoberman Sphere](/examples/loop_hoberman_sphere/#cuda-momentum) | 32 | 10 | The linkage completes two open–close cycles. Peak scissor-angle error against the analytic trajectory was 0.082° at 32/off and 0.024° at 10/on. |
+
 ## Recipes
 
 | Case | Do |

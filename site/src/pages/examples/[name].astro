@@ -73,6 +73,16 @@ const solverLabel = (p) => (p.solver ? p.solver : p.variantOf ? `${p.variantOf} 
 			}
 		</figure>
 
+		{example.media.momentum && (
+			<section aria-labelledby="cuda-momentum">
+				<h2 id="cuda-momentum">CUDA momentum comparison</h2>
+				<video controls playsinline preload="metadata" width="1440" height="576"
+					src={`${base}/${example.media.momentum}`} aria-label={`${example.title} with momentum off and on`}></video>
+				<p>The left panel uses the former sweep count with momentum off. The right uses 10 sweeps with momentum on.
+					See the <a href={`${base}/guides/tuning/#cuda-momentum-at-10-sweeps`}>tuning results for all four presets</a>.</p>
+			</section>
+		)}
+
 		<h2 id="run">Run it</h2>
 		<Code code={commands} lang="sh" />
 		<p>
@@ -168,6 +178,7 @@ const solverLabel = (p) => (p.solver ? p.solver : p.variantOf ? `${p.variantOf} 
 <style>
 	.short { font-size: 1.05rem; max-width: 76ch; }
 	.clip-figure { margin: 1rem 0 0; }
+	video { display: block; width: 100%; height: auto; }
 	.placeholder {
 		aspect-ratio: 16 / 9;
 		background: var(--stage);
