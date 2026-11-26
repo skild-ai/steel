@@ -31,8 +31,10 @@ status = "untested"
 [steel]
 status = "works"
 sim = { substeps = 4 }
-solver = { solve_mode = "colored", iterations = 16, articulated_contact_response = "propagation" }
-checked = "2026-11-09, newton c42985a6c, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+# At 4 substeps and 10 sweeps, both CUDA settings hold the counterweight through the strike
+# and bring down all six upper floors.
+solver = { solve_mode = "colored", iterations = 10, articulated_contact_response = "propagation" }
+checked = "2026-11-26, newton 5e112521d, NVIDIA RTX PRO 6000 Blackwell Server Edition"
 
 [kamino]
 status = "untested"

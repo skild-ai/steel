@@ -242,6 +242,8 @@ class Example:
 
         self.config = config
         self.robot_config = robot_config
+        self._check_standing = self.preset.name == "steel" and args.robot == "g1_29dof"
+        self._standing_positions = []
 
         self.device = wp.get_device()
 
@@ -268,7 +270,9 @@ class Example:
         )
         builder.approximate_meshes("convex_hull")
 
-        builder.add_ground_plane()
+        ground_cfg = builder.default_shape_cfg.copy()
+        ground_cfg.gap = self.preset.model.get("ground_gap", ground_cfg.gap)
+        builder.add_ground_plane(cfg=ground_cfg)
 
         builder.joint_q[:3] = [0.0, 0.0, 0.76]
         builder.joint_q[3:7] = [0.0, 0.0, 0.7071, 0.7071]
@@ -437,6 +441,20 @@ class Example:
         self.viewer.log_state(self.state_0)
         self.viewer.log_contacts(self.contacts, self.state_0, observables=self.solver_observables)
         self.viewer.end_frame()
+
+    def test_post_step(self):
+        if not self._check_standing:
+            return
+        if any(self._command) or self._reset_key_prev:
+            self._check_standing = False
+            return
+        frame = round(self.sim_time / self.frame_dt)
+        if 600 <= frame <= 800:
+            # Accumulate link travel so oscillations returning to the same pose are visible.
+            self._standing_positions.append(self.state_0.body_q.numpy()[:, :3])
+        if frame == 800 and len(self._standing_positions) == 201:
+            travel = np.linalg.norm(np.diff(self._standing_positions, axis=0), axis=2).sum(axis=0)
+            assert travel.max() < 0.02, f"Standing G1 link traveled {travel.max():.4f} m in 200 policy frames"
 
     def test_final(self):
         newton.examples.test_body_state(

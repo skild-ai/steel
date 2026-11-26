@@ -42,7 +42,7 @@ original mesh or URDF is absent.
 
 Newton-derived examples retain their original copyright and Apache-2.0 SPDX
 headers. The pinned Newton dependency is
-[f6fc82a8](https://github.com/skild-ai/newton/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md).
+[5e112521](https://github.com/skild-ai/newton/blob/5e112521dd61512b864883ef8c5787b60eaf754d/LICENSE.md).
 
 The 27 Steel WebGPU ports (16 builder scenes and 11 exported scenes) identify
 **steel-webgpu as their direct source** in the source header and `presets.toml`.
@@ -92,29 +92,29 @@ assembling an asset cache. Keep the applicable notices with redistributed
 models or policies; the root code license does not replace them.
 
 The default newton-assets revision is
-`f8fb7abcbeba2318814a74f3eeb02780ad7925d6`. The DR Legs example overrides it with
+`ac1f172b6f53915f9b81aa9ccd765ae792cc264c`. The tabletop Panda helper pins the Franka model to `f8fb7abcbeba2318814a74f3eeb02780ad7925d6`, which carries the same model license. The DR Legs example overrides the default with
 `261cd1f429619d8ef4f546bd788ab9dea906b5e1`. Menagerie and IsaacGymEnvs references
 are pinned below and in the inventory.
 
 | Asset | Terms | Evidence |
 | --- | --- | --- |
-| `anybotics_anymal_c/rl_policies` | Apache-2.0 | [Full notice](licenses/runtime-assets/anybotics_anymal_c--rl_policies.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/anybotics_anymal_c/rl_policies/LICENSE) |
-| `anybotics_anymal_c` | BSD-3-Clause | [Full notice](licenses/runtime-assets/anybotics_anymal_c.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/anybotics_anymal_c/LICENSE) |
-| `anybotics_anymal_d` | BSD-3-Clause | [Full notice](licenses/runtime-assets/anybotics_anymal_d.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/anybotics_anymal_d/LICENSE) |
-| `asroballet/rl_policies` | Apache-2.0 | [Full notice](licenses/runtime-assets/asroballet--rl_policies.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/asroballet/rl_policies/LICENSE) |
-| `asroballet` | MIT | [Full notice](licenses/runtime-assets/asroballet.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/asroballet/LICENSE) |
+| `anybotics_anymal_c/rl_policies` | Apache-2.0 | [Full notice](licenses/runtime-assets/anybotics_anymal_c--rl_policies.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/anybotics_anymal_c/rl_policies/LICENSE) |
+| `anybotics_anymal_c` | BSD-3-Clause | [Full notice](licenses/runtime-assets/anybotics_anymal_c.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/anybotics_anymal_c/LICENSE) |
+| `anybotics_anymal_d` | BSD-3-Clause | [Full notice](licenses/runtime-assets/anybotics_anymal_d.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/anybotics_anymal_d/LICENSE) |
+| `asroballet/rl_policies` | Apache-2.0 | [Full notice](licenses/runtime-assets/asroballet--rl_policies.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/asroballet/rl_policies/LICENSE) |
+| `asroballet` | MIT | [Full notice](licenses/runtime-assets/asroballet.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/asroballet/LICENSE) |
 | `disneyresearch/dr_legs` | LicenseRef-Disney-Research | [Full notice](licenses/runtime-assets/disneyresearch--dr_legs.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/261cd1f429619d8ef4f546bd788ab9dea906b5e1/disneyresearch/dr_legs/LICENSE) |
-| `disneyresearch/dr_testmech` | LicenseRef-Disney-Research | [Full notice](licenses/runtime-assets/disneyresearch--dr_testmech.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/disneyresearch/dr_testmech/LICENSE) |
-| `franka_emika_panda` | Apache-2.0 AND BSD-3-Clause | [Full notice](licenses/runtime-assets/franka_emika_panda.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/franka_emika_panda/LICENSE) |
-| `manipulation_objects/cup` | Apache-2.0 | [Full notice](licenses/runtime-assets/manipulation_objects--cup.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/manipulation_objects/cup/LICENSE) |
-| `manipulation_objects/pad` | Apache-2.0 | [Full notice](licenses/runtime-assets/manipulation_objects--pad.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/manipulation_objects/pad/LICENSE) |
-| `style3d` | BSD-3-Clause | [Full notice](licenses/runtime-assets/style3d.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/style3d/LICENSE) |
-| `unitree_g1/rl_policies` | Apache-2.0 | [Full notice](licenses/runtime-assets/unitree_g1--rl_policies.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_g1/rl_policies/LICENSE) |
-| `unitree_g1` | BSD-3-Clause | [Full notice](licenses/runtime-assets/unitree_g1.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_g1/LICENSE) |
-| `unitree_go2/rl_policies` | Apache-2.0 | [Full notice](licenses/runtime-assets/unitree_go2--rl_policies.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_go2/rl_policies/LICENSE) |
-| `unitree_go2` | BSD-3-Clause | [Full notice](licenses/runtime-assets/unitree_go2.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/unitree_go2/LICENSE) |
-| `universal_robots_ur10` | BSD-3-Clause | [Full notice](licenses/runtime-assets/universal_robots_ur10.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/universal_robots_ur10/LICENSE) |
-| `wonik_allegro` | BSD-2-Clause | [Full notice](licenses/runtime-assets/wonik_allegro.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/f8fb7abcbeba2318814a74f3eeb02780ad7925d6/wonik_allegro/LICENSE) |
+| `disneyresearch/dr_testmech` | LicenseRef-Disney-Research | [Full notice](licenses/runtime-assets/disneyresearch--dr_testmech.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/disneyresearch/dr_testmech/LICENSE) |
+| `franka_emika_panda` | Apache-2.0 AND BSD-3-Clause | [Full notice](licenses/runtime-assets/franka_emika_panda.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/franka_emika_panda/LICENSE) |
+| `manipulation_objects/cup` | Apache-2.0 | [Full notice](licenses/runtime-assets/manipulation_objects--cup.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/manipulation_objects/cup/LICENSE) |
+| `manipulation_objects/pad` | Apache-2.0 | [Full notice](licenses/runtime-assets/manipulation_objects--pad.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/manipulation_objects/pad/LICENSE) |
+| `style3d` | BSD-3-Clause | [Full notice](licenses/runtime-assets/style3d.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/style3d/LICENSE) |
+| `unitree_g1/rl_policies` | Apache-2.0 | [Full notice](licenses/runtime-assets/unitree_g1--rl_policies.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/unitree_g1/rl_policies/LICENSE) |
+| `unitree_g1` | BSD-3-Clause | [Full notice](licenses/runtime-assets/unitree_g1.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/unitree_g1/LICENSE) |
+| `unitree_go2/rl_policies` | Apache-2.0 | [Full notice](licenses/runtime-assets/unitree_go2--rl_policies.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/unitree_go2/rl_policies/LICENSE) |
+| `unitree_go2` | BSD-3-Clause | [Full notice](licenses/runtime-assets/unitree_go2.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/unitree_go2/LICENSE) |
+| `universal_robots_ur10` | BSD-3-Clause | [Full notice](licenses/runtime-assets/universal_robots_ur10.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/universal_robots_ur10/LICENSE) |
+| `wonik_allegro` | BSD-2-Clause | [Full notice](licenses/runtime-assets/wonik_allegro.txt) · [Pinned source](https://github.com/newton-physics/newton-assets/blob/ac1f172b6f53915f9b81aa9ccd765ae792cc264c/wonik_allegro/LICENSE) |
 | `MuJoCo Menagerie UR10e` | BSD-3-Clause | [Full notice](licenses/UR10e-BSD-3-Clause.txt) · [Pinned source](https://github.com/google-deepmind/mujoco_menagerie/blob/f054586a8e90465d49ee5be15335c4a0c7f57caf/universal_robots_ur10e/LICENSE) |
 | `IsaacGymEnvs factory nut/bolt` | BSD-3-Clause | [Full notice](licenses/runtime-assets/IsaacGymEnvs-BSD-3-Clause.txt) · [Pinned source](https://github.com/isaac-sim/IsaacGymEnvs/blob/aeed298638a1f7b5421b38f5f3cc2d1079b6d9c3/LICENSE.txt) |
 
@@ -142,7 +142,7 @@ by these examples, not unrelated IsaacGymEnvs assets.
 `newton.examples.get_asset()` resolves files inside the pinned Newton
 installation, not inside this project's packages. The dependency distributes
 its built-in example assets under its
-[Apache-2.0 repository license](https://github.com/skild-ai/newton/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/LICENSE.md).
+[Apache-2.0 repository license](https://github.com/skild-ai/newton/blob/5e112521dd61512b864883ef8c5787b60eaf754d/LICENSE.md).
 All 31 files in that asset directory are enumerated by path and Git blob ID
 in the inventory, and the Shelf call sites are listed separately. This includes
 bunny, bear, Crazyflie, RJ45, cloth, cartpole, quadruped, ant/humanoid and the
@@ -153,7 +153,7 @@ The tabletop assets (crane, mug, bolt, nut, washer, plate rack and plate) were
 created by the Skild AI team; the crane's base is procedural, and its 138
 visual-only detail meshes come from the detailed crane built for the Steel
 launch video scene. The
-[Pelican bicycle note](https://github.com/skild-ai/newton/blob/f6fc82a8b06d036e1e6d02a61d77a2d300476e8d/newton/examples/assets/steel_tabletop/pelican_bicycle.md)
+[Pelican bicycle note](https://github.com/skild-ai/newton/blob/5e112521dd61512b864883ef8c5787b60eaf754d/newton/examples/assets/steel_tabletop/pelican_bicycle.md)
 credits original CAD by liinbor (LuckyIYI) of the Skild AI team under
 Apache-2.0 and links its permanent source tag. The Newton helpers separately load Franka and Menagerie robot models;
 those model notices are preserved above rather than inferred from Newton's code license.

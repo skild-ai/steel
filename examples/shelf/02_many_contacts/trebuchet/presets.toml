@@ -3,8 +3,8 @@ source = "steel-webgpu tools/scenes.py trebuchet() @ ad03e49"
 default = "steel"
 
 [check]
-# Arguments `python -m shelf check` passes in test mode.
-args = []
+# Run through the impact and let displaced bricks settle.
+args = ["--num-frames", "600"]
 
 [gallery]
 short = "A counterweight trebuchet hurls a boulder at a brick wall."
@@ -42,7 +42,7 @@ status = "works"
 # Sleeping on: bricks at rest sleep (without it 7.1 ms). The joints have no finite limits, so limit rows are off.
 sim = { fps = 60, substeps = 3 }
 solver = { solve_mode = "matrix_free", iterations = 16, articulated_contact_response = "propagation_colored", enable_joint_limits = false, enable_sleeping = true, propagation_constraint_max = 2560 }
-checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+checked = "2026-11-26, newton 5e112521d, NVIDIA RTX PRO 6000 Blackwell Server Edition"
 
 [kamino]
 status = "untested"

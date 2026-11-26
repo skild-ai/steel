@@ -36,8 +36,10 @@ status = "works"
 # rigid gap keeps the other shapes' contacts from reaching the magnets, which would pull on them too.
 sim = { fps = 60, substeps = 8 }
 model = { rigid_gap = 0.005 }
-solver = { iterations = 16, enable_joint_limits = true, articulation_constraint_max = 256 }
-checked = "2026-11-10, newton f6fc82a8b, NVIDIA RTX PRO 6000 Blackwell Server Edition"
+# At 8 substeps and 10 sweeps, the light tug holds, the hard tug opens the door 135 degrees,
+# and the latch closes again with either CUDA momentum setting.
+solver = { iterations = 10, enable_joint_limits = true, articulation_constraint_max = 256 }
+checked = "2026-11-26, newton 5e112521d, NVIDIA RTX PRO 6000 Blackwell Server Edition"
 
 [kamino]
 status = "untested"

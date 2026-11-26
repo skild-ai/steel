@@ -88,7 +88,7 @@ function readExample(category, name, presetsPath) {
 	}
 	presets.sort((a, b) => b.isDefault - a.isDefault || rank(a) - rank(b));
 	const media = {};
-	for (const file of ['poster.jpg', 'preview.mp4', 'clip.mp4']) {
+	for (const file of ['poster.jpg', 'preview.mp4', 'clip.mp4', 'momentum.mp4']) {
 		if (existsSync(join(mediaDir, name, file))) media[file.split('.')[0]] = `examples/${name}/${file}`;
 	}
 	return {

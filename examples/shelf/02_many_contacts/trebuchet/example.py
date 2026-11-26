@@ -63,6 +63,7 @@ class Example(SceneExample):
         b.add_shape_sphere(boulder, radius=0.55, cfg=cfg(density=3000, mu=0.4), color=(0.35, 0.33, 0.30))
         b.add_shape_box(-1, xform=tf((-1.9, 0, pivot_z + 2.9)), hx=0.35, hy=2.1, hz=0.35, cfg=cfg(mu=0.9), color=GREY)
         # Dry-stacked brick wall downrange (avbd-metal's castle is mortared; the port has no breakable joints).
+        self.first_brick = b.body_count
         brick = (1.1, 0.55, 0.55)
         for h in range(8):
             # Running bond: offset courses carry one brick fewer so no brick overhangs the end.
@@ -72,6 +73,12 @@ class Example(SceneExample):
                 b.add_shape_box(body, hx=brick[1] * 0.93 / 2, hy=brick[0] * 0.93 / 2, hz=brick[2] / 2, cfg=cfg(density=800, mu=0.85), color=[(0.72, 0.45, 0.33), (0.62, 0.38, 0.28)][(h + i) % 2])
         return b, {}, "Trebuchet: a hinged arm with a hung counterweight throws a boulder from its cup at a dry-stacked brick wall."
 
+    def check(self):
+        """The impact knocks at least a third of the wall down by half a metre."""
+        initial_z = self.model.body_q.numpy()[self.first_brick:, 2]
+        final_z = self.state_0.body_q.numpy()[self.first_brick:, 2]
+        fallen = np.count_nonzero(initial_z - final_z >= 0.5)
+        assert 3 * fallen >= len(initial_z), f"only {fallen} of {len(initial_z)} wall bricks fell at least 0.5 m"
 
 
 if __name__ == "__main__":
