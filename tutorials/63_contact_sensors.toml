@@ -11,7 +11,7 @@ solver's contact_f observable, split by counterpart so column 0 is the ground. W
 on, settled islands skip their contact rows, so their forces read zero; \
 sleep_skip_constraints=False keeps solving them."""
 look = [
-  "Without sleeping the ground carries each 4-box tower: 39.2 N against 39.24 N of weight.",
+  "Without sleeping the ground carries each 4-box tower: 39.5 N against 39.24 N of weight.",
   "With sleeping the reading drops to 0 at 0.53 s, when the towers fall asleep.",
   "sleep_skip_constraints=False keeps 39.3 N while asleep.",
 ]
@@ -40,14 +40,14 @@ SensorContact sums the solver's per-contact forces onto chosen bodies or shapes,
 per counterpart. Sleeping islands normally skip their contact rows to save work, so contact_f, \
 and the sensor, read zero under them; the contact is still there."""
 here = """\
-Sleeping drops the base reading from 39.2 N to 0; keeping the rows restores it. In the timing \
+Sleeping drops the base reading from 39.5 N to 0; keeping the rows restores it. In the timing \
 below the sleeping towers step 5.3x faster, and keeping their rows gives that back."""
 
 [[concept.consider]]
 term = "Cost"
 text = """\
-One world: 1.48 ms per step awake, 0.28 ms asleep, 1.39 ms asleep with rows kept; 8 worlds: \
-1.75, 0.36 and 1.94 ms."""
+One world: 1.43 ms per step awake, 0.27 ms asleep, 1.42 ms asleep with rows kept; 8 worlds: \
+1.69, 0.40 and 1.69 ms."""
 
 [[concept.consider]]
 term = "Failure modes"
@@ -70,6 +70,6 @@ group = "sensors_sleep"
 scene = "Scene: the three 4-box towers in each world, timed after 4 s of settling."
 
 [timing.notes]
-"no sleeping" = "sensor reads 39.2 N"
+"no sleeping" = "sensor reads 39.5 N"
 "enable_sleeping=True" = "sensor reads 0 while asleep"
 "sleeping, sleep_skip_constraints=False" = "sensor reads 39.3 N"
