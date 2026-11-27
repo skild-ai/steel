@@ -44,6 +44,9 @@ def build(radius):
     builder.add_articulation([j0, j1])
     model = builder.finalize()
     model.steel.min_torsional_patch_radius.fill_(radius)
+    if radius > 0.0 and hasattr(newton, "ShapeFrictionMode"):
+        # Newton versions with per-shape friction modes need the torsional mode for a torsion radius
+        model.shape_material_friction_mode.fill_(int(newton.ShapeFrictionMode.SLIDING_TORSIONAL))
     model.joint_qd.assign(np.array([0.0, 20.0], dtype=np.float32))
     return model
 

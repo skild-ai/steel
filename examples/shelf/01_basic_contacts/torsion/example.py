@@ -37,6 +37,9 @@ class Example(SceneExample):
         for y, radius, color in ((0.25, 0.0, GREY), (-0.25, 0.01, GOLD)):
             tip_cfg = cfg(mu=0.8, density=2000)
             custom = {"steel:min_torsional_patch_radius": radius} if radius > 0 else None
+            if radius > 0 and hasattr(newton, "ShapeFrictionMode"):
+                # Newton versions with per-shape friction modes need the torsional mode for a torsion radius
+                tip_cfg.friction_mode = newton.ShapeFrictionMode.SLIDING_TORSIONAL
             base = b.add_link(xform=tf((0.0, y, 0.5)))
             b.add_shape_box(base, xform=tf((0.0, 0.0, 0.08)), hx=0.02, hy=0.06, hz=0.01, cfg=cfg(density=500), color=GREY)
             joints = [b.add_joint_fixed(-1, base, parent_xform=tf((0.0, y, 0.5)))]

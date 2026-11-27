@@ -35,9 +35,7 @@ def simulate(rec, label, **options):
     pipeline = newton.CollisionPipeline(model)
     contacts = pipeline.contacts()
     # one sensor per tower base, split by counterpart: column 0 is the ground plane (shape 0)
-    sensor = SensorContact(
-        model, sensing_bodies="base*", counterpart_shapes=[0], request_contact_attributes=False
-    )
+    sensor = SensorContact(model, sensing_bodies="base*", counterpart_shapes=[0])
     kinds = set(sensor.solver_observable_kinds) | (
         {"body_awake"} if options.get("enable_sleeping") else set()
     )
