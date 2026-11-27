@@ -133,6 +133,9 @@ class ExportedScene:
                 custom["steel:condim"] = int(s["condim"])
             if s.get("torsion_radius", 0.0) > 0.0 and "steel:min_torsional_patch_radius" in registered:
                 custom["steel:min_torsional_patch_radius"] = float(s["torsion_radius"])
+                if hasattr(newton, "ShapeFrictionMode"):
+                    # Newton versions with per-shape friction modes need the torsional mode for a torsion radius
+                    material.friction_mode = newton.ShapeFrictionMode.SLIDING_TORSIONAL
             color = wp.vec3(*[float(c) for c in s["color"]])
             xform = _transform(s["xf"])
             if s.get("plane"):
